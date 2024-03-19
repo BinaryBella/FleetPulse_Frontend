@@ -1,35 +1,44 @@
-import Logo from "../assets/images/Logo.jpg";
 import ResetPass3 from "../assets/images/ResetPass3.png";
-import {Box, Button, Stack} from "@chakra-ui/react";
+import { Box, Button, Stack } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
+import { Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 export default function ResetPassSuccess() {
+    const navigate = useNavigate(); // Define navigate within the component
+
+    const handleSubmit = () => {
+        navigate("/app/Login");
+    };
+
     return (
-        <div>
-            <div className="flex w-screen h-screen">
-                <div className="bg-[#393970] w-1/2 flex items-center justify-center">
-                    <img src={Logo} alt="Logo" className="w-1/2"/>
-                </div>
-                <div className="bg-[#E1E4EB] w-1/2 flex flex-col items-center justify-center">
-                    <p className="font-sans text-3xl text-[#393970] mb-7">Reset Password</p>
-                    <img src={ResetPass3} alt="ResetPassword" className="w-1/4 mb-4"/>
-                    <Box Box textAlign="center" w="50%" fontSize="sm">
-                        <p className="text-2xl text-[#D49458] font-bold mb-4">Password Updated</p>
-                        <p className="mb-6">Your password has been updated</p>
-                    </Box>
-                    <form className="w-1/2">
+        <>
+            <p className="font-sans text-3xl text-[#393970] mb-7">Reset Password</p>
+            <img src={ResetPass3} alt="ResetPassword" className="w-1/4 mb-4"/>
+            <Box textAlign="center" w="50%" fontSize="sm">
+                <p className="text-2xl text-[#D49458] font-bold mb-4">Password Updated</p>
+                <p className="mb-6">Your password has been updated</p>
+            </Box>
+            <Formik
+                initialValues={{}} // You need to provide initial values even if they are empty
+                onSubmit={handleSubmit} // Use handleSubmit for onSubmit
+            >
+                {({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit} className="w-1/2">
                         <Stack>
                             <Button
                                 bg={theme.purple}
-                                _hover={{bg: theme.onHoverPurple}}
+                                _hover={{ bg: theme.onHoverPurple }}
                                 color="#ffffff"
-                                variant="solid">
+                                variant="solid"
+                                type="submit" // Make sure to set type as "submit"
+                            >
                                 Login
                             </Button>
                         </Stack>
                     </form>
-                </div>
-            </div>
-        </div>
+                )}
+            </Formik>
+        </>
     );
 }
