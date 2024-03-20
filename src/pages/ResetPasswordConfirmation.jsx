@@ -13,7 +13,6 @@ export default function ResetPasswordConfirmation() {
     const navigate = useNavigate();
     const location = useLocation();
     const [pinValue, setPinValue] = useState("");
-    const [ setSubmitted] = useState(false);
     const { data } = location.state;
 
 
@@ -44,7 +43,6 @@ export default function ResetPasswordConfirmation() {
 
 
                 onSubmit={(values, { setSubmitting }) => {
-                    setSubmitted(true);
                     console.log(values);
                     if (pinValue.toString().length === 6) {
                         navigate("/app/ResetPassword");
