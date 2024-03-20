@@ -7,23 +7,28 @@ import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import VerificationInput from "react-verification-input";
 import './ResetPasswordConfirmation.css';
+import { useLocation } from "react-router-dom";
 
 export default function ResetPasswordConfirmation() {
     const navigate = useNavigate();
-    const [pinValue, setPinValue] = useState();
-    const [submitted, setSubmitted] = useState(false);
+    const location = useLocation();
+    const [pinValue, setPinValue] = useState("");
+    const [ setSubmitted] = useState(false);
+    const { data } = location.state;
+
 
     const handleChange = (value) => {
         // Handle change of pin value
         setPinValue(value);
     };
 
+
     return (
         <>
             <p className="font-sans text-3xl text-[#393970] mb-10">Reset Password Verification</p>
             <img src={ResetPass1} alt="ResetPasswordConfirmation" className="w-1/4 mb-10" />
             <Box textAlign="center" w="50%" fontSize="sm">
-                <p className="mb-10">We want to make sure it's really you. In order to verify your identity, enter the verification code that was sent to johndoe@gmail.com</p>
+                <p className="mb-10">We want to make sure its really you. In order to verify your identity, enter the verification code that was sent to {data.email} </p>
             </Box>
             <Formik
                 initialValues={{ pinValue: "" }}
@@ -36,6 +41,7 @@ export default function ResetPasswordConfirmation() {
                     }
                     return errors;
                 }}
+
 
                 onSubmit={(values, { setSubmitting }) => {
                     setSubmitted(true);
@@ -54,8 +60,8 @@ export default function ResetPasswordConfirmation() {
                                 <VerificationInput
                                     validChars="0-9"
                                     inputProps={{ inputMode: "numeric" }}
-                                    value={pinValue} // Set the initial value of the pin
-                                    onChange={handleChange} // Handle change of pin value
+                                    value={pinValue}
+                                    onChange={handleChange}
                                     classNames={{
                                         container: "container",
                                         character: "character",

@@ -1,10 +1,16 @@
-import {IconButton, Menu, MenuButton, MenuItem, MenuList} from "@chakra-ui/react";
-import {Link} from "react-router-dom";
-import {IoIosNotifications} from "react-icons/io";
-import {FaUser} from "react-icons/fa";
+import { IconButton, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
+import { IoIosNotifications } from "react-icons/io";
+import { FaUser } from "react-icons/fa";
 import theme from "../config/ThemeConfig.jsx";
 
 export default function TopMenu() {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        navigate("/app/Login");
+    };
+
     return (
         <>
             <div className="flex justify-end">
@@ -16,7 +22,7 @@ export default function TopMenu() {
                             aria-label='notification'
                             fontSize='30px'
                             mt={5}
-                            icon={< IoIosNotifications/>}
+                            icon={< IoIosNotifications />}
                         />
                     </Link>
                     <div className="flex items-center">
@@ -27,7 +33,7 @@ export default function TopMenu() {
                                 aria-label='profile-options'
                                 fontSize='25px'
                                 mt={5}
-                                icon={<FaUser/>}
+                                icon={<FaUser />}
                                 variant='outline'
                             />
                             <MenuList>
@@ -36,7 +42,7 @@ export default function TopMenu() {
                                         User Profile
                                     </Link>
                                 </MenuItem>
-                                <MenuItem>
+                                <MenuItem onClick={handleLogout}>
                                     Logout
                                 </MenuItem>
                             </MenuList>
@@ -44,7 +50,7 @@ export default function TopMenu() {
                     </div>
                 </div>
             </div>
-            <hr className="my-5 border border-[#D0D8DE]"/>
+            <hr className="my-5 border border-[#D0D8DE]" />
         </>
     );
 }

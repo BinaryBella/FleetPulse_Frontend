@@ -2,16 +2,16 @@ import { Input, Button, FormControl, FormLabel, Stack, FormErrorMessage, Box } f
 import { Field, Formik } from "formik";
 import forgotPassword from "../assets/images/forgotPassword.png";
 import theme from "../config/ThemeConfig.jsx";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 export default function ResetEmail() {
     const navigate = useNavigate();
+
     return (
         <>
             <p className="font-sans text-3xl text-[#393970] mb-10">Reset Password Verification</p>
             <img src={forgotPassword} alt="ResetPasswordConfirmation" className="w-1/4 mb-10" />
             <Box textAlign="center" w="50%" fontSize="sm">
-                <p className="mb-10">Enter your email starting with john******.com to continue</p>
+                <p className="mb-10">Enter your email Address to continue</p>
             </Box>
             <Formik
                 initialValues={{
@@ -24,8 +24,9 @@ export default function ResetEmail() {
                     }
                     return errors;
                 }}
-                onSubmit={() => {
-                    navigate("/app/ResetPasswordConfirmation");
+                onSubmit={(values) => {
+                    const data = {email: values.email}
+                    navigate(`/app/ResetPasswordConfirmation`, {state: {data} });
                 }}
             >
                 {({ handleSubmit, errors, touched }) => (
