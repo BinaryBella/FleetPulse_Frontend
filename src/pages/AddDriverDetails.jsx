@@ -52,44 +52,8 @@ function AddDriverDetails() {
                     />
                 </div>
 
-                
-
                 <div className="flex flex-col gap-3">
-                    <p>Manufacture</p>
-                    <Select
-                        placeholder="Manufacture"
-                        variant="filled"
-                        borderRadius="md"
-                        width="500px"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        name="Manufacture"
-                        icon={<MdArrowDropDown/>}
-                    >
-                        <option value="Manufacture1">Manufacture 1</option>
-                        <option value="Manufacture2">Manufacture 2</option>
-                        <option value="Manufacture3">Manufacture 3</option>
-                    </Select>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                    <p>Vehicle License No</p>
-                    <Input
-                        type="text"
-                        variant="filled"
-                        borderRadius="md"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        width="500px"
-                        name="Vehicle License No"
-                        placeholder="Vehicle License No"
-                    />
-                </div>
-
-                <div className="flex flex-col gap-3">
-                    <p>License Expire Date</p>
+                    <p>Date of Birth</p>
                     <Input
                         type="date"
                         variant="filled"
@@ -98,13 +62,15 @@ function AddDriverDetails() {
                         py={2}
                         mt={1}
                         width="500px"
-                        name="License Expire Date"
-                        placeholder="License Expire Date"
+                        name="Date of Birth"
+                        placeholder="Date of Birth"
                     />
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <p>Vehicle Colour</p>
+                    <p>Manufacture</p>
+                    <Select
+                        placeholder="Manufacture"
                     <Input
                         type="text"
                         variant="filled"
@@ -113,48 +79,141 @@ function AddDriverDetails() {
                         py={2}
                         mt={1}
                         width="500px"
-                        name="Vehicle Colour"
-                        placeholder="Vehicle Colour"
+                        name="National Identity Card No"
+                        placeholder="National Identity Card No"
                     />
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <p>Vehicle Type</p>
-                    <Select
-                        placeholder="Vehicle Type"
+                    <p>Email Address</p>
+                    <Input
+                        type="text"
                         variant="filled"
                         borderRadius="md"
-                        width="500px"
                         px={3}
                         py={2}
                         mt={1}
-                        name="Vehicle Type"
-                        icon={<MdArrowDropDown/>}
-                    >
-                        <option value="VehicleType1">Vehicle Type 1</option>
-                        <option value="VehicleType2">Vehicle Type 2</option>
-                        <option value="VehicleType3">Vehicle Type 3</option>
-                    </Select>
+                        width="500px"
+                        name="Email Address"
+                        placeholder="Email Address"
+                    />
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <p>Fuel Type</p>
+                    <p>Driver License No</p>
+                    <Input
+                        type="text"
+                        variant="filled"
+                        borderRadius="md"
+                        px={3}
+                        py={2}
+                        mt={1}
+                        width="500px"
+                        name="Driver License No"
+                        placeholder="Driver License No"
+                    />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                    <p>Contact Number</p>
+                    <Input
+                        type="text"
+                        variant="filled"
+                        borderRadius="md"
+                        px={3}
+                        py={2}
+                        mt={1}
+                        width="500px"
+                        name="Contact No"
+                        placeholder="Contact No"
+                    />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                    <p>Emergency Contact Number</p>
+                    <Input
+                        type="text"
+                        variant="filled"
+                        borderRadius="md"
+                        px={3}
+                        py={2}
+                        mt={1}
+                        width="500px"
+                        name="Emergency Contact Number"
+                        placeholder="Emergency Contact Number"
+                    />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                    <p>Blood Group</p>
                     <Select
-                        placeholder="Fuel Type"
+                        placeholder="Blood Group"
                         variant="filled"
                         borderRadius="md"
                         width="500px"
                         px={3}
                         py={2}
                         mt={1}
-                        name="Fuel Type"
+                        name="Blood Group"
                         icon={<MdArrowDropDown/>}
                     >
-                        <option value="FuelType1">Fuel Type 1</option>
-                        <option value="FuelType2">Fuel Type 2</option>
-                        <option value="FuelType3">Fuel Type 3</option>
+                        <option value="Blood Group1">Blood Group 1</option>
+                        <option value="Blood Group2">Blood Group 2</option>
+                        <option value="Blood Group3">Blood Group 3</option>
                     </Select>
                 </div>
+
+                
+
+                <div className="flex flex-col gap-3">
+                    <p>User Name</p>
+                    <Input
+                        type="text"
+                        variant="filled"
+                        borderRadius="md"
+                        px={3}
+                        py={2}
+                        mt={1}
+                        width="500px"
+                        name="User Name"
+                        placeholder="User Name"
+                    />
+                </div>
+
+                
+
+               
+                <div className="flex flex-col gap-3">
+                    <p>Password</p>
+                    <Input
+                        type="text"
+                        variant="filled"
+                        borderRadius="md"
+                        px={3}
+                        py={2}
+                        mt={1}
+                        width="500px"
+                        name="Password"
+                        placeholder="Password"
+                    />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                    <p>Confirm Password</p>
+                    <Input
+                        type="text"
+                        variant="filled"
+                        borderRadius="md"
+                        px={3}
+                        py={2}
+                        mt={1}
+                        width="500px"
+                        name=" Confirm Password"
+                        placeholder="Confirm Password"
+                    />
+                </div>
+
+                
                 <div className="flex flex-col gap-3">
                     <Checkbox size='lg' defaultChecked>
                         Is Active
