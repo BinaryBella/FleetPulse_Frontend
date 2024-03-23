@@ -1,35 +1,42 @@
-.chakra-select__wrapper {
-    padding-inline-start: 0 !important;
-    padding-inline-end: 0 !important;
-    -webkit-padding-end: 0 !important;
-    -webkit-padding-start: 0 !important;
-    padding-top: var(--chakra-space-0) !important;
-    padding-bottom: var(--chakra-space-0) !important;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
-.chakra-checkbox__control {
-    border-color: #2c2c59 !important;
-    /*border-color: #2c2c59 !important;*/
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
 }
-.chakra-checkbox__control[data-checked] {
-    background: #2c2c59 !important;
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-.custom-table {
-    background-color: #ffffff;
-    margin-top: 50px;
-    margin-right: 10px;
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.custom-table th {
-    background-color: #393970;
-    color: #ffffff;
-    padding: 15px;
-    width: fit-content;
-    font-size: 1.125rem;
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
-.custom-table td {
-    padding: 15px;
-    width: fit-content;
-    font-size: 1.125rem;
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
 }
