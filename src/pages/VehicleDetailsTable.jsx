@@ -41,7 +41,7 @@ export default function VehicleDetailsTable() {
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
-        { label: "Vehicle Details", link: "/" },
+        { label: "Vehicle Details", link: "/app/AddVehicleDetails" },
     ];
 
     return (

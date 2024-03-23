@@ -3,11 +3,13 @@ import {Button, Checkbox, Input, Select} from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 import {MdArrowDropDown} from "react-icons/md";
 
+
+
 export default function Driver() {
     const breadcrumbs = [
-        {label: 'Driver', link: '/'},
-        {label: 'Driver Details', link: '/'},
-        {label: 'Add Driver Details', link: '/'}
+        {label: 'Driver', link: '/app/Driver'},
+        {label: 'Driver Details', link:'/app/DriverDetails'},
+        {label: 'Add Driver Details', link: "/app/AddDriverDetails"}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {

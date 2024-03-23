@@ -1,36 +1,29 @@
+import React from "react";
 import PageHeader from "../components/PageHeader.jsx";
-import {
-    Button,
-    Checkbox,
-    Input,
-    Select
-} from "@chakra-ui/react";
+import { Button, Checkbox, Input, Select } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 import {MdArrowDropDown} from "react-icons/md";
 
-export default function AddVehicleDetails() {
+function AddDriverDetails() {
+  const breadcrumbs = [
+    { label: "Driver", link: "/app/Driver" },
+    { label: "Driver Details", link: "/" },
+    { label: "Add Driver Details", link: "/app/AddDriverDetails" },
+  ];
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted");
+  };
+  const handleCancel = () => {
+    console.log("Cancelled");
+  };
 
-    const breadcrumbs = [
-        {label: 'Vehicle', link: '/'},
-        {label: 'Vehicle Details', link: '/'},
-        {label: 'Add Vehicle Details', link: '/app/AddVehicleDetails'}
-    ];
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form submitted');
-    };
-
-    const handleCancel = () => {
-        console.log('Cancelled');
-    };
-
-    return (
-        <>
-            <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs}/>
-            <div className="grid grid-cols-2 gap-10 mt-8">
-                <div className="flex flex-col gap-3">
-                    <p>Vehicle Registration No</p>
+  return (
+    <>
+      <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
+      <div className="grid grid-cols-2 gap-10 mt-8">
+      <div className="flex flex-col gap-3">
+                    <p>First Name</p>
                     <Input
                         type="text"
                         variant="filled"
@@ -39,28 +32,28 @@ export default function AddVehicleDetails() {
                         py={2}
                         mt={1}
                         width="500px"
-                        name="Vehicle Registration No"
-                        placeholder="Vehicle Registration No"
+                        name="First Name"
+                        placeholder="First Name"
                     />
                 </div>
+
                 <div className="flex flex-col gap-3">
-                    <p>Vehicle Model</p>
-                    <Select
-                        placeholder="Select Vehicle Model"
+                    <p>Last Name</p>
+                    <Input
+                        type="text"
                         variant="filled"
                         borderRadius="md"
-                        width="500px"
                         px={3}
                         py={2}
                         mt={1}
-                        name="Vehicle Model"
-                        icon={<MdArrowDropDown/>}
-                    >
-                        <option value="model1">Model 1</option>
-                        <option value="model2">Model 2</option>
-                        <option value="model3">Model 3</option>
-                    </Select>
+                        width="500px"
+                        name="Last Name"
+                        placeholder="Last Name"
+                    />
                 </div>
+
+                
+
                 <div className="flex flex-col gap-3">
                     <p>Manufacture</p>
                     <Select
@@ -79,6 +72,7 @@ export default function AddVehicleDetails() {
                         <option value="Manufacture3">Manufacture 3</option>
                     </Select>
                 </div>
+
                 <div className="flex flex-col gap-3">
                     <p>Vehicle License No</p>
                     <Input
@@ -93,6 +87,7 @@ export default function AddVehicleDetails() {
                         placeholder="Vehicle License No"
                     />
                 </div>
+
                 <div className="flex flex-col gap-3">
                     <p>License Expire Date</p>
                     <Input
@@ -107,6 +102,7 @@ export default function AddVehicleDetails() {
                         placeholder="License Expire Date"
                     />
                 </div>
+
                 <div className="flex flex-col gap-3">
                     <p>Vehicle Colour</p>
                     <Input
@@ -121,6 +117,7 @@ export default function AddVehicleDetails() {
                         placeholder="Vehicle Colour"
                     />
                 </div>
+
                 <div className="flex flex-col gap-3">
                     <p>Vehicle Type</p>
                     <Select
@@ -139,6 +136,7 @@ export default function AddVehicleDetails() {
                         <option value="VehicleType3">Vehicle Type 3</option>
                     </Select>
                 </div>
+
                 <div className="flex flex-col gap-3">
                     <p>Fuel Type</p>
                     <Select
@@ -162,8 +160,8 @@ export default function AddVehicleDetails() {
                         Is Active
                     </Checkbox>
                 </div>
-            </div>
-            <div className="flex w-5/6 justify-end gap-10">
+                </div>
+                <div className="flex w-5/6 justify-end gap-10">
                 <Button
                     bg="gray.400"
                     _hover={{bg: "gray.500"}}
@@ -186,7 +184,10 @@ export default function AddVehicleDetails() {
                 >
                     Save
                 </Button>
-            </div>
-        </>
-    );
+
+      </div>
+    </>
+  );
 }
+
+export default AddDriverDetails;
