@@ -17,38 +17,39 @@ export default function MaintenanceTable() {
     const [vehicleDetails] = useState([
         {
             registrationNo: "ABC123",
-            vehicleModel: "Model X",
-            manufacture: "Tesla",
-            licenseNo: "XYZ456",
-            licenseExpireDate: "2024-12-31",
-            vehicleColour: "Red",
-            vehicleType: "SUV",
-            fuelType: "Electric",
+            MaintenanceDate: new Date("2024-03-22"),
+            MaintenanceStatus: "Completed",
+            Description: "Routine checkup",
+            Cost: 100.50,
+            PartsReplaced: "Engine oil",
+            ServiceProvider: "AutoCare Services",
+            SpecialNotes: "No additional notes",
             isActive: true,
+
         },
         {
-            registrationNo: "DEF456",
-            vehicleModel: "Model S",
-            manufacture: "Tesla",
-            licenseNo: "PQR789",
-            licenseExpireDate: "2025-06-30",
-            vehicleColour: "Blue",
-            vehicleType: "Sedan",
-            fuelType: "Electric",
-            isActive: false,
-        },
+            registrationNo: "ABC123",
+            MaintenanceDate: new Date("2024-03-15"),
+            MaintenanceStatus: "In Progress",
+            Description: "Brake replacement",
+            Cost: 200.75,
+            PartsReplaced: "Brake pads",
+            ServiceProvider: "Speedy Auto Repairs",
+            SpecialNotes: "Urgent service required",
+            isActive: true,
+        }
     ]);
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
-        { label: "Vehicle Details", link: "/" },
+        { label: "Vehicle Maintenance Details", link: "/" },
     ];
 
     return (
         <>
-            <PageHeader title="Vehicle Details" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Vehicle Maintenance Details" breadcrumbs={breadcrumbs} />
 
-            <Link to="/app/AddVehicleDetails">
+            <Link to="/app/AddVehicleMaintenanceDetails">
                 <Button
                     bg={theme.purple}
                     _hover={{ bg: theme.onHoverPurple }}
@@ -62,7 +63,7 @@ export default function MaintenanceTable() {
                     top="130"
                     right="0"
                 >
-                    Add Vehicle Details
+                    Add Maintenance Details
                 </Button>
             </Link>
 
@@ -70,27 +71,29 @@ export default function MaintenanceTable() {
                 <Thead>
                     <Tr>
                         <Th>Reg No</Th>
-                        <Th>License Exp Date</Th>
-                        <Th>Model</Th>
-                        <Th>Manufacture</Th>
-                        <Th>Type</Th>
-                        <Th>Fuel Type</Th>
-                        <Th>Color</Th>
+                        <Th>Maintenance Date</Th>
+                        <Th>Maintenance Status</Th>
+                        <Th>Description</Th>
+                        <Th>Cost</Th>
+                        <Th>Parts Replaced</Th>
+                        <Th>Service Provider</Th>
+                        <Th>Special Notes</Th>
                         <Th>Status</Th>
                         <Th>Actions</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {vehicleDetails.map((vehicle, index) => (
+                    {vehicleDetails.map((maintenance, index) => (
                         <Tr key={index}>
-                            <Td>{vehicle.registrationNo}</Td>
-                            <Td>{vehicle.licenseExpireDate}</Td>
-                            <Td>{vehicle.vehicleModel}</Td>
-                            <Td>{vehicle.manufacture}</Td>
-                            <Td>{vehicle.vehicleType}</Td>
-                            <Td>{vehicle.fuelType}</Td>
-                            <Td>{vehicle.vehicleColour}</Td>
-                            <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
+                            <Td>{maintenance.registrationNo}</Td>
+                            <Td>{maintenance.MaintenanceDate.toString()}</Td>
+                            <Td>{maintenance.MaintenanceStatus}</Td>
+                            <Td>{maintenance.Description}</Td>
+                            <Td>{maintenance.Cost}</Td>
+                            <Td>{maintenance.PartsReplaced}</Td>
+                            <Td>{maintenance.ServiceProvider}</Td>
+                            <Td>{maintenance.SpecialNotes}</Td>
+                            <Td>{maintenance.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton
@@ -119,4 +122,3 @@ export default function MaintenanceTable() {
         </>
     );
 }
-

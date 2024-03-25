@@ -1,5 +1,14 @@
 import Logo from "../assets/images/Logo.jpg";
-import {IconButton, Text, VStack} from "@chakra-ui/react";
+import {
+    IconButton,
+    Text,
+    VStack,
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
+} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 import {AiOutlineDashboard} from "react-icons/ai";
@@ -8,9 +17,49 @@ import {MdAirlineSeatReclineNormal} from "react-icons/md";
 import {IoMdPeople, IoMdPerson} from "react-icons/io";
 import {BiTrip} from "react-icons/bi";
 import {TbReportAnalytics} from "react-icons/tb";
+import {Box} from "@chakra-ui/react";
+import {accordionTheme} from "./Variant.jsx"
+
+import { accordionAnatomy } from '@chakra-ui/anatomy'
+import { createMultiStyleConfigHelpers, defineStyle } from '@chakra-ui/react'
+
+const { definePartsStyle, defineMultiStyleConfig } =
+    createMultiStyleConfigHelpers(accordionAnatomy.keys)
+
+const custom = definePartsStyle({
+    panel: {
+        border: '1px solid',
+        borderColor: 'gray.200',
+        background: 'gray.50',
+        borderRadius: 'full',
+
+        // Let's also provide dark mode alternatives
+        _dark: {
+            borderColor: 'gray.600',
+            background: 'gray.800',
+        },
+    },
+    icon: {
+        border: '1px solid',
+        borderColor: 'gray.200',
+        background: 'gray.200',
+        borderRadius: 'full',
+        color: 'gray.500',
+
+        _dark: {
+            borderColor: 'gray.600',
+            background: 'gray.600',
+            color: 'gray.400',
+        },
+    },
+})
 
 
-export default function SideMenu(){
+
+export default function SideMenu() {
+    let accordionTheme = defineMultiStyleConfig({
+        variants: { custom },
+    })
     return (
         <div className="bg-[#393970] w-1/5 flex flex-col h-fit">
             <div className="flex justify-center w-full">
@@ -32,7 +81,7 @@ export default function SideMenu(){
                         Dashboard
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/AddVehicleDetails">
+                <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -40,42 +89,58 @@ export default function SideMenu(){
                         fontSize='20px'
                         icon={<FaCarAlt/>}
                     />
-                    <Text color={theme.orange} fontSize="xl">
-                        Vehicle
-                    </Text>
+                    <Accordion  allowMultiple>
+                        <AccordionItem>
+                            <h2>
+                                <AccordionButton>
+                                    <Box as="span" flex='1' textAlign='left' color={theme.orange}>
+                                        Vehicle
+                                    </Box>
+                                    <AccordionIcon color={theme.orange}/>
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4}>
+                                <div>
+                                    <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Vehicle Details
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-16" to="/app/VehicleTypeTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Vehicle Type
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-16" to="/app/VehicleModelTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Vehicle Model
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-16" to="/app/ManufactureTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Manufacturer
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-16" to="/app/MaintenanceTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Vehicle Maintenance
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-16" to="/app/MaintenanceTypeTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Vehicle Maintenance Type
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-16" to="/app/FuelRefillTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Fuel Refill
+                                        </Text>
+                                    </Link>
+                                </div>
+                            </AccordionPanel>
+                        </AccordionItem>
+                    </Accordion>
                 </Link>
-                <div>
-                    <Link className="flex items-center pl-16" to="/app/AddVehicleDetails">
-                        <Text color={theme.orange} fontSize="lg">
-                            Vehicle Details
-                        </Text>
-                    </Link>
-                    <Link className="flex items-center pl-16" to="/app/AddVehicleType">
-                        <Text color={theme.orange} fontSize="lg">
-                            Vehicle Type
-                        </Text>
-                    </Link>
-                    <Link className="flex items-center pl-16" to="/app/AddVehicleModel">
-                        <Text color={theme.orange} fontSize="lg">
-                            Vehicle Model
-                        </Text>
-                    </Link>
-                    <Link className="flex items-center pl-16" to="/app/AddManufactureDetails">
-                        <Text color={theme.orange} fontSize="lg">
-                            Manufacturer
-                        </Text>
-                    </Link>
-                    <Link className="flex items-center pl-16" to="/app/AddVehicleMaintenanceDetails">
-                        <Text color={theme.orange} fontSize="lg">
-                            Vehicle Maintenance
-                        </Text>
-                    </Link>
-                    <Link className="flex items-center pl-16" to="/app/AddMaintenanceType">
-                        <Text color={theme.orange} fontSize="lg">
-                            Vehicle Maintenance Type
-                        </Text>
-                    </Link>
-                </div>
                 <Link className="flex items-center pl-16" to="/app/Driver">
                     <IconButton
                         variant='link'

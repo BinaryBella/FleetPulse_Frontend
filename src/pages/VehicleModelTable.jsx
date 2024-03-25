@@ -13,42 +13,29 @@ import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
-export default function MaintenanceTable() {
+export default function VehicleModelTable() {
     const [vehicleDetails] = useState([
         {
-            registrationNo: "ABC123",
+
             vehicleModel: "Model X",
-            manufacture: "Tesla",
-            licenseNo: "XYZ456",
-            licenseExpireDate: "2024-12-31",
-            vehicleColour: "Red",
-            vehicleType: "SUV",
-            fuelType: "Electric",
             isActive: true,
         },
         {
-            registrationNo: "DEF456",
-            vehicleModel: "Model S",
-            manufacture: "Tesla",
-            licenseNo: "PQR789",
-            licenseExpireDate: "2025-06-30",
-            vehicleColour: "Blue",
-            vehicleType: "Sedan",
-            fuelType: "Electric",
+            vehicleModel: "Model Y",
             isActive: false,
         },
     ]);
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
-        { label: "Vehicle Details", link: "/" },
+        { label: "Vehicle Model", link: "/" },
     ];
 
     return (
         <>
-            <PageHeader title="Vehicle Details" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Vehicle Model" breadcrumbs={breadcrumbs} />
 
-            <Link to="/app/AddVehicleDetails">
+            <Link to="/app/AddVehicleModel">
                 <Button
                     bg={theme.purple}
                     _hover={{ bg: theme.onHoverPurple }}
@@ -62,20 +49,14 @@ export default function MaintenanceTable() {
                     top="130"
                     right="0"
                 >
-                    Add Vehicle Details
+                    Add Vehicle Model
                 </Button>
             </Link>
 
             <Table className="custom-table">
                 <Thead>
                     <Tr>
-                        <Th>Reg No</Th>
-                        <Th>License Exp Date</Th>
-                        <Th>Model</Th>
-                        <Th>Manufacture</Th>
-                        <Th>Type</Th>
-                        <Th>Fuel Type</Th>
-                        <Th>Color</Th>
+                        <Th>Vehicle Model</Th>
                         <Th>Status</Th>
                         <Th>Actions</Th>
                     </Tr>
@@ -83,13 +64,7 @@ export default function MaintenanceTable() {
                 <Tbody>
                     {vehicleDetails.map((vehicle, index) => (
                         <Tr key={index}>
-                            <Td>{vehicle.registrationNo}</Td>
-                            <Td>{vehicle.licenseExpireDate}</Td>
                             <Td>{vehicle.vehicleModel}</Td>
-                            <Td>{vehicle.manufacture}</Td>
-                            <Td>{vehicle.vehicleType}</Td>
-                            <Td>{vehicle.fuelType}</Td>
-                            <Td>{vehicle.vehicleColour}</Td>
                             <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>

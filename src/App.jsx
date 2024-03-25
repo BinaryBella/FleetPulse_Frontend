@@ -24,6 +24,12 @@ import AddManufactureDetails from "./pages/AddManufactureDetails.jsx";
 import AddVehicleType from "./pages/AddVehicleType.jsx";
 import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
 import VehicleDetailsTable from "./pages/VehicleDetailsTable.jsx";
+import VehicleTypeTable from "./pages/VehicleTypeTable.jsx";
+import VehicleModelTable from "./pages/VehicleModelTable.jsx";
+import ManufactureTable from "./pages/ManufatureTable.jsx";
+import MaintenanceTable from "./pages/MaintenanceTable.jsx";
+import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
+import FuelRefillTable from "./pages/FuelRefillTable.jsx";
 
 export default function App() {
     return (
@@ -47,6 +53,12 @@ export default function App() {
                 <Route path="AddManufactureDetails" element={<AddManufactureDetails/>}/>
                 <Route path="AddMaintenanceType" element={<AddMaintenanceType/>}/>
                 <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
+                <Route path="VehicleTypeTable" element={<VehicleTypeTable/>}/>
+                <Route path="VehicleModelTable" element={<VehicleModelTable/>}/>
+                <Route path="ManufactureTable" element={<ManufactureTable/>}/>
+                <Route path="MaintenanceTable" element={<MaintenanceTable/>}/>
+                <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable/>}/>
+                <Route path="FuelRefillTable" element={<FuelRefillTable/>}/>
             </Route>
             <Route path="/app" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>
