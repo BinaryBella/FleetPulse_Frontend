@@ -14,6 +14,7 @@ import {
 import {FaImage} from "react-icons/fa6";
 import theme from "../config/ThemeConfig.jsx";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 export default function AddAccidentDetails() {
     const breadcrumbs = [
@@ -33,8 +34,9 @@ export default function AddAccidentDetails() {
         // Reset form fields or redirect to another page
         console.log();
     };
-    const handleNext = () => {
+    const handleNext = async() => {
         // Reset form fields or redirect to another page
+        // const response = await axios.post("https://localhost:7265/api/Accidents",{})
         console.log();
     };
     return (

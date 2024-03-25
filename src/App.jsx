@@ -25,7 +25,8 @@ import AddVehicleType from "./pages/AddVehicleType.jsx";
 import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
 import VehicleDetailsTable from "./pages/VehicleDetailsTable.jsx";
 import DriverDetails from "./pages/DriverDetails.jsx";
-import AddDriverDetails from './pages/AddDriverDetails.jsx';
+import AddDriverDetails from "./pages/AddDriverDetails.jsx";
+
 
 export default function App() {
     return (
@@ -49,6 +50,8 @@ export default function App() {
                 <Route path="AddManufactureDetails" element={<AddManufactureDetails/>}/>
                 <Route path="AddMaintenanceType" element={<AddMaintenanceType/>}/>
                 <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
+                <Route path="DriverDetails" element={<DriverDetails/>}/>
+                <Route path="AddDriverDetails" element={<AddDriverDetails/>}/>
             </Route>
             <Route path="/app" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>
@@ -58,6 +61,7 @@ export default function App() {
                 <Route path="ResetEmail" element={<ResetEmail/>}/>
                 <Route path="DriverDetails" element={<DriverDetails/>}/>
                 <Route path="AddDriverDetails" element={<AddDriverDetails/>}/>
+                
             </Route>
         </Routes>
     );

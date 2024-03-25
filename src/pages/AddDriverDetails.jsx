@@ -68,9 +68,7 @@ function AddDriverDetails() {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <p>Manufacture</p>
-                    <Select
-                        placeholder="Manufacture"
+                    <p>National Identity Card No</p>
                     <Input
                         type="text"
                         variant="filled"
