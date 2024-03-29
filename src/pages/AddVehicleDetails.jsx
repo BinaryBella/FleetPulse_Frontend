@@ -18,7 +18,7 @@ export default function AddVehicleDetails() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted');
+       
     };
 
     const handleCancel = () => {

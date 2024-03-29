@@ -32,7 +32,7 @@ export default function App() {
                 <Route path="Dashboard" element={<Dashboard/>}/>
                 <Route path="UserProfile" element={<UserProfile/>}/>
                 <Route path="Notification" element={<Notification/>}/>
-                <Route path="AddVehicleDetails" element={<AddVehicleDetails/>}/>
+                <Route path="VehicleDetailsTable/AddVehicleDetails" element={<AddVehicleDetails/>}/>
                 <Route path="AddVehicleMaintenanceDetails" element={<AddVehicleMaintenanceDetails/>}/>
                 <Route path="AddFuelRefillDetails" element={<AddFuelRefillDetails/>}/>
                 <Route path="Driver" element={<Driver/>}/>
