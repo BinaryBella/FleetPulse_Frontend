@@ -14,6 +14,22 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function VehicleDetailsTable() {
+    // const [vehicleDetails, setVehicleDetails] = useState([]);
+    
+    // useEffect(() => {
+       
+    //         try {
+    //             const response =  axios.get('URL_TO_YOUR_API_ENDPOINT');
+    //             setVehicleDetails(response.data);
+               
+    //         } catch (error) {
+                
+               
+    //         }
+    //     },
+
+
+    //  []);
     const [vehicleDetails] = useState([
         {
             registrationNo: "ABC123",
