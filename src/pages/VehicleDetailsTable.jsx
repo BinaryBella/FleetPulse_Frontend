@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
     Table,
     Thead,
@@ -6,7 +7,12 @@ import {
     Tr,
     Th,
     Td,
-    Button, Menu, MenuButton, IconButton, MenuList, MenuItem,
+    Button,
+    Menu,
+    MenuButton,
+    IconButton,
+    MenuList,
+    MenuItem,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
@@ -14,57 +20,34 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function VehicleDetailsTable() {
-    // const [vehicleDetails, setVehicleDetails] = useState([]);
-    
-    // useEffect(() => {
-       
-    //         try {
-    //             const response =  axios.get('URL_TO_YOUR_API_ENDPOINT');
-    //             setVehicleDetails(response.data);
-               
-    //         } catch (error) {
-                
-               
-    //         }
-    //     },
+    const [vehicleDetails, setVehicleDetails] = useState([]);
+    const [error, setError] = useState(null);
 
-
-    //  []);
-    const [vehicleDetails] = useState([
-        {
-            registrationNo: "ABC123",
-            vehicleModel: "Model X",
-            manufacture: "Tesla",
-            licenseNo: "XYZ456",
-            licenseExpireDate: "2024-12-31",
-            vehicleColour: "Red",
-            vehicleType: "SUV",
-            fuelType: "Electric",
-            isActive: true,
-        },
-        {
-            registrationNo: "DEF456",
-            vehicleModel: "Model S",
-            manufacture: "Tesla",
-            licenseNo: "PQR789",
-            licenseExpireDate: "2025-06-30",
-            vehicleColour: "Blue",
-            vehicleType: "Sedan",
-            fuelType: "Electric",
-            isActive: false,
-        },
-    ]);
+    useEffect(() => {
+        axios.get('https://localhost:7265/api/Vehicle')
+            .then(response => {
+                setVehicleDetails(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                setError(error);
+            });
+    }, []);
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
         { label: "Vehicle Details", link: "/app/AddVehicleDetails" },
     ];
 
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
     return (
         <>
             <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
 
-            <Link to="/AddVehicleDetails">
+            <Link to="AddVehicleDetails">
                 <Button
                     bg={theme.purple}
                     _hover={{ bg: theme.onHoverPurple }}
@@ -101,11 +84,11 @@ export default function VehicleDetailsTable() {
                         <Tr key={index}>
                             <Td>{vehicle.registrationNo}</Td>
                             <Td>{vehicle.licenseExpireDate}</Td>
-                            <Td>{vehicle.vehicleModel}</Td>
-                            <Td>{vehicle.manufacture}</Td>
-                            <Td>{vehicle.vehicleType}</Td>
-                            <Td>{vehicle.fuelType}</Td>
-                            <Td>{vehicle.vehicleColour}</Td>
+                            <Td>{vehicle.vehicleModelId}</Td>
+                            <Td>{vehicle.manufacturer}</Td>
+                            <Td>{vehicle.type}</Td>
+                            <Td>{vehicle.fType}</Td>
+                            <Td>{vehicle.vehicleColor}</Td>
                             <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
@@ -118,7 +101,7 @@ export default function VehicleDetailsTable() {
                                     />
                                     <MenuList>
                                         <MenuItem>
-                                            <Link to="" >
+                                            <Link to={`/editVehicle/${vehicle.id}`} >
                                                 Edit
                                             </Link>
                                         </MenuItem>
@@ -137,4 +120,3 @@ export default function VehicleDetailsTable() {
         </>
     );
 }
-

@@ -45,7 +45,7 @@ export default function SideMenu(){
                     </Text>
                 </Link>
                 <div>
-                    <Link className="flex items-center pl-16" to="/app/AddVehicleDetails">
+                    <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
                         <Text color={theme.orange} fontSize="lg">
                             Vehicle Details
                         </Text>
