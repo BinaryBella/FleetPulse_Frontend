@@ -18,48 +18,9 @@ import {IoMdPeople, IoMdPerson} from "react-icons/io";
 import {BiTrip} from "react-icons/bi";
 import {TbReportAnalytics} from "react-icons/tb";
 import {Box} from "@chakra-ui/react";
-import {accordionTheme} from "./Variant.jsx"
-
-import { accordionAnatomy } from '@chakra-ui/anatomy'
-import { createMultiStyleConfigHelpers, defineStyle } from '@chakra-ui/react'
-
-const { definePartsStyle, defineMultiStyleConfig } =
-    createMultiStyleConfigHelpers(accordionAnatomy.keys)
-
-const custom = definePartsStyle({
-    panel: {
-        border: '1px solid',
-        borderColor: 'gray.200',
-        background: 'gray.50',
-        borderRadius: 'full',
-
-        // Let's also provide dark mode alternatives
-        _dark: {
-            borderColor: 'gray.600',
-            background: 'gray.800',
-        },
-    },
-    icon: {
-        border: '1px solid',
-        borderColor: 'gray.200',
-        background: 'gray.200',
-        borderRadius: 'full',
-        color: 'gray.500',
-
-        _dark: {
-            borderColor: 'gray.600',
-            background: 'gray.600',
-            color: 'gray.400',
-        },
-    },
-})
-
 
 
 export default function SideMenu() {
-    let accordionTheme = defineMultiStyleConfig({
-        variants: { custom },
-    })
     return (
         <div className="bg-[#393970] w-1/5 flex flex-col h-fit">
             <div className="flex justify-center w-full">
@@ -89,7 +50,7 @@ export default function SideMenu() {
                         fontSize='20px'
                         icon={<FaCarAlt/>}
                     />
-                    <Accordion  allowMultiple>
+                    <Accordion allowMultiple>
                         <AccordionItem>
                             <h2>
                                 <AccordionButton>
