@@ -28,7 +28,7 @@ export default function ResetEmail() {
                 onSubmit={async (values) => {
                     try {
                         console.log("Submitting form with values:", values);
-                        const response = await fetch('https://localhost:7265/Auth/forgot-password', {
+                        const response = await fetch('https://localhost:7265/api/Auth/forgot-password', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

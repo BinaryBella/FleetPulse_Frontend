@@ -29,7 +29,7 @@ export default function Login() {
                     password: ""
                 }}
                 onSubmit={(values) => {
-                    fetch('https://localhost:7265/Auth/Login', {
+                    fetch('https://localhost:7265/api/Auth/Login', {
                         method: 'POST',
                         body: JSON.stringify({
                             username: values.username,
