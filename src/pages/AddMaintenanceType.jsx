@@ -6,7 +6,7 @@ export default function AddMaintenanceType() {
     const breadcrumbs = [
         {label: 'Vehicle', link: '/'},
         {label: 'Vehicle Maintenance Details', link: '/'},
-        {label: 'Add Maintenance Type Details', link: '/'}
+        {label: 'Add Maintenance Type Details', link: 'app/AddvehicletypeDetails'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {

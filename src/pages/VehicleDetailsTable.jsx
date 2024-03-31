@@ -47,7 +47,7 @@ export default function VehicleDetailsTable() {
         <>
             <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
 
-            <Link to="AddVehicleDetails">
+            <Link to="/app/AddVehicleDetails">
                 <Button
                     bg={theme.purple}
                     _hover={{ bg: theme.onHoverPurple }}

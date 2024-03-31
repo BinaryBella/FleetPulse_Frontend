@@ -6,7 +6,7 @@ export default function AddVehicleType() {
     const breadcrumbs = [
         {label: 'Vehicle', link: '/'},
         {label: 'Vehicle Type Details', link: '/'},
-        {label: 'Add Vehicle Type Details', link: '/'}
+        {label: 'Add Vehicle Type Details', link: '/app'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {

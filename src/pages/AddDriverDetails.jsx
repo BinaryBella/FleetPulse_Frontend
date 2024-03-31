@@ -8,7 +8,7 @@ function AddDriverDetails() {
   const breadcrumbs = [
     { label: "Driver", link: "/app/Driver" },
     { label: "Driver Details", link: "/" },
-    { label: "Add Driver Details", link: "/app/AddDriverDetails" },
+    { label: "Add Driver Details", link: "/app/AddvehicletypeDetails" },
   ];
   const handleSubmit = (e) => {
     e.preventDefault();

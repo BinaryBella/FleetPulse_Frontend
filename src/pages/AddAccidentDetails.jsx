@@ -20,7 +20,7 @@ export default function AddAccidentDetails() {
     const breadcrumbs = [
         {label: 'Accident', link: '/'},
         {label: 'Accident Details', link: '/'},
-        {label: 'Add Accident Details', link: '/'}
+        {label: 'Add Accident Details', link: 'app/AddvehicletypeDetails'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {

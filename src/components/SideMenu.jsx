@@ -67,7 +67,7 @@ export default function SideMenu() {
                                             Vehicle Details
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleTypeTable">
+                                    <Link className="flex items-center pl-16" to="/app/VehicleType">
                                         <Text color={theme.orange} fontSize="lg">
                                             Vehicle Type
                                         </Text>

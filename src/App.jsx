@@ -26,6 +26,8 @@ import Helper from './pages/Helper.jsx';
 import Staff from './pages/Staff.jsx';
 import Trip from './pages/Trip.jsx';
 import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
+import VehicleType from './pages/VehicleType.jsx';
+import AddvehicletypeDetails from './pages/AddvehicletypeDetails.jsx';
 
 
 export default function App() {
@@ -51,6 +53,8 @@ export default function App() {
                 <Route path="Staff" element={<Staff/>}/>
                 <Route path="Trip" element={<Trip />}/>
                 <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
+                <Route path='VehicleType' element={<VehicleType/>}/>
+                <Route path='AddvehicletypeDetails' element={<AddvehicletypeDetails />}/>
             </Route>
             <Route path="/app" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>
