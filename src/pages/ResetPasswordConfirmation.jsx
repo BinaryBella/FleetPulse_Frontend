@@ -15,12 +15,10 @@ export default function ResetPasswordConfirmation() {
     const [pinValue, setPinValue] = useState("");
     const { data } = location.state;
 
-
     const handleChange = (value) => {
         // Handle change of pin value
         setPinValue(value);
     };
-
 
     return (
         <>
