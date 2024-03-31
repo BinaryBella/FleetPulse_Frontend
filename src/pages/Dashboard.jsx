@@ -16,14 +16,14 @@ export default function Dashboard() {
       <>
           <PageHeader title="Dashboard" breadcrumbs={breadcrumbs}/>
           <div className="flex justify-between items-center mr-16 mb-16 space-x-14">
-              <DashboardCard img={testc} title="1000" subtitle="Vehicles"/>
-              <DashboardCard img={testd} title="500" subtitle="Drivers"/>
-              <DashboardCard img={testu} title="350" subtitle="Users"/>
+              <DashboardCard img={testc} title="1000" subtitle="Vehicles" />
+              <DashboardCard img={testd} title="500" subtitle="Drivers" />
+              <DashboardCard img={testu} title="350" subtitle="Users" />
           </div>
           <div className="flex justify-between items-center mr-16 space-x-14">
-              <DashboardCard img={testt} title="400" subtitle="Daily Trips"/>
-              <DashboardCard img={testcv} title="500" subtitle="Company Vehicles"/>
-              <DashboardCard img={testa} title="02" subtitle="Recent Accident"/>
+              <DashboardCard img={testt} title="400" subtitle="Daily Trips" />
+              <DashboardCard img={testcv} title="500" subtitle="Company Vehicles" />
+              <DashboardCard img={testa} title="02" subtitle="Recent Accident" />
           </div>
       </>
      );

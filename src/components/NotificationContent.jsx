@@ -27,12 +27,12 @@ export default function NotificationContent(props) {
                     >
                         {props.NotificationType}
                     </Tag>
-                    <text>{props.NotificationTitle}</text>
-                    <text className="text-gray-400">{props.NotificationBody}</text>
+                    <Text>{props.NotificationTitle}</Text>
+                    <Text className="text-gray-400">{props.NotificationBody}</Text>
                 </div>
                     <div className="flex items-center justify-end space-x-4 mt-14">
                         <Icon as={BsClockFill} color="#393970" />
-                        <text>21 Dec 2023 at 6.50 PM</text>
+                        <Text>21 Dec 2023 at 6.50 PM</Text>
                     </div>
             </div>
             <hr className="my-4 w-4/5 mx-auto border-black"/>

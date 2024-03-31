@@ -8,6 +8,7 @@ export default function TopMenu() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        localStorage.removeItem('Token');
         navigate("/app/Login");
     };
 
