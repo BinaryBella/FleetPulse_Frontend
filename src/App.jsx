@@ -17,10 +17,6 @@ import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
 import MaintenanceTable from "./pages/MaintenanceTable.jsx";
 import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
-import VehicleDetailsTable from "./pages/VehicleDetailsTable.jsx";
-import DriverDetails from "./pages/DriverDetails.jsx";
-import AddDriverDetails from "./pages/AddDriverDetails.jsx";
-
 
 export default function App() {
     return (
@@ -29,7 +25,10 @@ export default function App() {
                 <Route path="Dashboard" element={<Dashboard/>}/>
                 <Route path="UserProfile" element={<UserProfile/>}/>
                 <Route path="Notification" element={<Notification/>}/>
+<<<<<<< HEAD
                 <Route path="VehicleDetailsTable/AddVehicleDetails" element={<AddVehicleDetails/>}/>
+=======
+>>>>>>> 9e9eaa5b0cc6ffb1a04bd9bb8fe51996cc4608f3
                 <Route path="AddVehicleMaintenanceDetails" element={<AddVehicleMaintenanceDetails/>}/>
                 <Route path="AddFuelRefillDetails" element={<AddFuelRefillDetails/>}/>
                 <Route path="ChangePassword" element={<ChangePassword/>}/>
@@ -37,9 +36,6 @@ export default function App() {
                 <Route path="MaintenanceTable" element={<MaintenanceTable/>}/>
                 <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable/>}/>
                 <Route path="FuelRefillTable" element={<FuelRefillTable/>}/>
-                <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
-                <Route path="DriverDetails" element={<DriverDetails/>}/>
-                <Route path="AddDriverDetails" element={<AddDriverDetails/>}/>
             </Route>
             <Route path="/app" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>
@@ -47,9 +43,6 @@ export default function App() {
                 <Route path="ResetPasswordConfirmation" element={<ResetPasswordConfirmation/>}/>
                 <Route path="ResetPassSuccess" element={<ResetPassSuccess/>}/>
                 <Route path="ResetEmail" element={<ResetEmail/>}/>
-                <Route path="DriverDetails" element={<DriverDetails/>}/>
-                <Route path="AddDriverDetails" element={<AddDriverDetails/>}/>
-
             </Route>
         </Routes>
     );
