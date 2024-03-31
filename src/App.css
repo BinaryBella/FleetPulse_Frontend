@@ -9,7 +9,6 @@
 
 .chakra-checkbox__control {
     border-color: #2c2c59 !important;
-    /*border-color: #2c2c59 !important;*/
 }
 .chakra-checkbox__control[data-checked] {
     background: #2c2c59 !important;
@@ -17,8 +16,8 @@
 
 .custom-table {
     background-color: #ffffff;
-    margin-top: 50px;
-    margin-right: 10px;
+    margin-top: 50px !important;
+    margin-right: 20px !important;
 }
 
 .custom-table th {

@@ -3,6 +3,7 @@ import { Field, Formik } from "formik";
 import forgotPassword from "../assets/images/forgotPassword.png";
 import theme from "../config/ThemeConfig.jsx";
 import { useNavigate } from 'react-router-dom';
+
 export default function ResetEmail() {
     const navigate = useNavigate();
 
@@ -24,9 +25,36 @@ export default function ResetEmail() {
                     }
                     return errors;
                 }}
-                onSubmit={(values) => {
-                    const data = {email: values.email}
-                    navigate(`/app/ResetPasswordConfirmation`, {state: {data} });
+                onSubmit={async (values) => {
+                    try {
+                        console.log("Submitting form with values:", values);
+                        const response = await fetch('https://localhost:7265/api/Auth/forgot-password', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ email: values.email })
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Something went wrong');
+                        }
+
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.indexOf('application/json') !== -1) {
+                            const responseData = await response.json();
+                            console.log("Response data:", responseData);
+                            if (responseData.status) {
+                                navigate(`/app/ResetPasswordConfirmation`, { state: { email: values.email } });
+                            } else {
+                                console.error(responseData.message);
+                            }
+                        } else {
+                            throw new Error('Unexpected response format');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error.message);
+                    }
                 }}
             >
                 {({ handleSubmit, errors, touched }) => (

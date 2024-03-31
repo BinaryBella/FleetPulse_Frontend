@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
-import { Field, Formik } from "formik";
-import { IconButton, Input, InputGroup, InputRightElement, Stack } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Button } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import {useState} from "react";
+import {FormControl, FormErrorMessage, FormLabel, Text} from "@chakra-ui/react";
+import {Field, Formik} from "formik";
+import {IconButton, Input, InputGroup, InputRightElement, Stack, Button} from "@chakra-ui/react";
+import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import {Link, useNavigate} from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 
 export default function Login() {
-    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const [resetClicked, setResetClicked] = useState(false);
+    const [backendError, setBackendError] = useState("");
+
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     };
-
-    const [resetClicked, setResetClicked] = useState(false);
 
     const handleResetClick = () => {
         setResetClicked(true);
@@ -28,11 +28,30 @@ export default function Login() {
                     username: "",
                     password: ""
                 }}
-                onSubmit={() => {
-                    navigate("/app/Dashboard");
+                onSubmit={(values) => {
+                    fetch('https://localhost:7265/api/Auth/Login', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            username: values.username,
+                            password: values.password
+                        }),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        }
+                    }).then(response => {
+                        return response.json();
+                    }).then(data => {
+                        if (data.status === false) {
+                            setBackendError(data.message);
+                        } else {
+                            localStorage.setItem('Token', data.data);
+                            navigate("/app/dashboard");
+                        }
+                    })
                 }}
             >
-                {({ handleSubmit, errors, touched }) => (
+
+            {({handleSubmit, errors, touched}) => (
                     <form onSubmit={handleSubmit} className="w-1/2">
                         <Stack spacing={3}>
                             <FormControl isInvalid={!!errors.username || touched.username}>
@@ -46,11 +65,9 @@ export default function Login() {
                                     placeholder="Username"
                                     validate={(value) => {
                                         let error;
-
-                                        if (value === ""){
+                                        if (!value) {
                                             error = "Username is Required";
                                         }
-
                                         return error;
                                     }}
                                 />
@@ -68,11 +85,9 @@ export default function Login() {
                                         placeholder="Password"
                                         validate={(value) => {
                                             let error;
-
-                                            if (value === "") {
+                                            if (!value) {
                                                 error = "Password is Required";
                                             }
-
                                             return error;
                                         }}
                                     />
@@ -82,7 +97,7 @@ export default function Login() {
                                             size="sm"
                                             variant="ghost"
                                             onClick={handleShowPassword}
-                                            icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                                            icon={showPassword ? <ViewOffIcon/> : <ViewIcon/>}
                                             aria-label="password-icon"
                                         />
                                     </InputRightElement>
@@ -92,15 +107,20 @@ export default function Login() {
                             <div className="flex justify-end">
                                 {!resetClicked && (
                                     <Link to="/app/ResetEmail" onClick={handleResetClick}>
-                                        <Button variant="link" className="mb-10">
+                                        <Button variant="link" className="mb-5">
                                             Reset Password
                                         </Button>
                                     </Link>
                                 )}
                             </div>
+                            {backendError && (
+                                <Text color="red.500" fontSize="sm" align="center">
+                                    {backendError}
+                                </Text>
+                            )}
                             <Button
                                 bg={theme.purple}
-                                _hover={{ bg: theme.onHoverPurple }}
+                                _hover={{bg: theme.onHoverPurple}}
                                 color="#ffffff"
                                 variant="solid"
                                 type="submit"
@@ -114,3 +134,4 @@ export default function Login() {
         </>
     );
 }
+

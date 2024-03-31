@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from "react";
 import {
     Table,
     Thead,
@@ -7,47 +6,49 @@ import {
     Tr,
     Th,
     Td,
-    Button,
-    Menu,
-    MenuButton,
-    IconButton,
-    MenuList,
-    MenuItem,
+    Button, Menu, MenuButton, IconButton, MenuList, MenuItem,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
-export default function VehicleDetailsTable() {
-    const [vehicleDetails, setVehicleDetails] = useState([]);
-    const [error, setError] = useState(null);
+export default function FuelRefillTable() {
+    const [vehicleDetails] = useState([
+        {
+            DriverNic: "1234567890123",
+            HelperNic: "9876543210987",
+            RegNo: "ABC123",
+            LiterCount: 40,
+            DateTime: "2024-03-22T08:30:00",
+            RefillType: "Regular",
+            Cost: 50.75,
+            isActive: true
 
-    useEffect(() => {
-        axios.get('https://localhost:7265/api/Vehicle')
-            .then(response => {
-                setVehicleDetails(response.data);
-                console.log(response.data);
-            })
-            .catch(error => {
-                setError(error);
-            });
-    }, []);
+        },
+        {
+            DriverNic: "2345678901234",
+            HelperNic: "8765432109876",
+            RegNo: "DEF456",
+            LiterCount: 35,
+            DateTime: "2024-03-21T15:45:00",
+            RefillType: "Premium",
+            Cost: 65.25,
+            isActive: true
+
+        }
+    ]);
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
-        { label: "Vehicle Details", link: "/app/AddVehicleDetails" },
+        { label: "Fuel Refill Details", link: "/" },
     ];
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
 
     return (
         <>
-            <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Fuel Refill Details" breadcrumbs={breadcrumbs} />
 
-            <Link to="AddVehicleDetails">
+            <Link to="/app/AddFuelRefillDetails">
                 <Button
                     bg={theme.purple}
                     _hover={{ bg: theme.onHoverPurple }}
@@ -61,35 +62,35 @@ export default function VehicleDetailsTable() {
                     top="130"
                     right="0"
                 >
-                    Add Vehicle Details
+                    Add Fuel Refill Details
                 </Button>
             </Link>
 
-            <Table className="custom-table" >
+            <Table className="custom-table">
                 <Thead>
                     <Tr>
+                        <Th>Driver NIC</Th>
+                        <Th>Helper NIC</Th>
                         <Th>Reg No</Th>
-                        <Th>License Exp Date</Th>
-                        <Th>Model</Th>
-                        <Th>Manufacture</Th>
-                        <Th>Type</Th>
-                        <Th>Fuel Type</Th>
-                        <Th>Color</Th>
+                        <Th>Liter Count</Th>
+                        <Th>Date Time</Th>
+                        <Th>Refill Type</Th>
+                        <Th>Cost</Th>
                         <Th>Status</Th>
                         <Th>Actions</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {vehicleDetails.map((vehicle, index) => (
+                    {vehicleDetails.map((maintenance, index) => (
                         <Tr key={index}>
-                            <Td>{vehicle.registrationNo}</Td>
-                            <Td>{vehicle.licenseExpireDate}</Td>
-                            <Td>{vehicle.vehicleModelId}</Td>
-                            <Td>{vehicle.manufacturer}</Td>
-                            <Td>{vehicle.type}</Td>
-                            <Td>{vehicle.fType}</Td>
-                            <Td>{vehicle.vehicleColor}</Td>
-                            <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
+                            <Td>{maintenance.DriverNic}</Td>
+                            <Td>{maintenance.HelperNic}</Td>
+                            <Td>{maintenance.RegNo}</Td>
+                            <Td>{maintenance.LiterCount}</Td>
+                            <Td>{maintenance.DateTime}</Td>
+                            <Td>{maintenance.RefillType}</Td>
+                            <Td>{maintenance.Cost}</Td>
+                            <Td>{maintenance.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton
@@ -101,14 +102,12 @@ export default function VehicleDetailsTable() {
                                     />
                                     <MenuList>
                                         <MenuItem>
-                                            <Link to={`/editVehicle/${vehicle.id}`} >
+                                            <Link to="/app/AddVehicleDetails" >
                                                 Edit
                                             </Link>
                                         </MenuItem>
                                         <MenuItem>
-                                            <Link to="" >
-                                                Inactive
-                                            </Link>
+                                            Inactive
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>

@@ -4,7 +4,7 @@ export default function DashboardCard(props) {
             <h1 className="text-gray-300 text-5xl font-extrabold flex items-center">{props.title}</h1>
             <h1 className="text-gray-300 text-5xl font-normal flex items-center">{props.subtitle}</h1>
             <div className="flex flex-grow justify-end w-full items-end">
-                <img src={props.img} alt="Vehicles" className="w-[125px]"/>
+                <img src={props.img} alt="Vehicles" className="w-25 h-16"/>
             </div>
         </div>
     );
