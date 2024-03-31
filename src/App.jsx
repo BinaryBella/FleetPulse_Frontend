@@ -17,6 +17,16 @@ import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
 import MaintenanceTable from "./pages/MaintenanceTable.jsx";
 import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
+import AddAccidentDetails from './pages/AddAccidentDetails.jsx';
+import AddVehicleDetails from './pages/AddVehicleDetails.jsx';
+import AddVehicleModel from './pages/AddVehicleModel.jsx';
+import AddVehicleType from './pages/Driver.jsx';
+import DriverDetails from './pages/DriverDetails.jsx';
+import Helper from './pages/Helper.jsx';
+import Staff from './pages/Staff.jsx';
+import Trip from './pages/Trip.jsx';
+import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
+
 
 export default function App() {
     return (
@@ -25,10 +35,6 @@ export default function App() {
                 <Route path="Dashboard" element={<Dashboard/>}/>
                 <Route path="UserProfile" element={<UserProfile/>}/>
                 <Route path="Notification" element={<Notification/>}/>
-<<<<<<< HEAD
-                <Route path="VehicleDetailsTable/AddVehicleDetails" element={<AddVehicleDetails/>}/>
-=======
->>>>>>> 9e9eaa5b0cc6ffb1a04bd9bb8fe51996cc4608f3
                 <Route path="AddVehicleMaintenanceDetails" element={<AddVehicleMaintenanceDetails/>}/>
                 <Route path="AddFuelRefillDetails" element={<AddFuelRefillDetails/>}/>
                 <Route path="ChangePassword" element={<ChangePassword/>}/>
@@ -36,6 +42,15 @@ export default function App() {
                 <Route path="MaintenanceTable" element={<MaintenanceTable/>}/>
                 <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable/>}/>
                 <Route path="FuelRefillTable" element={<FuelRefillTable/>}/>
+                <Route path="AddAccidentDetails" element={<AddAccidentDetails/>}/>
+                <Route path="AddVehicleDetails" element={<AddVehicleDetails />}/>
+                <Route path="AddVehicleModel" element={<AddVehicleModel/>}/>
+                <Route path="AddVehicleType" element={<AddVehicleType/>}/>
+                <Route  path="DriverDetails" element={<DriverDetails/>}/>
+                <Route path="Helper" element={<Helper/>}/>
+                <Route path="Staff" element={<Staff/>}/>
+                <Route path="Trip" element={<Trip />}/>
+                <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
             </Route>
             <Route path="/app" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>
