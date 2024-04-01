@@ -20,13 +20,18 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 import { BsTextCenter } from "react-icons/bs";
 export default function VehicleType() {
-  const [vehicleDetails, setVehicleDetails] = useState([]);
+  const [vehicleTypeDetails, setVehicleTypeDetails] = useState([]);
   const [error, setError] = useState(null);
 
 
   useEffect(()=>{
-     axios
-        .get()
+     axios.get('https://localhost:7265/api/VehicleType')
+     .then((res)=>{
+        setVehicleTypeDetails(res.data)
+     })
+     .catch((er)=>{
+        console.log(er.message)
+     })
   },[])
   const breadcrumbs = [
     { label: "Vehicle", link: "/" },
@@ -68,10 +73,10 @@ export default function VehicleType() {
           </Tr>
         </Thead>
         <Tbody>
-          {vehicleDetails.map((vehicle, index) => (
+          {vehicleTypeDetails.map((vehicle, index) => (
             <Tr key={index}>
-              <Td>{vehicle.vehicleColor}</Td>
-              <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
+              <Td>{vehicle.type}</Td>
+              <Td>{vehicle.status ? "Active" : "Inactive"}</Td>
               <Td>
                 <Menu>
                   <MenuButton

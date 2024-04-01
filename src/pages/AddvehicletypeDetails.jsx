@@ -3,6 +3,7 @@ import { Button, Flex, IconButton, Input } from "@chakra-ui/react";
 import { FaCheckSquare } from "react-icons/fa";
 import PageHeader from "../components/PageHeader.jsx";
 import theme from "../config/ThemeConfig.jsx";
+import axios from "axios";
 
 export default function AddVehicleTypeDetails() {
   const breadcrumbs = [
@@ -11,15 +12,25 @@ export default function AddVehicleTypeDetails() {
     { label: "Add Vehicle Type Details", link: "/app/AddVehicleTypeDetails" },
   ];
 
-  const [vehicleType, setVehicleType] = useState(""); 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
+    let tmp={
+      "vehicleTypeId": 0,
+      "type": type,
+      "status": status?1:0
+    }
+    console.log(tmp)
+    axios.post('https://localhost:7265/api/VehicleType',tmp)
+   .then(()=>{alert('Added successfuly')})
+   .catch((er)=>{console.log(er.message)})
   };
 
   const handleCancel = () => {
     setVehicleType(" ");
   };
+
+  const [type,settype]=useState()
+  const [status,setstatus]=useState()
 
   return (
     <>
@@ -31,8 +42,8 @@ export default function AddVehicleTypeDetails() {
         <p>Vehicle Type</p>
         <Input
           type="text"
-          value={vehicleType} 
-          onChange={(e) => setVehicleType(e.target.value)}
+          value={type} 
+          onChange={(e) => settype(e.target.value)}
           variant="filled"
           borderRadius="md"
           px={3}
@@ -46,15 +57,7 @@ export default function AddVehicleTypeDetails() {
    
         <div className="flex flex-col gap-3">
           <Flex align="center" gap={2}>
-            <IconButton
-              width="fit-content"
-              variant="solid"
-              colorScheme="none"
-              fontSize="30px"
-              color="#393970"
-              icon={<FaCheckSquare />}
-              aria-label="activeState"
-            />
+            <input type="checkbox" value={status} onChange={(e) => setstatus(e.target.checked)}></input>
             <p>Is active</p>
           </Flex>
         </div>
@@ -68,7 +71,7 @@ export default function AddVehicleTypeDetails() {
           _hover={{ bg: "gray.500" }}
           color="#ffffff"
           variant="solid"
-          w="230px" // Set button width
+          w="230px" 
           marginTop="10"
           onClick={handleCancel}
         >
@@ -81,7 +84,7 @@ export default function AddVehicleTypeDetails() {
           _hover={{ bg: theme.onHoverPurple }}
           color="#ffffff"
           variant="solid"
-          w="230px" // Set button width
+          w="230px" 
           marginTop="10"
           onClick={handleSubmit}
         >
