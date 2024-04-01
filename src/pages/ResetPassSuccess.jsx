@@ -20,8 +20,8 @@ export default function ResetPassSuccess() {
                 <p className="mb-6">Your password has been updated</p>
             </Box>
             <Formik
-                initialValues={{}} // You need to provide initial values even if they are empty
-                onSubmit={handleSubmit} // Use handleSubmit for onSubmit
+                initialValues={{}}
+                onSubmit={handleSubmit}
             >
                 {({ handleSubmit }) => (
                     <form onSubmit={handleSubmit} className="w-1/2">
@@ -31,7 +31,7 @@ export default function ResetPassSuccess() {
                                 _hover={{ bg: theme.onHoverPurple }}
                                 color="#ffffff"
                                 variant="solid"
-                                type="submit" // Make sure to set type as "submit"
+                                type="submit"
                             >
                                 Login
                             </Button>

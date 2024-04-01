@@ -16,10 +16,8 @@ export default function UserProfile() {
         profileImage: null
     });
 
-    // Ref for file input
     const fileInputRef = useRef(null);
 
-    // Function to handle profile image upload
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setUserData((prevData) => ({
@@ -28,7 +26,6 @@ export default function UserProfile() {
         }));
     };
 
-    // Function to handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData((prevData) => ({
@@ -37,22 +34,17 @@ export default function UserProfile() {
         }));
     };
 
-    // Function to handle avatar click
     const handleAvatarClick = () => {
         // Trigger click on file input
         fileInputRef.current.click();
     };
 
-    // Function to handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        // You can submit the userData object to your backend here
         console.log(userData);
     };
 
-    // Function to handle cancel action
     const handleCancel = () => {
-        // Reset form fields or redirect to another page
         console.log("Cancelled");
     };
 

@@ -24,13 +24,10 @@ export default function AddFuelRefillDetails() {
     // Function to handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        // You can submit the userData object to your backend here
         console.log();
     };
 
-    // Function to handle cancel action
     const handleCancel = () => {
-        // Reset form fields or redirect to another page
         console.log("Cancelled");
     };
 

@@ -61,7 +61,7 @@ export default function ResetPasswordConfirmation() {
                                 if (data.status === true) {
                                     navigate(`/app/ResetPassword?email=${email}&pin=${verificationCode}`);
                                 } else {
-                                    setIsAlertOpen(true); // Open the alert dialog
+                                    setIsAlertOpen(true);
                                 }
                             })
                         } else {
@@ -105,7 +105,6 @@ export default function ResetPasswordConfirmation() {
                     </form>
                 )}
             </Formik>
-            {/* Alert Dialog for Invalid Verification Code */}
             <AlertDialog
                 isOpen={isAlertOpen}
                 leastDestructiveRef={undefined}
@@ -121,7 +120,6 @@ export default function ResetPasswordConfirmation() {
                         <AlertDialogBody>
                             The verification code you entered is invalid. Please try again.
                         </AlertDialogBody>
-
                         <AlertDialogFooter>
                             <Button onClick={handleAlertClose}>
                                 OK

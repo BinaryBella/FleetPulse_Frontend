@@ -19,7 +19,6 @@ import {BiTrip} from "react-icons/bi";
 import {TbReportAnalytics} from "react-icons/tb";
 import {Box} from "@chakra-ui/react";
 
-
 export default function SideMenu() {
     return (
         <div className="bg-[#393970] w-1/5 flex flex-col h-fit">
@@ -42,7 +41,7 @@ export default function SideMenu() {
                         Dashboard
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
+                <Link className="flex items-center pl-16">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -62,26 +61,6 @@ export default function SideMenu() {
                             </h2>
                             <AccordionPanel pb={4}>
                                 <div>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Details
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleTypeTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Type
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleModelTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Model
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/ManufactureTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Manufacturer
-                                        </Text>
-                                    </Link>
                                     <Link className="flex items-center pl-16" to="/app/MaintenanceTable">
                                         <Text color={theme.orange} fontSize="lg">
                                             Vehicle Maintenance

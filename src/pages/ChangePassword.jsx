@@ -15,12 +15,10 @@ export default function ChangePassword() {
     };
 
     const handleSubmit = () => {
-        // Your submit logic here
         console.log("Submitted");
     };
 
     const handleCancel = () => {
-        // Your cancel logic here
         console.log("Cancelled");
     };
 

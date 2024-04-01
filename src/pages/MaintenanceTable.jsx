@@ -61,7 +61,7 @@ export default function MaintenanceTable() {
                     mr="10px"
                     position="absolute"
                     top="130"
-                    right="0"
+                    right="50"
                 >
                     Add Maintenance Details
                 </Button>
