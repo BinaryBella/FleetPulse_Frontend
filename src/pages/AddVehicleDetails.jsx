@@ -20,18 +20,33 @@ export default function AddVehicleDetails() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        let tmp={
+            "vehicleId": 0,
+            "vehicleRegistrationNo": "string",
+            "licenseNo": "string",
+            "licenseExpireDate": "2024-04-01T07:08:19.407Z",
+            "vehicleColor": "string",
+            "status": "string",
+            "vehicleModelId": 0,
+            "vehicleTypeId": 0,
+            "manufactureId": 0,
+            "fuelRefillId": 0,
+            "vehicleMaintenanceId": "string",
+            "accidentId": 0,
+            "tripId": "string"
+          }
        let obj={
         "vehicleId": 0,
         "vehicleRegistrationNo": vehicleRegistrationNo,
         "licenseNo": licenseNo,
         "licenseExpireDate": licenseExpireDate+'T19:26:21.329Z',
         "vehicleColor": vehicleColor,
-        "status": null,
-        "vehicleModelId": vehicleModelId,
-        "vehicleTypeId": vehicleTypeId,
-        "manufactureId": manufactureId,
-        "fuelRefillId": fuelRefillId,
-        "vehicleMaintenanceId":null,
+        "status":"string",
+        "vehicleModelId": parseInt(vehicleModelId),
+        "vehicleTypeId": parseInt(vehicleTypeId),
+        "manufactureId": parseInt(manufactureId),
+        "fuelRefillId": parseInt(fuelRefillId),
+        "vehicleMaintenanceId":"string",
         "accidentId": 0,
         "tripId": 0
        }
@@ -220,6 +235,7 @@ export default function AddVehicleDetails() {
                 </Button>
                 <Button
                     bg={theme.purple}
+                    
                     _hover={{bg: theme.onHoverPurple}}
                     color="#ffffff"
                     variant="solid"
