@@ -6,12 +6,15 @@ import theme from "../config/ThemeConfig.jsx";
 import { Box } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Field, Formik } from "formik";
+import { useLocation } from "react-router-dom";
 
 export default function ResetPassword() {
     const [showPassword1, setShowPassword1] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
+    const { email } = location.state;
 
     const handleShowPassword1 = () => {
         setShowPassword1(!showPassword1);
@@ -29,7 +32,7 @@ export default function ResetPassword() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: values.email,
+                    email: email,
                     newPassword: values.newpassword
                 })
             });
@@ -37,7 +40,7 @@ export default function ResetPassword() {
             const data = await response.json();
 
             if (response.ok) {
-                navigate("/app/ResetPassSuccess");
+                navigate("/auth/ResetPassSuccess");
             } else {
                 setError(data.message);
             }
@@ -57,7 +60,6 @@ export default function ResetPassword() {
             </Box>
             <Formik
                 initialValues={{
-                    email: "",
                     newpassword: "",
                     confirmpassword: ""
                 }}

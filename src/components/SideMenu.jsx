@@ -146,7 +146,7 @@ export default function SideMenu() {
                         Accident
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Report">
+                <Link className="flex items-center pl-16" to="/auth/Report">
                     <IconButton
                         variant='link'
                         color={theme.orange}

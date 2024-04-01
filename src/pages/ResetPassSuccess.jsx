@@ -8,7 +8,7 @@ export default function ResetPassSuccess() {
     const navigate = useNavigate(); // Define navigate within the component
 
     const handleSubmit = () => {
-        navigate("/app/Login");
+        navigate("/auth/Login");
     };
 
     return (

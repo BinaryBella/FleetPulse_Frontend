@@ -59,7 +59,7 @@ export default function ResetPasswordConfirmation() {
                             }).then(data => {
                                 console.log(data);
                                 if (data.status === true) {
-                                    navigate(`/app/ResetPassword?email=${email}&pin=${verificationCode}`);
+                                    navigate(`/auth/ResetPassword`, { state: { email: email } });
                                 } else {
                                     setIsAlertOpen(true);
                                 }
