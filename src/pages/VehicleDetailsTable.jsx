@@ -50,6 +50,7 @@ export default function VehicleDetailsTable() {
             <Link to="/app/AddVehicleDetails">
                 <Button
                     bg={theme.purple}
+                    
                     _hover={{ bg: theme.onHoverPurple }}
                     color="white"
                     variant="solid"
@@ -82,11 +83,11 @@ export default function VehicleDetailsTable() {
                 <Tbody>
                     {vehicleDetails.map((vehicle, index) => (
                         <Tr key={index}>
-                            <Td>{vehicle.registrationNo}</Td>
+                            <Td>{vehicle.vehicleRegistrationNo}</Td>
                             <Td>{vehicle.licenseExpireDate}</Td>
                             <Td>{vehicle.vehicleModelId}</Td>
-                            <Td>{vehicle.manufacturer}</Td>
-                            <Td>{vehicle.type}</Td>
+                            <Td>{vehicle.manufactureId}</Td>
+                            <Td>{vehicle.vehicleTypeId}</Td>
                             <Td>{vehicle.fType}</Td>
                             <Td>{vehicle.vehicleColor}</Td>
                             <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
@@ -94,6 +95,7 @@ export default function VehicleDetailsTable() {
                                 <Menu>
                                     <MenuButton
                                         color={theme.purple}
+                            
                                         as={IconButton}
                                         aria-label='profile-options'
                                         fontSize='20px'

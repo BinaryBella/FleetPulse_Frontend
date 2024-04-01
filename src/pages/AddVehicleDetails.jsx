@@ -7,6 +7,8 @@ import {
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 import {MdArrowDropDown} from "react-icons/md";
+import { useState } from "react";
+import axios from "axios";
 
 export default function AddVehicleDetails() {
 
@@ -18,17 +20,46 @@ export default function AddVehicleDetails() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-       
+       let obj={
+        "vehicleId": 0,
+        "vehicleRegistrationNo": vehicleRegistrationNo,
+        "licenseNo": licenseNo,
+        "licenseExpireDate": licenseExpireDate+'T19:26:21.329Z',
+        "vehicleColor": vehicleColor,
+        "status": null,
+        "vehicleModelId": vehicleModelId,
+        "vehicleTypeId": vehicleTypeId,
+        "manufactureId": manufactureId,
+        "fuelRefillId": fuelRefillId,
+        "vehicleMaintenanceId":null,
+        "accidentId": 0,
+        "tripId": 0
+       }
+       console.log(obj)
+       axios.post('https://localhost:7265/api/Vehicle/for vehicle',obj)
+       .then(()=>{alert('successfully added')})
+       .catch((er)=>{console.log(er.message)})
     };
 
     const handleCancel = () => {
         console.log('Cancelled');
     };
 
+    const [vehicleRegistrationNo,setvehicleRegistrationNo]=useState()
+    const [licenseNo,setlicenseNo]=useState()
+    const [licenseExpireDate,setlicenseExpireDate]=useState()
+    const [vehicleColor,setvehicleColor]=useState()
+    const [vehicleModelId,setvehicleModelId]=useState()
+    const [vehicleTypeId,setvehicleTypeId]=useState()
+    const [manufactureId,setmanufactureId]=useState()
+    const [fuelRefillId,setfuelRefillId]=useState()
+
+
     return (
         <>
             <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs}/>
-            <div className="grid grid-cols-2 gap-10 mt-8">
+            <div className="flex flex-col items-center my-8">
+            <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-3">
                     <p>Vehicle Registration No</p>
                     <Input
@@ -41,6 +72,7 @@ export default function AddVehicleDetails() {
                         width="500px"
                         name="Vehicle Registration No"
                         placeholder="Vehicle Registration No"
+                        onChange={(e)=>setvehicleRegistrationNo(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -55,10 +87,11 @@ export default function AddVehicleDetails() {
                         mt={1}
                         name="Vehicle Model"
                         icon={<MdArrowDropDown/>}
+                        onChange={(e)=>setvehicleModelId(e.target.value)}
                     >
-                        <option value="model1">Model 1</option>
-                        <option value="model2">Model 2</option>
-                        <option value="model3">Model 3</option>
+                        <option value="1">Model 1</option>
+                        <option value="2">Model 2</option>
+                        <option value="3">Model 3</option>
                     </Select>
                 </div>
                 <div className="flex flex-col gap-3">
@@ -73,10 +106,11 @@ export default function AddVehicleDetails() {
                         mt={1}
                         name="Manufacture"
                         icon={<MdArrowDropDown/>}
+                        onChange={(e)=>setmanufactureId(e.target.value)}
                     >
-                        <option value="Manufacture1">Manufacture 1</option>
-                        <option value="Manufacture2">Manufacture 2</option>
-                        <option value="Manufacture3">Manufacture 3</option>
+                        <option value="1">Manufacture 1</option>
+                        <option value="2">Manufacture 2</option>
+                        <option value="3">Manufacture 3</option>
                     </Select>
                 </div>
                 <div className="flex flex-col gap-3">
@@ -91,6 +125,7 @@ export default function AddVehicleDetails() {
                         width="500px"
                         name="Vehicle License No"
                         placeholder="Vehicle License No"
+                        onChange={(e)=>setlicenseNo(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -105,6 +140,7 @@ export default function AddVehicleDetails() {
                         width="500px"
                         name="License Expire Date"
                         placeholder="License Expire Date"
+                        onChange={(e)=>setlicenseExpireDate(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -119,6 +155,7 @@ export default function AddVehicleDetails() {
                         width="500px"
                         name="Vehicle Colour"
                         placeholder="Vehicle Colour"
+                        onChange={(e)=>setvehicleColor(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -133,10 +170,11 @@ export default function AddVehicleDetails() {
                         mt={1}
                         name="Vehicle Type"
                         icon={<MdArrowDropDown/>}
+                        onChange={(e)=>setvehicleTypeId(e.target.value)}
                     >
-                        <option value="VehicleType1">Vehicle Type 1</option>
-                        <option value="VehicleType2">Vehicle Type 2</option>
-                        <option value="VehicleType3">Vehicle Type 3</option>
+                        <option value="1">Vehicle Type 1</option>
+                        <option value="2">Vehicle Type 2</option>
+                        <option value="3">Vehicle Type 3</option>
                     </Select>
                 </div>
                 <div className="flex flex-col gap-3">
@@ -151,18 +189,23 @@ export default function AddVehicleDetails() {
                         mt={1}
                         name="Fuel Type"
                         icon={<MdArrowDropDown/>}
+                        onChange={(e)=>setfuelRefillId(e.target.value)}
                     >
-                        <option value="FuelType1">Fuel Type 1</option>
-                        <option value="FuelType2">Fuel Type 2</option>
-                        <option value="FuelType3">Fuel Type 3</option>
+                        <option value="1">Fuel Type 1</option>
+                        <option value="2">Fuel Type 2</option>
+                        <option value="3">Fuel Type 3</option>
                     </Select>
                 </div>
+            <div  className="gritripIdd flex-row gap-10 mt-8">
                 <div className="flex flex-col gap-3">
                     <Checkbox size='lg' defaultChecked>
                         Is Active
                     </Checkbox>
                 </div>
+                </div>
             </div>
+            </div>
+            
             <div className="flex w-5/6 justify-end gap-10">
                 <Button
                     bg="gray.400"
