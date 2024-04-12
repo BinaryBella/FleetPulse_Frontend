@@ -73,8 +73,6 @@ export default function VehicleDetailsTable() {
                         <Th>License Exp Date</Th>
                         <Th>Model</Th>
                         <Th>Manufacture</Th>
-                        <Th>Type</Th>
-                        <Th>Fuel Type</Th>
                         <Th>Color</Th>
                         <Th>Status</Th>
                         <Th>Actions</Th>
@@ -87,8 +85,6 @@ export default function VehicleDetailsTable() {
                             <Td>{vehicle.licenseExpireDate}</Td>
                             <Td>{vehicle.vehicleModelId}</Td>
                             <Td>{vehicle.manufactureId}</Td>
-                            <Td>{vehicle.vehicleTypeId}</Td>
-                            <Td>{vehicle.fType}</Td>
                             <Td>{vehicle.vehicleColor}</Td>
                             <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
