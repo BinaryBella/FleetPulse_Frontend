@@ -43,6 +43,11 @@ export default function TopMenu() {
                                         User Profile
                                     </Link>
                                 </MenuItem>
+                                <MenuItem>
+                                    <Link to="/app/ChangePassword" >
+                                        Change Password
+                                    </Link>
+                                </MenuItem>
                                 <MenuItem onClick={handleLogout}>
                                     Logout
                                 </MenuItem>
