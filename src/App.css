@@ -5,6 +5,10 @@
     -webkit-padding-start: 0 !important;
 }
 
+/*:root {*/
+/*    --chakra-colors-chakra-border-color: #393970 !important;*/
+/*}*/
+
 .chakra-checkbox__control {
     border-color: #2c2c59 !important;
 }
@@ -31,3 +35,4 @@
     width: fit-content;
     font-size: 1.125rem;
 }
+
