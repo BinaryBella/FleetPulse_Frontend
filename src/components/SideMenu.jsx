@@ -1,14 +1,5 @@
 import Logo from "../assets/images/Logo.jpg";
-import {
-    IconButton,
-    Text,
-    VStack,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-} from "@chakra-ui/react";
+import {IconButton, Text, VStack} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 import {AiOutlineDashboard} from "react-icons/ai";
@@ -17,10 +8,9 @@ import {MdAirlineSeatReclineNormal} from "react-icons/md";
 import {IoMdPeople, IoMdPerson} from "react-icons/io";
 import {BiTrip} from "react-icons/bi";
 import {TbReportAnalytics} from "react-icons/tb";
-import {Box} from "@chakra-ui/react";
 
 
-export default function SideMenu() {
+export default function SideMenu(){
     return (
         <div className="bg-[#393970] w-1/5 flex flex-col h-fit">
             <div className="flex justify-center w-full">
@@ -42,7 +32,7 @@ export default function SideMenu() {
                         Dashboard
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
+                <Link className="flex items-center pl-16" to="/app/AddVehicleDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -50,58 +40,42 @@ export default function SideMenu() {
                         fontSize='20px'
                         icon={<FaCarAlt/>}
                     />
-                    <Accordion allowMultiple>
-                        <AccordionItem>
-                            <h2>
-                                <AccordionButton>
-                                    <Box as="span" flex='1' textAlign='left' color={theme.orange}>
-                                        Vehicle
-                                    </Box>
-                                    <AccordionIcon color={theme.orange}/>
-                                </AccordionButton>
-                            </h2>
-                            <AccordionPanel pb={4}>
-                                <div>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Details
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleTypeTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Type
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleModelTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Model
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/ManufactureTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Manufacturer
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/MaintenanceTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Maintenance
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/MaintenanceTypeTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Maintenance Type
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/FuelRefillTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Fuel Refill
-                                        </Text>
-                                    </Link>
-                                </div>
-                            </AccordionPanel>
-                        </AccordionItem>
-                    </Accordion>
+                    <Text color={theme.orange} fontSize="xl">
+                        Vehicle
+                    </Text>
                 </Link>
+                <div>
+                    <Link className="flex items-center pl-16" to="/app/AddVehicleDetails">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Details
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/AddVehicleType">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Type
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/AddVehicleModel">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Model
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/AddManufactureDetails">
+                        <Text color={theme.orange} fontSize="lg">
+                            Manufacturer
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/AddVehicleMaintenanceDetails">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Maintenance
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/AddMaintenanceType">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Maintenance Type
+                        </Text>
+                    </Link>
+                </div>
                 <Link className="flex items-center pl-16" to="/app/Driver">
                     <IconButton
                         variant='link'
@@ -180,6 +154,76 @@ export default function SideMenu() {
                         Reports
                     </Text>
                 </Link>
+                <div>
+                    <div className="flex items-center pl-16">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Reports
+                        </Text>
+                    </div>
+                    <Link className="flex items-center pl-24" to="/app/VehicleDetailsReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Details Report
+
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-24" to="/app/VehicleTypeReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Type Report
+
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-24" to="/app/VehicleModelReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Model Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-24" to="/app/VehicleManufacturerReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Manufacturer Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-24" to="/app/VehicleMaintenanceReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Maintenance Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-24" to="/app/VehicleMainTypeReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Maintenance Type Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-24" to="/app/VehicleFuelRefillReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Vehicle Fuel Refill Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/DriverReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Driver Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/HelperReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Helper Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/StaffReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Staff Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/TripReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Trip Report
+                        </Text>
+                    </Link>
+                    <Link className="flex items-center pl-16" to="/app/AccidentReport">
+                        <Text color={theme.orange} fontSize="lg">
+                            Accident Report
+                        </Text>
+                    </Link>
+
+                </div>
             </VStack>
         </div>
     );

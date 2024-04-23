@@ -9,6 +9,7 @@
 
 .chakra-checkbox__control {
     border-color: #2c2c59 !important;
+    /*border-color: #2c2c59 !important;*/
 }
 .chakra-checkbox__control[data-checked] {
     background: #2c2c59 !important;
@@ -16,8 +17,9 @@
 
 .custom-table {
     background-color: #ffffff;
-    margin-top: 50px !important;
-    margin-right: 20px !important;
+    margin-top: 50px;
+    margin-right: 10px;
+    width: 95% !important;
 }
 
 .custom-table th {
@@ -31,4 +33,14 @@
     padding: 15px;
     width: fit-content;
     font-size: 1.125rem;
+    text-align: center;      /* Horizontal centering */
+    vertical-align: middle;  /* Vertical centering */
+}
+
+.custom-table tr {
+    padding: 15px;
+    width: fit-content;
+    font-size: 1.125rem;
+    text-align: center;      /* Horizontal centering */
+    vertical-align: middle;  /* Vertical centering */
 }
