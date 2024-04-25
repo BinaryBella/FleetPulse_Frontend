@@ -2,19 +2,11 @@ import PageHeader from "../components/PageHeader.jsx";
 import {Button, Checkbox, Input} from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 
-export default function AddVehicleModel() {
-
-    /**/ 
-
-
-    
-
-
-    /**/ 
+export default function AddManufactureDetails() {
     const breadcrumbs = [
         {label: 'Vehicle', link: '/'},
-        {label: 'Vehicle Model Details', link: '/'},
-        {label: 'Add Vehicle Model Details', link: '/'}
+        {label: 'Manufacture Details', link: '/'},
+        {label: 'Add Manufacture Details', link: '/'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {
@@ -31,10 +23,10 @@ export default function AddVehicleModel() {
 
     return (
         <>
-            <PageHeader title="Add Vehicle Model Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Add Manufacture Details" breadcrumbs={breadcrumbs}/>
             <div className="grid grid-cols-2 gap-10 mt-8">
                 <div className="flex flex-col gap-3">
-                    <p>Vehicle Model</p>
+                    <p>Manufacture</p>
                     <Input
                         type="text"
                         variant="filled"
@@ -43,8 +35,8 @@ export default function AddVehicleModel() {
                         py={2}
                         mt={1}
                         width="500px"
-                        name="Vehicle Model"
-                        placeholder="Vehicle Model"
+                        name="Manufacture"
+                        placeholder="Manufacture"
                     />
                     <Checkbox size='lg' defaultChecked className="mt-8">
                         Is Active

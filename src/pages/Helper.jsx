@@ -1,15 +1,13 @@
 import PageHeader from "../components/PageHeader.jsx";
 import {Button, Checkbox, Input, Select} from "@chakra-ui/react";
-import theme from "../config/ThemeConfig.jsx";
 import {MdArrowDropDown} from "react-icons/md";
+import theme from "../config/ThemeConfig.jsx";
 
-
-
-export default function Driver() {
+export default function Helper() {
     const breadcrumbs = [
-        {label: 'Driver', link: '/app/Driver'},
-        {label: 'Driver Details', link:'/app/DriverDetails'},
-        {label: 'Add Driver Details', link: "/app/AddDriverDetails"}
+        {label: 'Helper', link: '/'},
+        {label: 'Helper Details', link: '/'},
+        {label: 'Add Helper Details', link: '/'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {
@@ -26,7 +24,7 @@ export default function Driver() {
 
     return (
         <>
-            <PageHeader title="Add Driver Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Add Helper Details" breadcrumbs={breadcrumbs}/>
             <div className="grid grid-cols-2 gap-10 mt-8">
                 <div className="flex flex-col gap-3">
                     <p>First Name</p>
@@ -99,20 +97,6 @@ export default function Driver() {
                     />
                 </div>
                 <div className="flex flex-col gap-3">
-                    <p>Driver License No</p>
-                    <Input
-                        type="text"
-                        variant="filled"
-                        borderRadius="md"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        width="500px"
-                        name="Driver License No"
-                        placeholder="Driver License No"
-                    />
-                </div>
-                <div className="flex flex-col gap-3">
                     <p>Contact No</p>
                     <Input
                         type="tel"
@@ -175,15 +159,15 @@ export default function Driver() {
                 <div className="flex flex-col gap-3">
                     <p>Password</p>
                     <Input
-                        type="password"
+                        type="Password"
                         variant="filled"
                         borderRadius="md"
                         px={3}
                         py={2}
                         mt={1}
                         width="500px"
-                        name="password"
-                        placeholder="password"
+                        name="Password"
+                        placeholder="Password"
                     />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -233,5 +217,3 @@ export default function Driver() {
         </>
     );
 }
-
-

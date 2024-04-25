@@ -17,7 +17,7 @@ import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
 import MaintenanceTable from "./pages/MaintenanceTable.jsx";
 import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
-import VehicleDetailsTable from "./pages/VehicleDetailsTable.jsx";
+import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
 import DriverDetails from "./pages/DriverDetails.jsx";
 import AddDriverDetails from "./pages/AddDriverDetails.jsx";
 
