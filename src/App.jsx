@@ -17,9 +17,23 @@ import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
 import MaintenanceTable from "./pages/MaintenanceTable.jsx";
 import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
+<<<<<<< HEAD
 import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
 import DriverDetails from "./pages/DriverDetails.jsx";
 import AddDriverDetails from "./pages/AddDriverDetails.jsx";
+=======
+import AddAccidentDetails from './pages/AddAccidentDetails.jsx';
+import AddVehicleDetails from './pages/AddVehicleDetails.jsx';
+import AddVehicleModel from './pages/AddVehicleModel.jsx';
+import AddVehicleType from './pages/Driver.jsx';
+import DriverDetails from './pages/DriverDetails.jsx';
+import Helper from './pages/Helper.jsx';
+import Staff from './pages/Staff.jsx';
+import Trip from './pages/Trip.jsx';
+import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
+import VehicleType from './pages/VehicleType.jsx';
+import AddvehicletypeDetails from './pages/AddvehicletypeDetails.jsx';
+>>>>>>> 4d9fd2b46f304d1002ebec0879b6b3684a9c792b
 
 
 export default function App() {
@@ -29,7 +43,6 @@ export default function App() {
                 <Route path="Dashboard" element={<Dashboard/>}/>
                 <Route path="UserProfile" element={<UserProfile/>}/>
                 <Route path="Notification" element={<Notification/>}/>
-                <Route path="VehicleDetailsTable/AddVehicleDetails" element={<AddVehicleDetails/>}/>
                 <Route path="AddVehicleMaintenanceDetails" element={<AddVehicleMaintenanceDetails/>}/>
                 <Route path="AddFuelRefillDetails" element={<AddFuelRefillDetails/>}/>
                 <Route path="ChangePassword" element={<ChangePassword/>}/>
@@ -37,9 +50,17 @@ export default function App() {
                 <Route path="MaintenanceTable" element={<MaintenanceTable/>}/>
                 <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable/>}/>
                 <Route path="FuelRefillTable" element={<FuelRefillTable/>}/>
+                <Route path="AddAccidentDetails" element={<AddAccidentDetails/>}/>
+                <Route path="AddVehicleDetails" element={<AddVehicleDetails />}/>
+                <Route path="AddVehicleModel" element={<AddVehicleModel/>}/>
+                <Route path="AddVehicleType" element={<AddVehicleType/>}/>
+                <Route  path="DriverDetails" element={<DriverDetails/>}/>
+                <Route path="Helper" element={<Helper/>}/>
+                <Route path="Staff" element={<Staff/>}/>
+                <Route path="Trip" element={<Trip />}/>
                 <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
-                <Route path="DriverDetails" element={<DriverDetails/>}/>
-                <Route path="AddDriverDetails" element={<AddDriverDetails/>}/>
+                <Route path='VehicleType' element={<VehicleType/>}/>
+                <Route path='AddvehicletypeDetails' element={<AddvehicletypeDetails />}/>
             </Route>
             <Route path="/app" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>
@@ -47,9 +68,6 @@ export default function App() {
                 <Route path="ResetPasswordConfirmation" element={<ResetPasswordConfirmation/>}/>
                 <Route path="ResetPassSuccess" element={<ResetPassSuccess/>}/>
                 <Route path="ResetEmail" element={<ResetEmail/>}/>
-                <Route path="DriverDetails" element={<DriverDetails/>}/>
-                <Route path="AddDriverDetails" element={<AddDriverDetails/>}/>
-
             </Route>
         </Routes>
     );

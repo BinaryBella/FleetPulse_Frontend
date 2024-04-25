@@ -47,9 +47,16 @@ export default function VehicleDetailsTable() {
         <>
             <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
 
+<<<<<<< HEAD
             <Link to="AddVehicleDetails">
                 <Button
                     bg={theme.purple}
+=======
+            <Link to="/app/AddVehicleDetails">
+                <Button
+                    bg={theme.purple}
+                    
+>>>>>>> 4d9fd2b46f304d1002ebec0879b6b3684a9c792b
                     _hover={{ bg: theme.onHoverPurple }}
                     color="white"
                     variant="solid"
@@ -72,8 +79,11 @@ export default function VehicleDetailsTable() {
                         <Th>License Exp Date</Th>
                         <Th>Model</Th>
                         <Th>Manufacture</Th>
+<<<<<<< HEAD
                         <Th>Type</Th>
                         <Th>Fuel Type</Th>
+=======
+>>>>>>> 4d9fd2b46f304d1002ebec0879b6b3684a9c792b
                         <Th>Color</Th>
                         <Th>Status</Th>
                         <Th>Actions</Th>
@@ -82,18 +92,29 @@ export default function VehicleDetailsTable() {
                 <Tbody>
                     {vehicleDetails.map((vehicle, index) => (
                         <Tr key={index}>
+<<<<<<< HEAD
                             <Td>{vehicle.registrationNo}</Td>
                             <Td>{vehicle.licenseExpireDate}</Td>
                             <Td>{vehicle.vehicleModelId}</Td>
                             <Td>{vehicle.manufacturer}</Td>
                             <Td>{vehicle.type}</Td>
                             <Td>{vehicle.fType}</Td>
+=======
+                            <Td>{vehicle.vehicleRegistrationNo}</Td>
+                            <Td>{vehicle.licenseExpireDate}</Td>
+                            <Td>{vehicle.vehicleModelId}</Td>
+                            <Td>{vehicle.manufactureId}</Td>
+>>>>>>> 4d9fd2b46f304d1002ebec0879b6b3684a9c792b
                             <Td>{vehicle.vehicleColor}</Td>
                             <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton
                                         color={theme.purple}
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> 4d9fd2b46f304d1002ebec0879b6b3684a9c792b
                                         as={IconButton}
                                         aria-label='profile-options'
                                         fontSize='20px'
