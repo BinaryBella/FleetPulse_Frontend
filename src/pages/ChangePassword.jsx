@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     Button,
     Input,
@@ -17,16 +17,16 @@ import {
     AlertDialogBody,
     AlertDialogFooter
 } from "@chakra-ui/react";
-import {Field, Formik} from "formik";
+import { Field, Formik } from "formik";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import Password from "../assets/images/Password.png";
 import './ChangePassword.css';
-import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import PasswordStrengthBar from 'react-password-strength-bar';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import $ from "jquery";
-import axios from "axios";
+//import axios from "axios";
 
 export default function ChangePassword() {
     const [error, setError] = useState('');
@@ -55,8 +55,10 @@ export default function ChangePassword() {
         navigate('/app/Dashboard');
     };
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async () => {
         try {
+            // Commented out backend implementation
+            /*
             const storedUsername = sessionStorage.getItem('Username');
 
             if (!storedUsername) {
@@ -87,6 +89,11 @@ export default function ChangePassword() {
                     setResetPasswordResponse(response.data.error);
                 }
             }
+            */
+
+            // Dummy success logic for demonstration
+            setIsAlertOpen(true);
+            setResetPasswordResponse('Password changed successfully');
 
         } catch (error) {
             console.error('Error:', error.message);
@@ -110,112 +117,112 @@ export default function ChangePassword() {
 
     return (
         <>
-            <PageHeader title="Change Password"/>
-            <div className="flex justify-between vertical-container">
-                <div className="flex flex-col gap-8">
-                    <Formik
-                        onSubmit={handleSubmit}
-                        initialValues={{
-                            oldPassword: "",
-                            newPassword: "",
-                            confirmPassword: ""
-                        }}
-                        validate={(values) => {
-                            const errors = {};
-                            if (!values.oldPassword) {
-                                errors.oldPassword = "Please enter your old password.";
-                            }
-                            if (!values.newPassword) {
-                                errors.newPassword = "Please enter your new password.";
-                            }
-                            if (!values.confirmPassword) {
-                                errors.confirmPassword = "Please confirm your new password.";
-                            }
-                            if (values.oldPassword === values.newPassword) {
-                                errors.newPassword = "New password must be different from old password.";
-                            }
-                            if (values.newPassword !== values.confirmPassword) {
-                                errors.confirmPassword = "Passwords do not match with new password.";
-                            }
-                            return errors;
-                        }}
-                    >
-                        {({handleSubmit, errors, touched, values}) => (
-                            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                                <FormControl
-                                    isInvalid={!!errors.oldPassword || (error && error === "Your old password is incorrect.")}>
-                                    <FormLabel htmlFor="oldPassword">Old Password</FormLabel>
-                                    <InputGroup>
-                                        <Field
-                                            as={Input}
-                                            id="oldPassword"
-                                            name="oldPassword"
-                                            type={showPassword3 ? "text" : "password"}
-                                            variant="filled"
-                                            placeholder="Old Password"
+        <PageHeader title="Change Password"/>
+        <div className="flex justify-between vertical-container">
+            <div className="flex flex-col gap-8">
+                <Formik
+                    onSubmit={handleSubmit}
+                    initialValues={{
+                        oldPassword: "",
+                        newPassword: "",
+                        confirmPassword: ""
+                    }}
+                    validate={(values) => {
+                        const errors = {};
+                        if (!values.oldPassword) {
+                            errors.oldPassword = "Please enter your old password.";
+                        }
+                        if (!values.newPassword) {
+                            errors.newPassword = "Please enter your new password.";
+                        }
+                        if (!values.confirmPassword) {
+                            errors.confirmPassword = "Please confirm your new password.";
+                        }
+                        if (values.oldPassword === values.newPassword) {
+                            errors.newPassword = "New password must be different from old password.";
+                        }
+                        if (values.newPassword !== values.confirmPassword) {
+                            errors.confirmPassword = "Passwords do not match with new password.";
+                        }
+                        return errors;
+                    }}
+                >
+                    {({handleSubmit, errors, touched, values}) => (
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                            <FormControl
+                                isInvalid={!!errors.oldPassword || (error && error === "Your old password is incorrect.")}>
+                                <FormLabel htmlFor="oldPassword">Old Password</FormLabel>
+                                <InputGroup>
+                                    <Field
+                                        as={Input}
+                                        id="oldPassword"
+                                        name="oldPassword"
+                                        type={showPassword3 ? "text" : "password"}
+                                        variant="filled"
+                                        placeholder="Old Password"
+                                    />
+                                    <InputRightElement width="4.5rem">
+                                        <IconButton
+                                            h="1.75rem"
+                                            size="sm"
+                                            variant="ghost"
+                                            onClick={handleShowPassword3}
+                                            icon={showPassword3 ? <ViewOffIcon/> : <ViewIcon/>}
+                                            aria-label="password-icon"
                                         />
-                                        <InputRightElement width="4.5rem">
-                                            <IconButton
-                                                h="1.75rem"
-                                                size="sm"
-                                                variant="ghost"
-                                                onClick={handleShowPassword3}
-                                                icon={showPassword3 ? <ViewOffIcon/> : <ViewIcon/>}
-                                                aria-label="password-icon"
-                                            />
-                                        </InputRightElement>
-                                    </InputGroup>
-                                    <FormErrorMessage>
-                                        {errors.oldPassword || (error && error === "Your old password is incorrect.")}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.newPassword && touched.newPassword}>
-                                    <FormLabel htmlFor="newPassword">New Password</FormLabel>
-                                    <InputGroup>
-                                        <Field
-                                            as={Input}
-                                            id="newPassword"
-                                            name="newPassword"
-                                            type={showPassword1 ? "text" : "password"}
-                                            variant="filled"
-                                            placeholder="New Password"
-                                            mb="10px"
+                                    </InputRightElement>
+                                </InputGroup>
+                                <FormErrorMessage>
+                                    {errors.oldPassword || (error && error === "Your old password is incorrect.")}
+                                </FormErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={!!errors.newPassword && touched.newPassword}>
+                                <FormLabel htmlFor="newPassword">New Password</FormLabel>
+                                <InputGroup>
+                                    <Field
+                                        as={Input}
+                                        id="newPassword"
+                                        name="newPassword"
+                                        type={showPassword1 ? "text" : "password"}
+                                        variant="filled"
+                                        placeholder="New Password"
+                                        mb="10px"
+                                    />
+                                    <InputRightElement width="4.5rem">
+                                        <IconButton
+                                            h="1.75rem"
+                                            size="sm"
+                                            variant="ghost"
+                                            onClick={handleShowPassword1}
+                                            icon={showPassword1 ? <ViewOffIcon/> : <ViewIcon/>}
+                                            aria-label="password-icon"
                                         />
-                                        <InputRightElement width="4.5rem">
-                                            <IconButton
-                                                h="1.75rem"
-                                                size="sm"
-                                                variant="ghost"
-                                                onClick={handleShowPassword1}
-                                                icon={showPassword1 ? <ViewOffIcon/> : <ViewIcon/>}
-                                                aria-label="password-icon"
-                                            />
-                                        </InputRightElement>
-                                    </InputGroup>
-                                    <PasswordStrengthBar className="pwd-meter" password={values.newPassword}/>
-                                    <FormErrorMessage>{errors.newPassword}</FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.confirmPassword && touched.confirmPassword}>
-                                    <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-                                    <InputGroup>
-                                        <Field
-                                            as={Input}
-                                            id="confirmPassword"
-                                            name="confirmPassword"
-                                            type={showPassword2 ? "text" : "password"}
-                                            variant="filled"
-                                            placeholder="Confirm Password"
+                                    </InputRightElement>
+                                </InputGroup>
+                                <PasswordStrengthBar className="pwd-meter" password={values.newPassword}/>
+                                <FormErrorMessage>{errors.newPassword}</FormErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={!!errors.confirmPassword && touched.confirmPassword}>
+                                <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
+                                <InputGroup>
+                                    <Field
+                                        as={Input}
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        type={showPassword2 ? "text" : "password"}
+                                        variant="filled"
+                                        placeholder="Confirm Password"
+                                    />
+                                    <InputRightElement width="4.5rem">
+                                        <IconButton
+                                            h="1.75rem"
+                                            size="sm"
+                                            variant="ghost"
+                                            onClick={handleShowPassword2}
+                                            icon={showPassword2 ? <ViewOffIcon/> : <ViewIcon/>}
+                                            aria-label="password-icon"
                                         />
-                                        <InputRightElement width="4.5rem">
-                                            <IconButton
-                                                h="1.75rem"
-                                                size="sm"
-                                                variant="ghost"
-                                                onClick={handleShowPassword2}
-                                                icon={showPassword2 ? <ViewOffIcon/> : <ViewIcon/>}
-                                                aria-label="password-icon"
-                                            />
-                                        </InputRightElement>
+                                    </InputRightElement>
                                     </InputGroup>
                                     <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
                                 </FormControl>

@@ -16,12 +16,10 @@ export default function ResetPassword() {
     const location = useLocation();
     let email = "";
 
-
-
     useEffect(() => {
         // Password strength meter style
         $(".pwd-meter > div").children().each(function () {
-            $(this).css({"height": "5px", "border-radius": "5px"})
+            $(this).css({ "height": "5px", "border-radius": "5px" });
         });
 
         if (location.state == null) {
@@ -42,6 +40,8 @@ export default function ResetPassword() {
     const handleSubmit = async (values) => {
         try {
             console.log(email);
+            // Commented out actual backend implementation
+            /*
             const response = await fetch('https://localhost:7265/api/Auth/reset-password', {
                 method: 'POST',
                 headers: {
@@ -58,6 +58,17 @@ export default function ResetPassword() {
             } else {
                 setError("Failed to reset password. Please try again.");
             }
+            */
+
+            // Dummy data logic for demonstration
+            const dummyEmail = "user@example.com";
+            const dummyPassword = "&new#Password13i";
+
+            if (email === dummyEmail && values.newpassword === dummyPassword) {
+                navigate("/auth/ResetPassSuccess");
+            } else {
+                setError("Failed to reset password. Please try again.");
+            }
         } catch (error) {
             console.error('Error:', error.message);
             setError("An error occurred. Please try again.");
@@ -67,7 +78,7 @@ export default function ResetPassword() {
     return (
         <>
             <p className="font-sans text-3xl text-[#393970] mb-7">Reset Password</p>
-            <img src={ResetPass2} alt="ResetPassword" className="w-1/4 mb-4"/>
+            <img src={ResetPass2} alt="ResetPassword" className="w-1/4 mb-4" />
             <Box textAlign="center" w="50%" fontSize="sm">
                 <p className="text-2xl text-[#D49458] font-bold mb-4">Create new password</p>
                 <p className="mb-4">Your new password must be different from the previously used password</p>

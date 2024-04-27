@@ -28,9 +28,12 @@ export default function ResetEmail() {
                     return errors;
                 }}
                 onSubmit={async (values, { setFieldError }) => {
+                    setLoading(true);
+
+                    // Commented out actual backend implementation
+                    /*
                     try {
                         console.log("Submitting form with values:", values);
-                        setLoading(true);
                         const response = await fetch('https://localhost:7265/api/Auth/forgot-password', {
                             method: 'POST',
                             headers: {
@@ -57,10 +60,21 @@ export default function ResetEmail() {
                         }
                     } catch (error) {
                         console.error('Error:', error.message);
+                    } finally {
+                        setLoading(false);
                     }
-                    finally {
-                        setLoading(false); // Stop loading after form submission
+                    */
+
+                    // Dummy data check for demonstration purposes
+                    const dummyEmail = "user@example.com";
+
+                    if (values.email === dummyEmail) {
+                        navigate(`/auth/ResetPasswordConfirmation`, { state: { email: values.email } });
+                    } else {
+                        setFieldError('email', 'Email is not found');
                     }
+
+                    setLoading(false);
                 }}
             >
                 {({handleSubmit, errors, touched}) => (
@@ -96,11 +110,11 @@ export default function ResetEmail() {
                 )}
             </Formik>
             <div className="flex justify-end">
-                    <Link to="/auth/login">
-                        <Button variant="link" className="mt-3">
-                            Return to Login
-                        </Button>
-                    </Link>
+                <Link to="/auth/login">
+                    <Button variant="link" className="mt-3">
+                        Return to Login
+                    </Button>
+                </Link>
             </div>
         </>
     );

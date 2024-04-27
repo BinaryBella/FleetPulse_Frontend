@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {Formik, Form, Field} from "formik";
+import { useEffect, useState } from "react";
+import { Formik, Form, Field } from "formik";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -15,42 +15,52 @@ import {
     Select
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
-import axios from "axios";
-import {useNavigate} from "react-router-dom";
+// import axios from "axios"; // Comment out the axios import
+import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 
 export default function AddVehicleMaintenanceDetails() {
     const navigate = useNavigate();
-    const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
-    const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
+    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
+    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
     const [VehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
+    // Dummy data for demonstration
     const exampleVehicleData = [
-        {VehicleId: 2, VehicleRegistrationNo: "REG123"},
-        {VehicleId: 3, VehicleRegistrationNo: "REG456"},
+        { VehicleId: 2, VehicleRegistrationNo: "REG123" },
+        { VehicleId: 3, VehicleRegistrationNo: "REG456" },
     ];
 
+    // Fetch vehicle registration numbers (dummy function for demonstration)
     const fetchVehicleRegNos = async () => {
         try {
-            const response = await axios.get("https://localhost:7265/api/Vehicle");
-            setVehicleRegNoDetails(response.data);
+            // Simulate fetching vehicle registration numbers
+            // const response = await axios.get("https://localhost:7265/api/Vehicle");
+            // setVehicleRegNoDetails(response.data);
+            setVehicleRegNoDetails(exampleVehicleData); // Use example data for demonstration
         } catch (error) {
             console.error("Error fetching vehicle registration numbers:", error);
         }
     };
 
     useEffect(() => {
-        fetchVehicleMaintenanceTypes();
-        setVehicleRegNoDetails(exampleVehicleData);
+        // fetchVehicleMaintenanceTypes(); // Comment out backend request
+        fetchVehicleRegNos();
     }, []);
 
+    // Fetch vehicle maintenance types (dummy function for demonstration)
     const fetchVehicleMaintenanceTypes = async () => {
         try {
-            const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
-            setMaintenanceTypeDetails(response.data);
+            // const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
+            // setMaintenanceTypeDetails(response.data);
+            // Simulate setting maintenance type details
+            setMaintenanceTypeDetails([
+                { id: 1, typeName: "Maintenance Type 1" },
+                { id: 2, typeName: "Maintenance Type 2" },
+            ]);
         } catch (error) {
             console.error("Error fetching vehicle maintenance types:", error);
         }
@@ -58,18 +68,18 @@ export default function AddVehicleMaintenanceDetails() {
 
     useEffect(() => {
         fetchVehicleMaintenanceTypes();
-        fetchVehicleRegNos();
     }, []);
 
     const breadcrumbs = [
-        {label: "Vehicle", link: "/app/Vehicle"},
-        {label: "Vehicle Maintenance", link: "/app/MaintenanceTable"},
-        {label: "Add Vehicle Maintenance Details", link: "/app/AddVehicleMaintenanceDetails"},
+        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Vehicle Maintenance", link: "/app/MaintenanceTable" },
+        { label: "Add Vehicle Maintenance Details", link: "/app/AddVehicleMaintenanceDetails" },
     ];
 
     const handleSubmit = async (values) => {
         try {
-            console.log(values.VehicleRegistrationNo, values.maintenanceDate);
+            // Backend request
+            /*
             const response = await fetch('https://localhost:7265/api/VehicleMaintenance', {
                 method: 'POST',
                 headers: {
@@ -100,6 +110,11 @@ export default function AddVehicleMaintenanceDetails() {
                 setSuccessDialogMessage('Maintenance added successfully');
                 onSuccessDialogOpen();
             }
+            */
+
+            // Dummy success logic for demonstration
+            setSuccessDialogMessage('Maintenance added successfully');
+            onSuccessDialogOpen();
         } catch (error) {
             if (error instanceof TypeError) {
                 setDialogMessage('Failed to connect to the server');
@@ -115,13 +130,17 @@ export default function AddVehicleMaintenanceDetails() {
     };
 
     const handleSuccessDialogClose = () => {
+        // Close the success dialog
         onSuccessDialogClose();
+        // Show alert with success message
+        alert(successDialogMessage);
+        // Redirect to maintenance table page
         navigate('/app/MaintenanceTable');
     };
 
     return (
         <>
-            <PageHeader title="Add Vehicle Maintenance Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Add Vehicle Maintenance Details" breadcrumbs={breadcrumbs} />
             <Formik
                 initialValues={{
                     VehicleRegistrationNo: "",

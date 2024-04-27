@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+// import axios from "axios";
 import {
     Table,
     Thead,
@@ -65,9 +65,18 @@ export default function MaintenanceTypeTable() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/VehicleMaintenanceType/${selectedType.id}/${selectedType.status ? 'deactivate' : 'activate'}`;
-            await axios.put(endpoint);
-            fetchVehicleMaintenanceTypes(); // Refresh the list after update
+            // Commenting out the backend call for activation/deactivation
+            // const endpoint = `https://localhost:7265/api/VehicleMaintenanceType/${selectedType.id}/${selectedType.status ? 'deactivate' : 'activate'}`;
+            // await axios.put(endpoint);
+
+            // Simulating activation/deactivation by toggling status in the dummy data
+            const updatedDetails = vehicleDetails.map(type =>
+                type.id === selectedType.id ? { ...type, status: !type.status } : type
+            );
+            setVehicleDetails(updatedDetails);
+
+            // Refresh the list after update
+            fetchVehicleMaintenanceTypes();
             onDialogClose();
         } catch (error) {
             if (error.response && error.response.status === 400 && error.response.data === "MaintenanceType is active and associated with maintenance records. Cannot deactivate.") {
@@ -86,8 +95,33 @@ export default function MaintenanceTypeTable() {
 
     const fetchVehicleMaintenanceTypes = async () => {
         try {
-            const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
-            setVehicleDetails(response.data);
+            // Commenting out the backend call
+            // const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
+
+            // Dummy data for vehicle maintenance types
+            const dummyData = [
+                { id: 1, typeName: "Preventive Maintenance", status: true },
+                { id: 2, typeName: "Routine Maintenance", status: false },
+                { id: 3, typeName: "Corrective Maintenance", status: true },
+                { id: 4, typeName: "Predictive Maintenance", status: false },
+                { id: 5, typeName: "Seasonal Maintenance", status: true },
+                { id: 6, typeName: "Safety Inspections and Maintenance", status: true },
+                { id: 7, typeName: "Emergency Maintenance", status: false },
+                { id: 8, typeName: "Aesthetic Maintenance", status: true },
+                { id: 9, typeName: "Performance Upgrades and Maintenance", status: false },
+                { id: 10, typeName: "Legal and Regulatory Maintenance", status: true },
+                { id: 11, typeName: "Oil and Filter Changes", status: true },
+                { id: 12, typeName: "Battery Check and Maintenance", status: false },
+                { id: 13, typeName: "Air Filter Replacement", status: false },
+                { id: 14, typeName: "Timing Belt Replacement", status: true },
+                { id: 15, typeName: "Brake Pad Replacement", status: true },
+                { id: 16, typeName: "Paint Touch-ups", status: true },
+
+
+            ];
+
+            // Set the dummy data to state
+            setVehicleDetails(dummyData);
         } catch (error) {
             console.error("Error fetching vehicle maintenance types:", error);
         }

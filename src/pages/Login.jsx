@@ -31,6 +31,8 @@ export default function Login() {
                     password: ""
                 }}
                 onSubmit={(values) => {
+                    // Commented out actual backend implementation
+                    /*
                     fetch('https://localhost:7265/api/Auth/Login', {
                         method: 'POST',
                         body: JSON.stringify({
@@ -59,8 +61,24 @@ export default function Login() {
                                 }
                             }
                         }).catch(() => {
-                        setBackendError('Login failed. Please try again.');
-                    });
+                            setBackendError('Login failed. Please try again.');
+                        });
+                    */
+                    // Dummy data check for demonstration purposes
+                    const dummyData = {
+                        username: "admin",
+                        password: "admin123",
+                        jobTitle: "Admin",
+                        token: "dummyToken"
+                    };
+
+                    if (values.username === dummyData.username && values.password === dummyData.password) {
+                        sessionStorage.setItem('Username', values.username);
+                        localStorage.setItem('Token', dummyData.token);
+                        navigate('/app/Dashboard');
+                    } else {
+                        setBackendError('Invalid username or password.');
+                    }
                 }}
             >
                 {({ handleSubmit, errors, touched }) => (

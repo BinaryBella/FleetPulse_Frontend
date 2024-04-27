@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Formik } from 'formik';
 import { Button, Stack, FormControl, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
 import ResetPass1 from "../assets/images/ResetPass1.png";
@@ -7,7 +7,6 @@ import theme from "../config/ThemeConfig.jsx";
 import { Box } from "@chakra-ui/react";
 import VerificationInput from "react-verification-input";
 import './ResetPasswordConfirmation.css';
-import { useLocation } from "react-router-dom";
 
 export default function ResetPasswordConfirmation() {
     const navigate = useNavigate();
@@ -29,8 +28,7 @@ export default function ResetPasswordConfirmation() {
             <p className="font-sans text-3xl text-[#393970] mb-10">Reset Password Verification</p>
             <img src={ResetPass1} alt="ResetPasswordConfirmation" className="w-1/3 mb-10" />
             <Box textAlign="center" w="50%" fontSize="sm">
-                <p className="mb-10">We want to make sure its really you. In order to verify your identity, enter
-                    the verification code that was sent to {email} </p>
+                <p className="mb-10">We want to make sure it's really you. In order to verify your identity, enter the verification code that was sent to {email} </p>
             </Box>
             <Formik
                 initialValues={{ pinValue: "" }}
@@ -45,6 +43,8 @@ export default function ResetPasswordConfirmation() {
                 onSubmit={() => {
                     try {
                         if (verificationCode.toString().length === 6) {
+                            // Commented out actual backend implementation
+                            /*
                             fetch('https://localhost:7265/api/Auth/validate-verification-code', {
                                 method: 'POST',
                                 body: JSON.stringify({
@@ -64,6 +64,16 @@ export default function ResetPasswordConfirmation() {
                                     setIsAlertOpen(true);
                                 }
                             })
+                            */
+
+                            // Dummy data check for demonstration purposes
+                            const dummyCode = "123456";
+
+                            if (verificationCode === dummyCode) {
+                                navigate(`/auth/ResetPassword`, { state: { email: email } });
+                            } else {
+                                setIsAlertOpen(true);
+                            }
                         } else {
                             alert("Please enter a valid 6-digit PIN.");
                         }

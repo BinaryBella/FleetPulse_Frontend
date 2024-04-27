@@ -16,7 +16,7 @@ import {
 import theme from "../config/ThemeConfig.jsx";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import {AiOutlineCamera, AiOutlineUser} from "react-icons/ai";
 
 export default function UserProfile() {
@@ -41,6 +41,8 @@ export default function UserProfile() {
         try {
             const username = sessionStorage.getItem("Username");
             if (username) {
+                // Uncomment below for actual backend implementation
+                /*
                 const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
                 const responseData = response.data;
                 setUserData({
@@ -53,6 +55,20 @@ export default function UserProfile() {
                     ProfilePicture: responseData.profilePicture,
                 });
                 setImage(responseData.profilePicture);
+                */
+
+                // Dummy data for demonstration
+                const dummyData = {
+                    FirstName: "Ann",
+                    LastName: "Fernando",
+                    DateOfBirth: "1990-01-01T00:00",
+                    EmailAddress: "ann.fernando@example.com",
+                    PhoneNo: "0764567890",
+                    NIC: "123456789V",
+                    ProfilePicture: ""
+                };
+                setUserData(dummyData);
+                setImage(dummyData.ProfilePicture || '/default-profile-pic.jpg'); // Set default profile picture path
             } else {
                 console.error("Username not found in session storage.");
             }
@@ -85,6 +101,8 @@ export default function UserProfile() {
         try {
             const username = sessionStorage.getItem("Username");
             const profilePicture = isImageRemoved ? "" : image;
+            // Uncomment below for actual backend implementation
+            /*
             const response = await axios.put('https://localhost:7265/api/Auth/UpdateUser', {
                     Username: username,
                     FirstName: values.FirstName,
@@ -107,6 +125,16 @@ export default function UserProfile() {
             } else {
                 throw new Error('Failed to update User details');
             }
+            */
+
+            // Dummy success logic for demonstration
+            const dummyUsername = "john.doe";
+            if (username === dummyUsername) {
+                setSuccessDialogMessage('User details updated successfully');
+                onSuccessDialogOpen();
+            } else {
+                throw new Error('Failed to update User details');
+            }
         } catch (error) {
             console.error('Error updating User details:', error);
             setDialogMessage(error.message || 'Failed to update User details');
@@ -114,12 +142,10 @@ export default function UserProfile() {
         }
     };
 
-
     const handleRemoveImage = async () => {
         setIsImageRemoved(true);
         setImage("");
     };
-
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
@@ -358,7 +384,7 @@ export default function UserProfile() {
                                             <Field name="EmailAddress" validate={(value) => {
                                                 let error;
                                                 if (!value) {
-                                                    error = "Last Name is required.";
+                                                    error = "Email Address is required.";
                                                 }else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
                                                     error = "Invalid email address.";
                                                 }

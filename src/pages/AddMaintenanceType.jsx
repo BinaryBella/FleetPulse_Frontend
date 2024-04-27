@@ -23,6 +23,8 @@ export default function AddMaintenanceType() {
             console.log(values.TypeName, values.isActive);
             const status = values.isActive === false ? false : true;
 
+            // Comment out the backend request
+            /*
             const response = await fetch('https://localhost:7265/api/VehicleMaintenanceType', {
                 method: 'POST',
                 headers: {
@@ -47,6 +49,11 @@ export default function AddMaintenanceType() {
                 setSuccessDialogMessage('Maintenance type added successfully.');
                 onSuccessDialogOpen();
             }
+            */
+
+            // Dummy success logic for demonstration
+            setSuccessDialogMessage('Maintenance type added successfully.');
+            onSuccessDialogOpen();
         } catch (error) {
             if (error instanceof TypeError) {
                 setDialogMessage('Failed to connect to the server.');

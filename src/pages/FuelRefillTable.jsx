@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
 import {
     Table,
     Thead,
@@ -44,9 +44,24 @@ export default function FuelRefillTable() {
 
     const fetchFuelRefill = async () => {
         try {
-            const response = await axios.get("https://localhost:7265/api/FuelRefill");
-            const responseData = response.data;
-            setFuelRefillDetails(responseData);
+            // const response = await axios.get("https://localhost:7265/api/FuelRefill");
+            // const responseData = response.data;
+            // setFuelRefillDetails(responseData);
+
+            // Dummy data for fuel refills
+            const dummyData = Array.from({ length: 20 }, (_, index) => ({
+                fuelRefillId: index + 1,
+                nic: `NIC${index + 1}`,
+                vehicleRegistrationNo: `REG${index + 1}`,
+                literCount: (Math.random() * 100).toFixed(2),
+                date: `2023-05-${(index + 1).toString().padStart(2, '0')}T00:00:00`,
+                time: `${(index % 24).toString().padStart(2, '0')}:00`,
+                fType: `Type ${index % 5}`,
+                cost: (Math.random() * 500).toFixed(2),
+                status: index % 2 === 0
+            }));
+
+            setFuelRefillDetails(dummyData);
         } catch (error) {
             console.error("Error fetching fuel refills:", error);
             setError("Error fetching fuel refill. Please try again later.");
