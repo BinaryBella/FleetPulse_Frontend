@@ -48,15 +48,17 @@ export default function ChangePassword() {
             if (!validateFields(values)) {
                 return;
             }
+            let username = sessionStorage.getItem("Username");
+
             const response = await fetch('https://localhost:7265/api/Auth/change-password', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-type': 'application/json; charset=UTF-8',
                 },
                 body: JSON.stringify({
-                    oldPassword: values.oldpassword,
-                    newPassword: values.newpassword,
-                    confirmPassword: values.confirmpassword
+                    username: username,
+                    oldPassword: values.oldPassword,
+                    newPassword: values.newPassword,
                 })
             });
             const data = await response.json();
@@ -107,7 +109,12 @@ export default function ChangePassword() {
                 <div className="flex flex-col gap-8">
                     <Formik
                         onSubmit={handleSubmit}
-                    >
+                     initialValues={{
+                         userName: "",
+                         oldPassword: "",
+                         newPassword: "",
+                         confirmPassword: ""
+                     }}>
                         {({handleSubmit, errors, touched}) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                                 <FormControl isInvalid={!!errors.oldPassword && touched.oldPassword}>

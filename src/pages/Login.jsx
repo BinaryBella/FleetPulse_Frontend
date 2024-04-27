@@ -44,6 +44,7 @@ export default function Login() {
                         if (data.status === false) {
                             setBackendError(data.message);
                         } else {
+                            sessionStorage.setItem('Username',values.username);
                             localStorage.setItem('Token', data.data);
                             navigate("/app/dashboard");
                         }
