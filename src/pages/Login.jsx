@@ -106,7 +106,7 @@ export default function Login() {
                             </FormControl>
                             <div className="flex justify-end">
                                 {!resetClicked && (
-                                    <Link to="/app/ResetEmail" onClick={handleResetClick}>
+                                    <Link to="/auth/ResetEmail" onClick={handleResetClick}>
                                         <Button variant="link" className="mb-5">
                                             Reset Password
                                         </Button>

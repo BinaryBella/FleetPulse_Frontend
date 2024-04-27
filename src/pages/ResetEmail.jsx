@@ -45,7 +45,7 @@ export default function ResetEmail() {
                             const responseData = await response.json();
                             console.log("Response data:", responseData);
                             if (responseData.status) {
-                                navigate(`/app/ResetPasswordConfirmation`, { state: { email: values.email } });
+                                navigate(`/auth/ResetPasswordConfirmation`, { state: { email: values.email } });
                             } else {
                                 console.error(responseData.message);
                             }

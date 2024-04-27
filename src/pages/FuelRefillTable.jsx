@@ -60,7 +60,7 @@ export default function FuelRefillTable() {
                     mr="10px"
                     position="absolute"
                     top="130"
-                    right="0"
+                    right="50"
                 >
                     Add Fuel Refill Details
                 </Button>

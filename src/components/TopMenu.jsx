@@ -9,7 +9,7 @@ export default function TopMenu() {
 
     const handleLogout = () => {
         localStorage.removeItem('Token');
-        navigate("/app/Login");
+        navigate("/auth/Login");
     };
 
     return (
@@ -41,6 +41,11 @@ export default function TopMenu() {
                                 <MenuItem>
                                     <Link to="/app/UserProfile" >
                                         User Profile
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem>
+                                    <Link to="/app/ChangePassword" >
+                                        Change Password
                                     </Link>
                                 </MenuItem>
                                 <MenuItem onClick={handleLogout}>
