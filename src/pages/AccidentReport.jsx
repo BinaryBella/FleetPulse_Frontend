@@ -22,9 +22,6 @@ export default function AccidentReport() {
         console.log('Form submitted');
     };
 
-    const handleCancel = () => {
-        console.log('Cancelled');
-    };
     const columns =[
         {
             Header: 'Driver Injured',
@@ -62,7 +59,8 @@ export default function AccidentReport() {
             Header: 'Action',
             accessor: 'action',
         }
-    ]
+    ];
+
     const dataTemplate = {
         driverinjured: '-',
         datetime: '-',
@@ -77,41 +75,47 @@ export default function AccidentReport() {
 
     const data = Array(10).fill().map(() => ({ ...dataTemplate }));
 
-
     return (
         <>
-            <PageHeader title="Accident Report" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Accident Report" breadcrumbs={breadcrumbs} />
             <div className="flex flex-col gap-3">
-                <DatePicker />
+                <div className="flex justify-between">
+                    {/* Date Picker */}
+                    <div>
+                        <DatePicker />
+                    </div>
+
+                    {/* Generate and Print Buttons */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginRight: '70px' }}>
+                        <Button
+                            bg={theme.purple}
+                            _hover={{ bg: theme.onHoverPurple }}
+                            color="#ffffff"
+                            variant="solid"
+                            w="230px"
+                            marginTop="8"
+                            onClick={handleSubmit}
+                        >
+                            Generate
+                        </Button>
+                        <Button
+                            bg={theme.purple}
+                            _hover={{ bg: theme.onHoverPurple }}
+                            color="#ffffff"
+                            variant="solid"
+                            w="230px"
+                            marginTop="8"
+                            onClick={handleSubmit}
+                        >
+                            Print
+                        </Button>
+                    </div>
+                </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginRight: '70px' }}>
-                <Button
-                    bg={theme.purple}
-                    _hover={{bg: theme.onHoverPurple}}
-                    color="#ffffff"
-                    variant="solid"
-                    w="230px"
-                    marginTop="10"
-                    onClick={handleSubmit}
-                >
-                    Generate
-                </Button>
-                <Button
-                    bg={theme.purple}
-                    _hover={{bg: theme.onHoverPurple}}
-                    color="#ffffff"
-                    variant="solid"
-                    w="230px"
-                    marginTop="10"
-                    onClick={handleSubmit}
-                >
-                    Print
-                </Button>
-            </div>
+
             <div>
                 <MyTable columns={columns} data={data} />
             </div>
-
         </>
     );
 }

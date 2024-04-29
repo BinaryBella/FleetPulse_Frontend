@@ -54,7 +54,7 @@ export default function App() {
                 <Route path="Helper" element={<Helper/>}/>
                 <Route path="Staff" element={<Staff/>}/>
                 <Route path="Trip" element={<Trip/>}/>
-                <Route path="Reports" element={<Reports/>}/>
+                <Route path="Reports/*" element={<Reports/>}/> {/* Updated Route for Reports */}
                 <Route path="AddAccidentDetails" element={<AddAccidentDetails/>}/>
                 <Route path="ChangePassword" element={<ChangePassword/>}/>
                 <Route path="AddVehicleType" element={<AddVehicleType/>}/>
@@ -86,7 +86,3 @@ export default function App() {
         </Routes>
     );
 }
-
-
-
-

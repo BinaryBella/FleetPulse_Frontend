@@ -98,38 +98,39 @@ export default function DriverReport() {
             {/* Render PageHeader component with title and breadcrumbs */}
             <PageHeader title="Driver Report" breadcrumbs={breadcrumbs}/>
 
-            {/* Render DatePicker component */}
             <div className="flex flex-col gap-3">
-                <DatePicker />
-            </div>
+                <div className="flex justify-between">
+                    {/* Date Picker */}
+                    <div>
+                        <DatePicker />
+                    </div>
 
-            {/* Render buttons for Generate and Print actions */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginRight: '70px' }}>
-                {/* Generate button */}
-                <Button
-                    bg={theme.purple}
-                    _hover={{bg: theme.onHoverPurple}}
-                    color="#ffffff"
-                    variant="solid"
-                    w="230px"
-                    marginTop="10"
-                    onClick={handleSubmit}
-                >
-                    Generate
-                </Button>
-
-                {/* Print button */}
-                <Button
-                    bg={theme.purple}
-                    _hover={{bg: theme.onHoverPurple}}
-                    color="#ffffff"
-                    variant="solid"
-                    w="230px"
-                    marginTop="10"
-                    onClick={handleSubmit}
-                >
-                    Print
-                </Button>
+                    {/* Generate and Print Buttons */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginRight: '70px' }}>
+                        <Button
+                            bg={theme.purple}
+                            _hover={{ bg: theme.onHoverPurple }}
+                            color="#ffffff"
+                            variant="solid"
+                            w="230px"
+                            marginTop="8"
+                            onClick={handleSubmit}
+                        >
+                            Generate
+                        </Button>
+                        <Button
+                            bg={theme.purple}
+                            _hover={{ bg: theme.onHoverPurple }}
+                            color="#ffffff"
+                            variant="solid"
+                            w="230px"
+                            marginTop="8"
+                            onClick={handleSubmit}
+                        >
+                            Print
+                        </Button>
+                    </div>
+                </div>
             </div>
 
             {/* Render MyTable component with columns and data */}
