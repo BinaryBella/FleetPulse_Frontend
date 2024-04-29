@@ -17,24 +17,19 @@ import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
 import MaintenanceTable from "./pages/MaintenanceTable.jsx";
 import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
-<<<<<<< HEAD
 import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
 import DriverDetails from "./pages/DriverDetails.jsx";
 import AddDriverDetails from "./pages/AddDriverDetails.jsx";
-=======
-import AddAccidentDetails from './pages/AddAccidentDetails.jsx';
-import AddVehicleDetails from './pages/AddVehicleDetails.jsx';
-import AddVehicleModel from './pages/AddVehicleModel.jsx';
-import AddVehicleType from './pages/Driver.jsx';
-import DriverDetails from './pages/DriverDetails.jsx';
-import Helper from './pages/Helper.jsx';
-import Staff from './pages/Staff.jsx';
-import Trip from './pages/Trip.jsx';
-import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
-import VehicleType from './pages/VehicleType.jsx';
-import AddvehicletypeDetails from './pages/AddvehicletypeDetails.jsx';
->>>>>>> 4d9fd2b46f304d1002ebec0879b6b3684a9c792b
-
+ import AddAccidentDetails from "./pages/AddAccidentDetails.jsx";
+ import AddVehicleDetails from "./pages/AddVehicleDetails.jsx";
+ import AddVehicleModel from "./pages/AddVehicleModel.jsx";
+ import AddVehicleType from "./pages/Driver.jsx";
+ import Helper from "./pages/Helper.jsx";
+ import Staff from "./pages/Staff.jsx";
+ import Trip from "./pages/Trip.jsx";
+import VehicleType from "./pages/VehicleType.jsx";
+import AddvehicletypeDetails from "./pages/AddvehicletypeDetails.jsx";
+import Driver from "./pages/Driver.jsx";
 
 export default function App() {
     return (
