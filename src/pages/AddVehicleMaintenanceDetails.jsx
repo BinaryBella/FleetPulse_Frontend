@@ -43,7 +43,7 @@ export default function AddVehicleMaintenanceDetails() {
     const breadcrumbs = [
         {label: "Vehicle", link: "/"},
         {label: "Vehicle Maintenance", link: "/"},
-        {label: " Add Vehicle Maintenance Details", link: "/"},
+        {label: "Add Vehicle Maintenance Details", link: "/"},
     ];
 
     const handleSubmit = async (values) => {
@@ -142,186 +142,186 @@ export default function AddVehicleMaintenanceDetails() {
                                     </div>
                                 )}
                             </Field>
-                            <div className="flex flex-col gap-3">
-                                <p>Vehicle Maintenance Type</p>
-                                <Field name="maintenanceTypeId" validate={(value) => {
-                                    let error;
-                                    if (!value) {
-                                        error = "Maintenance type is Required";
-                                    }
-                                    return error;
-                                }}>
-                                    {({ field }) => (
-                                        <div>
-                                            <Select
-                                                {...field}
-                                                placeholder='Vehicle Maintenance Type'
-                                                size='md'
-                                                variant='filled'
-                                                borderRadius="md"
-                                                px={3}
-                                                py={2}
-                                                mt={1}
-                                                width="500px"
-                                            >
-                                                {maintenanceTypeDetails.map((option, index) => (
-                                                    <option key={index} value={option.id}>
-                                                        {option.typeName}
-                                                    </option>
-                                                ))}
-                                            </Select>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Vehicle Maintenance Type</p>
+                            <Field name="maintenanceTypeId" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Maintenance type is Required";
+                                }
+                                return error;
+                            }}>
+                                {({field}) => (
+                                    <div>
+                                        <Select
+                                            {...field}
+                                            placeholder='Vehicle Maintenance Type'
+                                            size='md'
+                                            variant='filled'
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                        >
+                                            {maintenanceTypeDetails.map((option, index) => (
+                                                <option key={index} value={option.id}>
+                                                    {option.typeName}
+                                                </option>
+                                            ))}
+                                        </Select>
 
                                         {errors.maintenanceTypeId && touched.maintenanceTypeId && (
                                             <div className="text-red-500">{errors.maintenanceTypeId}</div>
                                         )}
-                                        </div>
+                                    </div>
+                                )}
+                            </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Maintenance Date</p>
+                            <Field name="maintenanceDate" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "maintenance Date is Required";
+                                }
+                                return error;
+                            }}>
+                                {({field}) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="date"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            name="maintenanceDate"
+                                            placeholder="Maintenance Date"
+                                        />
+                                        {errors.maintenanceDate && touched.maintenanceDate && (
+                                            <div className="text-red-500">{errors.maintenanceDate}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Cost for Maintenance</p>
+                            <Field name="cost" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Cost of Maintenance is Required";
+                                }
+                                return error;
+                            }}>
+                                {({field}) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            placeholder="Cost of Maintenance"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            width="500px"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                        />
+                                        {errors.cost && touched.cost && (
+                                            <div className="text-red-500">{errors.cost}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Service Provider</p>
+                            <Field
+                                as={Input}
+                                type="text"
+                                variant="filled"
+                                borderRadius="md"
+                                px={3}
+                                py={2}
+                                mt={1}
+                                width="500px"
+                                name="serviceProvider"
+                                placeholder="Service Provider"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Replaced Parts</p>
+                            <Field
+                                as={Textarea}
+                                variant="filled"
+                                borderRadius="md"
+                                px={3}
+                                py={2}
+                                mt={1}
+                                width="500px"
+                                name="replacedParts"
+                                placeholder="Replaced Parts"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Special Notes</p>
+                            <Field
+                                as={Textarea}
+                                variant="filled"
+                                borderRadius="md"
+                                px={3}
+                                py={2}
+                                mt={1}
+                                width="500px"
+                                name="specialNotes"
+                                placeholder="Special Notes"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <Flex align="center" gap={2}>
+                                <Field name="isActive">
+                                    {({field, form}) => (
+                                        <Checkbox
+                                            {...field}
+                                            size='lg'
+                                            defaultChecked={field.value}
+                                            className="mt-8"
+                                            onChange={e => form.setFieldValue(field.name, e.target.checked)}
+                                        >
+                                            Is Active
+                                        </Checkbox>
                                     )}
                                 </Field>
-
-                                <div className="flex flex-col gap-3">
-                                    <p>Maintenance Date</p>
-                                    <Field name="maintenanceDate" validate={(value) => {
-                                        let error;
-                                        if (!value) {
-                                            error = "maintenance Date is Required";
-                                        }
-                                        return error;
-                                    }}>
-                                        {({field}) => (
-                                            <div>
-                                                <Input
-                                                    {...field}
-                                                    type="date"
-                                                    variant="filled"
-                                                    borderRadius="md"
-                                                    px={3}
-                                                    py={2}
-                                                    mt={1}
-                                                    width="500px"
-                                                    name="maintenanceDate"
-                                                    placeholder="Maintenance Date"
-                                                />
-                                                {errors.maintenanceDate && touched.maintenanceDate && (
-                                                    <div className="text-red-500">{errors.maintenanceDate}</div>
-                                                )}
-                                            </div>
-                                        )}
-                                    </Field>
-                                    <div className="flex flex-col gap-3">
-                                        <p>Cost for Maintenance</p>
-                                        <Field name="cost" validate={(value) => {
-                                            let error;
-                                            if (!value) {
-                                                error = "Cost of Maintenance is Required";
-                                            }
-                                            return error;
-                                        }}>
-                                            {({field}) => (
-                                                <div>
-                                                    <Input
-                                                        {...field}
-                                                        type="number"
-                                                        placeholder="Cost of Maintenance"
-                                                        variant="filled"
-                                                        borderRadius="md"
-                                                        width="500px"
-                                                        px={3}
-                                                        py={2}
-                                                        mt={1}
-                                                    />
-                                                    {errors.cost && touched.cost && (
-                                                        <div className="text-red-500">{errors.cost}</div>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </Field>
-                                        <div className="flex flex-col gap-3">
-                                            <p>Service Provider</p>
-                                            <Field
-                                                as={Input}
-                                                type="text"
-                                                variant="filled"
-                                                borderRadius="md"
-                                                px={3}
-                                                py={2}
-                                                mt={1}
-                                                width="500px"
-                                                name="serviceProvider"
-                                                placeholder="Service Provider"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-3">
-                                            <p>Replaced Parts</p>
-                                            <Field
-                                                as={Textarea}
-                                                variant="filled"
-                                                borderRadius="md"
-                                                px={3}
-                                                py={2}
-                                                mt={1}
-                                                width="500px"
-                                                name="replacedParts"
-                                                placeholder="Replaced Parts"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-3">
-                                            <p>Special Notes</p>
-                                            <Field
-                                                as={Textarea}
-                                                variant="filled"
-                                                borderRadius="md"
-                                                px={3}
-                                                py={2}
-                                                mt={1}
-                                                width="500px"
-                                                name="specialNotes"
-                                                placeholder="Special Notes"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-3">
-                                            <Flex align="center" gap={2}>
-                                                <Field name="isActive">
-                                                    {({field, form}) => (
-                                                        <Checkbox
-                                                            {...field}
-                                                            size='lg'
-                                                            defaultChecked={field.value}
-                                                            className="mt-8"
-                                                            onChange={e => form.setFieldValue(field.name, e.target.checked)}
-                                                        >
-                                                            Is Active
-                                                        </Checkbox>
-                                                    )}
-                                                </Field>
-                                            </Flex>
-                                        </div>
-                                        <div className="flex gap-10">
-                                            <Button
-                                                bg="gray.400"
-                                                _hover={{bg: "gray.500"}}
-                                                color="#ffffff"
-                                                variant="solid"
-                                                w="230px"
-                                                marginTop="10"
-                                                onClick={handleCancel}
-                                            >
-                                                Cancel
-                                            </Button>
-                                            <Button
-                                                type="submit"
-                                                bg={theme.purple}
-                                                _hover={{bg: theme.onHoverPurple}}
-                                                color="#ffffff"
-                                                variant="solid"
-                                                w="230px"
-                                                marginTop="10"
-                                            >
-                                                Save
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </Flex>
+                        </div>
+                        <div></div>
+                        <div className="flex gap-10">
+                            <Button
+                                bg="gray.400"
+                                _hover={{bg: "gray.500"}}
+                                color="#ffffff"
+                                variant="solid"
+                                w="230px"
+                                marginTop="10"
+                                onClick={handleCancel}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                bg={theme.purple}
+                                _hover={{bg: theme.onHoverPurple}}
+                                color="#ffffff"
+                                variant="solid"
+                                w="230px"
+                                marginTop="10"
+                            >
+                                Save
+                            </Button>
                         </div>
                     </Form>
                 )}
