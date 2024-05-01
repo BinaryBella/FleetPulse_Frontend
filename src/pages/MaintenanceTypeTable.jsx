@@ -50,7 +50,7 @@ export default function MaintenanceTypeTable() {
                     _hover={{ bg: theme.onHoverPurple }}
                     color="white"
                     variant="solid"
-                    w="230px"
+                    w="260px"
                     marginTop="60px"
                     marginBottom="20px"
                     mr="10px"
