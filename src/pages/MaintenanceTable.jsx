@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
     Table,
     Thead,
@@ -6,7 +7,12 @@ import {
     Tr,
     Th,
     Td,
-    Button, Menu, MenuButton, IconButton, MenuList, MenuItem,
+    Button,
+    Menu,
+    MenuButton,
+    IconButton,
+    MenuList,
+    MenuItem,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
@@ -14,31 +20,19 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function MaintenanceTable() {
-    const [vehicleDetails] = useState([
-        {
-            registrationNo: "ABC123",
-            MaintenanceDate: new Date("2024-03-22"),
-            MaintenanceStatus: "Completed",
-            Description: "Routine checkup",
-            Cost: 100.50,
-            PartsReplaced: "Engine oil",
-            ServiceProvider: "AutoCare Services",
-            SpecialNotes: "No additional notes",
-            isActive: true,
-
-        },
-        {
-            registrationNo: "ABC123",
-            MaintenanceDate: new Date("2024-03-15"),
-            MaintenanceStatus: "In Progress",
-            Description: "Brake replacement",
-            Cost: 200.75,
-            PartsReplaced: "Brake pads",
-            ServiceProvider: "Speedy Auto Repairs",
-            SpecialNotes: "Urgent service required",
-            isActive: true,
+    const [vehicleMaintenance, setvehicleMaintenance] = useState([]);
+    const fetchVehicleMaintenance = async () => {
+        try {
+            const response = await axios.get("https://localhost:7265/api/VehicleMaintenance");
+            setvehicleMaintenance(response.data);
+        } catch (error) {
+            console.error("Error fetching vehicle maintenance types:", error);
         }
-    ]);
+    };
+
+    useEffect(() => {
+        fetchVehicleMaintenance();
+    }, []);
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
@@ -83,10 +77,10 @@ export default function MaintenanceTable() {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {vehicleDetails.map((maintenance, index) => (
+                    {vehicleMaintenance.map((maintenance, index) => (
                         <Tr key={index}>
                             <Td>{maintenance.registrationNo}</Td>
-                            <Td>{maintenance.MaintenanceDate.toString()}</Td>
+                            <Td>{maintenance.MaintenanceDate}</Td>
                             <Td>{maintenance.MaintenanceStatus}</Td>
                             <Td>{maintenance.Description}</Td>
                             <Td>{maintenance.Cost}</Td>
@@ -105,12 +99,12 @@ export default function MaintenanceTable() {
                                     />
                                     <MenuList>
                                         <MenuItem>
-                                            <Link to="/app/AddVehicleDetails" >
+                                            <Link to={`/app/EditMaintenance/${vehicleMaintenance.id}`}>
                                                 Edit
                                             </Link>
                                         </MenuItem>
                                         <MenuItem>
-                                            Inactive
+                                            {vehicleMaintenance.status ? "Deactivate" : "Activate"}
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>
