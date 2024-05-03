@@ -1,8 +1,8 @@
 import { Input, Button, FormControl, FormLabel, Stack, FormErrorMessage, Box } from "@chakra-ui/react";
-import { Field, Formik } from "formik";
+import { Field, Formik} from "formik";
 import forgotPassword from "../assets/images/forgotPassword.png";
 import theme from "../config/ThemeConfig.jsx";
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 export default function ResetEmail() {
     const navigate = useNavigate();
@@ -10,9 +10,9 @@ export default function ResetEmail() {
     return (
         <>
             <p className="font-sans text-3xl text-[#393970] mb-10">Reset Password Verification</p>
-            <img src={forgotPassword} alt="ResetPasswordConfirmation" className="w-1/4 mb-10" />
+            <img src={forgotPassword} alt="ResetPasswordConfirmation" className="w-1/4 mb-10"/>
             <Box textAlign="center" w="50%" fontSize="sm">
-                <p className="mb-10">Enter your email Address to continue</p>
+                <p className="mb-10">Enter your email address to continue.</p>
             </Box>
             <Formik
                 initialValues={{
@@ -21,11 +21,11 @@ export default function ResetEmail() {
                 validate={(values) => {
                     const errors = {};
                     if (!values.email) {
-                        errors.email = "Email is Required";
+                        errors.email = "Email is required.";
                     }
                     return errors;
                 }}
-                onSubmit={async (values) => {
+                onSubmit={async (values, { setFieldError }) => {
                     try {
                         console.log("Submitting form with values:", values);
                         const response = await fetch('https://localhost:7265/api/Auth/forgot-password', {
@@ -33,7 +33,7 @@ export default function ResetEmail() {
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ email: values.email })
+                            body: JSON.stringify({email: values.email})
                         });
 
                         if (!response.ok) {
@@ -45,9 +45,9 @@ export default function ResetEmail() {
                             const responseData = await response.json();
                             console.log("Response data:", responseData);
                             if (responseData.status) {
-                                navigate(`/auth/ResetPasswordConfirmation`, { state: { email: values.email } });
+                                navigate(`/auth/ResetPasswordConfirmation`, {state: {email: values.email}});
                             } else {
-                                console.error(responseData.message);
+                                setFieldError('email', 'Email is not found');
                             }
                         } else {
                             throw new Error('Unexpected response format');
@@ -57,7 +57,7 @@ export default function ResetEmail() {
                     }
                 }}
             >
-                {({ handleSubmit, errors, touched }) => (
+                {({handleSubmit, errors, touched}) => (
                     <form className="w-1/2" onSubmit={handleSubmit}>
                         <Stack spacing={3}>
                             <FormControl isInvalid={errors.email && touched.email}>
@@ -73,10 +73,10 @@ export default function ResetEmail() {
                                 />
                                 <FormErrorMessage>{errors.email}</FormErrorMessage>
                             </FormControl>
-                            <Button className="mb-10"
+                            <Button className="mb-2"
                                     type="submit"
                                     bg={theme.purple}
-                                    _hover={{ bg: theme.onHoverPurple }}
+                                    _hover={{bg: theme.onHoverPurple}}
                                     color="#ffffff"
                                     mt={5}
                             >
@@ -86,6 +86,13 @@ export default function ResetEmail() {
                     </form>
                 )}
             </Formik>
+            <div className="flex justify-end">
+                    <Link to="/auth/login">
+                        <Button variant="link" className="mt-3">
+                            Return to Login
+                        </Button>
+                    </Link>
+            </div>
         </>
     );
 }

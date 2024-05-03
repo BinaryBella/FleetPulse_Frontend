@@ -67,7 +67,7 @@ export default function Login() {
                                     validate={(value) => {
                                         let error;
                                         if (!value) {
-                                            error = "Username is Required";
+                                            error = "Username is required.";
                                         }
                                         return error;
                                     }}
@@ -87,7 +87,7 @@ export default function Login() {
                                         validate={(value) => {
                                             let error;
                                             if (!value) {
-                                                error = "Password is Required";
+                                                error = "Password is required.";
                                             }
                                             return error;
                                         }}
