@@ -18,13 +18,16 @@ import {
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 export default function AddVehicleMaintenanceDetails() {
+    const navigate = useNavigate();
     const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
     const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
+    const [VehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
     const fetchVehicleMaintenanceTypes = async () => {
         try {
@@ -40,6 +43,20 @@ export default function AddVehicleMaintenanceDetails() {
         fetchVehicleMaintenanceTypes();
     }, []);
 
+    const fetchVehicleRegNo= async () => {
+        try {
+            const response = await axios.get("https://localhost:7265/api/Vehicle");
+            setVehicleRegNoDetails(response.data);
+            console.log(VehicleRegNoDetails);
+        } catch (error) {
+            console.error("Error fetching vehicle Registration No:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchVehicleRegNo();
+    }, []);
+
     const breadcrumbs = [
         {label: "Vehicle", link: "/"},
         {label: "Vehicle Maintenance", link: "/"},
@@ -48,14 +65,14 @@ export default function AddVehicleMaintenanceDetails() {
 
     const handleSubmit = async (values) => {
         try {
-            console.log(values.vehicleRegistrationNo, values.maintenanceDate);
+            console.log(values.VehicleRegistrationNo, values.maintenanceDate);
             const response = await fetch('https://localhost:7265/api/VehicleMaintenance/vehiclemaintenance', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    VehicleRegistrationNo: values.vehicleRegistrationNo,
+                    VehicleRegistrationNo: values.VehicleRegistrationNo,
                     MaintenanceDate: values.maintenanceDate,
                     MaintenanceTypeId: parseInt(values.maintenanceTypeId),
                     Cost: values.cost,
@@ -91,7 +108,13 @@ export default function AddVehicleMaintenanceDetails() {
 
 
     const handleCancel = () => {
-        console.log("Cancelled");
+        navigate('/app/MaintenanceTable');
+    };
+    const handleSuccessDialogClose = () => {
+        // Close the success dialog
+        onSuccessDialogClose();
+        // Redirect to the vehicle maintenance type table page
+        navigate('/app/MaintenanceTable');
     };
 
 
@@ -100,7 +123,7 @@ export default function AddVehicleMaintenanceDetails() {
             <PageHeader title="Add Vehicle Maintenance Details" breadcrumbs={breadcrumbs}/>
             <Formik
                 initialValues={{
-                    vehicleRegistrationNo: "",
+                    VehicleRegistrationNo: "",
                     maintenanceDate: "",
                     maintenanceTypeId: 0,
                     cost: "",
@@ -115,29 +138,33 @@ export default function AddVehicleMaintenanceDetails() {
                     <Form className="grid grid-cols-2 gap-10 mt-8">
                         <div className="flex flex-col gap-3">
                             <p>Vehicle Registration No</p>
-                            <Field name="vehicleRegistrationNo" validate={(value) => {
+                            <Field name="VehicleRegistrationNo" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "Vehicle Registration No is Required";
+                                    error = "Vehicle Registration No is required.";
                                 }
                                 return error;
                             }}>
-                                {({field}) => (
-                                    <div>
-                                        <Input
+                                {({field}) => (<div>
+                                        <Select
                                             {...field}
-                                            type="text"
-                                            variant="filled"
+                                            placeholder='Vehicle Registration No'
+                                            size='md'
+                                            variant='filled'
                                             borderRadius="md"
                                             px={3}
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            name="vehicleRegistrationNo"
-                                            placeholder="Vehicle Registration No"
-                                        />
-                                        {errors.vehicleRegistrationNo && touched.vehicleRegistrationNo && (
-                                            <div className="text-red-500">{errors.vehicleRegistrationNo}</div>
+                                        >
+                                            {VehicleRegNoDetails.map((option, index) => (
+                                                <option key={index} value={option.VehicleId}>
+                                                    {option.VehicleRegistrationNo}
+                                                </option>
+                                            ))}
+                                        </Select>
+                                        {errors.VehicleRegistrationNo && touched.VehicleRegistrationNo && (
+                                            <div className="text-red-500">{errors.VehicleRegistrationNo}</div>
                                         )}
                                     </div>
                                 )}
@@ -148,7 +175,7 @@ export default function AddVehicleMaintenanceDetails() {
                             <Field name="maintenanceTypeId" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "Maintenance type is Required";
+                                    error = "Maintenance type is required.";
                                 }
                                 return error;
                             }}>
@@ -184,7 +211,7 @@ export default function AddVehicleMaintenanceDetails() {
                             <Field name="maintenanceDate" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "maintenance Date is Required";
+                                    error = "maintenance Date is required.";
                                 }
                                 return error;
                             }}>
@@ -214,7 +241,7 @@ export default function AddVehicleMaintenanceDetails() {
                             <Field name="cost" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "Cost of Maintenance is Required";
+                                    error = "Cost of Maintenance is required.";
                                 }
                                 return error;
                             }}>
@@ -356,7 +383,7 @@ export default function AddVehicleMaintenanceDetails() {
                         {successDialogMessage}
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={onSuccessDialogClose}>Ok</Button>
+                        <Button bg={theme.purple} color="#FFFFFF" onClick={handleSuccessDialogClose}>Ok</Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

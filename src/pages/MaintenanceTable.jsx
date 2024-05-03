@@ -20,19 +20,23 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function MaintenanceTable() {
-    const [vehicleMaintenance, setvehicleMaintenance] = useState([]);
+    const [vehicleMaintenance, setVehicleMaintenance] = useState([]);
+    const [error, setError] = useState(null);
     const fetchVehicleMaintenance = async () => {
         try {
             const response = await axios.get("https://localhost:7265/api/VehicleMaintenance");
-            setvehicleMaintenance(response.data);
+            setVehicleMaintenance(response.data);
         } catch (error) {
-            console.error("Error fetching vehicle maintenance types:", error);
+            console.error("Error fetching vehicle maintenance:", error);
+            setError("Error fetching invite table. Please try again later.");
         }
     };
 
     useEffect(() => {
         fetchVehicleMaintenance();
     }, []);
+
+    console.log(vehicleMaintenance);
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
@@ -64,10 +68,7 @@ export default function MaintenanceTable() {
             <Table className="custom-table">
                 <Thead>
                     <Tr>
-                        <Th>Reg No</Th>
                         <Th>Maintenance Date</Th>
-                        <Th>Maintenance Status</Th>
-                        <Th>Description</Th>
                         <Th>Cost</Th>
                         <Th>Parts Replaced</Th>
                         <Th>Service Provider</Th>
@@ -79,15 +80,12 @@ export default function MaintenanceTable() {
                 <Tbody>
                     {vehicleMaintenance.map((maintenance, index) => (
                         <Tr key={index}>
-                            <Td>{maintenance.registrationNo}</Td>
                             <Td>{maintenance.MaintenanceDate}</Td>
-                            <Td>{maintenance.MaintenanceStatus}</Td>
-                            <Td>{maintenance.Description}</Td>
                             <Td>{maintenance.Cost}</Td>
                             <Td>{maintenance.PartsReplaced}</Td>
                             <Td>{maintenance.ServiceProvider}</Td>
                             <Td>{maintenance.SpecialNotes}</Td>
-                            <Td>{maintenance.isActive ? "Active" : "Inactive"}</Td>
+                            <Td>{maintenance.status ? "Active": "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton
@@ -99,12 +97,12 @@ export default function MaintenanceTable() {
                                     />
                                     <MenuList>
                                         <MenuItem>
-                                            <Link to={`/app/EditMaintenance/${vehicleMaintenance.id}`}>
+                                            <Link to={`/app/EditMaintenance/${maintenance.id}`}>
                                                 Edit
                                             </Link>
                                         </MenuItem>
                                         <MenuItem>
-                                            {vehicleMaintenance.status ? "Deactivate" : "Activate"}
+                                            {maintenance.status ? "Deactivate" : "Activate"}
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>
@@ -113,6 +111,9 @@ export default function MaintenanceTable() {
                     ))}
                 </Tbody>
             </Table>
+            {error && (
+                <div className="mt-4 text-red-500 dark:text-red-400">{error}</div>
+            )}
         </>
     );
 }

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Formik, Form, Field } from "formik";
+import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 import { Button, Checkbox, Input, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useDisclosure } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 
 export default function AddMaintenanceType() {
+    const navigate = useNavigate();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
@@ -54,7 +56,15 @@ export default function AddMaintenanceType() {
     };
 
     const handleCancel = () => {
-        console.log("Cancelled");
+        // Redirect to the vehicle maintenance type table page
+        navigate('/app/MaintenanceTypeTable');
+    };
+
+    const handleSuccessDialogClose = () => {
+        // Close the success dialog
+        onSuccessDialogClose();
+        // Redirect to the vehicle maintenance type table page
+        navigate('/app/MaintenanceTypeTable');
     };
 
     return (
@@ -74,7 +84,7 @@ export default function AddMaintenanceType() {
                             <Field name="TypeName" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "Maintenance type is Required";
+                                    error = "Maintenance type is required.";
                                 }
                                 return error;
                             }}>
@@ -171,7 +181,7 @@ export default function AddMaintenanceType() {
                         {successDialogMessage}
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={onSuccessDialogClose}>Ok</Button>
+                        <Button bg={theme.purple} color="#FFFFFF" onClick={handleSuccessDialogClose}>Ok</Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
