@@ -46,8 +46,8 @@ export default function MyCalendar() {
         <div className="custom-datepicker">
             <Flex alignItems="center" justifyContent="flex-start">
                 {/* Start Date */}
-                {/* <Flex flexDirection="column" alignItems="flex-start" mr={8}> */}
-                    <Text mb={2}>Start Date</Text>
+                 <Flex flexDirection="column" alignItems="flex-start" mr={8}>
+                    <Text mb={2} mr={4}>Start Date</Text>
                     <Flex alignItems="center" position="relative">
                         <Input
                             type="date"
@@ -68,7 +68,7 @@ export default function MyCalendar() {
 
                 {/* End Date */}
                 {/* <Flex flexDirection="column" alignItems="flex-start"> */}
-                    <Text mb={2}>End Date</Text>
+                    <Text mb={2} mr={4}>End Date</Text>
                     <Flex alignItems="center" position="relative">
                         <Input
                             type="date"
@@ -121,6 +121,7 @@ export default function MyCalendar() {
                     />
                 </div>
             )}
+            </Flex>
         </div>
     );
 }
