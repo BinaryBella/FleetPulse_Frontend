@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Button,
     Input,
@@ -23,6 +23,7 @@ import PageHeader from "../components/PageHeader.jsx";
 import Password from "../assets/images/Password.png";
 import './ChangePassword.css'
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 export default function ChangePassword() {
     const [error, setError] = useState('');
@@ -30,33 +31,48 @@ export default function ChangePassword() {
     const [showPassword2, setShowPassword2] = useState(false);
     const [showPassword3, setShowPassword3] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const navigate = useNavigate();
 
-    const handleShowPassword1 = () => {
-        setShowPassword1(!showPassword1);
+    // Toggle password visibility
+    const togglePasswordVisibility = (passwordNumber) => {
+        switch (passwordNumber) {
+            case 1:
+                setShowPassword1(!showPassword1);
+                break;
+            case 2:
+                setShowPassword2(!showPassword2);
+                break;
+            case 3:
+                setShowPassword3(!showPassword3);
+                break;
+            default:
+                break;
+        }
     };
 
-    const handleShowPassword2 = () => {
-        setShowPassword2(!showPassword2);
-    };
-
-    const handleShowPassword3 = () => {
-        setShowPassword3(!showPassword3);
-    };
-
+    // Handle form submission
     const handleSubmit = async (values) => {
         try {
             if (!validateFields(values)) {
                 return;
             }
+
+            // Retrieve username from session storage
+            const storedUsername = sessionStorage.getItem('Username');
+            if (!storedUsername) {
+                setError('Username not found in session storage.');
+                return;
+            }
+
             const response = await fetch('https://localhost:7265/api/Auth/change-password', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-type': 'application/json; charset=UTF-8',
                 },
                 body: JSON.stringify({
-                    oldPassword: values.oldpassword,
-                    newPassword: values.newpassword,
-                    confirmPassword: values.confirmpassword
+                    username: storedUsername, // Use storedUsername retrieved from session storage
+                    oldPassword: values.oldPassword,
+                    newPassword: values.newPassword,
                 })
             });
             const data = await response.json();
@@ -64,7 +80,7 @@ export default function ChangePassword() {
             if (response.ok) {
                 setIsAlertOpen(true);
             } else {
-                setError(data.message);
+                setError(data.message || 'An error occurred. Please try again.');
             }
         } catch (error) {
             console.error('Error:', error.message);
@@ -72,16 +88,17 @@ export default function ChangePassword() {
         }
     };
 
+    // Validate form fields
     const validateFields = (values) => {
         const errors = {};
         if (!values.oldPassword) {
-            errors.oldPassword = "Please fill in this field.";
+            errors.oldPassword = "Please enter your old password.";
         }
         if (!values.newPassword) {
-            errors.newPassword = "Please fill in this field.";
+            errors.newPassword = "Please enter your new password.";
         }
         if (!values.confirmPassword) {
-            errors.confirmPassword = "Please fill in this field.";
+            errors.confirmPassword = "Please confirm your new password.";
         }
         if (values.oldPassword === values.newPassword) {
             errors.newPassword = "New password must be different from old password.";
@@ -92,13 +109,20 @@ export default function ChangePassword() {
         return errors;
     };
 
+    // Handle cancel button click
     const handleCancel = () => {
-        console.log("Cancelled");
+        navigate('/app/Dashboard');
     };
 
+    // Handle closing alert dialog
     const handleAlertClose = () => {
         setIsAlertOpen(false);
     };
+
+    // useEffect to retrieve username from session storage
+    useEffect(() => {
+        sessionStorage.getItem('Username');
+    }, []);
 
     return (
         <>
@@ -107,8 +131,13 @@ export default function ChangePassword() {
                 <div className="flex flex-col gap-8">
                     <Formik
                         onSubmit={handleSubmit}
+                        initialValues={{
+                            oldPassword: "",
+                            newPassword: "",
+                            confirmPassword: ""
+                        }}
                     >
-                        {({handleSubmit, errors, touched}) => (
+                        {({ handleSubmit, errors, touched }) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                                 <FormControl isInvalid={!!errors.oldPassword && touched.oldPassword}>
                                     <FormLabel htmlFor="oldPassword">Old Password</FormLabel>
@@ -126,8 +155,8 @@ export default function ChangePassword() {
                                                 h="1.75rem"
                                                 size="sm"
                                                 variant="ghost"
-                                                onClick={handleShowPassword3}
-                                                icon={showPassword3 ? <ViewOffIcon/> : <ViewIcon/>}
+                                                onClick={() => togglePasswordVisibility(3)}
+                                                icon={showPassword3 ? <ViewOffIcon /> : <ViewIcon />}
                                                 aria-label="password-icon"
                                             />
                                         </InputRightElement>
@@ -150,8 +179,8 @@ export default function ChangePassword() {
                                                 h="1.75rem"
                                                 size="sm"
                                                 variant="ghost"
-                                                onClick={handleShowPassword1}
-                                                icon={showPassword1 ? <ViewOffIcon/> : <ViewIcon/>}
+                                                onClick={() => togglePasswordVisibility(1)}
+                                                icon={showPassword1 ? <ViewOffIcon /> : <ViewIcon />}
                                                 aria-label="password-icon"
                                             />
                                         </InputRightElement>
@@ -174,8 +203,8 @@ export default function ChangePassword() {
                                                 h="1.75rem"
                                                 size="sm"
                                                 variant="ghost"
-                                                onClick={handleShowPassword2}
-                                                icon={showPassword2 ? <ViewOffIcon/> : <ViewIcon/>}
+                                                onClick={() => togglePasswordVisibility(2)}
+                                                icon={showPassword2 ? <ViewOffIcon /> : <ViewIcon />}
                                                 aria-label="password-icon"
                                             />
                                         </InputRightElement>
@@ -184,14 +213,14 @@ export default function ChangePassword() {
                                 </FormControl>
                                 {error && (
                                     <Alert status="error">
-                                        <AlertIcon/>
+                                        <AlertIcon />
                                         {error}
                                     </Alert>
                                 )}
                                 <div className="flex gap-4 mt-10">
                                     <Button
                                         bg="gray.400"
-                                        _hover={{bg: "gray.500"}}
+                                        _hover={{ bg: "gray.500" }}
                                         color="#ffffff"
                                         variant="solid"
                                         w="240px"
@@ -202,7 +231,7 @@ export default function ChangePassword() {
                                     </Button>
                                     <Button
                                         bg={theme.purple}
-                                        _hover={{bg: theme.onHoverPurple}}
+                                        _hover={{ bg: theme.onHoverPurple }}
                                         color="#ffffff"
                                         variant="solid"
                                         w="240px"
@@ -216,7 +245,7 @@ export default function ChangePassword() {
                     </Formik>
                 </div>
                 <div className="flex items-end">
-                    <img src={Password} alt="Change Password" width="400" height="400" className="opacity-70 mr-14"/>
+                    <img src={Password} alt="Change Password" width="400" height="400" className="opacity-70 mr-14" />
                 </div>
             </div>
             <AlertDialog

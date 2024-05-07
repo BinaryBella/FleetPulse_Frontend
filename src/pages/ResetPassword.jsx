@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FormControl, FormErrorMessage, FormLabel, IconButton, Input, InputGroup, InputRightElement, Stack, Button, Alert, AlertIcon } from "@chakra-ui/react";
-import ResetPass2 from "../assets/images/ResetPass2.png";
-import theme from "../config/ThemeConfig.jsx";
-import { Box } from "@chakra-ui/react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FormControl, FormErrorMessage, FormLabel, IconButton, Input, InputGroup, InputRightElement, Stack, Button, Alert, AlertIcon, Box } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Field, Formik } from "formik";
-import { useLocation } from "react-router-dom";
+import ResetPass2 from "../assets/images/ResetPass2.png";
+import theme from "../config/ThemeConfig.jsx";
 
 export default function ResetPassword() {
     const [showPassword1, setShowPassword1] = useState(false);
@@ -14,7 +12,13 @@ export default function ResetPassword() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
-    const { email } = location.state;
+    let email = "";
+
+    if (location.state == null) {
+        navigate("/auth/login");
+    } else {
+        email = location.state.email;
+    }
 
     const handleShowPassword1 = () => {
         setShowPassword1(!showPassword1);
@@ -37,12 +41,10 @@ export default function ResetPassword() {
                 })
             });
 
-            const data = await response.json();
-
             if (response.ok) {
                 navigate("/auth/ResetPassSuccess");
             } else {
-                setError(data.message);
+                setError("Failed to reset password. Please try again.");
             }
         } catch (error) {
             console.error('Error:', error.message);
@@ -66,10 +68,10 @@ export default function ResetPassword() {
                 validate={(values) => {
                     const errors = {};
                     if (!values.newpassword) {
-                        errors.newpassword = "New Password is Required";
+                        errors.newpassword = "New Password is required.";
                     }
                     if (!values.confirmpassword) {
-                        errors.confirmpassword = "Confirm Password is Required";
+                        errors.confirmpassword = "Confirm Password is required.";
                     }
                     if (values.newpassword !== values.confirmpassword) {
                         errors.confirmpassword = "Passwords do not match";
@@ -78,12 +80,12 @@ export default function ResetPassword() {
                 }}
                 onSubmit={handleSubmit}
             >
-                {({ handleSubmit, errors, touched }) => (
+                {({handleSubmit, errors, touched}) => (
                     <form onSubmit={handleSubmit} className="w-1/2">
                         <Stack spacing={3}>
                             {error && ( // Display error message if error state is not empty
                                 <Alert status="error" mb={4}>
-                                    <AlertIcon />
+                                    <AlertIcon/>
                                     {error}
                                 </Alert>
                             )}
