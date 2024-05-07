@@ -17,8 +17,7 @@ export default function ResetPassword() {
     if (location.state == null) {
         navigate("/auth/login");
     } else {
-        const { emailFromRoute } = location.state;
-        email = emailFromRoute;
+        email = location.state.email;
     }
 
     const handleShowPassword1 = () => {
@@ -41,8 +40,6 @@ export default function ResetPassword() {
                     newPassword: values.newpassword
                 })
             });
-
-            const data = await response.json();
 
             if (response.ok) {
                 navigate("/auth/ResetPassSuccess");

@@ -2,10 +2,12 @@ import { Input, Button, FormControl, FormLabel, Stack, FormErrorMessage, Box } f
 import { Field, Formik} from "formik";
 import forgotPassword from "../assets/images/forgotPassword.png";
 import theme from "../config/ThemeConfig.jsx";
+import { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 
 export default function ResetEmail() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     return (
         <>
@@ -28,6 +30,7 @@ export default function ResetEmail() {
                 onSubmit={async (values, { setFieldError }) => {
                     try {
                         console.log("Submitting form with values:", values);
+                        setLoading(true);
                         const response = await fetch('https://localhost:7265/api/Auth/forgot-password', {
                             method: 'POST',
                             headers: {
@@ -55,6 +58,9 @@ export default function ResetEmail() {
                     } catch (error) {
                         console.error('Error:', error.message);
                     }
+                    finally {
+                        setLoading(false); // Stop loading after form submission
+                    }
                 }}
             >
                 {({handleSubmit, errors, touched}) => (
@@ -79,6 +85,9 @@ export default function ResetEmail() {
                                     _hover={{bg: theme.onHoverPurple}}
                                     color="#ffffff"
                                     mt={5}
+                                    isLoading={loading}
+                                    loadingText='Sending'
+                                    variant='outline'
                             >
                                 Send Verification Code
                             </Button>
