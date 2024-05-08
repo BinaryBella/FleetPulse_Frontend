@@ -7,7 +7,7 @@ import {
     AccordionItem,
     AccordionButton,
     AccordionPanel,
-    AccordionIcon,
+    AccordionIcon, Box,
 } from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
