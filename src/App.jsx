@@ -1,5 +1,5 @@
-import './App.css';
-import { Route, Routes } from "react-router-dom";
+import './App.css'
+import {Navigate, Route, Routes} from "react-router-dom";
 import MainLayout from "./layouts/MainLayout.jsx";
 import AnonymousLayout from "./layouts/AnonymousLayout.jsx";
 import Login from "./pages/Login.jsx";
@@ -41,6 +41,9 @@ import TripReport from "./pages/TripReport.jsx";
 import AccidentReport from "./pages/AccidentReport.jsx";
 
 export default function App() {
+
+    const token = localStorage.getItem("Token");
+
     return (
         <Routes>
             <Route path="/app" element={<MainLayout/>}>
@@ -76,13 +79,14 @@ export default function App() {
                 <Route path="TripReport" element={<TripReport/>}/>
                 <Route path="AccidentReport" element={<AccidentReport/>}/>
             </Route>
-            <Route path="/app" element={<AnonymousLayout/>}>
+            <Route path="/auth" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>
                 <Route path="resetPassword" element={<ResetPassword/>}/>
                 <Route path="ResetPasswordConfirmation" element={<ResetPasswordConfirmation/>}/>
                 <Route path="ResetPassSuccess" element={<ResetPassSuccess/>}/>
                 <Route path="ResetEmail" element={<ResetEmail/>}/>
             </Route>
+            <Route path="/" element={token == null ? <Navigate to="/auth/Login" /> : <Navigate to="/app/Dashboard" />}/>
         </Routes>
     );
 }

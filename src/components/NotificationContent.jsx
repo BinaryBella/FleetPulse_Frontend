@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import {IoMdClose} from "react-icons/io";
-import {Tag} from "@chakra-ui/react";
+import {Tag, Text} from "@chakra-ui/react";
 import {Icon} from "@chakra-ui/icons";
 import {BsClockFill} from "react-icons/bs";
 

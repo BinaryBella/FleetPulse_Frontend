@@ -44,6 +44,7 @@ export default function Login() {
                         if (data.status === false) {
                             setBackendError(data.message);
                         } else {
+                            sessionStorage.setItem('Username',values.username);
                             localStorage.setItem('Token', data.data);
                             navigate("/app/dashboard");
                         }
@@ -66,7 +67,7 @@ export default function Login() {
                                     validate={(value) => {
                                         let error;
                                         if (!value) {
-                                            error = "Username is Required";
+                                            error = "Username is required.";
                                         }
                                         return error;
                                     }}
@@ -86,7 +87,7 @@ export default function Login() {
                                         validate={(value) => {
                                             let error;
                                             if (!value) {
-                                                error = "Password is Required";
+                                                error = "Password is required.";
                                             }
                                             return error;
                                         }}
@@ -106,7 +107,7 @@ export default function Login() {
                             </FormControl>
                             <div className="flex justify-end">
                                 {!resetClicked && (
-                                    <Link to="/app/ResetEmail" onClick={handleResetClick}>
+                                    <Link to="/auth/ResetEmail" onClick={handleResetClick}>
                                         <Button variant="link" className="mb-5">
                                             Reset Password
                                         </Button>

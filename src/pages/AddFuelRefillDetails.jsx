@@ -16,6 +16,9 @@ import {MdArrowDropDown} from "react-icons/md";
 import theme from "../config/ThemeConfig.jsx";
 
 export default function AddFuelRefillDetails() {
+
+    let username = sessionStorage.getItem("Username");
+
     const breadcrumbs = [
         {label: 'Vehicle', link: '/'},
         {label: 'Fuel Refill Details', link: '/'},
@@ -24,13 +27,10 @@ export default function AddFuelRefillDetails() {
     // Function to handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        // You can submit the userData object to your backend here
         console.log();
     };
 
-    // Function to handle cancel action
     const handleCancel = () => {
-        // Reset form fields or redirect to another page
         console.log("Cancelled");
     };
 

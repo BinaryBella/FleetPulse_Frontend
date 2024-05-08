@@ -5,7 +5,7 @@ import VerificationInput from "react-verification-input";
 
 export const VerificationCodeInput = ({ label, ...props }) => {
     const { setFieldValue } = useFormikContext();
-    const [field, meta] = useField(props);
+    const [ meta] = useField(props);
 
     const handleChange = value => {
         setFieldValue(props.name, value).then(r => r);
@@ -17,8 +17,8 @@ export const VerificationCodeInput = ({ label, ...props }) => {
             <VerificationInput
                 validChars="0-9"
                 inputProps={{ inputMode: "numeric" }}
-                value={pinValue} // Set the initial value of the pin
-                onChange={handleChange} // Handle change of pin value
+                value={pinValue}
+                onChange={handleChange}
                 classNames={{
                     container: "container",
                     character: "character",

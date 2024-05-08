@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
     Table,
     Thead,
@@ -6,7 +7,12 @@ import {
     Tr,
     Th,
     Td,
-    Button, Menu, MenuButton, IconButton, MenuList, MenuItem,
+    Button,
+    Menu,
+    MenuButton,
+    IconButton,
+    MenuList,
+    MenuItem,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
@@ -14,17 +20,20 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function MaintenanceTypeTable() {
-    const [vehicleDetails] = useState([
-        {
+    const [vehicleDetails, setVehicleDetails] = useState([]);
 
-            MaintenanceType: "Oil Change",
-            isActive: true,
-        },
-        {
-            MaintenanceType: "Tyre Change",
-            isActive: false,
-        },
-    ]);
+    const fetchVehicleMaintenanceTypes = async () => {
+        try {
+            const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
+            setVehicleDetails(response.data);
+        } catch (error) {
+            console.error("Error fetching vehicle maintenance types:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchVehicleMaintenanceTypes();
+    }, []);
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
@@ -41,13 +50,13 @@ export default function MaintenanceTypeTable() {
                     _hover={{ bg: theme.onHoverPurple }}
                     color="white"
                     variant="solid"
-                    w="230px"
+                    w="260px"
                     marginTop="60px"
                     marginBottom="20px"
                     mr="10px"
                     position="absolute"
                     top="130"
-                    right="0"
+                    right="50"
                 >
                     Add Vehicle Maintenance Type
                 </Button>
@@ -64,25 +73,25 @@ export default function MaintenanceTypeTable() {
                 <Tbody>
                     {vehicleDetails.map((vehicle, index) => (
                         <Tr key={index}>
-                            <Td>{vehicle.MaintenanceType}</Td>
-                            <Td>{vehicle.isActive ? "Active" : "Inactive"}</Td>
+                            <Td>{vehicle.typeName}</Td>
+                            <Td>{vehicle.status ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton
                                         color={theme.purple}
                                         as={IconButton}
-                                        aria-label='profile-options'
-                                        fontSize='20px'
-                                        icon={<IoSettingsSharp/>}
+                                        aria-label="profile-options"
+                                        fontSize="20px"
+                                        icon={<IoSettingsSharp />}
                                     />
                                     <MenuList>
                                         <MenuItem>
-                                            <Link to="/app/" >
+                                            <Link to={`/app/EditMaintenanceType/${vehicle.id}`}>
                                                 Edit
                                             </Link>
                                         </MenuItem>
                                         <MenuItem>
-                                            Inactive
+                                            {vehicle.status ? "Deactivate" : "Activate"}
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>
@@ -94,4 +103,3 @@ export default function MaintenanceTypeTable() {
         </>
     );
 }
-
