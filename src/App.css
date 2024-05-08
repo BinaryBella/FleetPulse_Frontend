@@ -30,8 +30,6 @@
     padding: 15px;
     width: fit-content;
     font-size: 1.125rem;
-    text-align: center;      /* Horizontal centering */
-    vertical-align: middle;  /* Vertical centering */
 }
 
 .custom-table tr {

@@ -39,6 +39,9 @@ import HelperReport from "./pages/HelperReport.jsx";
 import StaffReport from "./pages/StaffReport.jsx";
 import TripReport from "./pages/TripReport.jsx";
 import AccidentReport from "./pages/AccidentReport.jsx";
+import MaintenanceTable from "./pages/MaintenanceTable.jsx";
+import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
+import FuelRefillTable from "./pages/FuelRefillTable.jsx";
 
 export default function App() {
 
@@ -78,6 +81,9 @@ export default function App() {
                 <Route path="StaffReport" element={<StaffReport/>}/>
                 <Route path="TripReport" element={<TripReport/>}/>
                 <Route path="AccidentReport" element={<AccidentReport/>}/>
+                <Route path="MaintenanceTable" element={<MaintenanceTable/>}/>
+                <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable/>}/>
+                <Route path="FuelRefillTable" element={<FuelRefillTable/>}/>
             </Route>
             <Route path="/auth" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>
