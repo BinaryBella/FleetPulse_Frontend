@@ -45,8 +45,8 @@ export default function MyCalendar() {
     return (
         <div className="custom-datepicker">
             <Flex alignItems="center" justifyContent="flex-start">
-                {/* Start Date */}
-                 <Flex flexDirection="column" alignItems="flex-start" mr={8}>
+                <Flex alignItems="center" mr={8}>
+                    {/* Start Date */}
                     <Text mb={2} mr={4}>Start Date</Text>
                     <Flex alignItems="center" position="relative">
                         <Input
@@ -54,7 +54,6 @@ export default function MyCalendar() {
                             variant="filled"
                             borderRadius="md"
                             px={3}
-                           
                             width="300px"
                             name="startDate"
                             placeholder="Start Date"
@@ -64,10 +63,10 @@ export default function MyCalendar() {
                         />
                         <Icon as={BsCalendar} onClick={toggleStartCalendar} cursor="pointer" position="absolute" right="10px" top="50%" transform="translateY(-50%)" />
                     </Flex>
-                {/* </Flex> */}
+                </Flex>
 
-                {/* End Date */}
-                {/* <Flex flexDirection="column" alignItems="flex-start"> */}
+                <Flex alignItems="center">
+                    {/* End Date */}
                     <Text mb={2} mr={4}>End Date</Text>
                     <Flex alignItems="center" position="relative">
                         <Input
@@ -75,7 +74,6 @@ export default function MyCalendar() {
                             variant="filled"
                             borderRadius="md"
                             px={3}
-                           
                             width="300px"
                             name="endDate"
                             placeholder="End Date"
@@ -86,7 +84,7 @@ export default function MyCalendar() {
                         <Icon as={BsCalendar} onClick={toggleEndCalendar} cursor="pointer" position="absolute" right="10px" top="50%" transform="translateY(-50%)" />
                     </Flex>
                 </Flex>
-            {/* </Flex> */}
+            </Flex>
 
             {startCalendarOpen && (
                 <div ref={startCalendarRef}>
@@ -121,7 +119,6 @@ export default function MyCalendar() {
                     />
                 </div>
             )}
-            </Flex>
         </div>
     );
 }

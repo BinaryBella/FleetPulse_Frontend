@@ -1,58 +1,41 @@
-// Import necessary libraries and components
-import React from "react";
-import { useTable } from 'react-table';
+import PropTypes from 'prop-types';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 
-// Define the MyTable functional component
 export default function MyTable({ columns, data }) {
-
-    // Destructure table hooks and methods from useTable hook
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({
-        columns,
-        data,
-    });
-
-    // Render the component
     return (
-
-        // Render table with props from useTable hook
-        <table className="custom-table" {...getTableProps()}>
-
+        <Table className="custom-table">
             {/* Table Header */}
-            <thead>
-            {/* Map over header groups to render table headers */}
-            {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                    {/* Map over columns to render individual headers */}
-                    {headerGroup.headers.map(column => (
-                        <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+            <Thead align="center">
+                <Tr>
+                    {/* Render table headers */}
+                    {columns.map(column => (
+                        <Th key={column.Header}>{column.Header}</Th>
                     ))}
-                </tr>
-            ))}
-            </thead>
+                </Tr>
+            </Thead>
 
             {/* Table Body */}
-            <tbody {...getTableBodyProps()}>
-            {/* Map over rows to render table rows */}
-            {rows.map(row => {
-                // Prepare row for rendering
-                prepareRow(row);
-                return (
-                    <tr {...row.getRowProps()}>
-                        {/* Map over cells to render individual table cells */}
-                        {row.cells.map(cell => (
-                            <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+            <Tbody>
+                {/* Map over data to render table rows */}
+                {data.map((row, index) => (
+                    <Tr key={index}>
+                        {/* Map over columns to render individual cells */}
+                        {columns.map(column => (
+                            <Td key={column.accessor}>{row[column.accessor]}</Td>
                         ))}
-                    </tr>
-                );
-            })}
-            </tbody>
-
-        </table>
+                    </Tr>
+                ))}
+            </Tbody>
+        </Table>
     );
 }
+
+MyTable.propTypes = {
+    columns: PropTypes.arrayOf(
+        PropTypes.shape({
+            Header: PropTypes.string.isRequired,
+            accessor: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+};

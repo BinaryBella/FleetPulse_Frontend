@@ -1,13 +1,9 @@
 import PageHeader from "../components/PageHeader.jsx";
 import MyTable from "../components/MyTable.jsx";
 import {
-    Button,
-    Checkbox,
-    Input,
-    Select
+    Button
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
-import {MdArrowDropDown} from "react-icons/md";
 import DatePicker from "../components/MyCalendar.jsx";
 
 export default function VehicleTypeReport() {
@@ -23,9 +19,7 @@ export default function VehicleTypeReport() {
         console.log('Form submitted');
     };
 
-    const handleCancel = () => {
-        console.log('Cancelled');
-    };
+
     const columns =[
         {
             Header: 'Vehicle Type',

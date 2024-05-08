@@ -20,10 +20,7 @@ export default function DriverReport() {
         console.log('Form submitted');
     };
 
-    // Function to handle form cancellation
-    const handleCancel = () => {
-        console.log('Cancelled');
-    };
+
 
     // Define columns for the table
     const columns = [
