@@ -1,11 +1,10 @@
-import {useState, useRef, useEffect} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
     Text,
     Input,
     Button,
     Avatar,
     AvatarGroup,
-    Checkbox,
     AlertDialog,
     AlertDialogOverlay,
     AlertDialogContent,
@@ -14,34 +13,18 @@ import {
     AlertDialogFooter,
     useDisclosure
 } from "@chakra-ui/react";
-import {AiOutlineUser} from "react-icons/ai";
 import theme from "../config/ThemeConfig.jsx";
-import {Formik, Form, Field} from "formik";
-import {useNavigate} from "react-router-dom";
+import { Formik, Form, Field } from "formik";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function UserProfile() {
     const navigate = useNavigate();
-    const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
-    const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
+    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
+    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
-    const [userDetails, setUserDetails] = useState([]);
-
-    const fetchUser = async () => {
-        try {
-            const response = await axios.get("https://localhost:7265/api/Auth/chathuk");
-            setUserDetails(response.data);
-            console.log(setUserDetails);
-        } catch (error) {
-            console.error("Error fetching User details:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchUser();
-    }, []);
-
+    const [image, setImage] = useState("");
     const [userData, setUserData] = useState({
         FirstName: "",
         LastName: "",
@@ -49,31 +32,47 @@ export default function UserProfile() {
         EmailAddress: "",
         PhoneNo: "",
         NIC: "",
-        EmergencyContact: "",
-        profileImage: "",
-        DriverLicenseNo: "",
-        LicenseExpiryDate: "",
-        BloodGroup: "",
-        JobTitle: "",
-        isActive: ""
+        ProfilePicture: "",
     });
+
+    const fetchUser = async () => {
+        try {
+            const username = sessionStorage.getItem("Username");
+            if (username) {
+                const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
+                const responseData = response.data;
+                setUserData({
+                    FirstName: responseData.firstName,
+                    LastName: responseData.lastName,
+                    DateOfBirth: responseData.dateOfBirth,
+                    EmailAddress: responseData.emailAddress,
+                    PhoneNo: responseData.phoneNo,
+                    NIC: responseData.nic,
+                    ProfilePicture: responseData.profilePicture,
+                });
+                setImage(responseData.profilePicture);
+            } else {
+                console.error("Username not found in session storage");
+            }
+        } catch (error) {
+            console.error("Error fetching User details:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser().then();
+    }, []);
 
     const fileInputRef = useRef(null);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        setUserData((prevData) => ({
-            ...prevData,
-            profileImage: file
-        }));
-    };
-
-    const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setUserData((prevData) => ({
-            ...prevData,
-            [name]: value
-        }));
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64String = reader.result.split(',')[1];
+            setImage(base64String);
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleAvatarClick = () => {
@@ -82,31 +81,36 @@ export default function UserProfile() {
 
     const handleSubmit = async (values) => {
         try {
-            const response = await fetch('https://localhost:7265/api/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            const username = sessionStorage.getItem("Username");
+            const response = await axios.put('https://localhost:7265/api/Auth/UpdateUser', {
+                    Username: username,
+                    FirstName: values.FirstName,
+                    LastName: values.LastName,
+                    DateOfBirth: values.DateOfBirth,
+                    EmailAddress: values.EmailAddress,
+                    PhoneNo: values.PhoneNo,
+                    NIC: values.NIC,
+                    ProfilePicture: image
                 },
-                body: JSON.stringify({
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-                })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to add User Details');
+            if (!response.status === 200) {
+                throw new Error('Failed to edit User Details');
             }
 
-            if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('User Details already exists');
+            if (response.data.message && response.data.message.toLowerCase().includes('exist')) {
+                setDialogMessage('User already exists');
                 onDialogOpen();
             } else {
-                setSuccessDialogMessage('User Details added successfully');
+                setSuccessDialogMessage('User details added successfully');
                 onSuccessDialogOpen();
             }
         } catch (error) {
-            if (error instanceof TypeError) {
+            if (error.response && error.response.status === 404) {
                 setDialogMessage('Failed to connect to the server');
             } else {
                 setDialogMessage(error.message || 'Failed to add User details');
@@ -114,6 +118,7 @@ export default function UserProfile() {
             onDialogOpen();
         }
     };
+
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
@@ -130,15 +135,15 @@ export default function UserProfile() {
                 User Profile
             </Text>
             <Formik
+                enableReinitialize={true}
                 initialValues={{
-                    FirstName: "",
-                    LastName: "",
-                    DateOfBirth: "",
-                    EmailAddress: "",
-                    PhoneNo: "",
-                    NIC: "",
-                    profileImage: "",
-                    isActive: ""
+                    FirstName: userData.FirstName ?? "",
+                    LastName: userData.LastName ?? "",
+                    DateOfBirth: userData.DateOfBirth ?? "",
+                    EmailAddress: userData.EmailAddress ?? "",
+                    PhoneNo: userData.PhoneNo ?? "",
+                    NIC: userData.NIC ?? "",
+                    ProfilePicture: userData.profilePicture ?? "",
                 }}
                 onSubmit={handleSubmit}
             >
@@ -147,17 +152,17 @@ export default function UserProfile() {
                         <div className="flex flex-grow gap-6">
                             <div className="w-1/5">
                                 <AvatarGroup size="2xl" mb="4" mt="8" ml="12">
-                                    <Avatar
-                                        bg="#393970"
-                                        icon={<AiOutlineUser/>}
-                                        cursor="pointer"
-                                        onClick={handleAvatarClick}
-                                    >
-                                    </Avatar>
+                                    {userData.ProfilePicture && (
+                                        <Avatar
+                                            src={`data:image/jpeg;base64,${userData.ProfilePicture}`}
+                                            cursor="pointer"
+                                            onClick={handleAvatarClick}
+                                        />
+                                    )}
                                 </AvatarGroup>
                                 <Input
                                     ref={fileInputRef}
-                                    id="profileImage"
+                                    id="profilePicture"
                                     type="file"
                                     accept="image/*"
                                     onChange={handleImageChange}
@@ -212,7 +217,7 @@ export default function UserProfile() {
                                                     <div>
                                                         <Input
                                                             {...field}
-                                                            type="date"
+                                                            type="datetime-local"
                                                             variant="filled"
                                                             borderRadius="md"
                                                             px={3}
@@ -261,19 +266,6 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <Field name="isActive">
-                                            {({field, form}) => (
-                                                <Checkbox
-                                                    {...field}
-                                                    size='lg'
-                                                    defaultChecked={field.value}
-                                                    className="mt-8"
-                                                    onChange={e => form.setFieldValue(field.name, e.target.checked)}
-                                                >
-                                                    Is Active
-                                                </Checkbox>
-                                            )}
-                                        </Field>
                                     </div>
                                     <div className="w-2/5">
                                         <div>
