@@ -152,9 +152,9 @@ export default function UserProfile() {
                         <div className="flex flex-grow gap-6">
                             <div className="w-1/5">
                                 <AvatarGroup size="2xl" mb="4" mt="8" ml="12">
-                                    {userData.ProfilePicture && (
+                                    {image && (
                                         <Avatar
-                                            src={`data:image/jpeg;base64,${userData.ProfilePicture}`}
+                                            src={`data:image/jpeg;base64,${image}`}
                                             cursor="pointer"
                                             onClick={handleAvatarClick}
                                         />
