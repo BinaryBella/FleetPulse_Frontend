@@ -33,31 +33,24 @@ export default function ChangePassword() {
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const navigate = useNavigate();
 
-    // Toggle password visibility
-    const togglePasswordVisibility = (passwordNumber) => {
-        switch (passwordNumber) {
-            case 1:
-                setShowPassword1(!showPassword1);
-                break;
-            case 2:
-                setShowPassword2(!showPassword2);
-                break;
-            case 3:
-                setShowPassword3(!showPassword3);
-                break;
-            default:
-                break;
-        }
+    const handleShowPassword1 = () => {
+        setShowPassword1(!showPassword1);
     };
 
-    // Handle form submission
+    const handleShowPassword2 = () => {
+        setShowPassword2(!showPassword2);
+    };
+
+    const handleShowPassword3 = () => {
+        setShowPassword3(!showPassword3);
+    };
+
+    const handleAlertClose = () => {
+        setIsAlertOpen(false);
+    };
+
     const handleSubmit = async (values) => {
         try {
-            if (!validateFields(values)) {
-                return;
-            }
-
-            // Retrieve username from session storage
             const storedUsername = sessionStorage.getItem('Username');
             if (!storedUsername) {
                 setError('Username not found in session storage.');
@@ -70,17 +63,21 @@ export default function ChangePassword() {
                     'Content-type': 'application/json; charset=UTF-8',
                 },
                 body: JSON.stringify({
-                    username: storedUsername, // Use storedUsername retrieved from session storage
+                    username: storedUsername,
                     oldPassword: values.oldPassword,
                     newPassword: values.newPassword,
                 })
             });
-            const data = await response.json();
 
             if (response.ok) {
                 setIsAlertOpen(true);
             } else {
-                setError(data.message || 'An error occurred. Please try again.');
+                if (response.status === 401) {
+                    setIsAlertOpen(false);
+                } else {
+                    const data = await response.json();
+                    setError(data.message || 'An error occurred. Please try again.');
+                }
             }
         } catch (error) {
             console.error('Error:', error.message);
@@ -88,38 +85,11 @@ export default function ChangePassword() {
         }
     };
 
-    // Validate form fields
-    const validateFields = (values) => {
-        const errors = {};
-        if (!values.oldPassword) {
-            errors.oldPassword = "Please enter your old password.";
-        }
-        if (!values.newPassword) {
-            errors.newPassword = "Please enter your new password.";
-        }
-        if (!values.confirmPassword) {
-            errors.confirmPassword = "Please confirm your new password.";
-        }
-        if (values.oldPassword === values.newPassword) {
-            errors.newPassword = "New password must be different from old password.";
-        }
-        if (values.newPassword !== values.confirmPassword) {
-            errors.confirmPassword = "Passwords do not match.";
-        }
-        return errors;
-    };
 
-    // Handle cancel button click
     const handleCancel = () => {
         navigate('/app/Dashboard');
     };
 
-    // Handle closing alert dialog
-    const handleAlertClose = () => {
-        setIsAlertOpen(false);
-    };
-
-    // useEffect to retrieve username from session storage
     useEffect(() => {
         sessionStorage.getItem('Username');
     }, []);
@@ -136,10 +106,29 @@ export default function ChangePassword() {
                             newPassword: "",
                             confirmPassword: ""
                         }}
+                        validate={(values) => {
+                            const errors = {};
+                            if (!values.oldPassword) {
+                                errors.oldPassword = "Please enter your old password.";
+                            }
+                            if (!values.newPassword) {
+                                errors.newPassword = "Please enter your new password.";
+                            }
+                            if (!values.confirmPassword) {
+                                errors.confirmPassword = "Please confirm your new password.";
+                            }
+                            if (values.oldPassword === values.newPassword) {
+                                errors.newPassword = "New password must be different from old password.";
+                            }
+                            if (values.newPassword !== values.confirmPassword) {
+                                errors.confirmPassword = "Passwords do not match with new password.";
+                            }
+                            return errors;
+                        }}
                     >
-                        {({ handleSubmit, errors, touched }) => (
+                        {({handleSubmit, errors, touched}) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                                <FormControl isInvalid={!!errors.oldPassword && touched.oldPassword}>
+                                <FormControl isInvalid={!!errors.oldPassword || (error && error.includes("Old password does not match the stored password."))}>
                                     <FormLabel htmlFor="oldPassword">Old Password</FormLabel>
                                     <InputGroup>
                                         <Field
@@ -155,13 +144,15 @@ export default function ChangePassword() {
                                                 h="1.75rem"
                                                 size="sm"
                                                 variant="ghost"
-                                                onClick={() => togglePasswordVisibility(3)}
-                                                icon={showPassword3 ? <ViewOffIcon /> : <ViewIcon />}
+                                                onClick={handleShowPassword3}
+                                                icon={showPassword3 ? <ViewOffIcon/> : <ViewIcon/>}
                                                 aria-label="password-icon"
                                             />
                                         </InputRightElement>
                                     </InputGroup>
-                                    <FormErrorMessage>{errors.oldPassword}</FormErrorMessage>
+                                    <FormErrorMessage>
+                                        {errors.oldPassword || (error && error.includes("Old password does not match the stored password."))}
+                                    </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={!!errors.newPassword && touched.newPassword}>
                                     <FormLabel htmlFor="newPassword">New Password</FormLabel>
@@ -179,8 +170,8 @@ export default function ChangePassword() {
                                                 h="1.75rem"
                                                 size="sm"
                                                 variant="ghost"
-                                                onClick={() => togglePasswordVisibility(1)}
-                                                icon={showPassword1 ? <ViewOffIcon /> : <ViewIcon />}
+                                                onClick={handleShowPassword1}
+                                                icon={showPassword1 ? <ViewOffIcon/> : <ViewIcon/>}
                                                 aria-label="password-icon"
                                             />
                                         </InputRightElement>
@@ -203,8 +194,8 @@ export default function ChangePassword() {
                                                 h="1.75rem"
                                                 size="sm"
                                                 variant="ghost"
-                                                onClick={() => togglePasswordVisibility(2)}
-                                                icon={showPassword2 ? <ViewOffIcon /> : <ViewIcon />}
+                                                onClick={handleShowPassword2}
+                                                icon={showPassword2 ? <ViewOffIcon/> : <ViewIcon/>}
                                                 aria-label="password-icon"
                                             />
                                         </InputRightElement>
@@ -213,14 +204,14 @@ export default function ChangePassword() {
                                 </FormControl>
                                 {error && (
                                     <Alert status="error">
-                                        <AlertIcon />
+                                        <AlertIcon/>
                                         {error}
                                     </Alert>
                                 )}
                                 <div className="flex gap-4 mt-10">
                                     <Button
                                         bg="gray.400"
-                                        _hover={{ bg: "gray.500" }}
+                                        _hover={{bg: "gray.500"}}
                                         color="#ffffff"
                                         variant="solid"
                                         w="240px"
@@ -231,7 +222,7 @@ export default function ChangePassword() {
                                     </Button>
                                     <Button
                                         bg={theme.purple}
-                                        _hover={{ bg: theme.onHoverPurple }}
+                                        _hover={{bg: theme.onHoverPurple}}
                                         color="#ffffff"
                                         variant="solid"
                                         w="240px"
@@ -245,7 +236,7 @@ export default function ChangePassword() {
                     </Formik>
                 </div>
                 <div className="flex items-end">
-                    <img src={Password} alt="Change Password" width="400" height="400" className="opacity-70 mr-14" />
+                    <img src={Password} alt="Change Password" width="400" height="400" className="opacity-70 mr-14"/>
                 </div>
             </div>
             <AlertDialog
@@ -255,22 +246,21 @@ export default function ChangePassword() {
                 isCentered
             >
                 <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Password Changed Successfully
-                        </AlertDialogHeader>
-
-                        <AlertDialogBody>
-                            Your password has been changed successfully.
-                        </AlertDialogBody>
-                        <AlertDialogFooter>
-                            <Button onClick={handleAlertClose}>
-                                OK
-                            </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
-            </AlertDialog>
+                        <AlertDialogContent>
+                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                {error ? "Password Change Failed" : "Password Changed Successfully"}
+                            </AlertDialogHeader>
+                            <AlertDialogBody>
+                                {error ? error : "Your password has been changed successfully."}
+                            </AlertDialogBody>
+                            <AlertDialogFooter>
+                                <Button onClick={handleAlertClose}>
+                                    OK
+                                </Button>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
         </>
     );
 }
