@@ -26,6 +26,7 @@ export default function UserProfile() {
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [image, setImage] = useState("");
+    const [isImageRemoved, setIsImageRemoved] = useState(false);
     const [userData, setUserData] = useState({
         FirstName: "",
         LastName: "",
@@ -83,6 +84,7 @@ export default function UserProfile() {
     const handleSubmit = async (values) => {
         try {
             const username = sessionStorage.getItem("Username");
+            const profilePicture = isImageRemoved ? "" : image;
             const response = await axios.put('https://localhost:7265/api/Auth/UpdateUser', {
                     Username: username,
                     FirstName: values.FirstName,
@@ -91,7 +93,7 @@ export default function UserProfile() {
                     EmailAddress: values.EmailAddress,
                     PhoneNo: values.PhoneNo,
                     NIC: values.NIC,
-                    ProfilePicture: image
+                    ProfilePicture: profilePicture,
                 },
                 {
                     headers: {
@@ -99,25 +101,23 @@ export default function UserProfile() {
                     }
                 });
 
-            if (!response.status === 200) {
-                throw new Error('Failed to edit User Details');
-            }
-
-            if (response.data.message && response.data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('User already exists');
-                onDialogOpen();
-            } else {
-                setSuccessDialogMessage('User details added successfully');
+            if (response.status === 200) {
+                setSuccessDialogMessage('User details updated successfully');
                 onSuccessDialogOpen();
+            } else {
+                throw new Error('Failed to update User details');
             }
         } catch (error) {
-            if (error.response && error.response.status === 404) {
-                setDialogMessage('Failed to connect to the server');
-            } else {
-                setDialogMessage(error.message || 'Failed to add User details');
-            }
+            console.error('Error updating User details:', error);
+            setDialogMessage(error.message || 'Failed to update User details');
             onDialogOpen();
         }
+    };
+
+
+    const handleRemoveImage = async () => {
+        setIsImageRemoved(true);
+        setImage("");
     };
 
 
@@ -180,7 +180,7 @@ export default function UserProfile() {
                                             color={theme.purple}
                                             variant='link'
                                             w="180px"
-                                            onClick={() => setImage("")}
+                                            onClick={handleRemoveImage}
                                         >
                                             Remove Profile Image
                                         </Button>
