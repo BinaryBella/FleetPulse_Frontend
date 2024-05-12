@@ -17,6 +17,7 @@ import theme from "../config/ThemeConfig.jsx";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {AiOutlineUser} from "react-icons/ai";
 
 export default function UserProfile() {
     const navigate = useNavigate();
@@ -152,12 +153,14 @@ export default function UserProfile() {
                         <div className="flex flex-grow gap-6">
                             <div className="w-1/5">
                                 <AvatarGroup size="2xl" mb="4" mt="8" ml="12">
-                                    {image && (
+                                    {image ? (
                                         <Avatar
                                             src={`data:image/jpeg;base64,${image}`}
                                             cursor="pointer"
                                             onClick={handleAvatarClick}
                                         />
+                                    ):(
+                                        <Avatar bg={theme.purple} icon={<AiOutlineUser fontSize='2rem' />} onClick={handleAvatarClick}/>
                                     )}
                                 </AvatarGroup>
                                 <Input
@@ -168,6 +171,21 @@ export default function UserProfile() {
                                     onChange={handleImageChange}
                                     style={{display: 'none'}}
                                 />
+                                {image && (
+                                    <div className="flex justify-right">
+                                        <Button
+                                            mt="2"
+                                            ml="6"
+                                            size="sm"
+                                            color={theme.purple}
+                                            variant='link'
+                                            w="180px"
+                                            onClick={() => setImage("")}
+                                        >
+                                            Remove Profile Image
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                             <div className="w-4/5 flex flex-col">
                                 <div className="flex gap-8 mt-6">
