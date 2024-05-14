@@ -39,8 +39,8 @@ export default function MaintenanceTable() {
     console.log(vehicleMaintenance);
 
     const breadcrumbs = [
-        { label: "Vehicle", link: "/" },
-        { label: "Vehicle Maintenance Details", link: "/" },
+        { label: "Vehicle", link: "/app/Vehcile" },// yashmi
+        { label: "Vehicle Maintenance Details", link: "/app/MaintenanceTable" },
     ];
 
     return (

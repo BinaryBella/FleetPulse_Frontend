@@ -152,96 +152,50 @@ export default function UserProfile() {
                     <Form>
                         <div className="flex flex-grow gap-6">
                             <div className="w-1/5">
-
                                 <AvatarGroup size="2xl" mb="4" mt="8" ml="12">
-                                    {image ? (
-                                        <div
-                                            style={{
-                                                position: "relative",
-                                                display: "inline-block",
-                                                cursor: "pointer",
-                                            }}
-                                            onMouseEnter={(e) => e.currentTarget.firstChild.nextSibling.style.opacity = 0.5}
-                                            onMouseLeave={(e) => e.currentTarget.firstChild.nextSibling.style.opacity = 0}
-                                            onClick={handleAvatarClick}
-                                        >
-                                            <Avatar
-                                                src={`data:image/jpeg;base64,${image}`}
-                                                cursor="pointer"
-                                            />
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    top: "50%",
-                                                    left: "50%",
-                                                    transform: "translate(-50%, -50%)",
-                                                    opacity: 0,
-                                                    transition: "opacity 0.5s ease",
-                                                }}
-                                            >
-                                                <AiOutlineCamera size={24} />
-                                            </div>
-                                        </div>
-                                    ) : (
+                                    <div
+                                        style={{
+                                            position: "relative",
+                                            display: "inline-block",
+                                            cursor: "pointer",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.firstChild.style.opacity = 0.8;
+                                            e.currentTarget.lastChild.style.opacity = 0.8;
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.firstChild.style.opacity = 1;
+                                            e.currentTarget.lastChild.style.opacity = 0;
+                                        }}
+                                        onClick={handleAvatarClick}
+                                    >
                                         <Avatar
-                                            size="lg"
+                                            src={image ? `data:image/jpeg;base64,${image}` : undefined}
+                                            size="2xl"
                                             bg={theme.purple}
                                             icon={<AiOutlineUser fontSize='2rem' />}
-                                            onClick={handleAvatarClick}
+                                            cursor="pointer"
+                                            id="pro-pic"
+                                            onMouseEnter={(e) => e.currentTarget.style.opacity = 0.5}
+                                            onMouseLeave={(e) => e.currentTarget.style.opacity = 1}
                                         />
-                                    )}
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                top: "50%",
+                                                left: "50%",
+                                                transform: "translate(-50%, -50%)",
+                                                opacity: 0,
+                                                transition: "opacity 0.8s ease",
+                                            }}
+                                        >
+                                            <AiOutlineCamera size={26} onMouseEnter={() => {
+                                                document.getElementById("pro-pic").style.opacity = 0.5;
+                                            }} />
+                                        </div>
+                                    </div>
                                 </AvatarGroup>
 
-
-                                {/*<AvatarGroup size="2xl" mb="4" mt="8" ml="12">*/}
-                                {/*    {image ? (*/}
-                                {/*        <div*/}
-                                {/*            style={{*/}
-                                {/*                position: "relative",*/}
-                                {/*                display: "inline-block",*/}
-                                {/*                cursor: "pointer",*/}
-                                {/*            }}*/}
-                                {/*            onMouseEnter={(e) => e.currentTarget.firstChild.style.opacity = 0.5}*/}
-                                {/*            onMouseLeave={(e) => e.currentTarget.firstChild.style.opacity = 1}*/}
-                                {/*            onClick={handleAvatarClick}*/}
-                                {/*        >*/}
-                                {/*            <Avatar*/}
-                                {/*                src={`data:image/jpeg;base64,${image}`}*/}
-                                {/*                cursor="pointer"*/}
-                                {/*            />*/}
-                                {/*            <div*/}
-                                {/*                style={{*/}
-                                {/*                    position: "absolute",*/}
-                                {/*                    top: "50%",*/}
-                                {/*                    left: "50%",*/}
-                                {/*                    transform: "translate(-50%, -50%)",*/}
-                                {/*                    opacity: 0,*/}
-                                {/*                    transition: "opacity 0.3s ease",*/}
-                                {/*                }}*/}
-                                {/*            >*/}
-                                {/*                <AiOutlineCamera size={24} />*/}
-                                {/*            </div>*/}
-                                {/*        </div>*/}
-                                {/*    ) : (*/}
-                                {/*        <Avatar*/}
-                                {/*            bg={theme.purple}*/}
-                                {/*            icon={<AiOutlineUser fontSize='2rem' />}*/}
-                                {/*            onClick={handleAvatarClick}*/}
-                                {/*        />*/}
-                                {/*    )}*/}
-                                {/*</AvatarGroup>*/}
-
-                                {/*<AvatarGroup size="2xl" mb="4" mt="8" ml="12">*/}
-                                {/*    {image ? (*/}
-                                {/*        <Avatar*/}
-                                {/*            src={`data:image/jpeg;base64,${image}`}*/}
-                                {/*            cursor="pointer"*/}
-                                {/*            onClick={handleAvatarClick}*/}
-                                {/*        />*/}
-                                {/*    ):(*/}
-                                {/*        <Avatar bg={theme.purple} icon={<AiOutlineUser fontSize='2rem' />} onClick={handleAvatarClick}/>*/}
-                                {/*    )}*/}
-                                {/*</AvatarGroup>*/}
                                 <Input
                                     ref={fileInputRef}
                                     id="profilePicture"

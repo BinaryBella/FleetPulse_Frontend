@@ -20,9 +20,9 @@ export default function AddFuelRefillDetails() {
     let username = sessionStorage.getItem("Username");
 
     const breadcrumbs = [
-        {label: 'Vehicle', link: '/'},
-        {label: 'Fuel Refill Details', link: '/'},
-        {label: 'Add Fuel Refill Details', link: '/'}
+        {label: 'Vehicle', link: '/app/Vehicle'},
+        {label: 'Fuel Refill Details', link: '/app/FuelRefillTable'},
+        {label: 'Add Fuel Refill Details', link: '/app/AddFuelRefillDetails'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {

@@ -58,9 +58,9 @@ export default function AddVehicleMaintenanceDetails() {
     }, []);
 
     const breadcrumbs = [
-        {label: "Vehicle", link: "/"},
-        {label: "Vehicle Maintenance", link: "/"},
-        {label: "Add Vehicle Maintenance Details", link: "/"},
+        {label: "Vehicle", link: "/app/Vehicle"},//yashmi
+        {label: "Vehicle Maintenance", link: "/app/MaintenanceTable"},
+        {label: "Add Vehicle Maintenance Details", link: "/app/AddVehicleMaintenanceDetails"},
     ];
 
     const handleSubmit = async (values) => {

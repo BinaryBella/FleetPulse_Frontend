@@ -40,8 +40,8 @@ export default function FuelRefillTable() {
     ]);
 
     const breadcrumbs = [
-        { label: "Vehicle", link: "/" },
-        { label: "Fuel Refill Details", link: "/" },
+        { label: "Vehicle", link: "/app/Vehicle" }, //yashmi
+        { label: "Fuel Refill Details", link: "/app/FuelRefillTable" },
     ];
 
     return (

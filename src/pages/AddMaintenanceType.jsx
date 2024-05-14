@@ -13,9 +13,9 @@ export default function AddMaintenanceType() {
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
 
     const breadcrumbs = [
-        {label: 'Vehicle', link: '/'},
-        {label: 'Vehicle Maintenance Details', link: '/'},
-        {label: 'Add Maintenance Type Details', link: '/'}
+        {label: 'Vehicle', link: '/app/Vehicle'}, //yashmi
+        {label: 'Vehicle Maintenance type Details', link: '/app/MaintenanceTypeTable'},
+        {label: 'Add Maintenance Type Details', link: '/app/AddMaintenanceType'}
     ];
 
     const handleSubmit = async (values) => {

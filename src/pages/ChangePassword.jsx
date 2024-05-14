@@ -85,6 +85,10 @@ export default function ChangePassword() {
         }
     };
 
+    const isStrongPassword = (password) => {
+        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
+        return strongPasswordRegex.test(password);
+    };
 
     const handleCancel = () => {
         navigate('/app/Dashboard');
@@ -113,6 +117,8 @@ export default function ChangePassword() {
                             }
                             if (!values.newPassword) {
                                 errors.newPassword = "Please enter your new password.";
+                            }else if (!isStrongPassword(values.newPassword)) {
+                                errors.newPassword = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
                             }
                             if (!values.confirmPassword) {
                                 errors.confirmPassword = "Please confirm your new password.";
