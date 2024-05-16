@@ -223,7 +223,7 @@ export default function UserProfile() {
                             <div className="w-4/5 flex flex-col">
                                 <div className="flex gap-8 mt-6">
                                     <div className="w-2/5">
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>First Name</p>
                                             <Field name="FirstName" validate={(value) => {
                                                 let error;
@@ -242,7 +242,6 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="FirstName"
                                                             placeholder="First Name"
@@ -254,7 +253,7 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>Date of Birth</p>
                                             <Field style={{margintop: "0.5rem"}} name="DateOfBirth"
                                                    validate={(value) => {
@@ -274,7 +273,6 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="DateofBirth"
                                                             placeholder="Date of Birth"
@@ -286,16 +284,19 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>Phone Number</p>
                                             <Field name="PhoneNo" validate={(value) => {
                                                 let error;
                                                 if (!value) {
                                                     error = "Phone No is required.";
+                                                } else if (!/^\d{10}$/.test(value)) {
+                                                    error = "Phone No must be 10 digits.";
                                                 }
                                                 return error;
-                                            }}>
-                                                {({field}) => (
+                                            }}
+                                            >
+                                                {({field, form}) => (
                                                     <div>
                                                         <Input
                                                             {...field}
@@ -305,13 +306,16 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="PhoneNo"
                                                             placeholder="Phone No"
+                                                            maxLength="10"
+                                                            onInput={(e) => {
+                                                                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                                            }}
                                                         />
-                                                        {errors.PhoneNo && touched.PhoneNo && (
-                                                            <div className="text-red-500">{errors.PhoneNo}</div>
+                                                        {form.errors.PhoneNo && form.touched.PhoneNo && (
+                                                            <div className="text-red-500">{form.errors.PhoneNo}</div>
                                                         )}
                                                     </div>
                                                 )}
@@ -319,7 +323,7 @@ export default function UserProfile() {
                                         </div>
                                     </div>
                                     <div className="w-2/5">
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>Last Name</p>
                                             <Field name="LastName" validate={(value) => {
                                                 let error;
@@ -338,7 +342,6 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="LastName"
                                                             placeholder="Last Name"
@@ -350,12 +353,14 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>Email Address</p>
                                             <Field name="EmailAddress" validate={(value) => {
                                                 let error;
                                                 if (!value) {
                                                     error = "Last Name is required.";
+                                                }else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+                                                    error = "Invalid email address.";
                                                 }
                                                 return error;
                                             }}>
@@ -363,13 +368,12 @@ export default function UserProfile() {
                                                     <div>
                                                         <Input
                                                             {...field}
-                                                            type="text"
+                                                            type="email"
                                                             variant="filled"
                                                             borderRadius="md"
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="EmailAddress"
                                                             placeholder="Email Address"
@@ -381,12 +385,14 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>NIC</p>
                                             <Field name="NIC" validate={(value) => {
                                                 let error;
                                                 if (!value) {
                                                     error = "NIC is required.";
+                                                }else if (!/^[0-9]{9}[vVxX]$|^[0-9]{12}$/.test(value)) {
+                                                    error = "Invalid NIC format.";
                                                 }
                                                 return error;
                                             }}>
@@ -400,7 +406,6 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="NIC"
                                                             placeholder="NIC"
@@ -414,7 +419,7 @@ export default function UserProfile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-5/6 flex justify-end gap-6 mt-10">
+                                <div className="w-5/6 flex justify-end gap-6 mt-20">
                                     <Button
                                         bg="gray.400"
                                         _hover={{bg: "gray.500"}}

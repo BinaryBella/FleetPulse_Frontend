@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import {
     Button,
     Input,
@@ -17,19 +17,23 @@ import {
     AlertDialogBody,
     AlertDialogFooter
 } from "@chakra-ui/react";
-import { Field, Formik } from "formik";
+import {Field, Formik} from "formik";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import Password from "../assets/images/Password.png";
-import './ChangePassword.css'
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import './ChangePassword.css';
+import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import PasswordStrengthBar from 'react-password-strength-bar';
+import {useNavigate} from "react-router-dom";
+import $ from "jquery";
+import axios from "axios";
 
 export default function ChangePassword() {
     const [error, setError] = useState('');
     const [showPassword1, setShowPassword1] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
     const [showPassword3, setShowPassword3] = useState(false);
+    const [resetPasswordResponse, setResetPasswordResponse] = useState("")
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -52,42 +56,41 @@ export default function ChangePassword() {
     const handleSubmit = async (values) => {
         try {
             const storedUsername = sessionStorage.getItem('Username');
+
             if (!storedUsername) {
-                setError('Username not found in session storage.');
+                navigate("/auth/login");
                 return;
             }
 
-            const response = await fetch('https://localhost:7265/api/Auth/change-password', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-                body: JSON.stringify({
+            const response = await axios.post('https://localhost:7265/api/Auth/change-password', {
                     username: storedUsername,
                     oldPassword: values.oldPassword,
                     newPassword: values.newPassword,
-                })
-            });
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            );
 
-            if (response.ok) {
+
+            if (response.data.status) {
                 setIsAlertOpen(true);
+                setResetPasswordResponse(response.data.message);
             } else {
-                if (response.status === 401) {
-                    setIsAlertOpen(false);
+                if (response.data.error === "Old password is incorrect") {
+                    setError(response.data.error);
                 } else {
-                    const data = await response.json();
-                    setError(data.message || 'An error occurred. Please try again.');
+                    setIsAlertOpen(true);
+                    setResetPasswordResponse(response.data.error);
                 }
             }
+
         } catch (error) {
             console.error('Error:', error.message);
             setError('An error occurred. Please try again.');
         }
-    };
-
-    const isStrongPassword = (password) => {
-        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
-        return strongPasswordRegex.test(password);
     };
 
     const handleCancel = () => {
@@ -96,6 +99,12 @@ export default function ChangePassword() {
 
     useEffect(() => {
         sessionStorage.getItem('Username');
+
+        // Password strength meter style
+        $(".pwd-meter > div").children().each(function () {
+            $(this).css({"height": "5px", "border-radius": "5px"})
+        });
+
     }, []);
 
     return (
@@ -117,8 +126,6 @@ export default function ChangePassword() {
                             }
                             if (!values.newPassword) {
                                 errors.newPassword = "Please enter your new password.";
-                            }else if (!isStrongPassword(values.newPassword)) {
-                                errors.newPassword = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
                             }
                             if (!values.confirmPassword) {
                                 errors.confirmPassword = "Please confirm your new password.";
@@ -132,9 +139,10 @@ export default function ChangePassword() {
                             return errors;
                         }}
                     >
-                        {({handleSubmit, errors, touched}) => (
+                        {({handleSubmit, errors, touched, values}) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                                <FormControl isInvalid={!!errors.oldPassword || (error && error.includes("Old password does not match the stored password."))}>
+                                <FormControl
+                                    isInvalid={!!errors.oldPassword || (error && error === "Your old password is incorrect.")}>
                                     <FormLabel htmlFor="oldPassword">Old Password</FormLabel>
                                     <InputGroup>
                                         <Field
@@ -157,7 +165,7 @@ export default function ChangePassword() {
                                         </InputRightElement>
                                     </InputGroup>
                                     <FormErrorMessage>
-                                        {errors.oldPassword || (error && error.includes("Old password does not match the stored password."))}
+                                        {errors.oldPassword || (error && error === "Your old password is incorrect.")}
                                     </FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={!!errors.newPassword && touched.newPassword}>
@@ -170,6 +178,7 @@ export default function ChangePassword() {
                                             type={showPassword1 ? "text" : "password"}
                                             variant="filled"
                                             placeholder="New Password"
+                                            mb="10px"
                                         />
                                         <InputRightElement width="4.5rem">
                                             <IconButton
@@ -182,6 +191,7 @@ export default function ChangePassword() {
                                             />
                                         </InputRightElement>
                                     </InputGroup>
+                                    <PasswordStrengthBar className="pwd-meter" password={values.newPassword}/>
                                     <FormErrorMessage>{errors.newPassword}</FormErrorMessage>
                                 </FormControl>
                                 <FormControl isInvalid={!!errors.confirmPassword && touched.confirmPassword}>
@@ -252,21 +262,21 @@ export default function ChangePassword() {
                 isCentered
             >
                 <AlertDialogOverlay>
-                        <AlertDialogContent>
-                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                                {error ? "Password Change Failed" : "Password Changed Successfully"}
-                            </AlertDialogHeader>
-                            <AlertDialogBody>
-                                {error ? error : "Your password has been changed successfully."}
-                            </AlertDialogBody>
-                            <AlertDialogFooter>
-                                <Button onClick={handleAlertClose}>
-                                    OK
-                                </Button>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialogOverlay>
-                </AlertDialog>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Password Reset
+                        </AlertDialogHeader>
+                        <AlertDialogBody>
+                            {resetPasswordResponse}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button onClick={handleAlertClose}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
         </>
     );
 }
