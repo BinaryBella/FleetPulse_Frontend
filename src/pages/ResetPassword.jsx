@@ -85,7 +85,7 @@ export default function ResetPassword() {
                     if (!values.confirmpassword) {
                         errors.confirmpassword = "Confirm Password is required.";
                     } else if (values.newpassword !== values.confirmpassword) {
-                        errors.confirmpassword = "Passwords do not match";
+                        errors.confirmpassword = "Passwords do not match.";
                     }
                     return errors;
                 }}

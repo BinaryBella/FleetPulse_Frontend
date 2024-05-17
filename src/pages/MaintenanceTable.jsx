@@ -13,14 +13,19 @@ import {
     IconButton,
     MenuList,
     MenuItem,
+    Box,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
+import ReactPaginate from 'react-paginate';
 
 export default function MaintenanceTable() {
     const [vehicleMaintenance, setVehicleMaintenance] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 10;
+
     const [error, setError] = useState(null);
     const fetchVehicleMaintenance = async () => {
         try {
@@ -39,9 +44,18 @@ export default function MaintenanceTable() {
     console.log(vehicleMaintenance);
 
     const breadcrumbs = [
-        { label: "Vehicle", link: "/app/Vehcile" },// yashmi
+        { label: "Vehicle", link: "/app/Vehcile" },
         { label: "Vehicle Maintenance Details", link: "/app/MaintenanceTable" },
     ];
+
+    const handlePageClick = ({ selected }) => {
+        setCurrentPage(selected);
+    };
+
+    const startOffset = currentPage * itemsPerPage;
+    const endOffset = startOffset + itemsPerPage;
+    const currentData = vehicleMaintenance.slice(startOffset, endOffset);
+    const pageCount = Math.ceil(vehicleMaintenance.length / itemsPerPage);
 
     return (
         <>
@@ -65,55 +79,68 @@ export default function MaintenanceTable() {
                 </Button>
             </Link>
 
-            <Table className="custom-table">
-                <Thead>
-                    <Tr>
-                        <Th>Maintenance Date</Th>
-                        <Th>Cost</Th>
-                        <Th>Parts Replaced</Th>
-                        <Th>Service Provider</Th>
-                        <Th>Special Notes</Th>
-                        <Th>Status</Th>
-                        <Th>Actions</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {vehicleMaintenance.map((maintenance, index) => (
-                        <Tr key={index}>
-                            <Td>{maintenance.MaintenanceDate}</Td>
-                            <Td>{maintenance.Cost}</Td>
-                            <Td>{maintenance.PartsReplaced}</Td>
-                            <Td>{maintenance.ServiceProvider}</Td>
-                            <Td>{maintenance.SpecialNotes}</Td>
-                            <Td>{maintenance.status ? "Active": "Inactive"}</Td>
-                            <Td>
-                                <Menu>
-                                    <MenuButton
-                                        color={theme.purple}
-                                        as={IconButton}
-                                        aria-label='profile-options'
-                                        fontSize='20px'
-                                        icon={<IoSettingsSharp/>}
-                                    />
-                                    <MenuList>
-                                        <MenuItem>
-                                            <Link to={`/app/EditMaintenance/${maintenance.id}`}>
-                                                Edit
-                                            </Link>
-                                        </MenuItem>
-                                        <MenuItem>
-                                            {maintenance.status ? "Deactivate" : "Activate"}
-                                        </MenuItem>
-                                    </MenuList>
-                                </Menu>
-                            </Td>
+            <Box mb="20px">
+                <Table className="custom-table">
+                    <Thead>
+                        <Tr>
+                            <Th>Maintenance Date</Th>
+                            <Th>Cost</Th>
+                            <Th>Parts Replaced</Th>
+                            <Th>Service Provider</Th>
+                            <Th>Special Notes</Th>
+                            <Th>Status</Th>
+                            <Th>Actions</Th>
                         </Tr>
-                    ))}
-                </Tbody>
-            </Table>
+                    </Thead>
+                    <Tbody>
+                        {currentData.map((maintenance, index) => (
+                            <Tr key={index}>
+                                <Td>{maintenance.MaintenanceDate}</Td>
+                                <Td>{maintenance.Cost}</Td>
+                                <Td>{maintenance.PartsReplaced}</Td>
+                                <Td>{maintenance.ServiceProvider}</Td>
+                                <Td>{maintenance.SpecialNotes}</Td>
+                                <Td>{maintenance.status ? "Active" : "Inactive"}</Td>
+                                <Td>
+                                    <Menu>
+                                        <MenuButton
+                                            color={theme.purple}
+                                            as={IconButton}
+                                            aria-label='profile-options'
+                                            fontSize='20px'
+                                            icon={<IoSettingsSharp />}
+                                        />
+                                        <MenuList>
+                                            <MenuItem>
+                                                <Link to={`/app/EditMaintenance/${maintenance.id}`}>
+                                                    Edit
+                                                </Link>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                {maintenance.status ? "Deactivate" : "Activate"}
+                                            </MenuItem>
+                                        </MenuList>
+                                    </Menu>
+                                </Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </Box>
             {error && (
                 <div className="mt-4 text-red-500 dark:text-red-400">{error}</div>
             )}
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel="<"
+                marginPagesDisplayed={2}
+                containerClassName={"pagination"}
+                activeClassName={"active"}
+            />
         </>
     );
 }

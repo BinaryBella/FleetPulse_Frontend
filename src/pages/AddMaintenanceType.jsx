@@ -49,7 +49,7 @@ export default function AddMaintenanceType() {
             if (error instanceof TypeError) {
                 setDialogMessage('Failed to connect to the server');
             } else {
-                setDialogMessage(error.message || 'Failed to add maintenance type');
+                setDialogMessage(error.message || 'Failed to add maintenance type.');
             }
             onDialogOpen();
         }

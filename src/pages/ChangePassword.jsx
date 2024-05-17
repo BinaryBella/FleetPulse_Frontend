@@ -79,7 +79,7 @@ export default function ChangePassword() {
                 setIsAlertOpen(true);
                 setResetPasswordResponse(response.data.message);
             } else {
-                if (response.data.error === "Old password is incorrect") {
+                if (response.data.error === "Old password is incorrect.") {
                     setError(response.data.error);
                 } else {
                     setIsAlertOpen(true);

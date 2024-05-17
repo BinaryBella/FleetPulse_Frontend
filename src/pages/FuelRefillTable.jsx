@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
     Table,
     Thead,
@@ -6,52 +7,57 @@ import {
     Tr,
     Th,
     Td,
-    Button, Menu, MenuButton, IconButton, MenuList, MenuItem,
+    Button,
+    Menu,
+    MenuButton,
+    IconButton,
+    MenuList,
+    MenuItem,
+    Box,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
+import ReactPaginate from 'react-paginate';
 
 export default function FuelRefillTable() {
-    const [vehicleDetails] = useState([
-        {
-            DriverNic: "1234567890123",
-            HelperNic: "9876543210987",
-            RegNo: "ABC123",
-            LiterCount: 40,
-            DateTime: "2024-03-22T08:30:00",
-            RefillType: "Regular",
-            Cost: 50.75,
-            isActive: true
+    const [vehicleDetails,setVehicleDetails] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 10;
 
-        },
-        {
-            DriverNic: "2345678901234",
-            HelperNic: "8765432109876",
-            RegNo: "DEF456",
-            LiterCount: 35,
-            DateTime: "2024-03-21T15:45:00",
-            RefillType: "Premium",
-            Cost: 65.25,
-            isActive: true
 
+    const fetchFuelRefill = async () => {
+        try {
+            const response = await axios.get("https://localhost:7265/api/FuelRefill");
+            setVehicleDetails(response.data);
+        } catch (error) {
+            console.error("Error fetching fuel Reill :", error);
         }
-    ]);
+    };
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/app/Vehicle" }, //yashmi
         { label: "Fuel Refill Details", link: "/app/FuelRefillTable" },
     ];
 
-    return (
-        <>
-            <PageHeader title="Fuel Refill Details" breadcrumbs={breadcrumbs} />
+    const handlePageClick = ({ selected }) => {
+        setCurrentPage(selected);
+    };
 
+    const startOffset = currentPage * itemsPerPage;
+    const endOffset = startOffset + itemsPerPage;
+    const currentData = vehicleDetails.slice(startOffset, endOffset);
+    const pageCount = Math.ceil(vehicleDetails.length / itemsPerPage);
+
+
+    return (
+        <div className="main-content">
+            <PageHeader title="Fuel Refill Details" breadcrumbs={breadcrumbs}/>
             <Link to="/app/AddFuelRefillDetails">
                 <Button
                     bg={theme.purple}
-                    _hover={{ bg: theme.onHoverPurple }}
+                    _hover={{bg: theme.onHoverPurple}}
                     color="white"
                     variant="solid"
                     w="230px"
@@ -66,9 +72,10 @@ export default function FuelRefillTable() {
                 </Button>
             </Link>
 
+            <Box mb="20px">
             <Table className="custom-table">
-                <Thead>
-                    <Tr>
+                <Thead className="sticky-header">
+                <Tr>
                         <Th>Driver NIC</Th>
                         <Th>Helper NIC</Th>
                         <Th>Reg No</Th>
@@ -81,16 +88,16 @@ export default function FuelRefillTable() {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {vehicleDetails.map((maintenance, index) => (
+                    {currentData.map((fuelRefill, index) => (
                         <Tr key={index}>
-                            <Td>{maintenance.DriverNic}</Td>
-                            <Td>{maintenance.HelperNic}</Td>
-                            <Td>{maintenance.RegNo}</Td>
-                            <Td>{maintenance.LiterCount}</Td>
-                            <Td>{maintenance.DateTime}</Td>
-                            <Td>{maintenance.RefillType}</Td>
-                            <Td>{maintenance.Cost}</Td>
-                            <Td>{maintenance.isActive ? "Active" : "Inactive"}</Td>
+                            <Td>{fuelRefill.DriverNic}</Td>
+                            <Td>{fuelRefill.HelperNic}</Td>
+                            <Td>{fuelRefill.RegNo}</Td>
+                            <Td>{fuelRefill.LiterCount}</Td>
+                            <Td>{fuelRefill.DateTime}</Td>
+                            <Td>{fuelRefill.RefillType}</Td>
+                            <Td>{fuelRefill.Cost}</Td>
+                            <Td>{fuelRefill.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton
@@ -102,12 +109,12 @@ export default function FuelRefillTable() {
                                     />
                                     <MenuList>
                                         <MenuItem>
-                                            <Link to="/app/AddVehicleDetails" >
+                                            <Link to={`/app/EditMaintenanceType/${fuelRefill.id}`}>
                                                 Edit
                                             </Link>
                                         </MenuItem>
                                         <MenuItem>
-                                            Inactive
+                                            {fuelRefill.status ? "Deactivate" : "Activate"}
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>
@@ -116,6 +123,20 @@ export default function FuelRefillTable() {
                     ))}
                 </Tbody>
             </Table>
-        </>
+            </Box>
+
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel="<"
+                marginPagesDisplayed={2}
+                marginTop={5}
+                containerClassName={"pagination"}
+                activeClassName={"active"}
+            />
+        </div>
     );
 }

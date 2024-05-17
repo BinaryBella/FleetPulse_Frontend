@@ -100,7 +100,7 @@ export default function AddVehicleMaintenanceDetails() {
             if (error instanceof TypeError) {
                 setDialogMessage('Failed to connect to the server');
             } else {
-                setDialogMessage(error.message || 'Failed to add maintenance');
+                setDialogMessage(error.message || 'Failed to add maintenance.');
             }
             onDialogOpen();
         }

@@ -9,33 +9,32 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from "@chakra-ui/react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
-import {AiOutlineDashboard} from "react-icons/ai";
-import {FaCarAlt, FaCarCrash} from "react-icons/fa";
-import {MdAirlineSeatReclineNormal} from "react-icons/md";
-import {IoMdPeople, IoMdPerson} from "react-icons/io";
-import {BiTrip} from "react-icons/bi";
-import {TbReportAnalytics} from "react-icons/tb";
-import {Box} from "@chakra-ui/react";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { FaCarAlt, FaCarCrash } from "react-icons/fa";
+import { MdAirlineSeatReclineNormal } from "react-icons/md";
+import { IoMdPeople, IoMdPerson } from "react-icons/io";
+import { BiTrip } from "react-icons/bi";
+import { TbReportAnalytics } from "react-icons/tb";
+import { Box } from "@chakra-ui/react";
 
 export default function SideMenu() {
     return (
-        <div className="bg-[#393970] w-1/5 flex flex-col h-fit">
-            <div className="flex justify-center w-full">
-                <img src={Logo} alt="Logo" className="w-3/5 mb-10"/>
+        <div className="bg-[#393970] w-1/5 flex flex-col">
+            <div className="flex justify-center w-full mb-10">
+                <Link to="/app/Dashboard">
+                    <img src={Logo} alt="Logo" className="w-3/5" />
+                </Link>
             </div>
-            <VStack
-                spacing={4}
-                align='stretch'
-            >
+            <VStack spacing={4} align='stretch' width="full">
                 <Link className="flex items-center pl-16" to="/app/Dashboard">
                     <IconButton
                         variant='link'
                         color={theme.orange}
                         aria-label='dashboard'
                         fontSize='20px'
-                        icon={<AiOutlineDashboard/>}
+                        icon={<AiOutlineDashboard />}
                     />
                     <Text color={theme.orange} fontSize="xl">
                         Dashboard
@@ -47,7 +46,7 @@ export default function SideMenu() {
                         color={theme.orange}
                         aria-label='vehicle'
                         fontSize='20px'
-                        icon={<FaCarAlt/>}
+                        icon={<FaCarAlt />}
                     />
                     <Accordion allowMultiple>
                         <AccordionItem>
@@ -56,7 +55,7 @@ export default function SideMenu() {
                                     <Box as="span" flex='1' textAlign='left' color={theme.orange}>
                                         Vehicle
                                     </Box>
-                                    <AccordionIcon color={theme.orange}/>
+                                    <AccordionIcon color={theme.orange} />
                                 </AccordionButton>
                             </h2>
                             <AccordionPanel pb={4}>
@@ -87,8 +86,7 @@ export default function SideMenu() {
                         color={theme.orange}
                         aria-label='driver'
                         fontSize='20px'
-                        icon={<MdAirlineSeatReclineNormal/>
-                        }
+                        icon={<MdAirlineSeatReclineNormal />}
                     />
                     <Text color={theme.orange} fontSize="xl">
                         Driver
@@ -100,8 +98,7 @@ export default function SideMenu() {
                         color={theme.orange}
                         aria-label='helper'
                         fontSize='20px'
-                        icon={< IoMdPerson/>
-                        }
+                        icon={<IoMdPerson />}
                     />
                     <Text color={theme.orange} fontSize="xl">
                         Helper
@@ -113,8 +110,7 @@ export default function SideMenu() {
                         color={theme.orange}
                         aria-label='staff'
                         fontSize='20px'
-                        icon={< IoMdPeople/>
-                        }
+                        icon={<IoMdPeople />}
                     />
                     <Text color={theme.orange} fontSize="xl">
                         Staff
@@ -126,8 +122,7 @@ export default function SideMenu() {
                         color={theme.orange}
                         aria-label='trip'
                         fontSize='20px'
-                        icon={< BiTrip/>
-                        }
+                        icon={<BiTrip />}
                     />
                     <Text color={theme.orange} fontSize="xl">
                         Trip
@@ -139,8 +134,7 @@ export default function SideMenu() {
                         color={theme.orange}
                         aria-label='accident'
                         fontSize='20px'
-                        icon={< FaCarCrash/>
-                        }
+                        icon={<FaCarCrash />}
                     />
                     <Text color={theme.orange} fontSize="xl">
                         Accident
@@ -152,8 +146,7 @@ export default function SideMenu() {
                         color={theme.orange}
                         aria-label='report'
                         fontSize='20px'
-                        icon={< TbReportAnalytics/>
-                        }
+                        icon={<TbReportAnalytics />}
                     />
                     <Text color={theme.orange} fontSize="xl">
                         Reports

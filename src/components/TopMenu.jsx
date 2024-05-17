@@ -18,7 +18,7 @@ export default function TopMenu() {
                 const responseData = response.data;
                 setImage(responseData.profilePicture);
             } else {
-                console.error("Username not found in session storage");
+                console.error("Username not found in session storage.");
             }
         } catch (error) {
             console.error("Error fetching User details:", error);

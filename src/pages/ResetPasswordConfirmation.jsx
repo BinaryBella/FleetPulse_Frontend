@@ -38,7 +38,7 @@ export default function ResetPasswordConfirmation() {
                     const errors = {};
                     const pinText = verificationCode === undefined ? "" : verificationCode.toString();
                     if (pinText.length < 6) {
-                        errors.pinValue = "Pin number should contain 6 numbers";
+                        errors.pinValue = "Pin number should contain 6 numbers.";
                     }
                     return errors;
                 }}
