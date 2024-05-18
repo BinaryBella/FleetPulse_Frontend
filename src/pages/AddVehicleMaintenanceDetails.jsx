@@ -1,5 +1,5 @@
-import {Formik, Form, Field} from "formik";
 import {useEffect, useState} from "react";
+import {Formik, Form, Field} from "formik";
 import PageHeader from "../components/PageHeader.jsx";
 import {
     AlertDialog,
@@ -28,6 +28,7 @@ export default function AddVehicleMaintenanceDetails() {
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
     const [VehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
+    // const [isActive, setIsActive] = useState(false);
 
     const fetchVehicleMaintenanceTypes = async () => {
         try {

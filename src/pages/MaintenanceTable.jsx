@@ -25,26 +25,28 @@ export default function MaintenanceTable() {
     const [vehicleMaintenance, setVehicleMaintenance] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 10;
-
     const [error, setError] = useState(null);
+
+
     const fetchVehicleMaintenance = async () => {
         try {
             const response = await axios.get("https://localhost:7265/api/VehicleMaintenance");
-            setVehicleMaintenance(response.data);
+            const responseData = response.data;
+            console.log(responseData); // Check if these fields are present in the response
+            setVehicleMaintenance(responseData);
         } catch (error) {
             console.error("Error fetching vehicle maintenance:", error);
-            setError("Error fetching invite table. Please try again later.");
+            setError("Error fetching vehicle maintenance. Please try again later.");
         }
     };
+
 
     useEffect(() => {
         fetchVehicleMaintenance();
     }, []);
 
-    console.log(vehicleMaintenance);
-
     const breadcrumbs = [
-        { label: "Vehicle", link: "/app/Vehcile" },
+        { label: "Vehicle", link: "/app/Vehicle" },
         { label: "Vehicle Maintenance Details", link: "/app/MaintenanceTable" },
     ];
 
@@ -56,6 +58,12 @@ export default function MaintenanceTable() {
     const endOffset = startOffset + itemsPerPage;
     const currentData = vehicleMaintenance.slice(startOffset, endOffset);
     const pageCount = Math.ceil(vehicleMaintenance.length / itemsPerPage);
+
+    const formatDate = (maintenance) => {
+        if (!maintenance.maintenanceDate) return 'N/A';
+        const datetimeParts = maintenance.maintenanceDate.split("T");
+        return datetimeParts[0] || 'Invalid Date';
+    };
 
     return (
         <>
@@ -83,6 +91,8 @@ export default function MaintenanceTable() {
                 <Table className="custom-table">
                     <Thead>
                         <Tr>
+                            <Th>Vehicle Registration No</Th>
+                            <Th>Maintenance Type</Th>
                             <Th>Maintenance Date</Th>
                             <Th>Cost</Th>
                             <Th>Parts Replaced</Th>
@@ -95,11 +105,13 @@ export default function MaintenanceTable() {
                     <Tbody>
                         {currentData.map((maintenance, index) => (
                             <Tr key={index}>
-                                <Td>{maintenance.MaintenanceDate}</Td>
-                                <Td>{maintenance.Cost}</Td>
-                                <Td>{maintenance.PartsReplaced}</Td>
-                                <Td>{maintenance.ServiceProvider}</Td>
-                                <Td>{maintenance.SpecialNotes}</Td>
+                                <Td>{maintenance.vehicleRegistrationNo}</Td>
+                                <Td>{maintenance.vehicleMaintenanceTypeName}</Td>
+                                <Td>{formatDate(maintenance)}</Td>
+                                <Td>{maintenance.cost}</Td>
+                                <Td>{maintenance.partsReplaced}</Td>
+                                <Td>{maintenance.serviceProvider}</Td>
+                                <Td>{maintenance.specialNotes}</Td>
                                 <Td>{maintenance.status ? "Active" : "Inactive"}</Td>
                                 <Td>
                                     <Menu>
@@ -112,7 +124,7 @@ export default function MaintenanceTable() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditMaintenance/${maintenance.id}`}>
+                                                <Link to={`/app/EditMaintenance/${maintenance.maintenanceId}`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>
@@ -126,6 +138,7 @@ export default function MaintenanceTable() {
                         ))}
                     </Tbody>
                 </Table>
+
             </Box>
             {error && (
                 <div className="mt-4 text-red-500 dark:text-red-400">{error}</div>

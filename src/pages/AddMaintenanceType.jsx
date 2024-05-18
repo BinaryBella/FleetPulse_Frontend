@@ -21,6 +21,8 @@ export default function AddMaintenanceType() {
     const handleSubmit = async (values) => {
         try {
             console.log(values.TypeName, values.isActive);
+            const status = values.isActive === false ? false : true;
+
             const response = await fetch('https://localhost:7265/api/VehicleMaintenanceType', {
                 method: 'POST',
                 headers: {
@@ -28,26 +30,26 @@ export default function AddMaintenanceType() {
                 },
                 body: JSON.stringify({
                     TypeName: values.TypeName,
-                    status: values.isActive
+                    status: status
                 })
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to add maintenance type');
+                throw new Error(data.message || 'Failed to add maintenance type.');
             }
 
             if (data.message && data.message.toLowerCase().includes('exist')) {
                 setDialogMessage('Vehicle Maintenance Type already exists');
                 onDialogOpen();
             } else {
-                setSuccessDialogMessage('Maintenance type added successfully');
+                setSuccessDialogMessage('Maintenance type added successfully.');
                 onSuccessDialogOpen();
             }
         } catch (error) {
             if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server');
+                setDialogMessage('Failed to connect to the server.');
             } else {
                 setDialogMessage(error.message || 'Failed to add maintenance type.');
             }
@@ -73,7 +75,7 @@ export default function AddMaintenanceType() {
             <Formik
                 initialValues={{
                     TypeName:"",
-                    isActive: ""
+                    isActive: false
                 }}
                 onSubmit={handleSubmit}
             >
@@ -110,18 +112,22 @@ export default function AddMaintenanceType() {
                             </Field>
                             <Field name="isActive">
                                 {({ field, form }) => (
-                                    <Checkbox
-                                        {...field}
-                                        size='lg'
-                                        defaultChecked={field.value}
-                                        className="mt-8"
-                                        onChange={e => form.setFieldValue(field.name, e.target.checked)}
-                                    >
-                                        Is Active
-                                    </Checkbox>
+                                    <div>
+                                        <Checkbox
+                                            {...field}
+                                            size='lg'
+                                            defaultChecked={field.value}
+                                            className="mt-8"
+                                            onChange={e => form.setFieldValue(field.name, e.target.checked)}
+                                        >
+                                            Is Active
+                                        </Checkbox>
+                                        {form.errors.isActive && form.touched.isActive && (
+                                            <div className="text-red-500">{form.errors.isActive}</div>
+                                        )}
+                                    </div>
                                 )}
                             </Field>
-
                             <div className="flex gap-10">
                                 <Button
                                     bg="gray.400"

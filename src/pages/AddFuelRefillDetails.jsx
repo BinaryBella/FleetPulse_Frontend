@@ -1,196 +1,291 @@
-import PageHeader from "../components/PageHeader.jsx";
+import { useState } from "react";
+import { Formik, Form, Field } from "formik";
+import { useNavigate } from "react-router-dom";
 import {
     Button,
-    Flex,
-    IconButton,
     Input,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper,
-    Select
+    AlertDialog,
+    useDisclosure,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader, AlertDialogBody, AlertDialogFooter
 } from "@chakra-ui/react";
-import {FaCheckSquare} from "react-icons/fa";
-import {MdArrowDropDown} from "react-icons/md";
 import theme from "../config/ThemeConfig.jsx";
+import PageHeader from "../components/PageHeader.jsx";
 
 export default function AddFuelRefillDetails() {
+    const navigate = useNavigate();
+    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
+    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
+    const [dialogMessage, setDialogMessage] = useState("");
+    const [successDialogMessage, setSuccessDialogMessage] = useState("");
 
-    let username = sessionStorage.getItem("Username");
+    const handleSubmit = async (values, { setSubmitting }) => {
+        try {
+            // Mock API call
+            console.log("Form submitted:", values);
 
-    const breadcrumbs = [
-        {label: 'Vehicle', link: '/app/Vehicle'},
-        {label: 'Fuel Refill Details', link: '/app/FuelRefillTable'},
-        {label: 'Add Fuel Refill Details', link: '/app/AddFuelRefillDetails'}
-    ];
-    // Function to handle form submission
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log();
+            // Display success dialog
+            setSuccessDialogMessage('Fuel Refill added successfully.');
+            onSuccessDialogOpen();
+        } catch (error) {
+            // Handle error
+            console.error("Error:", error);
+            setDialogMessage(error.message || 'Failed to add fuel refill.');
+            onDialogOpen();
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled");
+        navigate('/app/FuelRefillTable');
     };
+
+    const handleSuccessDialogClose = () => {
+        onSuccessDialogClose();
+        navigate('/app/FuelRefillTable');
+    };
+
+    const breadcrumbs = [
+        {label: "Vehicle", link: "/app/Vehicle"},
+        {label: "Fuel Refill", link: "/app/FuelRefillTable"},
+        {label: "Add Fuel Refill Details", link: "/app/AddFuelRefillDetails"},
+    ];
 
     return (
         <>
             <PageHeader title="Add Fuel Refill Details" breadcrumbs={breadcrumbs}/>
-            <div className="grid grid-cols-2 gap-10 mt-8">
-                <div className="flex flex-col gap-3">
-                    <p>Driver’s NIC</p>
-                    <Input
-                        type="text"
-                        variant="filled"
-                        borderRadius="md"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        width="500px"
-                        name="Driver’s NIC"
-                        placeholder="Driver’s NIC"
-                    />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <p>Helper’s NIC</p>
-                    <Input
-                        type="text"
-                        variant="filled"
-                        borderRadius="md"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        width="500px"
-                        name="Helper’s NIC"
-                        placeholder="Helper’s NIC"
-                    />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <p>Vehicle Registration No</p>
-                    <Input
-                        type="text"
-                        variant="filled"
-                        borderRadius="md"
-                        width="500px"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        name="Vehicle Registration No"
-                        placeholder="Vehicle Registration No"
-                    />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <p>Liter Count</p>
-                    <NumberInput
-                        variant="filled"
-                        defaultValue={1}
-                        min={1}
-                        width="500px"
-                        mt={1}
-                    >
-                        <NumberInputField
-                            variant="filled"
-                            borderRadius="md"
-                            px={3}
-                            py={2}
-                            mt={1}
-                            name="Liter Count"
-                            placeholder="Liter Count"
-                        />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper/>
-                            <NumberDecrementStepper/>
-                        </NumberInputStepper>
-                    </NumberInput>
-                </div>
-                <div className="flex flex-col gap-3">
-                    <p>Date & Time</p>
-                    <Input
-                        type="date"
-                        variant="filled"
-                        borderRadius="md"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        width="500px"
-                        name="Date & Time"
-                        placeholder="Date & Time"
-                    />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <p>Refill Type</p>
-                    <Select
-                        placeholder="Select Refill Type"
-                        variant="filled"
-                        borderRadius="md"
-                        width="500px"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        name="Refill Type"
-                        icon={<MdArrowDropDown/>}
-                    >
-                        <option value="RefillType1">Refill Type 1</option>
-                        <option value="RefillType2">Refill Type 2</option>
-                    </Select>
-                </div>
-                <div className="flex flex-col gap-3">
-                    <p>Cost for Fuel Refill</p>
-                    <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="Cost for Fuel Refill"
-                        variant="filled"
-                        borderRadius="md"
-                        width="500px"
-                        px={3}
-                        py={2}
-                        mt={1}
-                        name="Cost for Fuel Refill"
-                    />
-                </div>
+            <Formik
+                initialValues={{
+                    VehicleRegistrationNo: "",
+                    LiterCount: "",
+                    DateTime: "",
+                    RefillType: "",
+                    Cost: "",
+                    IsActive: false
+                }}
+                onSubmit={handleSubmit}
+            >
+                {({ errors, touched, isSubmitting }) => (
+                    <Form className="grid grid-cols-2 gap-10 mt-8">
+                        <div className="flex flex-col gap-3">
+                            <p>Vehicle Registration No</p>
+                            <Field name="VehicleRegistrationNo" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Vehicle Registration No is required.";
+                                }
+                                return error;
+                            }}>
+                                {({ field }) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="text"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            id="VehicleRegistrationNo"
+                                            placeholder="Vehicle Registration No"
+                                        />
+                                        {errors.VehicleRegistrationNo && touched.VehicleRegistrationNo && (
+                                            <div className="text-red-500">{errors.VehicleRegistrationNo}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                            <p>Liter Count</p>
+                            <Field name="LiterCount" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Liter Count is required.";
+                                }
+                                return error;
+                            }}>
+                                {({ field }) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            id="LiterCount"
+                                            placeholder="Liter Count"
+                                        />
+                                        {errors.LiterCount && touched.LiterCount && (
+                                            <div className="text-red-500">{errors.LiterCount}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                            <p>Date & Time</p>
+                            <Field name="DateTime" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Date & Time is required.";
+                                }
+                                return error;
+                            }}>
+                                {({ field }) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="datetime-local"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            id="DateTime"
+                                            placeholder="Date & Time"
+                                        />
+                                        {errors.DateTime && touched.DateTime && (
+                                            <div className="text-red-500">{errors.DateTime}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                            <p>Refill Type</p>
+                            <Field name="RefillType" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Refill Type is required.";
+                                }
+                                return error;
+                            }}>
+                                {({ field }) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="text"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            id="RefillType"
+                                            placeholder="Refill Type"
+                                        />
+                                        {errors.RefillType && touched.RefillType && (
+                                            <div className="text-red-500">{errors.RefillType}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                            <p>Cost</p>
+                            <Field name="Cost" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Cost is required.";
+                                }
+                                return error;
+                            }}>
+                                {({ field }) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            id="Cost"
+                                            placeholder="Cost"
+                                        />
+                                        {errors.Cost && touched.Cost && (
+                                            <div className="text-red-500">{errors.Cost}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                            <div className="flex flex-col gap-3">
+                                <Field type="checkbox" name="IsActive">
+                                    {({ field }) => (
+                                        <label>
+                                            <input type="checkbox" {...field} />
+                                            <span>Is Active</span>
+                                        </label>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="flex gap-10">
+                                <Button
+                                    bg="gray.400"
+                                    _hover={{ bg: "gray.500" }}
+                                    color="#ffffff"
+                                    variant="solid"
+                                    w="230px"
+                                    marginTop="10"
+                                    onClick={handleCancel}
+                                    disabled={isSubmitting}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    bg={theme.purple}
+                                    _hover={{ bg: theme.onHoverPurple }}
+                                    color="#ffffff"
+                                    variant="solid"
+                                    w="230px"
+                                    marginTop="10"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? "Saving..." : "Save"}
+                                </Button>
+                            </div>
+                        </div>
+                    </Form>
 
-                <div className="flex flex-col gap-3"/>
+                )}
+            </Formik>
 
-                <div className="flex flex-col gap-3">
-                    <Flex align="center" gap={2}>
-                        <IconButton
-                            width='fit-content'
-                            variant='solid'
-                            colorScheme='none'
-                            fontSize='30px'
-                            color='#393970'
-                            icon={<FaCheckSquare/>}
-                            aria-label="activeState"/>
-                        <p>Is active</p>
-                    </Flex>
-                </div>
-                <div className="flex gap-10">
-                    <Button
-                        bg="gray.400"
-                        _hover={{bg: "gray.500"}}
-                        color="#ffffff"
-                        variant="solid"
-                        w="230px"
-                        marginTop="10"
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        bg={theme.purple}
-                        _hover={{bg: theme.onHoverPurple}}
-                        color="#ffffff"
-                        variant="solid"
-                        w="230px"
-                        marginTop="10"
-                        onClick={handleSubmit}
-                    >
-                        Save
-                    </Button>
-                </div>
-            </div>
+            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom">
+                <AlertDialogOverlay />
+                <AlertDialogContent
+                    position="absolute"
+                    top="30%"
+                    left="50%"
+                    transform="translate(-50%, -50%)">
+                    <AlertDialogHeader>Error</AlertDialogHeader>
+                    <AlertDialogBody>
+                        {dialogMessage}
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                        <Button bg={theme.purple} color="#FFFFFF" onClick={onDialogClose}>Close</Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
+                <AlertDialogOverlay />
+                <AlertDialogContent
+                    position="absolute"
+                    top="30%"
+                    left="50%"
+                    transform="translate(-50%, -50%)"
+                >
+                    <AlertDialogHeader>Success</AlertDialogHeader>
+                    <AlertDialogBody>
+                        {successDialogMessage}
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                        <Button bg={theme.purple} color="#FFFFFF" onClick={handleSuccessDialogClose}>Ok</Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 }
