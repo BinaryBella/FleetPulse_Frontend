@@ -23,6 +23,7 @@ export default function AddFuelRefillDetails() {
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
+    const [nic, setNIC] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [userDetails, setUserDetails] = useState({
         FirstName: "",
