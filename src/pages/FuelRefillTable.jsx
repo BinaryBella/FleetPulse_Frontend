@@ -14,24 +14,38 @@ import {
     MenuList,
     MenuItem,
     Box,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    chakra,
+    Text
 } from "@chakra-ui/react";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { TiArrowUnsorted } from "react-icons/ti";
+import { IoSearchOutline, IoSettingsSharp } from "react-icons/io5";
+import { useReactTable, getCoreRowModel, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table';
+import { flexRender } from '@tanstack/react-table';
 import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
-import { IoSettingsSharp } from "react-icons/io5";
 import ReactPaginate from 'react-paginate';
 
 export default function FuelRefillTable() {
     const [fuelRefillDetails, setFuelRefillDetails] = useState([]);
+    const [sorting, setSorting] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
+    const [searchInput, setSearchInput] = useState("");
     const itemsPerPage = 10;
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchFuelRefill();
+    }, []);
 
     const fetchFuelRefill = async () => {
         try {
             const response = await axios.get("https://localhost:7265/api/FuelRefill");
             const responseData = response.data;
-            console.log(responseData); // Check if these fields are present in the response
             setFuelRefillDetails(responseData);
         } catch (error) {
             console.error("Error fetching fuel refills:", error);
@@ -39,14 +53,99 @@ export default function FuelRefillTable() {
         }
     };
 
-    useEffect(() => {
-        fetchFuelRefill();
-    }, []);
+    const formatDate = (fuelRefill) => {
+        if (!fuelRefill.date) return 'N/A';
+        const datetimeParts = fuelRefill.date.split("T");
+        return datetimeParts[0] || 'Invalid Date';
+    };
 
-    const breadcrumbs = [
-        { label: "Vehicle", link: "/app/Vehicle" },
-        { label: "Fuel Refill Details", link: "/app/FuelRefillTable" },
+    const columns = [
+        {
+            accessorKey: 'nic',
+            header: 'User NIC',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'vehicleRegistrationNo',
+            header: 'Vehicle Registration No',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'literCount',
+            header: 'Liter Count',
+            meta: { isNumeric: true, filter: 'number' }
+        },
+        {
+            accessorKey: 'date',
+            header: 'Date',
+            cell: info => formatDate(info.row.original),
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'time',
+            header: 'Time',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'fType',
+            header: 'Refill Type',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'cost',
+            header: 'Cost',
+            meta: { isNumeric: true, filter: 'number' }
+        },
+        {
+            accessorKey: 'status',
+            header: 'Status',
+            cell: info => (info.getValue() ? "Active" : "Inactive"),
+            meta: { isNumeric: false, filter: 'boolean' }
+        },
+        {
+            id: 'actions',
+            header: 'Actions',
+            cell: ({ row }) => (
+                <Menu>
+                    <MenuButton
+                        color={theme.purple}
+                        as={IconButton}
+                        aria-label="profile-options"
+                        fontSize="20px"
+                        icon={<IoSettingsSharp />}
+                    />
+                    <MenuList>
+                        <MenuItem>
+                            <Link to={`/app/EditFuelRefill/${row.original.fuelRefillId}`}>
+                                Edit
+                            </Link>
+                        </MenuItem>
+                        <MenuItem>
+                            {row.original.status ? "Deactivate" : "Activate"}
+                        </MenuItem>
+                    </MenuList>
+                </Menu>
+            ),
+            meta: { isNumeric: false, filter: null }
+        }
     ];
+
+    const table = useReactTable({
+        data: fuelRefillDetails,
+        columns,
+        state: { sorting, globalFilter: searchInput },
+        onSortingChange: setSorting,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+    });
+
+    const handleSearchInputChange = (event) => {
+        const inputValue = event.target.value.toLowerCase();
+        setSearchInput(inputValue);
+        table.setGlobalFilter(inputValue);
+        setCurrentPage(0); // Reset pagination when searching
+    };
 
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
@@ -54,53 +153,93 @@ export default function FuelRefillTable() {
 
     const startOffset = currentPage * itemsPerPage;
     const endOffset = startOffset + itemsPerPage;
-    const currentData = fuelRefillDetails.slice(startOffset, endOffset);
-    const pageCount = Math.ceil(fuelRefillDetails.length / itemsPerPage);
+    const sortedData = table.getRowModel().rows.map(row => row.original);
+    const currentData = sortedData.slice(startOffset, endOffset);
+    const pageCount = Math.ceil(table.getFilteredRowModel().rows.length / itemsPerPage);
+    const isEmpty = currentData.length === 0;
+    const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "5px" };
+
+    const breadcrumbs = [
+        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Fuel Refill Details", link: "/app/FuelRefillTable" },
+    ];
 
     return (
         <div className="main-content">
             <PageHeader title="Fuel Refill Details" breadcrumbs={breadcrumbs} />
 
-            <Link to="/app/AddFuelRefillDetails">
-                <Button
-                    bg={theme.purple}
-                    _hover={{ bg: theme.onHoverPurple }}
-                    color="white"
-                    variant="solid"
-                    w="230px"
-                    marginTop="60px"
-                    marginBottom="20px"
-                    mr="10px"
-                    position="absolute"
-                    top="130"
-                    right="50"
-                >
-                    Add Fuel Refill Details
-                </Button>
-            </Link>
+            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
+                <InputGroup>
+                    <InputLeftElement pointerEvents="none">
+                        <IoSearchOutline />
+                    </InputLeftElement>
+                    <Input
+                        placeholder="Search"
+                        value={searchInput}
+                        onChange={handleSearchInputChange}
+                        variant="filled"
+                        width="300px"
+                    />
+                </InputGroup>
+                <Link to="/app/AddFuelRefillDetails">
+                    <Button
+                        bg={theme.purple}
+                        _hover={{ bg: theme.onHoverPurple }}
+                        color="white"
+                        variant="solid"
+                        w="230px"
+                        mr="60px"
+                    >
+                        Add Fuel Refill Details
+                    </Button>
+                </Link>
+            </Box>
 
-            <Box mb="20px">
-                <Table className="custom-table">
-                    <Thead className="sticky-header">
-                        <Tr>
-                            <Th>User NIC</Th>
-                            <Th>Vehicle Registration No</Th>
-                            <Th>Liter Count</Th>
-                            <Th>Date</Th>
-                            <Th>Time</Th>
-                            <Th>Refill Type</Th>
-                            <Th>Cost</Th>
-                            <Th>Status</Th>
-                            <Th>Actions</Th>
+            <Table className="custom-table">
+                <Thead className="sticky-header">
+                    {table.getHeaderGroups().map(headerGroup => (
+                        <Tr key={headerGroup.id}>
+                            {headerGroup.headers.map(header => {
+                                const meta = header.column.columnDef.meta;
+                                return (
+                                    <Th
+                                        key={header.id}
+                                        onClick={header.column.getToggleSortingHandler()}
+                                        isNumeric={meta?.isNumeric}
+                                        className="custom-table-th"
+                                    >
+                                        {flexRender(header.column.columnDef.header, header.getContext())}
+                                        <chakra.span pl="4">
+                                            {header.column.getIsSorted() ? (
+                                                header.column.getIsSorted() === "desc" ? (
+                                                    <TriangleDownIcon aria-label="sorted descending" style={iconStyle} />
+                                                ) : (
+                                                    <TriangleUpIcon aria-label="sorted ascending" style={iconStyle} />
+                                                )
+                                            ) : (
+                                                <TiArrowUnsorted aria-label="unsorted" style={iconStyle} />
+                                            )}
+                                        </chakra.span>
+                                    </Th>
+                                );
+                            })}
                         </Tr>
-                    </Thead>
-                    <Tbody>
-                        {currentData.map((fuelRefill,index) => (
+                    ))}
+                </Thead>
+                <Tbody>
+                    {isEmpty ? (
+                        <Tr>
+                            <Td colSpan={columns.length} textAlign="center">
+                                <Text>No results found for {searchInput}</Text>
+                            </Td>
+                        </Tr>
+                    ) : (
+                        currentData.map((fuelRefill, index) => (
                             <Tr key={index}>
                                 <Td>{fuelRefill.nic}</Td>
                                 <Td>{fuelRefill.vehicleRegistrationNo}</Td>
                                 <Td>{fuelRefill.literCount}</Td>
-                                <Td>{fuelRefill.date}</Td>
+                                <Td>{formatDate(fuelRefill)}</Td>
                                 <Td>{fuelRefill.time}</Td>
                                 <Td>{fuelRefill.fType}</Td>
                                 <Td>{fuelRefill.cost}</Td>
@@ -127,23 +266,23 @@ export default function FuelRefillTable() {
                                     </Menu>
                                 </Td>
                             </Tr>
-                        ))}
-                    </Tbody>
-                </Table>
-            </Box>
-
-            <ReactPaginate
-                breakLabel="..."
-                nextLabel=">"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
-                pageCount={pageCount}
-                previousLabel="<"
-                marginPagesDisplayed={2}
-                marginTop={5}
-                containerClassName={"pagination"}
-                activeClassName={"active"}
-            />
+                        ))
+                    )}
+                </Tbody>
+            </Table>
+            {!isEmpty && (
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel=">"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={pageCount}
+                    previousLabel="<"
+                    marginPagesDisplayed={2}
+                    containerClassName={"pagination"}
+                    activeClassName={"active"}
+                />
+            )}
         </div>
     );
 }

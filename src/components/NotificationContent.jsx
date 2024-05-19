@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
-import { IoMdClose } from "react-icons/io";
-import { Tag, Text } from "@chakra-ui/react";
-import { Icon } from "@chakra-ui/icons";
-import { BsClockFill } from "react-icons/bs";
+import {IoMdClose} from "react-icons/io";
+import {Tag, Text} from "@chakra-ui/react";
+import {Icon} from "@chakra-ui/icons";
+import {BsClockFill} from "react-icons/bs";
 
-export default function NotificationContent({ NotificationType, NotificationTitle, NotificationBody, CreatedAt, onMarkAsRead }) {
+export default function NotificationContent(props) {
     return (
         <div>
             <div className="flex flex-row items-start space-x-4 w-full">
                 <div className="ml-36 flex items-start space-x-4 mt-14">
-                    <button className="rounded-md p-2 bg-white" onClick={onMarkAsRead}>
+                    <button className="rounded-md p-2 bg-white">
                         <IoMdClose />
                     </button>
                 </div>
@@ -25,17 +25,17 @@ export default function NotificationContent({ NotificationType, NotificationTitl
                         px={5}
                         py={2}
                     >
-                        {NotificationType}
+                        {props.NotificationType}
                     </Tag>
-                    <Text>{NotificationTitle}</Text>
-                    <Text className="text-gray-400">{NotificationBody}</Text>
+                    <Text>{props.NotificationTitle}</Text>
+                    <Text className="text-gray-400">{props.NotificationBody}</Text>
                 </div>
                 <div className="flex items-center justify-end space-x-4 mt-14">
                     <Icon as={BsClockFill} color="#393970" />
-                    <Text>{CreatedAt}</Text>
+                    <Text>21 Dec 2023 at 6.50 PM</Text>
                 </div>
             </div>
-            <hr className="my-4 w-4/5 mx-auto border-black" />
+            <hr className="my-4 w-4/5 mx-auto border-black"/>
         </div>
     );
 }

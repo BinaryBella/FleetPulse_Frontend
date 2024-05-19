@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
-import { useNavigate } from "react-router-dom";
 import {
-    Button,
-    Input,
     AlertDialog,
-    useDisclosure,
-    AlertDialogOverlay,
+    AlertDialogBody,
     AlertDialogContent,
-    AlertDialogHeader, AlertDialogBody, AlertDialogFooter
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
+    Button,
+    Checkbox,
+    Input,
+    useDisclosure,
+    Select
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 
 export default function AddFuelRefillDetails() {
@@ -19,22 +24,91 @@ export default function AddFuelRefillDetails() {
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
+    const [userDetails, setUserDetails] = useState({
+        FirstName: "",
+        LastName: "",
+        DateOfBirth: "",
+        EmailAddress: "",
+        PhoneNo: "",
+        NIC: "",
+        ProfilePicture: "",
+    });
+    const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const exampleVehicleData = [
+        { VehicleId: 2, VehicleRegistrationNo: "DEF789" },
+        { VehicleId: 1, VehicleRegistrationNo: "ABC123" },
+    ];
+
+    const fetchVehicleRegNos = async () => {
+        setVehicleRegNoDetails(exampleVehicleData);
+        // try {
+        //     const response = await axios.get("https://localhost:7265/api/Vehicle");
+        // } catch (error) {
+        //     console.error("Error fetching vehicle registration numbers:", error);
+        // }
+    };
+
+    const fetchUser = async () => {
         try {
-            // Mock API call
-            console.log("Form submitted:", values);
-
-            // Display success dialog
-            setSuccessDialogMessage('Fuel Refill added successfully.');
-            onSuccessDialogOpen();
+            const username = sessionStorage.getItem("Username");
+            if (username) {
+                const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
+                const responseData = response.data;
+                setNIC(responseData.nic);
+                console.log(nic);
+            } else {
+                console.error("Username not found in session storage.");
+            }
         } catch (error) {
-            // Handle error
-            console.error("Error:", error);
-            setDialogMessage(error.message || 'Failed to add fuel refill.');
+            console.error("Error fetching user profile:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+        fetchVehicleRegNos();
+    }, []);
+
+    const handleSubmit = async (values) => {
+        try {
+            const response = await fetch('https://localhost:7265/api/FuelRefill', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    VehicleId: parseInt(values.vehicleRegistrationNo),
+                    NIC: values.nic,
+                    Cost: values.cost,
+                    LiterCount: values.literCount,
+                    Date: values.date,
+                    Time: values.time,
+                    RefillType: values.fType,
+                    Status: values.IsActive
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to add Fuel Refill.');
+            }
+
+            if (data.message && data.message.toLowerCase().includes('exist')) {
+                setDialogMessage('Fuel Refill already exists');
+                onDialogOpen();
+            } else {
+                setSuccessDialogMessage('Fuel Refill added successfully');
+                onSuccessDialogOpen();
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                setDialogMessage('Failed to connect to the server');
+            } else {
+                setDialogMessage(error.message || 'Failed to add Fuel Refill.');
+            }
             onDialogOpen();
-        } finally {
-            setSubmitting(false);
         }
     };
 
@@ -48,21 +122,23 @@ export default function AddFuelRefillDetails() {
     };
 
     const breadcrumbs = [
-        {label: "Vehicle", link: "/app/Vehicle"},
-        {label: "Fuel Refill", link: "/app/FuelRefillTable"},
-        {label: "Add Fuel Refill Details", link: "/app/AddFuelRefillDetails"},
+        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Fuel Refill", link: "/app/FuelRefillTable" },
+        { label: "Add Fuel Refill Details", link: "/app/AddFuelRefillDetails" },
     ];
 
     return (
         <>
-            <PageHeader title="Add Fuel Refill Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Add Fuel Refill Details" breadcrumbs={breadcrumbs} />
             <Formik
                 initialValues={{
-                    VehicleRegistrationNo: "",
-                    LiterCount: "",
-                    DateTime: "",
-                    RefillType: "",
-                    Cost: "",
+                    vehicleRegistrationNo: "",
+                    nic: nic ?? "",
+                    literCount: "",
+                    date: "",
+                    time: "",
+                    fType: "",
+                    cost: "",
                     IsActive: false
                 }}
                 onSubmit={handleSubmit}
@@ -70,11 +146,13 @@ export default function AddFuelRefillDetails() {
                 {({ errors, touched, isSubmitting }) => (
                     <Form className="grid grid-cols-2 gap-10 mt-8">
                         <div className="flex flex-col gap-3">
-                            <p>Vehicle Registration No</p>
-                            <Field name="VehicleRegistrationNo" validate={(value) => {
+                            <p>User NIC</p>
+                            <Field name="nic" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "Vehicle Registration No is required.";
+                                    error = "NIC is required.";
+                                } else if (!/^[0-9]{9}[vVxX]$|^[0-9]{12}$/.test(value)) {
+                                    error = "Invalid NIC format.";
                                 }
                                 return error;
                             }}>
@@ -89,17 +167,54 @@ export default function AddFuelRefillDetails() {
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            id="VehicleRegistrationNo"
-                                            placeholder="Vehicle Registration No"
+                                            id="nic"
+                                            placeholder="NIC"
                                         />
-                                        {errors.VehicleRegistrationNo && touched.VehicleRegistrationNo && (
-                                            <div className="text-red-500">{errors.VehicleRegistrationNo}</div>
+                                        {errors.nic && touched.nic && (
+                                            <div className="text-red-500">{errors.nic}</div>
                                         )}
                                     </div>
                                 )}
                             </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Vehicle Registration No</p>
+                            <Field name="vehicleRegistrationNo" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Vehicle Registration No is required.";
+                                }
+                                return error;
+                            }}>
+                                {({ field }) => (
+                                    <div>
+                                        <Select
+                                            {...field}
+                                            placeholder='Vehicle Registration No'
+                                            size='md'
+                                            variant='filled'
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                        >
+                                            {vehicleRegNoDetails.map((option, index) => (
+                                                <option key={index} value={option.VehicleId}>
+                                                    {option.VehicleRegistrationNo}
+                                                </option>
+                                            ))}
+                                        </Select>
+                                        {errors.vehicleRegistrationNo && touched.vehicleRegistrationNo && (
+                                            <div className="text-red-500">{errors.vehicleRegistrationNo}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
                             <p>Liter Count</p>
-                            <Field name="LiterCount" validate={(value) => {
+                            <Field name="literCount" validate={(value) => {
                                 let error;
                                 if (!value) {
                                     error = "Liter Count is required.";
@@ -117,20 +232,22 @@ export default function AddFuelRefillDetails() {
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            id="LiterCount"
+                                            id="literCount"
                                             placeholder="Liter Count"
                                         />
-                                        {errors.LiterCount && touched.LiterCount && (
-                                            <div className="text-red-500">{errors.LiterCount}</div>
+                                        {errors.literCount && touched.literCount && (
+                                            <div className="text-red-500">{errors.literCount}</div>
                                         )}
                                     </div>
                                 )}
                             </Field>
-                            <p>Date & Time</p>
-                            <Field name="DateTime" validate={(value) => {
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Date</p>
+                            <Field name="date" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "Date & Time is required.";
+                                    error = "Date is required.";
                                 }
                                 return error;
                             }}>
@@ -138,24 +255,56 @@ export default function AddFuelRefillDetails() {
                                     <div>
                                         <Input
                                             {...field}
-                                            type="datetime-local"
+                                            type="date"
                                             variant="filled"
                                             borderRadius="md"
                                             px={3}
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            id="DateTime"
-                                            placeholder="Date & Time"
+                                            id="date"
+                                            placeholder="Date"
                                         />
-                                        {errors.DateTime && touched.DateTime && (
-                                            <div className="text-red-500">{errors.DateTime}</div>
+                                        {errors.date && touched.date && (
+                                            <div className="text-red-500">{errors.date}</div>
                                         )}
                                     </div>
                                 )}
                             </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Time</p>
+                            <Field name="time" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Time is required.";
+                                }
+                                return error;
+                            }}>
+                                {({ field }) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="time"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            id="time"
+                                            placeholder="Time"
+                                        />
+                                        {errors.time && touched.time && (
+                                            <div className="text-red-500">{errors.time}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
                             <p>Refill Type</p>
-                            <Field name="RefillType" validate={(value) => {
+                            <Field name="fType" validate={(value) => {
                                 let error;
                                 if (!value) {
                                     error = "Refill Type is required.";
@@ -164,26 +313,30 @@ export default function AddFuelRefillDetails() {
                             }}>
                                 {({ field }) => (
                                     <div>
-                                        <Input
+                                        <Select
                                             {...field}
-                                            type="text"
-                                            variant="filled"
+                                            placeholder='Refill Type'
+                                            size='md'
+                                            variant='filled'
                                             borderRadius="md"
                                             px={3}
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            id="RefillType"
-                                            placeholder="Refill Type"
-                                        />
-                                        {errors.RefillType && touched.RefillType && (
-                                            <div className="text-red-500">{errors.RefillType}</div>
+                                        >
+                                            <option value="In station">In station</option>
+                                            <option value="Out station">Out station</option>
+                                        </Select>
+                                        {errors.fType && touched.fType && (
+                                            <div className="text-red-500">{errors.fType}</div>
                                         )}
                                     </div>
                                 )}
                             </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
                             <p>Cost</p>
-                            <Field name="Cost" validate={(value) => {
+                            <Field name="cost" validate={(value) => {
                                 let error;
                                 if (!value) {
                                     error = "Cost is required.";
@@ -201,54 +354,59 @@ export default function AddFuelRefillDetails() {
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            id="Cost"
+                                            id="cost"
                                             placeholder="Cost"
                                         />
-                                        {errors.Cost && touched.Cost && (
-                                            <div className="text-red-500">{errors.Cost}</div>
+                                        {errors.cost && touched.cost && (
+                                            <div className="text-red-500">{errors.cost}</div>
                                         )}
                                     </div>
                                 )}
                             </Field>
-                            <div className="flex flex-col gap-3">
-                                <Field type="checkbox" name="IsActive">
-                                    {({ field }) => (
-                                        <label>
-                                            <input type="checkbox" {...field} />
-                                            <span>Is Active</span>
-                                        </label>
-                                    )}
-                                </Field>
-                            </div>
-                            <div className="flex gap-10">
-                                <Button
-                                    bg="gray.400"
-                                    _hover={{ bg: "gray.500" }}
-                                    color="#ffffff"
-                                    variant="solid"
-                                    w="230px"
-                                    marginTop="10"
-                                    onClick={handleCancel}
-                                    disabled={isSubmitting}
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
-                                    bg={theme.purple}
-                                    _hover={{ bg: theme.onHoverPurple }}
-                                    color="#ffffff"
-                                    variant="solid"
-                                    w="230px"
-                                    marginTop="10"
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                >
-                                    {isSubmitting ? "Saving..." : "Save"}
-                                </Button>
-                            </div>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Status</p>
+                            <Field name="IsActive" type="checkbox">
+                                {({ field }) => (
+                                    <Checkbox
+                                        {...field}
+                                        colorScheme={theme.colors.brand}
+                                        size="lg"
+                                        mt={1}
+                                    >
+                                        Active
+                                    </Checkbox>
+                                )}
+                            </Field>
+                        </div>
+                        <div></div>
+                        <div className="flex gap-10">
+                            <Button
+                                bg="gray.400"
+                                _hover={{ bg: "gray.500" }}
+                                color="#ffffff"
+                                variant="solid"
+                                w="230px"
+                                marginTop="10"
+                                onClick={handleCancel}
+                                disabled={isSubmitting}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                bg={theme.purple}
+                                _hover={{ bg: theme.onHoverPurple }}
+                                color="#ffffff"
+                                variant="solid"
+                                w="230px"
+                                marginTop="10"
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? "Saving..." : "Save"}
+                            </Button>
                         </div>
                     </Form>
-
                 )}
             </Formik>
 
@@ -289,3 +447,4 @@ export default function AddFuelRefillDetails() {
         </>
     );
 }
+

@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {Formik, Form, Field} from "formik";
-import PageHeader from "../components/PageHeader.jsx";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -10,7 +9,6 @@ import {
     AlertDialogOverlay,
     Button,
     Checkbox,
-    Flex,
     Input,
     Textarea,
     useDisclosure,
@@ -19,6 +17,7 @@ import {
 import theme from "../config/ThemeConfig.jsx";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import PageHeader from "../components/PageHeader.jsx";
 
 export default function AddVehicleMaintenanceDetails() {
     const navigate = useNavigate();
@@ -28,13 +27,30 @@ export default function AddVehicleMaintenanceDetails() {
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
     const [VehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
-    // const [isActive, setIsActive] = useState(false);
+
+    const exampleVehicleData = [
+        {VehicleId: 2, VehicleRegistrationNo: "REG123"},
+        {VehicleId: 3, VehicleRegistrationNo: "REG456"},
+    ];
+
+    const fetchVehicleRegNos = async () => {
+        try {
+            const response = await axios.get("https://localhost:7265/api/Vehicle");
+            setVehicleRegNoDetails(response.data);
+        } catch (error) {
+            console.error("Error fetching vehicle registration numbers:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchVehicleMaintenanceTypes();
+        setVehicleRegNoDetails(exampleVehicleData);
+    }, []);
 
     const fetchVehicleMaintenanceTypes = async () => {
         try {
             const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
             setMaintenanceTypeDetails(response.data);
-            console.log(maintenanceTypeDetails);
         } catch (error) {
             console.error("Error fetching vehicle maintenance types:", error);
         }
@@ -42,24 +58,11 @@ export default function AddVehicleMaintenanceDetails() {
 
     useEffect(() => {
         fetchVehicleMaintenanceTypes();
-    }, []);
-
-    const fetchVehicleRegNo= async () => {
-        try {
-            const response = await axios.get("https://localhost:7265/api/Vehicle");
-            setVehicleRegNoDetails(response.data);
-            console.log(VehicleRegNoDetails);
-        } catch (error) {
-            console.error("Error fetching vehicle Registration No:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchVehicleRegNo();
+        fetchVehicleRegNos();
     }, []);
 
     const breadcrumbs = [
-        {label: "Vehicle", link: "/app/Vehicle"},//yashmi
+        {label: "Vehicle", link: "/app/Vehicle"},
         {label: "Vehicle Maintenance", link: "/app/MaintenanceTable"},
         {label: "Add Vehicle Maintenance Details", link: "/app/AddVehicleMaintenanceDetails"},
     ];
@@ -67,16 +70,16 @@ export default function AddVehicleMaintenanceDetails() {
     const handleSubmit = async (values) => {
         try {
             console.log(values.VehicleRegistrationNo, values.maintenanceDate);
-            const response = await fetch('https://localhost:7265/api/VehicleMaintenance/vehiclemaintenance', {
+            const response = await fetch('https://localhost:7265/api/VehicleMaintenance', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    VehicleRegistrationNo: values.VehicleRegistrationNo,
+                    VehicleId: values.VehicleRegistrationNo,
                     MaintenanceDate: values.maintenanceDate,
-                    MaintenanceTypeId: parseInt(values.maintenanceTypeId),
-                    Cost: values.cost,
+                    VehicleMaintenanceTypeId: parseInt(values.VehicleMaintenanceTypeId),
+                    Cost: parseFloat(values.cost),
                     PartsReplaced: values.replacedParts,
                     ServiceProvider: values.serviceProvider,
                     SpecialNotes: values.specialNotes,
@@ -84,7 +87,7 @@ export default function AddVehicleMaintenanceDetails() {
                 })
             });
 
-            const data = response.json();
+            const data = await response.json();
 
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to add maintenance');
@@ -105,19 +108,16 @@ export default function AddVehicleMaintenanceDetails() {
             }
             onDialogOpen();
         }
-    }
-
+    };
 
     const handleCancel = () => {
         navigate('/app/MaintenanceTable');
     };
+
     const handleSuccessDialogClose = () => {
-        // Close the success dialog
         onSuccessDialogClose();
-        // Redirect to the vehicle maintenance type table page
         navigate('/app/MaintenanceTable');
     };
-
 
     return (
         <>
@@ -126,7 +126,7 @@ export default function AddVehicleMaintenanceDetails() {
                 initialValues={{
                     VehicleRegistrationNo: "",
                     maintenanceDate: "",
-                    maintenanceTypeId: 0,
+                    VehicleMaintenanceTypeId: 0,
                     cost: "",
                     serviceProvider: "",
                     replacedParts: "",
@@ -146,7 +146,8 @@ export default function AddVehicleMaintenanceDetails() {
                                 }
                                 return error;
                             }}>
-                                {({field}) => (<div>
+                                {({field}) => (
+                                    <div>
                                         <Select
                                             {...field}
                                             placeholder='Vehicle Registration No'
@@ -173,7 +174,7 @@ export default function AddVehicleMaintenanceDetails() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>Vehicle Maintenance Type</p>
-                            <Field name="maintenanceTypeId" validate={(value) => {
+                            <Field name="VehicleMaintenanceTypeId" validate={(value) => {
                                 let error;
                                 if (!value) {
                                     error = "Maintenance type is required.";
@@ -200,8 +201,8 @@ export default function AddVehicleMaintenanceDetails() {
                                             ))}
                                         </Select>
 
-                                        {errors.maintenanceTypeId && touched.maintenanceTypeId && (
-                                            <div className="text-red-500">{errors.maintenanceTypeId}</div>
+                                        {errors.VehicleMaintenanceTypeId && touched.VehicleMaintenanceTypeId && (
+                                            <div className="text-red-500">{errors.VehicleMaintenanceTypeId}</div>
                                         )}
                                     </div>
                                 )}
@@ -212,7 +213,7 @@ export default function AddVehicleMaintenanceDetails() {
                             <Field name="maintenanceDate" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "maintenance Date is required.";
+                                    error = "Maintenance Date is required.";
                                 }
                                 return error;
                             }}>
@@ -238,11 +239,13 @@ export default function AddVehicleMaintenanceDetails() {
                             </Field>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <p>Cost for Maintenance</p>
+                            <p>Cost</p>
                             <Field name="cost" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "Cost of Maintenance is required.";
+                                    error = "Cost is required.";
+                                } else if (isNaN(value)) {
+                                    error = "Cost must be a number.";
                                 }
                                 return error;
                             }}>
@@ -251,13 +254,14 @@ export default function AddVehicleMaintenanceDetails() {
                                         <Input
                                             {...field}
                                             type="number"
-                                            placeholder="Cost of Maintenance"
                                             variant="filled"
                                             borderRadius="md"
-                                            width="500px"
                                             px={3}
                                             py={2}
                                             mt={1}
+                                            width="500px"
+                                            name="cost"
+                                            placeholder="Cost"
                                         />
                                         {errors.cost && touched.cost && (
                                             <div className="text-red-500">{errors.cost}</div>
@@ -268,66 +272,88 @@ export default function AddVehicleMaintenanceDetails() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>Service Provider</p>
-                            <Field
-                                as={Input}
-                                type="text"
-                                variant="filled"
-                                borderRadius="md"
-                                px={3}
-                                py={2}
-                                mt={1}
-                                width="500px"
-                                name="serviceProvider"
-                                placeholder="Service Provider"
-                            />
+                            <Field name="serviceProvider" validate={(value) => {
+                                let error;
+                                if (!value) {
+                                    error = "Service Provider is required.";
+                                }
+                                return error;
+                            }}>
+                                {({field}) => (
+                                    <div>
+                                        <Input
+                                            {...field}
+                                            type="text"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            name="serviceProvider"
+                                            placeholder="Service Provider"
+                                        />
+                                        {errors.serviceProvider && touched.serviceProvider && (
+                                            <div className="text-red-500">{errors.serviceProvider}</div>
+                                        )}
+                                    </div>
+                                )}
+                            </Field>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <p>Replaced Parts</p>
-                            <Field
-                                as={Textarea}
-                                variant="filled"
-                                borderRadius="md"
-                                px={3}
-                                py={2}
-                                mt={1}
-                                width="500px"
-                                name="replacedParts"
-                                placeholder="Replaced Parts"
-                            />
+                            <p>Parts Replaced</p>
+                            <Field name="replacedParts">
+                                {({field}) => (
+                                    <Input
+                                        {...field}
+                                        type="text"
+                                        variant="filled"
+                                        borderRadius="md"
+                                        px={3}
+                                        py={2}
+                                        mt={1}
+                                        width="500px"
+                                        name="replacedParts"
+                                        placeholder="Parts Replaced"
+                                    />
+                                )}
+                            </Field>
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>Special Notes</p>
-                            <Field
-                                as={Textarea}
-                                variant="filled"
-                                borderRadius="md"
-                                px={3}
-                                py={2}
-                                mt={1}
-                                width="500px"
-                                name="specialNotes"
-                                placeholder="Special Notes"
-                            />
+                            <Field name="specialNotes">
+                                {({field}) => (
+                                    <Textarea
+                                        {...field}
+                                        variant="filled"
+                                        borderRadius="md"
+                                        px={3}
+                                        py={2}
+                                        mt={1}
+                                        width="500px"
+                                        name="specialNotes"
+                                        placeholder="Special Notes"
+                                    />
+                                )}
+                            </Field>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <Flex align="center" gap={2}>
-                                <Field name="isActive">
-                                    {({field, form}) => (
-                                        <Checkbox
-                                            {...field}
-                                            size='lg'
-                                            defaultChecked={field.value}
-                                            className="mt-8"
-                                            onChange={e => form.setFieldValue(field.name, e.target.checked)}
-                                        >
-                                            Is Active
-                                        </Checkbox>
-                                    )}
-                                </Field>
-                            </Flex>
+                            <p>Status</p>
+                            <Field name="isActive" type="checkbox">
+                                {({field}) => (
+                                    <Checkbox
+                                        {...field}
+                                        colorScheme={theme.colors.brand}
+                                        size="lg"
+                                        mt={1}
+                                    >
+                                        Active
+                                    </Checkbox>
+                                )}
+                            </Field>
                         </div>
                         <div></div>
-                        <div className="flex gap-10">
+                        <div className="flex flex-row gap-14">
                             <Button
                                 bg="gray.400"
                                 _hover={{bg: "gray.500"}}
@@ -340,13 +366,13 @@ export default function AddVehicleMaintenanceDetails() {
                                 Cancel
                             </Button>
                             <Button
-                                type="submit"
                                 bg={theme.purple}
                                 _hover={{bg: theme.onHoverPurple}}
                                 color="#ffffff"
                                 variant="solid"
                                 w="230px"
                                 marginTop="10"
+                                type="submit"
                             >
                                 Save
                             </Button>
@@ -355,7 +381,7 @@ export default function AddVehicleMaintenanceDetails() {
                 )}
             </Formik>
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay/>
+                <AlertDialogOverlay />
                 <AlertDialogContent
                     position="absolute"
                     top="30%"
@@ -372,7 +398,7 @@ export default function AddVehicleMaintenanceDetails() {
             </AlertDialog>
 
             <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay/>
+                <AlertDialogOverlay />
                 <AlertDialogContent
                     position="absolute"
                     top="30%"

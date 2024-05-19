@@ -17,6 +17,7 @@ import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
 import MaintenanceTable from "./pages/MaintenanceTable.jsx";
 import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
+import EditMaintenanceType from "./pages/EditMaintenanceType.jsx";
 
 export default function App() {
 
@@ -35,6 +36,8 @@ export default function App() {
                 <Route path="MaintenanceTable" element={<MaintenanceTable/>}/>
                 <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable/>}/>
                 <Route path="FuelRefillTable" element={<FuelRefillTable/>}/>
+                <Route path="EditMaintenanceType/:id" element={<EditMaintenanceType />} />
+
             </Route>
             <Route path="/auth" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>

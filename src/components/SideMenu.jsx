@@ -21,7 +21,7 @@ import { Box } from "@chakra-ui/react";
 
 export default function SideMenu() {
     return (
-        <div className="bg-[#393970] w-1/5 flex flex-col">
+        <div className="bg-[#393970] w-1/5">
             <div className="flex justify-center w-full mb-10">
                 <Link to="/app/Dashboard">
                     <img src={Logo} alt="Logo" className="w-3/5" />
