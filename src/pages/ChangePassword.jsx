@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {
     Button,
     Input,
@@ -33,8 +33,9 @@ export default function ChangePassword() {
     const [showPassword1, setShowPassword1] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
     const [showPassword3, setShowPassword3] = useState(false);
-    const [resetPasswordResponse, setResetPasswordResponse] = useState("")
+    const [resetPasswordResponse, setResetPasswordResponse] = useState("");
     const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const cancelRef = useRef();
     const navigate = useNavigate();
 
     const handleShowPassword1 = () => {
@@ -51,6 +52,7 @@ export default function ChangePassword() {
 
     const handleAlertClose = () => {
         setIsAlertOpen(false);
+        navigate('/app/Dashboard');
     };
 
     const handleSubmit = async (values) => {
@@ -73,7 +75,6 @@ export default function ChangePassword() {
                     },
                 }
             );
-
 
             if (response.data.status) {
                 setIsAlertOpen(true);
@@ -257,7 +258,7 @@ export default function ChangePassword() {
             </div>
             <AlertDialog
                 isOpen={isAlertOpen}
-                leastDestructiveRef={undefined}
+                leastDestructiveRef={cancelRef}
                 onClose={handleAlertClose}
                 isCentered
             >
@@ -270,7 +271,7 @@ export default function ChangePassword() {
                             {resetPasswordResponse}
                         </AlertDialogBody>
                         <AlertDialogFooter>
-                            <Button onClick={handleAlertClose}>
+                            <Button onClick={handleAlertClose} ref={cancelRef}>
                                 OK
                             </Button>
                         </AlertDialogFooter>
