@@ -5,10 +5,12 @@ import { IconButton, Input, InputGroup, InputRightElement, Stack, Button } from 
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
-import login from "../assets/images/login.png";
+import { useAuth } from "../context/AuthContext";
+import first from "../assets/images/login.png";
 
 export default function Login() {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const [resetClicked, setResetClicked] = useState(false);
     const [backendError, setBackendError] = useState("");
@@ -23,8 +25,8 @@ export default function Login() {
 
     return (
         <>
-            <p className="font-sans text-3xl text-[#393970] mb-5">Login</p>
-            <img src={login} alt="Login" width="400" height="400" />
+            <p className="font-sans text-3xl text-[#393970]">Login</p>
+           <img src={first} alt="login" width="400" height="400"/>
             <Formik
                 initialValues={{
                     username: "",
@@ -52,13 +54,12 @@ export default function Login() {
                                 const {token, jobTitle} = data.data; // Deconstruct token and jobTitle from data.data
                                 if (jobTitle === "Admin" || jobTitle === "Staff") {
                                     sessionStorage.setItem('Username', values.username);
-                                    localStorage.setItem('Token', token);
-                                    navigate("/app/dashboard");
+                                    login(token); // Use login function from context
                                 } else {
                                     navigate("/unauthorized");
                                 }
                             }
-                        })
+                        });
                 }}
             >
                 {({handleSubmit, errors, touched}) => (
