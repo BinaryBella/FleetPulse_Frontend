@@ -1,4 +1,4 @@
-import React, {UseState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   Thead,
@@ -19,7 +19,7 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function DriverDetails(){
-  const[DriverDetails,setDriverDetails] = useState([]);
+  const[driverDetails,setDriverDetails] = useState([]);
   const[error,setError]=useState(null);
 
   const breadcrumbs = [
@@ -34,7 +34,7 @@ export default function DriverDetails(){
       <div className="grid grid-cols-2 gap-10 mt-8">
         <Button
           as={Link} // Use Link from react-router-dom instead of a regular button
-          to="/app/AddDriver" // Specify the correct route for adding a new driver
+          to="/app/AddDriverDetails" // Specify the correct route for adding a new driver
           bg={theme.purple}
           _hover={{ bg: theme.onHoverPurple }}
           color="white"

@@ -1,4 +1,4 @@
-import React, { useState, UseEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Table,
@@ -20,7 +20,7 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function StaffDetails(){
-    const [StaffDetails, setStaffDetails] = useState([]);
+    const [staffDetails, setStaffDetails] = useState([]);
     const [error, setError] =useState(null);
 
 
@@ -69,17 +69,17 @@ export default function StaffDetails(){
                     {staffDetails.map((staff, index) => (
                         <Tr key={index}>
 
-                            <Td>{helper.firstName}</Td>
-                            <Td>{helper.lastName}</Td>
-                            <Td>{helper.DoB}</Td>
-                            <Td>{helper.NIC}</Td>
-                            <Td>{helper.emailAddress}</Td>
-                            <Td>{helper.phoneNo}</Td>
-                            <Td>{helper.Em.Contact}</Td>
-                            <Td>{helper.jobTitle}</Td>
+                            <Td>{staff.firstName}</Td>
+                            <Td>{staff.lastName}</Td>
+                            <Td>{staff.DoB}</Td>
+                            <Td>{staff.NIC}</Td>
+                            <Td>{staff.emailAddress}</Td>
+                            <Td>{staff.phoneNo}</Td>
+                            <Td>{staff.Em.Contact}</Td>
+                            <Td>{staff.jobTitle}</Td>
 
-                            <Td>{helper.status}</Td>
-                            <Td>{helper.isActive ? "Active" : "Inactive"}</Td>
+                            <Td>{staff.status}</Td>
+                            <Td>{staff.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton

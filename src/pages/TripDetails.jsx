@@ -1,4 +1,4 @@
-import React, { useState,UseEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   Table,
   Thead,
@@ -19,7 +19,7 @@ import theme from "../config/ThemeConfig.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function TripDetails(){
-    const [TripDetails, setTripDetails] = useState([]);
+    const [tripDetails, setTripDetails] = useState([]);
     const [error, setError] =useState(null);
 
 
@@ -31,7 +31,7 @@ export default function TripDetails(){
 
   return (
     <>
-      <PageHeader title="Staff Details" breadcrumbs={breadcrumbs} />
+      <PageHeader title="Trip Details" breadcrumbs={breadcrumbs} />
       <div className="grid grid-cols-2 gap-10 mt-8">
         <Button
           as={Link} // Use Link from react-router-dom instead of a regular button
@@ -67,14 +67,14 @@ export default function TripDetails(){
                     {tripDetails.map((trip, index) => (
                         <Tr key={index}>
 
-                            <Td>{helper.driversNIC}</Td>
-                            <Td>{helper.HelpersNIC}</Td>
-                            <Td>{helper.vehicleRegNo}</Td>
-                            <Td>{helper.date}</Td>
-                            <Td>{helper.startTime}</Td>
-                            <Td>{helper.endTime}</Td>
-                            <Td>{helper.startLocation}</Td>
-                            <Td>{helper.endLocation}</Td>
+                            <Td>{trip.driversNIC}</Td>
+                            <Td>{trip.HelpersNIC}</Td>
+                            <Td>{trip.vehicleRegNo}</Td>
+                            <Td>{trip.date}</Td>
+                            <Td>{trip.startTime}</Td>
+                            <Td>{trip.endTime}</Td>
+                            <Td>{trip.startLocation}</Td>
+                            <Td>{trip.endLocation}</Td>
                             <Td>{trip.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>

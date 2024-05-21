@@ -115,7 +115,7 @@ export default function SideMenu() {
                         Driver
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Helper">
+                <Link className="flex items-center pl-16" to="/app/HelperDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -128,7 +128,7 @@ export default function SideMenu() {
                         Helper
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Staff">
+                <Link className="flex items-center pl-16" to="/app/StaffDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -141,7 +141,7 @@ export default function SideMenu() {
                         Staff
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Trip">
+                <Link className="flex items-center pl-16" to="/app/TripDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -184,4 +184,5 @@ export default function SideMenu() {
         </div>
     );
 }
+
 

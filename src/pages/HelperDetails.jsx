@@ -1,4 +1,4 @@
-import React, { useState, UseEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Table,
@@ -20,7 +20,7 @@ import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function HelperDetails(){
-    const [VehicleDetails, setVehicleDetails] = useState([]);
+    const [helperDetails, setHelperDetails] = useState([]);
     const [error, setError] =useState(null);
 
 
