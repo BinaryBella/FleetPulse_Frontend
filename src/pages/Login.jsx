@@ -1,10 +1,11 @@
-import {useState} from "react";
-import {FormControl, FormErrorMessage, FormLabel, Text} from "@chakra-ui/react";
-import {Field, Formik} from "formik";
-import {IconButton, Input, InputGroup, InputRightElement, Stack, Button} from "@chakra-ui/react";
-import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
-import {Link, useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { FormControl, FormErrorMessage, FormLabel, Text } from "@chakra-ui/react";
+import { Field, Formik } from "formik";
+import { IconButton, Input, InputGroup, InputRightElement, Stack, Button } from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { Link, useNavigate } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
+import login from "../assets/images/login.png";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -22,7 +23,8 @@ export default function Login() {
 
     return (
         <>
-            <p className="font-sans text-3xl text-[#393970] mb-10">Login</p>
+            <p className="font-sans text-3xl text-[#393970] mb-5">Login</p>
+            <img src={login} alt="Login" width="400" height="400" />
             <Formik
                 initialValues={{
                     username: "",
@@ -38,21 +40,28 @@ export default function Login() {
                         headers: {
                             'Content-type': 'application/json; charset=UTF-8',
                         }
-                    }).then(response => {
-                        return response.json();
-                    }).then(data => {
-                        if (data.status === false) {
-                            setBackendError(data.message);
-                        } else {
-                            sessionStorage.setItem('Username',values.username);
-                            localStorage.setItem('Token', data.data);
-                            navigate("/app/dashboard");
-                        }
-                    })
+                    }).then(response => response.json())
+                        .then(data => {
+                            if (data.status === false) {
+                                if (data.message === "Unauthorized: Only Admin or Staff can login") {
+                                    navigate("/unauthorized");
+                                } else {
+                                    setBackendError(data.message);
+                                }
+                            } else {
+                                const {token, jobTitle} = data.data; // Deconstruct token and jobTitle from data.data
+                                if (jobTitle === "Admin" || jobTitle === "Staff") {
+                                    sessionStorage.setItem('Username', values.username);
+                                    localStorage.setItem('Token', token);
+                                    navigate("/app/dashboard");
+                                } else {
+                                    navigate("/unauthorized");
+                                }
+                            }
+                        })
                 }}
             >
-
-            {({handleSubmit, errors, touched}) => (
+                {({handleSubmit, errors, touched}) => (
                     <form onSubmit={handleSubmit} className="w-1/2">
                         <Stack spacing={3}>
                             <FormControl isInvalid={!!errors.username || touched.username}>
@@ -135,4 +144,3 @@ export default function Login() {
         </>
     );
 }
-

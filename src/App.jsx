@@ -18,6 +18,7 @@ import MaintenanceTable from "./pages/MaintenanceTable.jsx";
 import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
 import EditMaintenanceType from "./pages/EditMaintenanceType.jsx";
+import UnauthorizedPage from "./pages/UnauthorizedPage.jsx";
 
 export default function App() {
 
@@ -46,6 +47,7 @@ export default function App() {
                 <Route path="ResetPassSuccess" element={<ResetPassSuccess/>}/>
                 <Route path="ResetEmail" element={<ResetEmail/>}/>
             </Route>
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route path="/" element={token == null ? <Navigate to="/auth/Login" /> : <Navigate to="/app/Dashboard" />}/>
         </Routes>
     );
