@@ -1,28 +1,32 @@
-import React from "react";
 import PageHeader from "../components/PageHeader.jsx";
-import { Button, Checkbox, Input, Select } from "@chakra-ui/react";
-import theme from "../config/ThemeConfig.jsx";
+import {Button, Checkbox, Input, Select} from "@chakra-ui/react";
 import {MdArrowDropDown} from "react-icons/md";
+import theme from "../config/ThemeConfig.jsx";
 
-function AddDriverDetails() {
-  const breadcrumbs = [
-    { label: "Driver", link: "/app/Driver" },
-    { label: "Driver Details", link: "/" },
-    { label: "Add Driver Details", link: "/app/AddvehicletypeDetails" },
-  ];
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted");
-  };
-  const handleCancel = () => {
-    console.log("Cancelled");
-  };
+export default function AddDriverDetails() {
+    const breadcrumbs = [
+        {label: 'Driver', link: '/'},
+        {label: 'Driver Details', link: '/'},
+        {label: 'Add Driver Details', link: '/'}
+    ];
+    // Function to handle form submission
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // You can submit the userData object to your backend here
+        console.log();
+    };
 
-  return (
-    <>
-      <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
-      <div className="grid grid-cols-2 gap-10 mt-8">
-      <div className="flex flex-col gap-3">
+    // Function to handle cancel action
+    const handleCancel = () => {
+        // Reset form fields or redirect to another page
+        console.log("Cancelled");
+    };
+
+    return (
+        <>
+            <PageHeader title="Add Driver Details" breadcrumbs={breadcrumbs}/>
+            <div className="grid grid-cols-2 gap-10 mt-8">
+                <div className="flex flex-col gap-3">
                     <p>First Name</p>
                     <Input
                         type="text"
@@ -36,7 +40,6 @@ function AddDriverDetails() {
                         placeholder="First Name"
                     />
                 </div>
-
                 <div className="flex flex-col gap-3">
                     <p>Last Name</p>
                     <Input
@@ -51,7 +54,6 @@ function AddDriverDetails() {
                         placeholder="Last Name"
                     />
                 </div>
-
                 <div className="flex flex-col gap-3">
                     <p>Date of Birth</p>
                     <Input
@@ -66,7 +68,6 @@ function AddDriverDetails() {
                         placeholder="Date of Birth"
                     />
                 </div>
-
                 <div className="flex flex-col gap-3">
                     <p>National Identity Card No</p>
                     <Input
@@ -81,11 +82,10 @@ function AddDriverDetails() {
                         placeholder="National Identity Card No"
                     />
                 </div>
-
                 <div className="flex flex-col gap-3">
                     <p>Email Address</p>
                     <Input
-                        type="text"
+                        type="email"
                         variant="filled"
                         borderRadius="md"
                         px={3}
@@ -96,11 +96,10 @@ function AddDriverDetails() {
                         placeholder="Email Address"
                     />
                 </div>
-
                 <div className="flex flex-col gap-3">
                     <p>Driver License No</p>
                     <Input
-                        type="text"
+                        type="tel"
                         variant="filled"
                         borderRadius="md"
                         px={3}
@@ -115,37 +114,35 @@ function AddDriverDetails() {
                 <div className="flex flex-col gap-3">
                     <p>Contact Number</p>
                     <Input
-                        type="text"
+                        type="tel"
                         variant="filled"
                         borderRadius="md"
                         px={3}
                         py={2}
                         mt={1}
                         width="500px"
-                        name="Contact No"
-                        placeholder="Contact No"
+                        name="Contact Number"
+                        placeholder="Contact Number"
                     />
                 </div>
-
                 <div className="flex flex-col gap-3">
-                    <p>Emergency Contact Number</p>
+                    <p>Emergency Contact No</p>
                     <Input
-                        type="text"
+                        type="tel"
                         variant="filled"
                         borderRadius="md"
                         px={3}
                         py={2}
                         mt={1}
                         width="500px"
-                        name="Emergency Contact Number"
-                        placeholder="Emergency Contact Number"
+                        name="Emergency Contact No"
+                        placeholder="Emergency Contact No"
                     />
                 </div>
-
                 <div className="flex flex-col gap-3">
                     <p>Blood Group</p>
                     <Select
-                        placeholder="Blood Group"
+                        placeholder="Select Blood Group"
                         variant="filled"
                         borderRadius="md"
                         width="500px"
@@ -155,14 +152,11 @@ function AddDriverDetails() {
                         name="Blood Group"
                         icon={<MdArrowDropDown/>}
                     >
-                        <option value="Blood Group1">Blood Group 1</option>
-                        <option value="Blood Group2">Blood Group 2</option>
-                        <option value="Blood Group3">Blood Group 3</option>
+                        <option value="BloodGroup1">Blood Group 1</option>
+                        <option value="BloodGroup2">Blood Group 2</option>
+                        <option value="BloodGroup3">Blood Group 3</option>
                     </Select>
                 </div>
-
-                
-
                 <div className="flex flex-col gap-3">
                     <p>User Name</p>
                     <Input
@@ -177,14 +171,10 @@ function AddDriverDetails() {
                         placeholder="User Name"
                     />
                 </div>
-
-                
-
-               
                 <div className="flex flex-col gap-3">
                     <p>Password</p>
                     <Input
-                        type="text"
+                        type="Password"
                         variant="filled"
                         borderRadius="md"
                         px={3}
@@ -195,30 +185,27 @@ function AddDriverDetails() {
                         placeholder="Password"
                     />
                 </div>
-
                 <div className="flex flex-col gap-3">
                     <p>Confirm Password</p>
                     <Input
-                        type="text"
+                        type="password"
                         variant="filled"
                         borderRadius="md"
                         px={3}
                         py={2}
                         mt={1}
                         width="500px"
-                        name=" Confirm Password"
+                        name="confirm Password"
                         placeholder="Confirm Password"
                     />
                 </div>
-
-                
                 <div className="flex flex-col gap-3">
                     <Checkbox size='lg' defaultChecked>
                         Is Active
                     </Checkbox>
                 </div>
-                </div>
-                <div className="flex w-5/6 justify-end gap-10">
+            </div>
+            <div className="flex w-5/6 justify-end gap-10">
                 <Button
                     bg="gray.400"
                     _hover={{bg: "gray.500"}}
@@ -241,10 +228,7 @@ function AddDriverDetails() {
                 >
                     Save
                 </Button>
-
-      </div>
-    </>
-  );
+            </div>
+        </>
+    );
 }
-
-export default AddDriverDetails;

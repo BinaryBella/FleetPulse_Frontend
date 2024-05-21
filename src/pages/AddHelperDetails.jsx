@@ -1,12 +1,13 @@
 import PageHeader from "../components/PageHeader.jsx";
-import {Button, Checkbox, Input} from "@chakra-ui/react";
+import {Button, Checkbox, Input, Select} from "@chakra-ui/react";
+import {MdArrowDropDown} from "react-icons/md";
 import theme from "../config/ThemeConfig.jsx";
 
-export default function Staff() {
+export default function AddHelperDetails() {
     const breadcrumbs = [
-        {label: 'Staff', link: '/'},
-        {label: 'Staff Details', link: '/'},
-        {label: 'Add Staff Details', link: '/'}
+        {label: 'Helper', link: '/'},
+        {label: 'Helper Details', link: '/'},
+        {label: 'Add Helper Details', link: '/'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {
@@ -23,7 +24,7 @@ export default function Staff() {
 
     return (
         <>
-            <PageHeader title="Add Staff Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Add Helper Details" breadcrumbs={breadcrumbs}/>
             <div className="grid grid-cols-2 gap-10 mt-8">
                 <div className="flex flex-col gap-3">
                     <p>First Name</p>
@@ -124,18 +125,22 @@ export default function Staff() {
                     />
                 </div>
                 <div className="flex flex-col gap-3">
-                    <p>Job Title</p>
-                    <Input
-                        type="text"
+                    <p>Blood Group</p>
+                    <Select
+                        placeholder="Select Blood Group"
                         variant="filled"
                         borderRadius="md"
+                        width="500px"
                         px={3}
                         py={2}
                         mt={1}
-                        width="500px"
-                        name="Job Title"
-                        placeholder="Job Title"
-                    />
+                        name="Blood Group"
+                        icon={<MdArrowDropDown/>}
+                    >
+                        <option value="BloodGroup1">Blood Group 1</option>
+                        <option value="BloodGroup2">Blood Group 2</option>
+                        <option value="BloodGroup3">Blood Group 3</option>
+                    </Select>
                 </div>
                 <div className="flex flex-col gap-3">
                     <p>User Name</p>
@@ -154,15 +159,15 @@ export default function Staff() {
                 <div className="flex flex-col gap-3">
                     <p>Password</p>
                     <Input
-                        type="password"
+                        type="Password"
                         variant="filled"
                         borderRadius="md"
                         px={3}
                         py={2}
                         mt={1}
                         width="500px"
-                        name="password"
-                        placeholder="password"
+                        name="Password"
+                        placeholder="Password"
                     />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -212,3 +217,4 @@ export default function Staff() {
         </>
     );
 }
+

@@ -1,4 +1,5 @@
-import React, {UseState,useEffect } from 'react';
+import React, { useState, UseEffect } from 'react';
+
 import {
   Table,
   Thead,
@@ -13,28 +14,29 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
-import {Link} from "react-router-dom";
+import { Link } from "react-dom";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
-export default function DriverDetails(){
-  const[DriverDetails,setDriverDetails] = useState([]);
-  const[error,setError]=useState(null);
+export default function StaffDetails(){
+    const [StaffDetails, setStaffDetails] = useState([]);
+    const [error, setError] =useState(null);
+
 
   const breadcrumbs = [
-    { label: "Driver", link: "/app/Driver" },
-    { label: "Driver Details", link: "/app/DriverDetails" },
-    { label: "Add Driver Details", link: "/app/AddDriverDetails" },
+    { label: "Staff", link: "/app/Staff" },
+    { label: "Staff Details", link: "/app/StaffDetails" },
+    { label: "Add Staff Details", link: "/app/AddStaffDetails" },
   ];
 
   return (
     <>
-      <PageHeader title="Driver Details" breadcrumbs={breadcrumbs} />
+      <PageHeader title="Staff Details" breadcrumbs={breadcrumbs} />
       <div className="grid grid-cols-2 gap-10 mt-8">
         <Button
           as={Link} // Use Link from react-router-dom instead of a regular button
-          to="/app/AddDriver" // Specify the correct route for adding a new driver
+          to="/app/AddStaff" // Specify the correct route for adding a new driver
           bg={theme.purple}
           _hover={{ bg: theme.onHoverPurple }}
           color="white"
@@ -43,7 +45,7 @@ export default function DriverDetails(){
           position="absolute"
           mr="20px"
         >
-          Add New Driver
+          Add New Staff
         </Button>
 
         <Table className="custom-table" >
@@ -58,26 +60,26 @@ export default function DriverDetails(){
                         <Th>Phone No.</Th>
 
                         <Th>Em.Contact</Th>
-                        <Th>Blood Group</Th>
+                        <Th>Job Title</Th>
                         <Th>Status</Th>
                         <Th>Action</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {driverDetails.map((driver, index) => (
+                    {staffDetails.map((staff, index) => (
                         <Tr key={index}>
 
-                            <Td>{driver.firstName}</Td>
-                            <Td>{driver.lastName}</Td>
-                            <Td>{driver.DoB}</Td>
-                            <Td>{driver.NIC}</Td>
-                            <Td>{driver.emailAddress}</Td>
-                            <Td>{driver.fphoneNo}</Td>
-                            <Td>{driver.Em.Contact}</Td>
-                            <Td>{driver.BloodGroup}</Td>
+                            <Td>{helper.firstName}</Td>
+                            <Td>{helper.lastName}</Td>
+                            <Td>{helper.DoB}</Td>
+                            <Td>{helper.NIC}</Td>
+                            <Td>{helper.emailAddress}</Td>
+                            <Td>{helper.phoneNo}</Td>
+                            <Td>{helper.Em.Contact}</Td>
+                            <Td>{helper.jobTitle}</Td>
 
-                            <Td>{driver.status}</Td>
-                            <Td>{driver.isActive ? "Active" : "Inactive"}</Td>
+                            <Td>{helper.status}</Td>
+                            <Td>{helper.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton
@@ -90,7 +92,7 @@ export default function DriverDetails(){
                                     />
                                     <MenuList>
                                         <MenuItem>
-                                            <Link to={`/editDriver/${driver.id}`} >
+                                            <Link to={`/editStaff/${staff.id}`} >
                                                 Edit
                                             </Link>
                                         </MenuItem>
@@ -108,4 +110,4 @@ export default function DriverDetails(){
             </Table>
        </div> </>
     );
-  }
+}

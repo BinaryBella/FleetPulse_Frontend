@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 
-export default function Trip() {
+export default function AddTripDetails() {
     const breadcrumbs = [
         {label: 'Trip', link: '/'},
         {label: 'Trip Details', link: '/'},
@@ -232,3 +232,4 @@ export default function Trip() {
             </>
             );
             }
+

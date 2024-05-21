@@ -19,17 +19,20 @@ import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
 import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
 import DriverDetails from "./pages/DriverDetails.jsx";
-import AddDriverDetails from "./pages/AddDriverDetails.jsx";
+
  import AddAccidentDetails from "./pages/AddAccidentDetails.jsx";
  import AddVehicleDetails from "./pages/AddVehicleDetails.jsx";
  import AddVehicleModel from "./pages/AddVehicleModel.jsx";
- import AddVehicleType from "./pages/Driver.jsx";
- import Helper from "./pages/Helper.jsx";
- import Staff from "./pages/Staff.jsx";
- import Trip from "./pages/Trip.jsx";
+ import AddVehicleType from "./pages/AddDriverDetails.jsx";
+ import AddHelperDetails from "./pages/AddHelperDetails.jsx";
+ import HelperDetails from "./pages/HelperDetails.jsx";
+ import AddStaffDetails from "./pages/AddStaffDetails.jsx";
+ import StaffDetails from "./pages/StaffDetails.jsx";
+ import AddTripDetails from "./pages/AddTripDetails.jsx";
+ import TripDetails from "./pages/TripDetails.jsx";
 import VehicleType from "./pages/VehicleType.jsx";
 import AddvehicletypeDetails from "./pages/AddvehicletypeDetails.jsx";
-import Driver from "./pages/Driver.jsx";
+import AddDriverDetails from "./pages/AddDriverDetails.jsx";
 
 export default function App() {
     return (
@@ -50,9 +53,13 @@ export default function App() {
                 <Route path="AddVehicleModel" element={<AddVehicleModel/>}/>
                 <Route path="AddVehicleType" element={<AddVehicleType/>}/>
                 <Route  path="DriverDetails" element={<DriverDetails/>}/>
-                <Route path="Helper" element={<Helper/>}/>
-                <Route path="Staff" element={<Staff/>}/>
-                <Route path="Trip" element={<Trip />}/>
+                <Route  path="AddDriverDetails" element={<AddDriverDetails/>}/>
+                <Route path="AddHelperDetails" element={<AddHelperDetails/>}/>
+                <Route path="HelperDetails" element={<HelperDetails/>}/>
+                <Route path="AddStaffDetails" element={<AddStaffDetails/>}/>
+                <Route path="StaffDetails" element={<StaffDetails/>}/>
+                <Route path="AddTripDetails" element={<AddTripDetails />}/>
+                <Route path="TripDetails" element={<TripDetails />}/>
                 <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
                 <Route path='VehicleType' element={<VehicleType/>}/>
                 <Route path='AddvehicletypeDetails' element={<AddvehicletypeDetails />}/>

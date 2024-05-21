@@ -1,4 +1,4 @@
-import React, {UseState,useEffect } from 'react';
+import React, { useState,UseEffect } from 'react';
 import {
   Table,
   Thead,
@@ -13,28 +13,29 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
-import {Link} from "react-router-dom";
-import theme from "../config/ThemeConfig.jsx";
+import { Link }from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
+import theme from "../config/ThemeConfig.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
-export default function DriverDetails(){
-  const[DriverDetails,setDriverDetails] = useState([]);
-  const[error,setError]=useState(null);
+export default function TripDetails(){
+    const [TripDetails, setTripDetails] = useState([]);
+    const [error, setError] =useState(null);
+
 
   const breadcrumbs = [
-    { label: "Driver", link: "/app/Driver" },
-    { label: "Driver Details", link: "/app/DriverDetails" },
-    { label: "Add Driver Details", link: "/app/AddDriverDetails" },
+    { label: "Trip", link: "/app/Trip" },
+    { label: "Trip Details", link: "/app/TripDetails" },
+    { label: "Add Trip Details", link: "/app/AddTripDetails" },
   ];
 
   return (
     <>
-      <PageHeader title="Driver Details" breadcrumbs={breadcrumbs} />
+      <PageHeader title="Staff Details" breadcrumbs={breadcrumbs} />
       <div className="grid grid-cols-2 gap-10 mt-8">
         <Button
           as={Link} // Use Link from react-router-dom instead of a regular button
-          to="/app/AddDriver" // Specify the correct route for adding a new driver
+          to="/app/AddTrip" // Specify the correct route for adding a new driver
           bg={theme.purple}
           _hover={{ bg: theme.onHoverPurple }}
           color="white"
@@ -43,41 +44,38 @@ export default function DriverDetails(){
           position="absolute"
           mr="20px"
         >
-          Add New Driver
+          Add New Trip
         </Button>
 
         <Table className="custom-table" >
                 <Thead>
                     <Tr>
-                        <Th>First Name</Th>
-                        <Th>Last Name</Th>
-                        <Th>DoB</Th>
-                        <Th>NIC</Th>
+                        <Th>Driver's NIC</Th>
+                        <Th>Helper's NIC</Th>
+                        <Th>Vehicle Reg.No</Th>
+                        <Th>Date</Th>
 
-                        <Th>Email Address</Th>
-                        <Th>Phone No.</Th>
+                        <Th>Start Time</Th>
+                        <Th>End Time</Th>
 
-                        <Th>Em.Contact</Th>
-                        <Th>Blood Group</Th>
-                        <Th>Status</Th>
-                        <Th>Action</Th>
+                        <Th>Start Location </Th>
+                        <Th>End Location</Th>
+                        
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {driverDetails.map((driver, index) => (
+                    {tripDetails.map((trip, index) => (
                         <Tr key={index}>
 
-                            <Td>{driver.firstName}</Td>
-                            <Td>{driver.lastName}</Td>
-                            <Td>{driver.DoB}</Td>
-                            <Td>{driver.NIC}</Td>
-                            <Td>{driver.emailAddress}</Td>
-                            <Td>{driver.fphoneNo}</Td>
-                            <Td>{driver.Em.Contact}</Td>
-                            <Td>{driver.BloodGroup}</Td>
-
-                            <Td>{driver.status}</Td>
-                            <Td>{driver.isActive ? "Active" : "Inactive"}</Td>
+                            <Td>{helper.driversNIC}</Td>
+                            <Td>{helper.HelpersNIC}</Td>
+                            <Td>{helper.vehicleRegNo}</Td>
+                            <Td>{helper.date}</Td>
+                            <Td>{helper.startTime}</Td>
+                            <Td>{helper.endTime}</Td>
+                            <Td>{helper.startLocation}</Td>
+                            <Td>{helper.endLocation}</Td>
+                            <Td>{trip.isActive ? "Active" : "Inactive"}</Td>
                             <Td>
                                 <Menu>
                                     <MenuButton
@@ -90,7 +88,7 @@ export default function DriverDetails(){
                                     />
                                     <MenuList>
                                         <MenuItem>
-                                            <Link to={`/editDriver/${driver.id}`} >
+                                            <Link to={`/editTrip/${trip.id}`} >
                                                 Edit
                                             </Link>
                                         </MenuItem>
@@ -108,4 +106,4 @@ export default function DriverDetails(){
             </Table>
        </div> </>
     );
-  }
+}

@@ -102,7 +102,7 @@ export default function SideMenu() {
                         </AccordionItem>
                     </Accordion>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Driver">
+                <Link className="flex items-center pl-16" to="/app/DriverDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -184,3 +184,4 @@ export default function SideMenu() {
         </div>
     );
 }
+
