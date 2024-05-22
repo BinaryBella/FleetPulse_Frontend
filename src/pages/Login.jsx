@@ -5,12 +5,10 @@ import { IconButton, Input, InputGroup, InputRightElement, Stack, Button } from 
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
-import { useAuth } from "../context/AuthContext";
 import first from "../assets/images/login.png";
 
 export default function Login() {
     const navigate = useNavigate();
-    const { login } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const [resetClicked, setResetClicked] = useState(false);
     const [backendError, setBackendError] = useState("");
@@ -54,7 +52,7 @@ export default function Login() {
                                 const { token, jobTitle } = data.data;
                                 if (jobTitle === "Admin" || jobTitle === "Staff") {
                                     sessionStorage.setItem('Username', values.username);
-                                    login(token);
+                                    sessionStorage.setItem('Token', token); // Save token to session storage
                                     navigate('/app/Dashboard');
                                 } else {
                                     navigate("/unauthorized");

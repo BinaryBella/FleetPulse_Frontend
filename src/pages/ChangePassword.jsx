@@ -253,7 +253,7 @@ export default function ChangePassword() {
                     </Formik>
                 </div>
                 <div className="flex items-end">
-                    <img src={Password} alt="Change Password" width="400" height="400" className="opacity-70 mr-14"/>
+                    <img src={Password} alt="Change Password" width="400" height="400" className=" mr-14"/>
                 </div>
             </div>
             <AlertDialog
