@@ -1,27 +1,24 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('Token');
+        const token = localStorage.getItem('token');
         setIsAuthenticated(!!token);
     }, []);
 
     const login = (token) => {
-        localStorage.setItem('Token', token);
+        localStorage.setItem('token', token);
         setIsAuthenticated(true);
-        navigate('/app/dashboard');
     };
 
     const logout = () => {
-        localStorage.removeItem('Token');
+        localStorage.removeItem('token');
         setIsAuthenticated(false);
-        navigate('/auth/login');
     };
 
     return (
@@ -29,6 +26,10 @@ export const AuthProvider = ({ children }) => {
             {children}
         </AuthContext.Provider>
     );
+};
+
+AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 export const useAuth = () => useContext(AuthContext);

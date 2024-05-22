@@ -26,7 +26,7 @@ export default function Login() {
     return (
         <>
             <p className="font-sans text-3xl text-[#393970]">Login</p>
-           <img src={first} alt="login" width="400" height="400"/>
+            <img src={first} alt="login" width="400" height="400" />
             <Formik
                 initialValues={{
                     username: "",
@@ -44,47 +44,48 @@ export default function Login() {
                         }
                     }).then(response => response.json())
                         .then(data => {
-                            if (data.status === false) {
+                            if (!data.status) {
                                 if (data.message === "Unauthorized: Only Admin or Staff can login") {
                                     navigate("/unauthorized");
                                 } else {
                                     setBackendError(data.message);
                                 }
                             } else {
-                                const {token, jobTitle} = data.data; // Deconstruct token and jobTitle from data.data
+                                const { token, jobTitle } = data.data;
                                 if (jobTitle === "Admin" || jobTitle === "Staff") {
                                     sessionStorage.setItem('Username', values.username);
-                                    login(token); // Use login function from context
+                                    login(token);
+                                    navigate('/app/Dashboard');
                                 } else {
                                     navigate("/unauthorized");
                                 }
                             }
-                        });
+                        }).catch(() => {
+                        setBackendError('Login failed. Please try again.');
+                    });
                 }}
             >
-                {({handleSubmit, errors, touched}) => (
+                {({ handleSubmit, errors, touched }) => (
                     <form onSubmit={handleSubmit} className="w-1/2">
                         <Stack spacing={3}>
-                            <FormControl isInvalid={!!errors.username || touched.username}>
-                                <FormLabel htmlFor="Username">Username</FormLabel>
+                            <FormControl isInvalid={errors.username && touched.username}>
+                                <FormLabel htmlFor="username">Username</FormLabel>
                                 <Field
                                     as={Input}
-                                    id="Username"
+                                    id="username"
                                     name="username"
                                     type="text"
                                     variant="filled"
                                     placeholder="Username"
                                     validate={(value) => {
-                                        let error;
                                         if (!value) {
-                                            error = "Username is required.";
+                                            return "Username is required.";
                                         }
-                                        return error;
                                     }}
                                 />
                                 <FormErrorMessage>{errors.username}</FormErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={!!errors.password || touched.password}>
+                            <FormControl isInvalid={errors.password && touched.password}>
                                 <FormLabel htmlFor="password">Password</FormLabel>
                                 <InputGroup>
                                     <Field
@@ -95,11 +96,9 @@ export default function Login() {
                                         variant="filled"
                                         placeholder="Password"
                                         validate={(value) => {
-                                            let error;
                                             if (!value) {
-                                                error = "Password is required.";
+                                                return "Password is required.";
                                             }
-                                            return error;
                                         }}
                                     />
                                     <InputRightElement width="4.5rem">
@@ -108,7 +107,7 @@ export default function Login() {
                                             size="sm"
                                             variant="ghost"
                                             onClick={handleShowPassword}
-                                            icon={showPassword ? <ViewOffIcon/> : <ViewIcon/>}
+                                            icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                                             aria-label="password-icon"
                                         />
                                     </InputRightElement>
@@ -131,7 +130,7 @@ export default function Login() {
                             )}
                             <Button
                                 bg={theme.purple}
-                                _hover={{bg: theme.onHoverPurple}}
+                                _hover={{ bg: theme.onHoverPurple }}
                                 color="#ffffff"
                                 variant="solid"
                                 type="submit"

@@ -25,15 +25,6 @@ export default function AddFuelRefillDetails() {
     const [dialogMessage, setDialogMessage] = useState("");
     const [nic, setNIC] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
-    const [userDetails, setUserDetails] = useState({
-        FirstName: "",
-        LastName: "",
-        DateOfBirth: "",
-        EmailAddress: "",
-        PhoneNo: "",
-        NIC: "",
-        ProfilePicture: "",
-    });
     const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
     const exampleVehicleData = [
@@ -50,14 +41,14 @@ export default function AddFuelRefillDetails() {
         // }
     };
 
-    const fetchUser = async () => {
+    const fetchUser = async (setFieldValue) => {
         try {
             const username = sessionStorage.getItem("Username");
             if (username) {
                 const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
                 const responseData = response.data;
                 setNIC(responseData.nic);
-                console.log(nic);
+                setFieldValue("nic", responseData.nic); // Set the NIC field in Formik
             } else {
                 console.error("Username not found in session storage.");
             }
@@ -67,7 +58,6 @@ export default function AddFuelRefillDetails() {
     };
 
     useEffect(() => {
-        fetchUser();
         fetchVehicleRegNos();
     }, []);
 
@@ -134,7 +124,7 @@ export default function AddFuelRefillDetails() {
             <Formik
                 initialValues={{
                     vehicleRegistrationNo: "",
-                    nic: nic ?? "",
+                    nic: "",
                     literCount: "",
                     date: "",
                     time: "",
@@ -144,271 +134,277 @@ export default function AddFuelRefillDetails() {
                 }}
                 onSubmit={handleSubmit}
             >
-                {({ errors, touched, isSubmitting }) => (
-                    <Form className="grid grid-cols-2 gap-10 mt-8">
-                        <div className="flex flex-col gap-3">
-                            <p>User NIC</p>
-                            <Field name="nic" validate={(value) => {
-                                let error;
-                                if (!value) {
-                                    error = "NIC is required.";
-                                } else if (!/^[0-9]{9}[vVxX]$|^[0-9]{12}$/.test(value)) {
-                                    error = "Invalid NIC format.";
-                                }
-                                return error;
-                            }}>
-                                {({ field }) => (
-                                    <div>
-                                        <Input
+                {({ errors, touched, isSubmitting, setFieldValue }) => {
+                    useEffect(() => {
+                        fetchUser(setFieldValue);
+                    }, [setFieldValue]);
+
+                    return (
+                        <Form className="grid grid-cols-2 gap-10 mt-8">
+                            <div className="flex flex-col gap-3">
+                                <p>User NIC</p>
+                                <Field name="nic" validate={(value) => {
+                                    let error;
+                                    if (!value) {
+                                        error = "NIC is required.";
+                                    } else if (!/^[0-9]{9}[vVxX]$|^[0-9]{12}$/.test(value)) {
+                                        error = "Invalid NIC format.";
+                                    }
+                                    return error;
+                                }}>
+                                    {({ field }) => (
+                                        <div>
+                                            <Input
+                                                {...field}
+                                                type="text"
+                                                variant="filled"
+                                                borderRadius="md"
+                                                px={3}
+                                                py={2}
+                                                mt={1}
+                                                width="500px"
+                                                id="nic"
+                                                placeholder="NIC"
+                                            />
+                                            {errors.nic && touched.nic && (
+                                                <div className="text-red-500">{errors.nic}</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <p>Vehicle Registration No</p>
+                                <Field name="vehicleRegistrationNo" validate={(value) => {
+                                    let error;
+                                    if (!value) {
+                                        error = "Vehicle Registration No is required.";
+                                    }
+                                    return error;
+                                }}>
+                                    {({ field }) => (
+                                        <div>
+                                            <Select
+                                                {...field}
+                                                placeholder='Vehicle Registration No'
+                                                size='md'
+                                                variant='filled'
+                                                borderRadius="md"
+                                                px={3}
+                                                py={2}
+                                                mt={1}
+                                                width="500px"
+                                            >
+                                                {vehicleRegNoDetails.map((option, index) => (
+                                                    <option key={index} value={option.VehicleId}>
+                                                        {option.VehicleRegistrationNo}
+                                                    </option>
+                                                ))}
+                                            </Select>
+                                            {errors.vehicleRegistrationNo && touched.vehicleRegistrationNo && (
+                                                <div className="text-red-500">{errors.vehicleRegistrationNo}</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <p>Liter Count</p>
+                                <Field name="literCount" validate={(value) => {
+                                    let error;
+                                    if (!value) {
+                                        error = "Liter Count is required.";
+                                    }
+                                    return error;
+                                }}>
+                                    {({ field }) => (
+                                        <div>
+                                            <Input
+                                                {...field}
+                                                type="number"
+                                                variant="filled"
+                                                borderRadius="md"
+                                                px={3}
+                                                py={2}
+                                                mt={1}
+                                                width="500px"
+                                                id="literCount"
+                                                placeholder="Liter Count"
+                                            />
+                                            {errors.literCount && touched.literCount && (
+                                                <div className="text-red-500">{errors.literCount}</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <p>Date</p>
+                                <Field name="date" validate={(value) => {
+                                    let error;
+                                    if (!value) {
+                                        error = "Date is required.";
+                                    }
+                                    return error;
+                                }}>
+                                    {({ field }) => (
+                                        <div>
+                                            <Input
+                                                {...field}
+                                                type="date"
+                                                variant="filled"
+                                                borderRadius="md"
+                                                px={3}
+                                                py={2}
+                                                mt={1}
+                                                width="500px"
+                                                id="date"
+                                                placeholder="Date"
+                                            />
+                                            {errors.date && touched.date && (
+                                                <div className="text-red-500">{errors.date}</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <p>Time</p>
+                                <Field name="time" validate={(value) => {
+                                    let error;
+                                    if (!value) {
+                                        error = "Time is required.";
+                                    }
+                                    return error;
+                                }}>
+                                    {({ field }) => (
+                                        <div>
+                                            <Input
+                                                {...field}
+                                                type="time"
+                                                variant="filled"
+                                                borderRadius="md"
+                                                px={3}
+                                                py={2}
+                                                mt={1}
+                                                width="500px"
+                                                id="time"
+                                                placeholder="Time"
+                                            />
+                                            {errors.time && touched.time && (
+                                                <div className="text-red-500">{errors.time}</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <p>Refill Type</p>
+                                <Field name="fType" validate={(value) => {
+                                    let error;
+                                    if (!value) {
+                                        error = "Refill Type is required.";
+                                    }
+                                    return error;
+                                }}>
+                                    {({ field }) => (
+                                        <div>
+                                            <Select
+                                                {...field}
+                                                placeholder='Refill Type'
+                                                size='md'
+                                                variant='filled'
+                                                borderRadius="md"
+                                                px={3}
+                                                py={2}
+                                                mt={1}
+                                                width="500px"
+                                            >
+                                                <option value="In station">In station</option>
+                                                <option value="Out station">Out station</option>
+                                            </Select>
+                                            {errors.fType && touched.fType && (
+                                                <div className="text-red-500">{errors.fType}</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <p>Cost</p>
+                                <Field name="cost" validate={(value) => {
+                                    let error;
+                                    if (!value) {
+                                        error = "Cost is required.";
+                                    }
+                                    return error;
+                                }}>
+                                    {({ field }) => (
+                                        <div>
+                                            <Input
+                                                {...field}
+                                                type="number"
+                                                variant="filled"
+                                                borderRadius="md"
+                                                px={3}
+                                                py={2}
+                                                mt={1}
+                                                width="500px"
+                                                id="cost"
+                                                placeholder="Cost"
+                                            />
+                                            {errors.cost && touched.cost && (
+                                                <div className="text-red-500">{errors.cost}</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <p>Status</p>
+                                <Field name="IsActive" type="checkbox">
+                                    {({ field }) => (
+                                        <Checkbox
                                             {...field}
-                                            type="text"
-                                            variant="filled"
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
+                                            colorScheme={theme.colors.brand}
+                                            size="lg"
                                             mt={1}
-                                            width="500px"
-                                            id="nic"
-                                            placeholder="NIC"
-                                        />
-                                        {errors.nic && touched.nic && (
-                                            <div className="text-red-500">{errors.nic}</div>
-                                        )}
-                                    </div>
-                                )}
-                            </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Vehicle Registration No</p>
-                            <Field name="vehicleRegistrationNo" validate={(value) => {
-                                let error;
-                                if (!value) {
-                                    error = "Vehicle Registration No is required.";
-                                }
-                                return error;
-                            }}>
-                                {({ field }) => (
-                                    <div>
-                                        <Select
-                                            {...field}
-                                            placeholder='Vehicle Registration No'
-                                            size='md'
-                                            variant='filled'
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
-                                            mt={1}
-                                            width="500px"
                                         >
-                                            {vehicleRegNoDetails.map((option, index) => (
-                                                <option key={index} value={option.VehicleId}>
-                                                    {option.VehicleRegistrationNo}
-                                                </option>
-                                            ))}
-                                        </Select>
-                                        {errors.vehicleRegistrationNo && touched.vehicleRegistrationNo && (
-                                            <div className="text-red-500">{errors.vehicleRegistrationNo}</div>
-                                        )}
-                                    </div>
-                                )}
-                            </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Liter Count</p>
-                            <Field name="literCount" validate={(value) => {
-                                let error;
-                                if (!value) {
-                                    error = "Liter Count is required.";
-                                }
-                                return error;
-                            }}>
-                                {({ field }) => (
-                                    <div>
-                                        <Input
-                                            {...field}
-                                            type="number"
-                                            variant="filled"
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
-                                            mt={1}
-                                            width="500px"
-                                            id="literCount"
-                                            placeholder="Liter Count"
-                                        />
-                                        {errors.literCount && touched.literCount && (
-                                            <div className="text-red-500">{errors.literCount}</div>
-                                        )}
-                                    </div>
-                                )}
-                            </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Date</p>
-                            <Field name="date" validate={(value) => {
-                                let error;
-                                if (!value) {
-                                    error = "Date is required.";
-                                }
-                                return error;
-                            }}>
-                                {({ field }) => (
-                                    <div>
-                                        <Input
-                                            {...field}
-                                            type="date"
-                                            variant="filled"
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
-                                            mt={1}
-                                            width="500px"
-                                            id="date"
-                                            placeholder="Date"
-                                        />
-                                        {errors.date && touched.date && (
-                                            <div className="text-red-500">{errors.date}</div>
-                                        )}
-                                    </div>
-                                )}
-                            </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Time</p>
-                            <Field name="time" validate={(value) => {
-                                let error;
-                                if (!value) {
-                                    error = "Time is required.";
-                                }
-                                return error;
-                            }}>
-                                {({ field }) => (
-                                    <div>
-                                        <Input
-                                            {...field}
-                                            type="time"
-                                            variant="filled"
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
-                                            mt={1}
-                                            width="500px"
-                                            id="time"
-                                            placeholder="Time"
-                                        />
-                                        {errors.time && touched.time && (
-                                            <div className="text-red-500">{errors.time}</div>
-                                        )}
-                                    </div>
-                                )}
-                            </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Refill Type</p>
-                            <Field name="fType" validate={(value) => {
-                                let error;
-                                if (!value) {
-                                    error = "Refill Type is required.";
-                                }
-                                return error;
-                            }}>
-                                {({ field }) => (
-                                    <div>
-                                        <Select
-                                            {...field}
-                                            placeholder='Refill Type'
-                                            size='md'
-                                            variant='filled'
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
-                                            mt={1}
-                                            width="500px"
-                                        >
-                                            <option value="In station">In station</option>
-                                            <option value="Out station">Out station</option>
-                                        </Select>
-                                        {errors.fType && touched.fType && (
-                                            <div className="text-red-500">{errors.fType}</div>
-                                        )}
-                                    </div>
-                                )}
-                            </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Cost</p>
-                            <Field name="cost" validate={(value) => {
-                                let error;
-                                if (!value) {
-                                    error = "Cost is required.";
-                                }
-                                return error;
-                            }}>
-                                {({ field }) => (
-                                    <div>
-                                        <Input
-                                            {...field}
-                                            type="number"
-                                            variant="filled"
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
-                                            mt={1}
-                                            width="500px"
-                                            id="cost"
-                                            placeholder="Cost"
-                                        />
-                                        {errors.cost && touched.cost && (
-                                            <div className="text-red-500">{errors.cost}</div>
-                                        )}
-                                    </div>
-                                )}
-                            </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Status</p>
-                            <Field name="IsActive" type="checkbox">
-                                {({ field }) => (
-                                    <Checkbox
-                                        {...field}
-                                        colorScheme={theme.colors.brand}
-                                        size="lg"
-                                        mt={1}
-                                    >
-                                        Active
-                                    </Checkbox>
-                                )}
-                            </Field>
-                        </div>
-                        <div></div>
-                        <div className="flex gap-10">
-                            <Button
-                                bg="gray.400"
-                                _hover={{ bg: "gray.500" }}
-                                color="#ffffff"
-                                variant="solid"
-                                w="230px"
-                                marginTop="10"
-                                onClick={handleCancel}
-                                disabled={isSubmitting}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                bg={theme.purple}
-                                _hover={{ bg: theme.onHoverPurple }}
-                                color="#ffffff"
-                                variant="solid"
-                                w="230px"
-                                marginTop="10"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? "Saving..." : "Save"}
-                            </Button>
-                        </div>
-                    </Form>
-                )}
+                                            Active
+                                        </Checkbox>
+                                    )}
+                                </Field>
+                            </div>
+                            <div></div>
+                            <div className="flex gap-10">
+                                <Button
+                                    bg="gray.400"
+                                    _hover={{ bg: "gray.500" }}
+                                    color="#ffffff"
+                                    variant="solid"
+                                    w="230px"
+                                    marginTop="10"
+                                    onClick={handleCancel}
+                                    disabled={isSubmitting}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    bg={theme.purple}
+                                    _hover={{ bg: theme.onHoverPurple }}
+                                    color="#ffffff"
+                                    variant="solid"
+                                    w="230px"
+                                    marginTop="10"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? "Saving..." : "Save"}
+                                </Button>
+                            </div>
+                        </Form>
+                    );
+                }}
             </Formik>
 
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom">
@@ -448,4 +444,3 @@ export default function AddFuelRefillDetails() {
         </>
     );
 }
-

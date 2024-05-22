@@ -1,24 +1,24 @@
 import './App.css';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import MainLayout from './layouts/MainLayout.jsx';
-import AnonymousLayout from './layouts/AnonymousLayout.jsx';
-import Login from './pages/Login.jsx';
-import ResetPassword from './pages/ResetPassword.jsx';
-import ResetPasswordConfirmation from './pages/ResetPasswordConfirmation.jsx';
-import ResetPassSuccess from './pages/ResetPassSuccess.jsx';
-import ResetEmail from './pages/ResetEmail.jsx';
-import UserProfile from './pages/UserProfile.jsx';
-import ChangePassword from './pages/ChangePassword.jsx';
-import Notification from './pages/Notification.jsx';
-import AddVehicleMaintenanceDetails from './pages/AddVehicleMaintenanceDetails.jsx';
-import AddFuelRefillDetails from './pages/AddFuelRefillDetails.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import AddMaintenanceType from './pages/AddMaintenanceType.jsx';
-import MaintenanceTable from './pages/MaintenanceTable.jsx';
-import MaintenanceTypeTable from './pages/MaintenanceTypeTable.jsx';
-import FuelRefillTable from './pages/FuelRefillTable.jsx';
-import EditMaintenanceType from './pages/EditMaintenanceType.jsx';
-import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
+import MainLayout from './layouts/MainLayout';
+import AnonymousLayout from './layouts/AnonymousLayout';
+import Login from './pages/Login';
+import ResetPassword from './pages/ResetPassword';
+import ResetPasswordConfirmation from './pages/ResetPasswordConfirmation';
+import ResetPassSuccess from './pages/ResetPassSuccess';
+import ResetEmail from './pages/ResetEmail';
+import UserProfile from './pages/UserProfile';
+import ChangePassword from './pages/ChangePassword';
+import Notification from './pages/Notification';
+import AddVehicleMaintenanceDetails from './pages/AddVehicleMaintenanceDetails';
+import AddFuelRefillDetails from './pages/AddFuelRefillDetails';
+import Dashboard from './pages/Dashboard';
+import AddMaintenanceType from './pages/AddMaintenanceType';
+import MaintenanceTable from './pages/MaintenanceTable';
+import MaintenanceTypeTable from './pages/MaintenanceTypeTable';
+import FuelRefillTable from './pages/FuelRefillTable';
+import EditMaintenanceType from './pages/EditMaintenanceType';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 
@@ -124,7 +124,6 @@ export default function App() {
                     <Route path="ResetEmail" element={<ResetEmail />} />
                 </Route>
                 <Route path="/unauthorized" element={<UnauthorizedPage />} />
-                <Route path="/" element={<Navigate to="/auth/login" />} />
             </Routes>
         </AuthProvider>
     );

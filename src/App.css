@@ -20,7 +20,7 @@
 }
 
 .custom-table th {
-    background-color: #393970;
+    background-color: #2c2c59;
     color: #ffffff;
     padding: 15px;
     width: fit-content;
@@ -29,10 +29,10 @@
     transition: background-color 0.3s ease;
 }
 .custom-table th.sorted {
-    background-color: #57578c;
+    background-color: #2c2c59;
 }
 .custom-table th:hover {
-    background-color: #484885;
+    background-color: #2c2c59;
 }
 .custom-table td {
     padding: 15px;
@@ -62,11 +62,11 @@
 }
 
 .pagination li.active a {
-    background-color: #31315e;
+    background-color: #2c2c59;
     color: #fff;
 }
 
 .pagination li a:hover {
-    background-color: #31315e;
+    background-color: #2c2c59;
     color: #fff;
 }
