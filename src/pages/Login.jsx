@@ -52,7 +52,7 @@ export default function Login() {
                                 const { token, jobTitle } = data.data;
                                 if (jobTitle === "Admin" || jobTitle === "Staff") {
                                     sessionStorage.setItem('Username', values.username);
-                                    sessionStorage.setItem('Token', token); // Save token to session storage
+                                    localStorage.setItem('Token', token);
                                     navigate('/app/Dashboard');
                                 } else {
                                     navigate("/unauthorized");
