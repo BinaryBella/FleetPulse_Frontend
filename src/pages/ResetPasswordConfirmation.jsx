@@ -27,7 +27,7 @@ export default function ResetPasswordConfirmation() {
     return (
         <>
             <p className="font-sans text-3xl text-[#393970] mb-10">Reset Password Verification</p>
-            <img src={ResetPass1} alt="ResetPasswordConfirmation" className="w-1/4 mb-10" />
+            <img src={ResetPass1} alt="ResetPasswordConfirmation" className="w-1/3 mb-10" />
             <Box textAlign="center" w="50%" fontSize="sm">
                 <p className="mb-10">We want to make sure its really you. In order to verify your identity, enter
                     the verification code that was sent to {email} </p>
@@ -38,7 +38,7 @@ export default function ResetPasswordConfirmation() {
                     const errors = {};
                     const pinText = verificationCode === undefined ? "" : verificationCode.toString();
                     if (pinText.length < 6) {
-                        errors.pinValue = "Pin number should contain 6 numbers";
+                        errors.pinValue = "Pin number should contain 6 numbers.";
                     }
                     return errors;
                 }}

@@ -1,85 +1,100 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
-import { Button, Checkbox, Input, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useDisclosure } from "@chakra-ui/react";
+import {
+    Button,
+    Checkbox,
+    Input,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody,
+    AlertDialogFooter,
+    useDisclosure
+} from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 
-export default function AddMaintenanceType() {
+export default function EditMaintenanceType() {
     const navigate = useNavigate();
+    const { id } = useParams();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
+    const [initialValues, setInitialValues] = useState({ TypeName: "", isActive: false });
 
-    const breadcrumbs = [
-        {label: 'Vehicle', link: '/app/Vehicle'}, //yashmi
-        {label: 'Vehicle Maintenance type Details', link: '/app/MaintenanceTypeTable'},
-        {label: 'Add Maintenance Type Details', link: '/app/AddMaintenanceType'}
-    ];
+    useEffect(() => {
+        fetchMaintenanceTypeData(id);
+    }, [id]);
+
+    const fetchMaintenanceTypeData = async (id) => {
+        try {
+            const response = await fetch(`https://localhost:7265/api/VehicleMaintenanceType/${id}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to fetch maintenance type data.');
+            }
+
+            setInitialValues({
+                TypeName: data.typeName || "", // Use the correct key 'typeName'
+                isActive: data.status || false // Use the correct key 'status'
+            });
+        } catch (error) {
+            setDialogMessage(error.message || 'Failed to fetch maintenance type data.');
+            onDialogOpen();
+        }
+    };
 
     const handleSubmit = async (values) => {
         try {
-            console.log(values.TypeName, values.isActive);
-            const status = values.isActive === false ? false : true;
+            const status = values.isActive ? true : false;
 
-            const response = await fetch('https://localhost:7265/api/VehicleMaintenanceType', {
-                method: 'POST',
+            const response = await fetch(`https://localhost:7265/api/VehicleMaintenanceType/UpdateVehicleMaintenanceType`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    Id: id,
                     TypeName: values.TypeName,
-                    status: status
+                    Status: status
                 })
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to add maintenance type.');
+                const data = await response.json();
+                throw new Error(data.message || 'Failed to update maintenance type.');
             }
 
-            if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Vehicle Maintenance Type already exists');
-                onDialogOpen();
-            } else {
-                setSuccessDialogMessage('Maintenance type added successfully.');
-                onSuccessDialogOpen();
-            }
+            setSuccessDialogMessage('Maintenance type updated successfully.');
+            onSuccessDialogOpen();
         } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server.');
-            } else {
-                setDialogMessage(error.message || 'Failed to add maintenance type.');
-            }
+            setDialogMessage(error.message || 'Failed to update maintenance type.');
             onDialogOpen();
         }
     };
 
     const handleCancel = () => {
-        // Redirect to the vehicle maintenance type table page
         navigate('/app/MaintenanceTypeTable');
     };
 
     const handleSuccessDialogClose = () => {
-        // Close the success dialog
         onSuccessDialogClose();
-        // Redirect to the vehicle maintenance type table page
         navigate('/app/MaintenanceTypeTable');
     };
 
     return (
         <>
-            <PageHeader title="Add Vehicle Maintenance Type Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Edit Vehicle Maintenance Type Details" />
             <Formik
-                initialValues={{
-                    TypeName:"",
-                    isActive: false
-                }}
+                enableReinitialize
+                initialValues={initialValues}
                 onSubmit={handleSubmit}
             >
-                {({ errors, touched }) => (
+                {({ errors, touched, values, setFieldValue }) => (
                     <Form className="grid grid-cols-2 gap-10 mt-8">
                         <div className="flex flex-col gap-3">
                             <p>Vehicle Maintenance Type</p>
@@ -90,7 +105,7 @@ export default function AddMaintenanceType() {
                                 }
                                 return error;
                             }}>
-                                {({ field}) => (
+                                {({ field }) => (
                                     <div>
                                         <Input
                                             {...field}
@@ -103,6 +118,7 @@ export default function AddMaintenanceType() {
                                             width="500px"
                                             id="TypeName"
                                             placeholder="Enter Vehicle Maintenance Type"
+                                            value={values.TypeName} // Ensure the value is controlled
                                         />
                                         {errors.TypeName && touched.TypeName && (
                                             <div className="text-red-500">{errors.TypeName}</div>
@@ -111,19 +127,19 @@ export default function AddMaintenanceType() {
                                 )}
                             </Field>
                             <Field name="isActive">
-                                {({ field, form }) => (
+                                {({ field }) => (
                                     <div>
                                         <Checkbox
                                             {...field}
                                             size='lg'
-                                            defaultChecked={field.value}
+                                            checked={values.isActive}
                                             className="mt-8"
-                                            onChange={e => form.setFieldValue(field.name, e.target.checked)}
+                                            onChange={e => setFieldValue('isActive', e.target.checked)}
                                         >
                                             Is Active
                                         </Checkbox>
-                                        {form.errors.isActive && form.touched.isActive && (
-                                            <div className="text-red-500">{form.errors.isActive}</div>
+                                        {errors.isActive && touched.isActive && (
+                                            <div className="text-red-500">{errors.isActive}</div>
                                         )}
                                     </div>
                                 )}
@@ -180,8 +196,7 @@ export default function AddMaintenanceType() {
                     position="absolute"
                     top="30%"
                     left="50%"
-                    transform="translate(-50%, -50%)"
-                >
+                    transform="translate(-50%, -50%)">
                     <AlertDialogHeader>Success</AlertDialogHeader>
                     <AlertDialogBody>
                         {successDialogMessage}

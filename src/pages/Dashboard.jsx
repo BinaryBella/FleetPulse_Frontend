@@ -9,8 +9,8 @@ import testa from "../assets/images/testa.png";
 
 export default function Dashboard() {
     const breadcrumbs = [
-        {label: 'Home', link: '/'},
-        {label: 'Dashboard', link: '/Dashboard'},
+        {label: 'Home', link: '/app/Dashboard'},
+        {label: 'Dashboard', link: '/app/Dashboard'},
     ];
      return (
       <>
