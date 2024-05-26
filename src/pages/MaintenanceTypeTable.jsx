@@ -129,8 +129,9 @@ export default function MaintenanceTypeTable() {
                     </MenuList>
                 </Menu>
             ),
-            meta: { isNumeric: false, filter: null }
-        }
+            meta: { isNumeric: false, filter: null },
+            enableSorting: false,
+        },
     ];
 
     const table = useReactTable({
@@ -147,7 +148,7 @@ export default function MaintenanceTypeTable() {
         const inputValue = event.target.value.toLowerCase();
         setSearchInput(inputValue);
         table.setGlobalFilter(inputValue);
-        setCurrentPage(0); // Reset pagination when searching
+        setCurrentPage(0);
     };
 
     const breadcrumbs = [

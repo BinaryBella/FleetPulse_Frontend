@@ -123,6 +123,7 @@ export default function MaintenanceTable() {
                 </Menu>
             ),
             meta: {isNumeric: false, filter: null},
+            enableSorting: false,
         },
     ];
 
@@ -140,7 +141,7 @@ export default function MaintenanceTable() {
         const inputValue = event.target.value.toLowerCase();
         setSearchInput(inputValue);
         table.setGlobalFilter(inputValue);
-        setCurrentPage(0); // Reset pagination when searching
+        setCurrentPage(0);
     };
 
     const handlePageClick = ({selected}) => {
@@ -210,17 +211,19 @@ export default function MaintenanceTable() {
                                         className="custom-table-th"
                                     >
                                         {flexRender(header.column.columnDef.header, header.getContext())}
-                                        <chakra.span pl="4">
-                                            {header.column.getIsSorted() ? (
-                                                header.column.getIsSorted() === "desc" ? (
-                                                    <TriangleDownIcon aria-label="sorted descending" style={iconStyle}/>
+                                        {header.column.getCanSort() && (
+                                            <chakra.span pl="4">
+                                                {header.column.getIsSorted() ? (
+                                                    header.column.getIsSorted() === "desc" ? (
+                                                        <TriangleDownIcon aria-label="sorted descending" style={iconStyle}/>
+                                                    ) : (
+                                                        <TriangleUpIcon aria-label="sorted ascending" style={iconStyle}/>
+                                                    )
                                                 ) : (
-                                                    <TriangleUpIcon aria-label="sorted ascending" style={iconStyle}/>
-                                                )
-                                            ) : (
-                                                <TiArrowUnsorted aria-label="unsorted" style={iconStyle}/>
-                                            )}
-                                        </chakra.span>
+                                                    <TiArrowUnsorted aria-label="unsorted" style={iconStyle}/>
+                                                )}
+                                            </chakra.span>
+                                        )}
                                     </Th>
                                 );
                             })}
@@ -235,40 +238,40 @@ export default function MaintenanceTable() {
                             </Td>
                         </Tr>
                     ) : (
-                            currentData. map((maintenance, index) => (
-                                <Tr key={index}>
-                                    <Td>{maintenance.vehicleRegistrationNo}</Td>
-                                    <Td>{maintenance.typeName}</Td>
-                                    <Td>{formatDate(maintenance)}</Td>
-                                    <Td>{maintenance.cost}</Td>
-                                    <Td>{maintenance.partsReplaced}</Td>
-                                    <Td>{maintenance.serviceProvider}</Td>
-                                    <Td>{maintenance.specialNotes}</Td>
-                                    <Td>{maintenance.status ? "Active" : "Inactive"}</Td>
-                                    <Td>
-                                        <Menu>
-                                            <MenuButton
-                                                color={theme.purple}
-                                                as={IconButton}
-                                                aria-label='profile-options'
-                                                fontSize='20px'
-                                                icon={<IoSettingsSharp/>}
-                                            />
-                                            <MenuList>
-                                                <MenuItem>
-                                                    <Link to={`/app/EditMaintenance/${maintenance.maintenanceId}`}>
-                                                        Edit
-                                                    </Link>
-                                                </MenuItem>
-                                                <MenuItem>
-                                                    {maintenance.status ? "Deactivate" : "Activate"}
-                                                </MenuItem>
-                                            </MenuList>
-                                        </Menu>
-                                    </Td>
-                                </Tr>
-                                ))
-                            )}
+                        currentData.map((maintenance, index) => (
+                            <Tr key={index}>
+                                <Td>{maintenance.vehicleRegistrationNo}</Td>
+                                <Td>{maintenance.typeName}</Td>
+                                <Td>{formatDate(maintenance)}</Td>
+                                <Td>{maintenance.cost}</Td>
+                                <Td>{maintenance.partsReplaced}</Td>
+                                <Td>{maintenance.serviceProvider}</Td>
+                                <Td>{maintenance.specialNotes}</Td>
+                                <Td>{maintenance.status ? "Active" : "Inactive"}</Td>
+                                <Td>
+                                    <Menu>
+                                        <MenuButton
+                                            color={theme.purple}
+                                            as={IconButton}
+                                            aria-label='profile-options'
+                                            fontSize='20px'
+                                            icon={<IoSettingsSharp/>}
+                                        />
+                                        <MenuList>
+                                            <MenuItem>
+                                                <Link to={`/app/EditMaintenance/${maintenance.maintenanceId}`}>
+                                                    Edit
+                                                </Link>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                {maintenance.status ? "Deactivate" : "Activate"}
+                                            </MenuItem>
+                                        </MenuList>
+                                    </Menu>
+                                </Td>
+                            </Tr>
+                        ))
+                    )}
                 </Tbody>
             </Table>
             {!isEmpty && (
@@ -277,7 +280,6 @@ export default function MaintenanceTable() {
                     onPageChange={handlePageClick}
                 />
             )}
-
         </div>
     );
 }
