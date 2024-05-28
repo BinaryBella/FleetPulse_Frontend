@@ -15,8 +15,10 @@ import Dashboard from './pages/Dashboard';
 import AddMaintenanceType from './pages/AddMaintenanceType';
 import MaintenanceTable from './pages/MaintenanceTable';
 import MaintenanceTypeTable from './pages/MaintenanceTypeTable';
+import EditVehicleMaintenanceDetails from "./pages/EditVehicleMaintenanceDetails";
 import FuelRefillTable from './pages/FuelRefillTable';
 import EditMaintenanceType from './pages/EditMaintenanceType';
+import EditFuelRefillDetails from './pages/EditFuelRefillDetails';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import PrivateRoutes from './utils/PrivateRoutes';
 import NotFound from './pages/NotFound';
@@ -41,15 +43,17 @@ export default function App() {
                 <Route path="/app" element={<MainLayout />}>
                     <Route path="Dashboard" element={<Dashboard />} />
                     <Route path="UserProfile" element={<UserProfile />} />
+                    <Route path="ChangePassword" element={<ChangePassword />} />
                     <Route path="Notification" element={<Notification />} />
                     <Route path="AddVehicleMaintenanceDetails" element={<AddVehicleMaintenanceDetails />} />
                     <Route path="AddFuelRefillDetails" element={<AddFuelRefillDetails />} />
-                    <Route path="ChangePassword" element={<ChangePassword />} />
                     <Route path="AddMaintenanceType" element={<AddMaintenanceType />} />
                     <Route path="MaintenanceTable" element={<MaintenanceTable />} />
                     <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable />} />
                     <Route path="FuelRefillTable" element={<FuelRefillTable />} />
-                    <Route path="EditMaintenanceType/:id" element={<EditMaintenanceType />} />
+                    <Route path="EditMaintenanceType" element={<EditMaintenanceType />} />
+                    <Route path="EditVehicleMaintenanceDetails" element={<EditVehicleMaintenanceDetails />} />
+                    <Route path="EditFuelRefillDetails" element={<EditFuelRefillDetails />} />
                 </Route>
             </Route>
 

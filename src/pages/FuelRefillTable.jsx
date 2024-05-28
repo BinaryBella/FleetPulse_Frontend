@@ -36,7 +36,7 @@ export default function FuelRefillTable() {
     const [currentPage, setCurrentPage] = useState(0);
     const [searchInput, setSearchInput] = useState("");
     const itemsPerPage = 10;
-    const [error, setError] = useState(null);
+    const [ setError] = useState(null);
 
     useEffect(() => {
         fetchFuelRefill();
@@ -270,7 +270,7 @@ export default function FuelRefillTable() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditFuelRefill/${fuelRefill.fuelRefillId}`}>
+                                                <Link to={`/app/EditFuelRefillDetails`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>

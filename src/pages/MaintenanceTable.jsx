@@ -271,7 +271,7 @@ export default function MaintenanceTable() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditMaintenance/${maintenance.maintenanceId}`}>
+                                                <Link to={`/app/EditVehicleMaintenanceDetails`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>

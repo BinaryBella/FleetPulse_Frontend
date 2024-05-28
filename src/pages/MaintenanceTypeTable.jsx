@@ -44,7 +44,7 @@ import {
 import { flexRender } from '@tanstack/react-table';
 
 export default function MaintenanceTypeTable() {
-    const [vehicleDetails, setVehicleDetails] = useState([]);
+    const [vehicleMaintenanceTypeDetails, setVehicleMaintenanceTypeDetails] = useState([]);
     const [sorting, setSorting] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchInput, setSearchInput] = useState("");
@@ -70,10 +70,10 @@ export default function MaintenanceTypeTable() {
             // await axios.put(endpoint);
 
             // Simulating activation/deactivation by toggling status in the dummy data
-            const updatedDetails = vehicleDetails.map(type =>
+            const updatedDetails = vehicleMaintenanceTypeDetails.map(type =>
                 type.id === selectedType.id ? { ...type, status: !type.status } : type
             );
-            setVehicleDetails(updatedDetails);
+            setVehicleMaintenanceTypeDetails(updatedDetails);
 
             // Refresh the list after update
             fetchVehicleMaintenanceTypes();
@@ -116,12 +116,10 @@ export default function MaintenanceTypeTable() {
                 { id: 14, typeName: "Timing Belt Replacement", status: true },
                 { id: 15, typeName: "Brake Pad Replacement", status: true },
                 { id: 16, typeName: "Paint Touch-ups", status: true },
-
-
             ];
 
             // Set the dummy data to state
-            setVehicleDetails(dummyData);
+            setVehicleMaintenanceTypeDetails(dummyData);
         } catch (error) {
             console.error("Error fetching vehicle maintenance types:", error);
         }
@@ -169,7 +167,7 @@ export default function MaintenanceTypeTable() {
     ];
 
     const table = useReactTable({
-        data: vehicleDetails,
+        data: vehicleMaintenanceTypeDetails,
         columns,
         state: { sorting, globalFilter: searchInput },
         onSortingChange: setSorting,
@@ -286,7 +284,7 @@ export default function MaintenanceTypeTable() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditMaintenanceType/${maintenanceType.id}`}>
+                                                <Link to={`/app/EditMaintenanceType`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>
