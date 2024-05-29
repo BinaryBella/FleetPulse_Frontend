@@ -87,9 +87,9 @@ const fetchDriverDetails = () => {
         status: "Active",
         isActive: true,
       },
-      
-    
-  
+
+
+
       {
         id: 4,
         firstName: "James",
@@ -103,8 +103,8 @@ const fetchDriverDetails = () => {
         status: "Active",
         isActive: true,
       },
-  
-      
+
+
       {
         id: 5,
         firstName: "Charles",
@@ -118,7 +118,7 @@ const fetchDriverDetails = () => {
         status: "Active",
         isActive: true,
       },
-  
+
       {
         id: 6,
         firstName: "Max",
@@ -132,7 +132,7 @@ const fetchDriverDetails = () => {
         status: "Active",
         isActive: true,
       },
-  
+
       {
         id: 7,
         firstName: "Sam",
@@ -146,7 +146,7 @@ const fetchDriverDetails = () => {
         status: "Active",
         isActive: true,
       },
-  
+
       {
         id: 8,
         firstName: "Tom",
@@ -271,9 +271,7 @@ const fetchDriverDetails = () => {
   const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "5px" };
 
   const breadcrumbs = [
-    { label: "Driver", link: "/app/Driver" },
     { label: "Driver Details", link: "/app/DriverDetails" },
-    { label: "Add Driver Details", link: "/app/AddDriverDetails" },
   ];
 
   return (

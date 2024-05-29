@@ -5,9 +5,8 @@ import theme from "../config/ThemeConfig.jsx";
 
 export default function AddHelperDetails() {
     const breadcrumbs = [
-        {label: 'Helper', link: '/'},
-        {label: 'Helper Details', link: '/'},
-        {label: 'Add Helper Details', link: '/'}
+        { label: "Helper Details", link: "/app/HelperDetails" },
+        { label: "Add Helper Details", link: "/app/AddHelperDetails" },
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {

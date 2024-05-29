@@ -97,7 +97,7 @@ export default function UserProfile() {
         fileInputRef.current.click();
     };
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async () => {
         try {
             const username = sessionStorage.getItem("Username");
             const profilePicture = isImageRemoved ? "" : image;
@@ -158,7 +158,7 @@ export default function UserProfile() {
 
     return (
         <>
-            <Text fontSize="4xl" color="#393970" mb="7" fontFamily="sans-serif">
+            <Text fontSize="3xl" color="#393970" mb="7" fontFamily="sans-serif">
                 User Profile
             </Text>
             <Formik
@@ -268,7 +268,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="300px"
                                                             id="FirstName"
                                                             placeholder="First Name"
                                                         />
@@ -299,7 +299,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="300px"
                                                             id="DateofBirth"
                                                             placeholder="Date of Birth"
                                                         />
@@ -332,7 +332,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="300px"
                                                             id="PhoneNo"
                                                             placeholder="Phone No"
                                                             maxLength="10"
@@ -368,7 +368,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="300px"
                                                             id="LastName"
                                                             placeholder="Last Name"
                                                         />
@@ -400,7 +400,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="300px"
                                                             id="EmailAddress"
                                                             placeholder="Email Address"
                                                         />
@@ -432,7 +432,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="300px"
                                                             id="NIC"
                                                             placeholder="NIC"
                                                         />
@@ -445,13 +445,13 @@ export default function UserProfile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-5/6 flex justify-end gap-6 mt-20">
+                                <div className="w-5/6 flex justify-end gap-4 mt-20 mb-10">
                                     <Button
                                         bg="gray.400"
                                         _hover={{bg: "gray.500"}}
                                         color="#ffffff"
                                         variant="solid"
-                                        w="210px"
+                                        w="150px"
                                         onClick={handleCancel}
                                     >
                                         Cancel
@@ -461,7 +461,7 @@ export default function UserProfile() {
                                         _hover={{bg: theme.onHoverPurple}}
                                         color="#ffffff"
                                         variant="solid"
-                                        w="210px"
+                                        w="150px"
                                         type="submit"
                                     >
                                         Save

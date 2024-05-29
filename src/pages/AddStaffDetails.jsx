@@ -4,9 +4,8 @@ import theme from "../config/ThemeConfig.jsx";
 
 export default function AddStaffDetails() {
     const breadcrumbs = [
-        {label: 'Staff', link: '/'},
-        {label: 'Staff Details', link: '/'},
-        {label: 'Add Staff Details', link: '/'}
+        { label: "Staff Details", link: "/app/StaffDetails" },
+        { label: "Add Staff Details", link: "/app/AddStaffDetails" },
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {

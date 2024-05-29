@@ -5,9 +5,8 @@ import theme from "../config/ThemeConfig.jsx";
 
 export default function AddDriverDetails() {
     const breadcrumbs = [
-        {label: 'Driver', link: '/'},
-        {label: 'Driver Details', link: '/'},
-        {label: 'Add Driver Details', link: '/'}
+        {label: 'Driver Details', link: '/app/DriverDetails'},
+        {label: 'Add Driver Details', link: '/app/AddDriverDetails'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {

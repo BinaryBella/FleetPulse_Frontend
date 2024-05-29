@@ -91,7 +91,7 @@ export default function TopMenu() {
                     </div>
                 </div>
             </div>
-            <hr className="my-5 border border-[#D0D8DE]" />
+            <hr className="my-3 border border-[#D0D8DE]" />
         </>
     );
 }

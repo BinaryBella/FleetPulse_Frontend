@@ -266,9 +266,7 @@ export default function StaffDetails() {
 
 
   const breadcrumbs = [
-    { label: "Staff", link: "/app/Staff" },
     { label: "Staff Details", link: "/app/StaffDetails" },
-    { label: "Add Staff Details", link: "/app/AddStaffDetails" },
   ];
 
   return (

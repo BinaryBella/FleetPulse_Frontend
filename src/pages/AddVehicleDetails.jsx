@@ -14,7 +14,6 @@ export default function AddVehicleDetails() {
   const [fuelRefillId, setFuelRefillId] = useState("");
 
   const breadcrumbs = [
-    { label: "Vehicle", link: "/" },
     { label: "Vehicle Details", link: "/app/VehicleType" },
     { label: "Add Vehicle Details", link: "/app/AddvehicleTypeDetails" },
   ];

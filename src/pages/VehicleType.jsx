@@ -12,12 +12,12 @@ import {
   MenuButton,
   IconButton,
   MenuList,
-  MenuItem,
+  MenuItem, Box, InputGroup, InputLeftElement, Input,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
-import { IoSettingsSharp } from "react-icons/io5";
+import {IoSearchOutline, IoSettingsSharp} from "react-icons/io5";
 
 export default function VehicleType() {
   const [vehicleTypeDetails, setVehicleTypeDetails] = useState([]);
@@ -59,26 +59,31 @@ export default function VehicleType() {
   return (
     <>
       <PageHeader title="Vehicle Type Details" breadcrumbs={breadcrumbs} />
-
-      <Link to="/app/AddvehicletypeDetails">
-        <Button
-          bg={theme.purple}
-          _hover={{ bg: theme.onHoverPurple }}
-          color="white"
-          variant="solid"
-          w="230px"
-          marginTop="60px"
-          marginBottom="20px"
-          mr="50px"
-          position="absolute"
-          top="130"
-          right="0"
-        >
-          Add New Vehicle Type
-        </Button>
-      </Link>
-
-      <Table className="custom-table" mt="20px">
+      <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <IoSearchOutline />
+          </InputLeftElement>
+          <Input
+              placeholder="Search"
+              variant="filled"
+              width="250px"
+          />
+        </InputGroup>
+        <Link to="/app/AddVehicleType">
+          <Button
+              bg={theme.purple}
+              _hover={{ bg: theme.onHoverPurple }}
+              color="white"
+              variant="solid"
+              w="260px"
+              mr="60px"
+          >
+            Add Vehicle Type
+          </Button>
+        </Link>
+      </Box>
+      <Table className="custom-table">
         <Thead>
           <Tr>
             <Th sx={{ textAlign: "center" }}>Vehicle Type</Th>

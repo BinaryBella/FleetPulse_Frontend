@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import {
   Table,
   Thead,
@@ -232,7 +232,7 @@ const fetchHelperDetails = () => {
       enableSorting: false,
     },
   ];
- 
+
 
   const table = useReactTable({
     data: helperDetails,
@@ -264,9 +264,7 @@ const fetchHelperDetails = () => {
   const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "5px" };
 
   const breadcrumbs = [
-    { label: "Helper", link: "/app/Helper" },
     { label: "Helper Details", link: "/app/HelperDetails" },
-    { label: "Add Helper Details", link: "/app/AddHelperDetails" },
   ];
 
   return (
@@ -389,4 +387,3 @@ const fetchHelperDetails = () => {
 
 
 
-      

@@ -1,9 +1,9 @@
 import { Input, Button, FormControl, FormLabel, Stack, FormErrorMessage, Box } from "@chakra-ui/react";
-import { Field, Formik} from "formik";
+import { Field, Formik } from "formik";
 import forgotPassword from "../assets/images/forgotPassword.png";
 import theme from "../config/ThemeConfig.jsx";
 import { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function ResetEmail() {
     const navigate = useNavigate();
@@ -11,9 +11,9 @@ export default function ResetEmail() {
 
     return (
         <>
-            <p className="font-sans text-3xl text-[#393970] mb-10">Reset Password Verification</p>
-            <img src={forgotPassword} alt="ResetPasswordConfirmation" className="w-1/2 mb-10"/>
-            <Box textAlign="center" w="50%" fontSize="sm" marginBottom="10">
+            <p className="font-sans text-xl text-[#393970] mb-5">Reset Password Verification</p>
+            <img src={forgotPassword} alt="ResetPasswordConfirmation" className="w-1/3 mb-5"/>
+            <Box textAlign="center" w="2/3" fontSize="sm" marginBottom="7">
                 <p>Enter your email address to continue.</p>
             </Box>
             <Formik
@@ -77,11 +77,11 @@ export default function ResetEmail() {
                     setLoading(false);
                 }}
             >
-                {({handleSubmit, errors, touched}) => (
-                    <form className="w-1/2" onSubmit={handleSubmit}>
-                        <Stack spacing={3}>
+                {({ handleSubmit, errors, touched }) => (
+                    <form className="w-2/4" onSubmit={handleSubmit}>
+                        <Stack spacing={2}>
                             <FormControl isInvalid={errors.email && touched.email}>
-                                <FormLabel>Email Address</FormLabel>
+                                <FormLabel fontSize="sm">Email Address</FormLabel>
                                 <Field
                                     as={Input}
                                     id="email"
@@ -89,19 +89,20 @@ export default function ResetEmail() {
                                     type="email"
                                     variant="filled"
                                     placeholder="Enter Your Email Address"
-                                    mb={3}
+                                    fontSize="sm"
+                                    mb={4}
                                 />
-                                <FormErrorMessage>{errors.email}</FormErrorMessage>
+                                <FormErrorMessage fontSize="xs">{errors.email}</FormErrorMessage>
                             </FormControl>
-                            <Button className="mb-2"
-                                    type="submit"
-                                    bg={theme.purple}
-                                    _hover={{bg: theme.onHoverPurple}}
-                                    color="#ffffff"
-                                    mt={5}
-                                    isLoading={loading}
-                                    loadingText='Sending'
-                                    variant='outline'
+                            <Button
+                                type="submit"
+                                bg={theme.purple}
+                                _hover={{ bg: theme.onHoverPurple }}
+                                color="#ffffff"
+                                size="sm"
+                                isLoading={loading}
+                                loadingText='Sending'
+                                variant='outline'
                             >
                                 Send Verification Code
                             </Button>
@@ -111,7 +112,7 @@ export default function ResetEmail() {
             </Formik>
             <div className="flex justify-end">
                 <Link to="/auth/login">
-                    <Button variant="link" className="mt-3">
+                    <Button variant="link" className="mt-2" fontSize="sm">
                         Return to Login
                     </Button>
                 </Link>

@@ -147,7 +147,7 @@ export default function MaintenanceTypeTable() {
                         color={theme.purple}
                         as={IconButton}
                         aria-label="profile-options"
-                        fontSize="20px"
+                        fontSize="10px"
                         icon={<IoSettingsSharp />}
                     />
                     <MenuList>
@@ -215,7 +215,7 @@ export default function MaintenanceTypeTable() {
                         value={searchInput}
                         onChange={handleSearchInputChange}
                         variant="filled"
-                        width="300px"
+                        width="250px"
                     />
                 </InputGroup>
                 <Link to="/app/AddMaintenanceType">
@@ -283,7 +283,7 @@ export default function MaintenanceTypeTable() {
                                             color={theme.purple}
                                             as={IconButton}
                                             aria-label="profile-options"
-                                            fontSize="20px"
+                                            fontSize="15px"
                                             icon={<IoSettingsSharp />}
                                         />
                                         <MenuList>
