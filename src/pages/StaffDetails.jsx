@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   Thead,
@@ -45,9 +45,9 @@ export default function StaffDetails() {
   useEffect(() => {
     fetchStaffDetails();
 }, []);
-    
+
     const fetchStaffDetails =  () => {
-      
+
         const dummyData = [
           {
             id: 1,
@@ -155,7 +155,7 @@ export default function StaffDetails() {
           },
         ];
         setStaffDetails(dummyData);
-      
+
     };
 
     const columns = [
@@ -233,7 +233,7 @@ export default function StaffDetails() {
         enableSorting: false,
       },
     ];
-  
+
     const table = useReactTable({
       data: staffDetails,
       columns,
@@ -243,18 +243,18 @@ export default function StaffDetails() {
       getSortedRowModel: getSortedRowModel(),
       getFilteredRowModel: getFilteredRowModel(),
     });
-  
+
     const handleSearchInputChange = (event) => {
       const inputValue = event.target.value.toLowerCase();
       setSearchInput(inputValue);
       table.setGlobalFilter(inputValue);
       setCurrentPage(0);
     };
-  
+
     const handlePageClick = ({ selected }) => {
       setCurrentPage(selected);
     };
-  
+
     const startOffset = currentPage * itemsPerPage;
     const endOffset = startOffset + itemsPerPage;
     const sortedData = table.getRowModel().rows.map(row => row.original);
