@@ -1,6 +1,5 @@
-import Logo from './../assets/images/Logo.jpg'; // Importing the Logo image
 import { Outlet } from "react-router-dom"; // Importing the Outlet component from react-router-dom
-
+import Logo from "../assets/images/logo.png";
 // AnonymousLayout component definition
 export default function AnonymousLayout() {
     // Rendering the layout structure

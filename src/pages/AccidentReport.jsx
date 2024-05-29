@@ -1,17 +1,14 @@
+import React from "react";
 import PageHeader from "../components/PageHeader.jsx";
 import MyTable from "../components/MyTable.jsx";
-import {
-    Button,
-
-} from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 import DatePicker from "../components/MyCalendar.jsx";
 
 export default function AccidentReport() {
-
     const breadcrumbs = [
-        {label: 'Reports', link: '/'},
-        {label: 'Accident Report', link: '/'},
+        { label: 'Reports', link: '/' },
+        { label: 'Accident Report', link: '/app/AccidentReport' },
     ];
 
     const handleSubmit = (e) => {
@@ -19,7 +16,7 @@ export default function AccidentReport() {
         console.log('Form submitted');
     };
 
-    const columns =[
+    const columns = [
         {
             Header: 'Driver Injured',
             accessor: 'driverinjured',
@@ -58,19 +55,86 @@ export default function AccidentReport() {
         }
     ];
 
-    const dataTemplate = {
-        driverinjured: '-',
-        datetime: '-',
-        venue: '-',
-        helperinjured: '-',
-        vehicledamaged: '-',
-        loss: '-',
-        specialnote: '-',
-        photos: '-',
-        action: '-'
-    };
-
-    const data = Array(10).fill().map(() => ({ ...dataTemplate }));
+    const data = [
+        {
+            driverinjured: 'Yes',
+            datetime: '2024-05-10 14:30',
+            venue: 'Main Street',
+            helperinjured: 'No',
+            vehicledamaged: 'Yes',
+            loss: '$2000',
+            specialnote: 'Minor scratches on the door',
+            photos: 'View Photos',
+            action: 'Review',
+        },
+        {
+            driverinjured: 'No',
+            datetime: '2024-04-22 08:15',
+            venue: 'Highway 21',
+            helperinjured: 'Yes',
+            vehicledamaged: 'No',
+            loss: '$500',
+            specialnote: 'Helper injured his arm',
+            photos: 'View Photos',
+            action: 'Review',
+        },
+        // Add 5 additional rows of data
+        {
+            driverinjured: 'Yes',
+            datetime: '2024-06-05 12:45',
+            venue: 'City Avenue',
+            helperinjured: 'Yes',
+            vehicledamaged: 'Yes',
+            loss: '$3000',
+            specialnote: 'Both driver and helper injured, significant vehicle damage',
+            photos: 'View Photos',
+            action: 'Review',
+        },
+        {
+            driverinjured: 'Yes',
+            datetime: '2024-06-15 09:30',
+            venue: 'Rural Road',
+            helperinjured: 'No',
+            vehicledamaged: 'No',
+            loss: '$100',
+            specialnote: 'Minor injury to the driver, no vehicle damage',
+            photos: 'View Photos',
+            action: 'Review',
+        },
+        {
+            driverinjured: 'No',
+            datetime: '2024-07-02 17:00',
+            venue: 'Parking Lot',
+            helperinjured: 'No',
+            vehicledamaged: 'Yes',
+            loss: '$1500',
+            specialnote: 'Vehicle collision with a stationary object',
+            photos: 'View Photos',
+            action: 'Review',
+        },
+        {
+            driverinjured: 'No',
+            datetime: '2024-07-18 10:20',
+            venue: 'Intersection',
+            helperinjured: 'Yes',
+            vehicledamaged: 'Yes',
+            loss: '$2500',
+            specialnote: 'Helper injured, moderate vehicle damage',
+            photos: 'View Photos',
+            action: 'Review',
+        },
+        {
+            driverinjured: 'Yes',
+            datetime: '2024-08-05 14:10',
+            venue: 'Highway 7',
+            helperinjured: 'Yes',
+            vehicledamaged: 'Yes',
+            loss: '$5000',
+            specialnote: 'Serious accident, both driver and helper injured, major vehicle damage',
+            photos: 'View Photos',
+            action: 'Review',
+        },
+    ];
 
     return (
         <>

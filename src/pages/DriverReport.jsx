@@ -1,31 +1,22 @@
-// Importing necessary components and libraries
+import React from "react";
 import PageHeader from "../components/PageHeader.jsx";
 import MyTable from "../components/MyTable.jsx";
 import { Button } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 import DatePicker from "../components/MyCalendar.jsx";
 
-// Define the DriverReport functional component
 export default function DriverReport() {
-
-    // Breadcrumbs data for navigation
     const breadcrumbs = [
-        {label: 'Reports', link: '/'},
-        {label: 'Driver Report', link: '/'},
+        { label: 'Reports', link: '/' },
+        { label: 'Driver Report', link: '/app/DriverReport' },
     ];
 
-    // Function to handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted');
     };
 
-
-
-    // Define columns for the table
     const columns = [
-        // Column definitions
-        // Each column has a Header (displayed title) and an accessor (key to access data)
         {
             Header: 'First Name',
             accessor: 'firstname',
@@ -72,37 +63,109 @@ export default function DriverReport() {
         }
     ];
 
-    // Sample data for the table
-    const dataTemplate = {
-        firstname: '-',
-        lastname: '-',
-        dob: '-',
-        nic: '-',
-        email: '-',
-        no: '-',
-        licno: '-',
-        emcontact: '-',
-        bloodgrp: '-',
-        status: '-',
-        action: '-'
-    };
+    const data = [
+        {
+            firstname: 'John',
+            lastname: 'Doe',
+            dob: '1990-05-20',
+            nic: '123456789V',
+            email: 'john.doe@example.com',
+            no: '1234567890',
+            licno: 'DL123456',
+            emcontact: 'Jane Doe (123) 456-7890',
+            bloodgrp: 'O+',
+            status: 'Active',
+            action: 'View Details',
+        },
+        {
+            firstname: 'Alice',
+            lastname: 'Smith',
+            dob: '1985-08-15',
+            nic: '987654321M',
+            email: 'alice.smith@example.com',
+            no: '9876543210',
+            licno: 'DL654321',
+            emcontact: 'Bob Smith (987) 654-3210',
+            bloodgrp: 'A-',
+            status: 'Active',
+            action: 'View Details',
+        },
+        {
+            firstname: 'Michael',
+            lastname: 'Johnson',
+            dob: '1978-11-10',
+            nic: '456789123C',
+            email: 'michael.johnson@example.com',
+            no: '4567891230',
+            licno: 'DL789123',
+            emcontact: 'Karen Johnson (456) 789-1230',
+            bloodgrp: 'B+',
+            status: 'Inactive',
+            action: 'View Details',
+        },
+        {
+            firstname: 'Sarah',
+            lastname: 'Brown',
+            dob: '1982-03-25',
+            nic: '654321987P',
+            email: 'sarah.brown@example.com',
+            no: '6543219870',
+            licno: 'DL987654',
+            emcontact: 'David Brown (654) 321-9870',
+            bloodgrp: 'AB-',
+            status: 'Active',
+            action: 'View Details',
+        },
+        {
+            firstname: 'David',
+            lastname: 'Miller',
+            dob: '1975-09-18',
+            nic: '789654321L',
+            email: 'david.miller@example.com',
+            no: '7896543210',
+            licno: 'DL456789',
+            emcontact: 'Emily Miller (789) 654-3210',
+            bloodgrp: 'A+',
+            status: 'Active',
+            action: 'View Details',
+        },
+        {
+            firstname: 'Emma',
+            lastname: 'Davis',
+            dob: '1993-12-05',
+            nic: '321987654Q',
+            email: 'emma.davis@example.com',
+            no: '3219876540',
+            licno: 'DL369258',
+            emcontact: 'Oliver Davis (321) 987-6540',
+            bloodgrp: 'O-',
+            status: 'Inactive',
+            action: 'View Details',
+        },
+        // Add one more row of data
+        {
+            firstname: 'James',
+            lastname: 'Wilson',
+            dob: '1988-06-30',
+            nic: '258963147E',
+            email: 'james.wilson@example.com',
+            no: '2589631470',
+            licno: 'DL147258',
+            emcontact: 'Linda Wilson (258) 963-1470',
+            bloodgrp: 'B-',
+            status: 'Active',
+            action: 'View Details',
+        },
+    ];
 
-    const data = Array(11).fill().map(() => ({ ...dataTemplate }));
-
-    // Render the component
     return (
         <>
-            {/* Render PageHeader component with title and breadcrumbs */}
-            <PageHeader title="Driver Report" breadcrumbs={breadcrumbs}/>
-
+            <PageHeader title="Driver Report" breadcrumbs={breadcrumbs} />
             <div className="flex flex-col gap-3">
                 <div className="flex justify-between">
-                    {/* Date Picker */}
                     <div>
                         <DatePicker />
                     </div>
-
-                    {/* Generate and Print Buttons */}
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginRight: '70px' }}>
                         <Button
                             bg={theme.purple}
@@ -129,8 +192,6 @@ export default function DriverReport() {
                     </div>
                 </div>
             </div>
-
-            {/* Render MyTable component with columns and data */}
             <div>
                 <MyTable columns={columns} data={data} />
             </div>

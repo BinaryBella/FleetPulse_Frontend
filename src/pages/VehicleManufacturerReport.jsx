@@ -1,11 +1,7 @@
 import PageHeader from "../components/PageHeader.jsx";
 import MyTable from "../components/MyTable.jsx";
-import {
-    Button,
-
-} from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
-
 import DatePicker from "../components/MyCalendar.jsx";
 
 export default function VehicleManufacturerReport() {
@@ -21,8 +17,7 @@ export default function VehicleManufacturerReport() {
         console.log('Form submitted');
     };
 
-
-    const columns =[
+    const columns = [
         {
             Header: 'Vehicle Manufacturer',
             accessor: 'manufacturer',
@@ -31,14 +26,17 @@ export default function VehicleManufacturerReport() {
             Header: 'Action',
             accessor: 'action',
         }
-    ]
-    const dataTemplate = {
-        manufacturer: '-',
-        action: '-'
-    };
+    ];
 
-    const data = Array(12).fill().map(() => ({ ...dataTemplate }));
-
+    const data = [
+        { manufacturer: 'Manufacturer 1', action: '-' },
+        { manufacturer: 'Manufacturer 2', action: '-' },
+        { manufacturer: 'Manufacturer 3', action: '-' },
+        { manufacturer: 'Manufacturer 4', action: '-' },
+        { manufacturer: 'Manufacturer 5', action: '-' },
+        { manufacturer: 'Manufacturer 6', action: '-' },
+        { manufacturer: 'Manufacturer 7', action: '-' },
+    ];
 
     return (
         <>

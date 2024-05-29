@@ -2,10 +2,8 @@ import PageHeader from "../components/PageHeader.jsx";
 import MyTable from "../components/MyTable.jsx";
 import {
     Button,
-
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
-
 import DatePicker from "../components/MyCalendar.jsx";
 
 export default function VehicleFuelRefillReport() {
@@ -20,7 +18,6 @@ export default function VehicleFuelRefillReport() {
         e.preventDefault();
         console.log('Form submitted');
     };
-
 
     const columns =[
         {
@@ -60,20 +57,86 @@ export default function VehicleFuelRefillReport() {
             accessor: 'action',
         }
     ]
-    const dataTemplate = {
-        regno: '-',
-        drivernic: '-',
-        helpernic: '-',
-        litercount: '-',
-        date: '-',
-        time: '-',
-        refilltype: '-',
-        cost: '-',
-        action: '-'
-    };
 
-    const data = Array(14).fill().map(() => ({ ...dataTemplate }));
-
+    const data = [
+        {
+            regno: 'ABC-1',
+            drivernic: 'NIC-1',
+            helpernic: 'Helper-NIC-1',
+            litercount: 50,
+            date: '2024-05-01',
+            time: '10:01',
+            refilltype: 'Type-1',
+            cost: '$500',
+            action: 'Action 1',
+        },
+        {
+            regno: 'ABC-2',
+            drivernic: 'NIC-2',
+            helpernic: 'Helper-NIC-2',
+            litercount: 60,
+            date: '2024-05-02',
+            time: '10:02',
+            refilltype: 'Type-2',
+            cost: '$600',
+            action: 'Action 2',
+        },
+        {
+            regno: 'ABC-3',
+            drivernic: 'NIC-3',
+            helpernic: 'Helper-NIC-3',
+            litercount: 70,
+            date: '2024-05-03',
+            time: '10:03',
+            refilltype: 'Type-3',
+            cost: '$700',
+            action: 'Action 3',
+        },
+        {
+            regno: 'ABC-4',
+            drivernic: 'NIC-4',
+            helpernic: 'Helper-NIC-4',
+            litercount: 80,
+            date: '2024-05-04',
+            time: '10:04',
+            refilltype: 'Type-4',
+            cost: '$800',
+            action: 'Action 4',
+        },
+        {
+            regno: 'ABC-5',
+            drivernic: 'NIC-5',
+            helpernic: 'Helper-NIC-5',
+            litercount: 90,
+            date: '2024-05-05',
+            time: '10:05',
+            refilltype: 'Type-5',
+            cost: '$900',
+            action: 'Action 5',
+        },
+        {
+            regno: 'ABC-6',
+            drivernic: 'NIC-6',
+            helpernic: 'Helper-NIC-6',
+            litercount: 100,
+            date: '2024-05-06',
+            time: '10:06',
+            refilltype: 'Type-6',
+            cost: '$1000',
+            action: 'Action 6',
+        },
+        {
+            regno: 'ABC-7',
+            drivernic: 'NIC-7',
+            helpernic: 'Helper-NIC-7',
+            litercount: 110,
+            date: '2024-05-07',
+            time: '10:07',
+            refilltype: 'Type-7',
+            cost: '$1100',
+            action: 'Action 7',
+        },
+    ];
 
     return (
         <>

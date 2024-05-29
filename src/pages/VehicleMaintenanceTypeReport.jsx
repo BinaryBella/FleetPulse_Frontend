@@ -2,10 +2,8 @@ import PageHeader from "../components/PageHeader.jsx";
 import MyTable from "../components/MyTable.jsx";
 import {
     Button,
-
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
-
 import DatePicker from "../components/MyCalendar.jsx";
 
 export default function VehicleMaintenanceTypeReport() {
@@ -21,8 +19,7 @@ export default function VehicleMaintenanceTypeReport() {
         console.log('Form submitted');
     };
 
-
-    const columns =[
+    const columns = [
         {
             Header: 'Maintenance Type',
             accessor: 'maintenancetype',
@@ -31,14 +28,38 @@ export default function VehicleMaintenanceTypeReport() {
             Header: 'Action',
             accessor: 'action',
         }
-    ]
-    const dataTemplate = {
-        maintenancetype: '-',
-        action: '-'
-    };
+    ];
 
-    const data = Array(13).fill().map(() => ({ ...dataTemplate }));
-
+    const data = [
+        {
+            maintenancetype: 'Oil Change',
+            action: 'Action 1',
+        },
+        {
+            maintenancetype: 'Brake Replacement',
+            action: 'Action 2',
+        },
+        {
+            maintenancetype: 'Tire Rotation',
+            action: 'Action 3',
+        },
+        {
+            maintenancetype: 'Engine Tune-up',
+            action: 'Action 4',
+        },
+        {
+            maintenancetype: 'Battery Replacement',
+            action: 'Action 5',
+        },
+        {
+            maintenancetype: 'Headlight Repair',
+            action: 'Action 6',
+        },
+        {
+            maintenancetype: 'Transmission Flush',
+            action: 'Action 7',
+        },
+    ];
 
     return (
         <>
