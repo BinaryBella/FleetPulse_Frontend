@@ -70,6 +70,26 @@ export default function SideMenu() {
                             </h2>
                             <AccordionPanel pb={4}>
                                 <div>
+                                    <Link className="flex items-center pl-5" to="/app/VehicleDetailsTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Vehicle Details
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-5" to="/app/VehicleType">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Vehicle Type
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-5" to="/app/VehicleModelTable">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Vehicle Model
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-5" to="/app/Manufacturer">
+                                        <Text color={theme.orange} fontSize="lg">
+                                            Manufacturer
+                                        </Text>
+                                    </Link>
                                     <Link className="flex items-center pl-5" to="/app/MaintenanceTable">
                                         <Text color={theme.orange} fontSize="lg">
                                             Vehicle Maintenance
@@ -90,7 +110,7 @@ export default function SideMenu() {
                         </AccordionItem>
                     </Accordion>
                 </div>
-                <Link className="flex items-center pl-16" to="/app/Driver">
+                <Link className="flex items-center pl-16" to="/app/DriverDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -102,7 +122,7 @@ export default function SideMenu() {
                         Driver
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Helper">
+                <Link className="flex items-center pl-16" to="/app/HelperDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -114,7 +134,7 @@ export default function SideMenu() {
                         Helper
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Staff">
+                <Link className="flex items-center pl-16" to="/app/StaffDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -126,7 +146,7 @@ export default function SideMenu() {
                         Staff
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Trip">
+                <Link className="flex items-center pl-16" to="/app/TripDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -138,7 +158,7 @@ export default function SideMenu() {
                         Trip
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/AddAccidentDetails">
+                <Link className="flex items-center pl-16" to="/app/AccidentDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
