@@ -42,30 +42,30 @@ export default function AddVehicleType() {
                     <Checkbox size='lg' defaultChecked className="mt-8">
                         Is Active
                     </Checkbox>
-                    <div className="flex gap-10">
-                        <Button
-                            bg="gray.400"
-                            _hover={{bg: "gray.500"}}
-                            color="#ffffff"
-                            variant="solid"
-                            w="230px"
-                            marginTop="10"
-                            onClick={handleCancel}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            bg={theme.purple}
-                            _hover={{bg: theme.onHoverPurple}}
-                            color="#ffffff"
-                            variant="solid"
-                            w="230px"
-                            marginTop="10"
-                            onClick={handleSubmit}
-                        >
-                            Save
-                        </Button>
-                    </div>
+                <div className="flex gap-10">
+                    <Button
+                        bg="gray.400"
+                        _hover={{bg: "gray.500"}}
+                        color="#ffffff"
+                        variant="solid"
+                        w="230px"
+                        marginTop="10"
+                        onClick={handleCancel}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        bg={theme.purple}
+                        _hover={{bg: theme.onHoverPurple}}
+                        color="#ffffff"
+                        variant="solid"
+                        w="230px"
+                        marginTop="10"
+                        onClick={handleSubmit}
+                    >
+                        Save
+                    </Button>
+                </div>
                 </div>
             </div>
         </>

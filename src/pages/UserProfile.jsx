@@ -1,11 +1,10 @@
-import {useState, useRef, useEffect} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
     Text,
     Input,
     Button,
     Avatar,
     AvatarGroup,
-    Checkbox,
     AlertDialog,
     AlertDialogOverlay,
     AlertDialogContent,
@@ -14,34 +13,20 @@ import {
     AlertDialogFooter,
     useDisclosure
 } from "@chakra-ui/react";
-import {AiOutlineUser} from "react-icons/ai";
 import theme from "../config/ThemeConfig.jsx";
-import {Formik, Form, Field} from "formik";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import { Formik, Form, Field } from "formik";
+import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+import {AiOutlineCamera, AiOutlineUser} from "react-icons/ai";
 
 export default function UserProfile() {
     const navigate = useNavigate();
-    const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
-    const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
+    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
+    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
-    const [userDetails, setUserDetails] = useState([]);
-
-    const fetchUser = async () => {
-        try {
-            const response = await axios.get("https://localhost:7265/api/Auth/chathuk");
-            setUserDetails(response.data);
-            console.log(setUserDetails);
-        } catch (error) {
-            console.error("Error fetching User details:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchUser();
-    }, []);
-
+    const [image, setImage] = useState("");
+    const [isImageRemoved, setIsImageRemoved] = useState(false);
     const [userData, setUserData] = useState({
         FirstName: "",
         LastName: "",
@@ -49,31 +34,63 @@ export default function UserProfile() {
         EmailAddress: "",
         PhoneNo: "",
         NIC: "",
-        EmergencyContact: "",
-        profileImage: "",
-        DriverLicenseNo: "",
-        LicenseExpiryDate: "",
-        BloodGroup: "",
-        JobTitle: "",
-        isActive: ""
+        ProfilePicture: "",
     });
+
+    const fetchUser = async () => {
+        try {
+            const username = sessionStorage.getItem("Username");
+            if (username) {
+                // Uncomment below for actual backend implementation
+                /*
+                const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
+                const responseData = response.data;
+                setUserData({
+                    FirstName: responseData.firstName,
+                    LastName: responseData.lastName,
+                    DateOfBirth: responseData.dateOfBirth,
+                    EmailAddress: responseData.emailAddress,
+                    PhoneNo: responseData.phoneNo,
+                    NIC: responseData.nic,
+                    ProfilePicture: responseData.profilePicture,
+                });
+                setImage(responseData.profilePicture);
+                */
+
+                // Dummy data for demonstration
+                const dummyData = {
+                    FirstName: "Ann",
+                    LastName: "Fernando",
+                    DateOfBirth: "1990-01-01T00:00",
+                    EmailAddress: "ann.fernando@example.com",
+                    PhoneNo: "0764567890",
+                    NIC: "123456789V",
+                    ProfilePicture: ""
+                };
+                setUserData(dummyData);
+                setImage(dummyData.ProfilePicture || '/default-profile-pic.jpg'); // Set default profile picture path
+            } else {
+                console.error("Username not found in session storage.");
+            }
+        } catch (error) {
+            console.error("Error fetching User details:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser().then();
+    }, []);
 
     const fileInputRef = useRef(null);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        setUserData((prevData) => ({
-            ...prevData,
-            profileImage: file
-        }));
-    };
-
-    const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setUserData((prevData) => ({
-            ...prevData,
-            [name]: value
-        }));
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64String = reader.result.split(',')[1];
+            setImage(base64String);
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleAvatarClick = () => {
@@ -82,37 +99,52 @@ export default function UserProfile() {
 
     const handleSubmit = async (values) => {
         try {
-            const response = await fetch('https://localhost:7265/api/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            const username = sessionStorage.getItem("Username");
+            const profilePicture = isImageRemoved ? "" : image;
+            // Uncomment below for actual backend implementation
+            /*
+            const response = await axios.put('https://localhost:7265/api/Auth/UpdateUser', {
+                    Username: username,
+                    FirstName: values.FirstName,
+                    LastName: values.LastName,
+                    DateOfBirth: values.DateOfBirth,
+                    EmailAddress: values.EmailAddress,
+                    PhoneNo: values.PhoneNo,
+                    NIC: values.NIC,
+                    ProfilePicture: profilePicture,
                 },
-                body: JSON.stringify({
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-                })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to add User Details');
-            }
-
-            if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('User Details already exists');
-                onDialogOpen();
-            } else {
-                setSuccessDialogMessage('User Details added successfully');
+            if (response.status === 200) {
+                setSuccessDialogMessage('User details updated successfully');
                 onSuccessDialogOpen();
+            } else {
+                throw new Error('Failed to update User details');
+            }
+            */
+
+            // Dummy success logic for demonstration
+            const dummyUsername = "john.doe";
+            if (username === dummyUsername) {
+                setSuccessDialogMessage('User details updated successfully');
+                onSuccessDialogOpen();
+            } else {
+                throw new Error('Failed to update User details');
             }
         } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server');
-            } else {
-                setDialogMessage(error.message || 'Failed to add User details');
-            }
+            console.error('Error updating User details:', error);
+            setDialogMessage(error.message || 'Failed to update User details');
             onDialogOpen();
         }
+    };
+
+    const handleRemoveImage = async () => {
+        setIsImageRemoved(true);
+        setImage("");
     };
 
     const handleSuccessDialogClose = () => {
@@ -130,15 +162,15 @@ export default function UserProfile() {
                 User Profile
             </Text>
             <Formik
+                enableReinitialize={true}
                 initialValues={{
-                    FirstName: "",
-                    LastName: "",
-                    DateOfBirth: "",
-                    EmailAddress: "",
-                    PhoneNo: "",
-                    NIC: "",
-                    profileImage: "",
-                    isActive: ""
+                    FirstName: userData.FirstName ?? "",
+                    LastName: userData.LastName ?? "",
+                    DateOfBirth: userData.DateOfBirth ?? "",
+                    EmailAddress: userData.EmailAddress ?? "",
+                    PhoneNo: userData.PhoneNo ?? "",
+                    NIC: userData.NIC ?? "",
+                    ProfilePicture: userData.profilePicture ?? "",
                 }}
                 onSubmit={handleSubmit}
             >
@@ -147,27 +179,77 @@ export default function UserProfile() {
                         <div className="flex flex-grow gap-6">
                             <div className="w-1/5">
                                 <AvatarGroup size="2xl" mb="4" mt="8" ml="12">
-                                    <Avatar
-                                        bg="#393970"
-                                        icon={<AiOutlineUser/>}
-                                        cursor="pointer"
+                                    <div
+                                        style={{
+                                            position: "relative",
+                                            display: "inline-block",
+                                            cursor: "pointer",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.firstChild.style.opacity = 0.8;
+                                            e.currentTarget.lastChild.style.opacity = 0.8;
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.firstChild.style.opacity = 1;
+                                            e.currentTarget.lastChild.style.opacity = 0;
+                                        }}
                                         onClick={handleAvatarClick}
                                     >
-                                    </Avatar>
+                                        <Avatar
+                                            src={image ? `data:image/jpeg;base64,${image}` : undefined}
+                                            size="2xl"
+                                            bg={theme.purple}
+                                            icon={<AiOutlineUser fontSize='2rem' />}
+                                            cursor="pointer"
+                                            id="pro-pic"
+                                            onMouseEnter={(e) => e.currentTarget.style.opacity = 0.5}
+                                            onMouseLeave={(e) => e.currentTarget.style.opacity = 1}
+                                        />
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                top: "50%",
+                                                left: "50%",
+                                                transform: "translate(-50%, -50%)",
+                                                opacity: 0,
+                                                transition: "opacity 0.8s ease",
+                                            }}
+                                        >
+                                            <AiOutlineCamera size={26} onMouseEnter={() => {
+                                                document.getElementById("pro-pic").style.opacity = 0.5;
+                                            }} />
+                                        </div>
+                                    </div>
                                 </AvatarGroup>
+
                                 <Input
                                     ref={fileInputRef}
-                                    id="profileImage"
+                                    id="profilePicture"
                                     type="file"
                                     accept="image/*"
                                     onChange={handleImageChange}
                                     style={{display: 'none'}}
                                 />
+                                {image && (
+                                    <div className="flex justify-right">
+                                        <Button
+                                            mt="2"
+                                            ml="6"
+                                            size="sm"
+                                            color={theme.purple}
+                                            variant='link'
+                                            w="180px"
+                                            onClick={handleRemoveImage}
+                                        >
+                                            Remove Profile Image
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                             <div className="w-4/5 flex flex-col">
                                 <div className="flex gap-8 mt-6">
                                     <div className="w-2/5">
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>First Name</p>
                                             <Field name="FirstName" validate={(value) => {
                                                 let error;
@@ -186,7 +268,6 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="FirstName"
                                                             placeholder="First Name"
@@ -198,7 +279,7 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>Date of Birth</p>
                                             <Field style={{margintop: "0.5rem"}} name="DateOfBirth"
                                                    validate={(value) => {
@@ -212,13 +293,12 @@ export default function UserProfile() {
                                                     <div>
                                                         <Input
                                                             {...field}
-                                                            type="date"
+                                                            type="datetime-local"
                                                             variant="filled"
                                                             borderRadius="md"
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="DateofBirth"
                                                             placeholder="Date of Birth"
@@ -230,16 +310,19 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>Phone Number</p>
                                             <Field name="PhoneNo" validate={(value) => {
                                                 let error;
                                                 if (!value) {
                                                     error = "Phone No is required.";
+                                                } else if (!/^\d{10}$/.test(value)) {
+                                                    error = "Phone No must be 10 digits.";
                                                 }
                                                 return error;
-                                            }}>
-                                                {({field}) => (
+                                            }}
+                                            >
+                                                {({field, form}) => (
                                                     <div>
                                                         <Input
                                                             {...field}
@@ -249,34 +332,24 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="PhoneNo"
                                                             placeholder="Phone No"
+                                                            maxLength="10"
+                                                            onInput={(e) => {
+                                                                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                                            }}
                                                         />
-                                                        {errors.PhoneNo && touched.PhoneNo && (
-                                                            <div className="text-red-500">{errors.PhoneNo}</div>
+                                                        {form.errors.PhoneNo && form.touched.PhoneNo && (
+                                                            <div className="text-red-500">{form.errors.PhoneNo}</div>
                                                         )}
                                                     </div>
                                                 )}
                                             </Field>
                                         </div>
-                                        <Field name="isActive">
-                                            {({field, form}) => (
-                                                <Checkbox
-                                                    {...field}
-                                                    size='lg'
-                                                    defaultChecked={field.value}
-                                                    className="mt-8"
-                                                    onChange={e => form.setFieldValue(field.name, e.target.checked)}
-                                                >
-                                                    Is Active
-                                                </Checkbox>
-                                            )}
-                                        </Field>
                                     </div>
                                     <div className="w-2/5">
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>Last Name</p>
                                             <Field name="LastName" validate={(value) => {
                                                 let error;
@@ -295,7 +368,6 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="LastName"
                                                             placeholder="Last Name"
@@ -307,12 +379,14 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>Email Address</p>
                                             <Field name="EmailAddress" validate={(value) => {
                                                 let error;
                                                 if (!value) {
-                                                    error = "Last Name is required.";
+                                                    error = "Email Address is required.";
+                                                }else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+                                                    error = "Invalid email address.";
                                                 }
                                                 return error;
                                             }}>
@@ -320,13 +394,12 @@ export default function UserProfile() {
                                                     <div>
                                                         <Input
                                                             {...field}
-                                                            type="text"
+                                                            type="email"
                                                             variant="filled"
                                                             borderRadius="md"
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="EmailAddress"
                                                             placeholder="Email Address"
@@ -338,12 +411,14 @@ export default function UserProfile() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div>
+                                        <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>NIC</p>
                                             <Field name="NIC" validate={(value) => {
                                                 let error;
                                                 if (!value) {
                                                     error = "NIC is required.";
+                                                }else if (!/^[0-9]{9}[vVxX]$|^[0-9]{12}$/.test(value)) {
+                                                    error = "Invalid NIC format.";
                                                 }
                                                 return error;
                                             }}>
@@ -357,7 +432,6 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            mb={3}
                                                             width="500px"
                                                             id="NIC"
                                                             placeholder="NIC"
@@ -371,7 +445,7 @@ export default function UserProfile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-5/6 flex justify-end gap-6 mt-10">
+                                <div className="w-5/6 flex justify-end gap-6 mt-20">
                                     <Button
                                         bg="gray.400"
                                         _hover={{bg: "gray.500"}}

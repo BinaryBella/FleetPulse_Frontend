@@ -3,9 +3,31 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoIosNotifications } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import theme from "../config/ThemeConfig.jsx";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function TopMenu() {
     const navigate = useNavigate();
+    const [image, setImage] = useState("");
+
+    const fetchUser = async () => {
+        try {
+            const username = sessionStorage.getItem("Username");
+            if (username) {
+                const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
+                const responseData = response.data;
+                setImage(responseData.profilePicture);
+            } else {
+                console.error("Username not found in session storage.");
+            }
+        } catch (error) {
+            console.error("Error fetching User details:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser().then();
+    }, []);
 
     const handleLogout = () => {
         sessionStorage.clear();
@@ -35,9 +57,21 @@ export default function TopMenu() {
                                 aria-label='profile-options'
                                 fontSize='25px'
                                 mt={5}
-                                icon={<FaUser />}
                                 variant='outline'
-                            />
+                            >
+                            {image ? (
+                                <img
+                                    src={`data:image/jpeg;base64,${image}`}
+                                    alt="User Avatar"
+                                    style={{
+                                        width: "32px",
+                                        height: "32px",
+                                        borderRadius: "50%",
+                                    }}
+                                />
+                            ) : (
+                                <FaUser /> // Default icon if no image is uploaded
+                            )}</MenuButton>
                             <MenuList>
                                 <MenuItem>
                                     <Link to="/app/UserProfile" >

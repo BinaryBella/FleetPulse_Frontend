@@ -14,12 +14,13 @@ import {
 import {FaImage} from "react-icons/fa6";
 import theme from "../config/ThemeConfig.jsx";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 export default function AddAccidentDetails() {
     const breadcrumbs = [
         {label: 'Accident', link: '/'},
         {label: 'Accident Details', link: '/'},
-        {label: 'Add Accident Details', link: '/'}
+        {label: 'Add Accident Details', link: 'app/AddAccidentDetails'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {
@@ -33,8 +34,9 @@ export default function AddAccidentDetails() {
         // Reset form fields or redirect to another page
         console.log();
     };
-    const handleNext = () => {
+    const handleNext = async() => {
         // Reset form fields or redirect to another page
+        // const response = await axios.post("https://localhost:7265/api/Accidents",{})
         console.log();
     };
     return (
@@ -209,30 +211,30 @@ export default function AddAccidentDetails() {
                                 </Box>
                             </div>
 
-                            <div className="flex w-4/5 justify-end gap-10">
-                                <Button
-                                    bg="gray.400"
-                                    _hover={{bg: "gray.500"}}
-                                    color="#ffffff"
-                                    variant="solid"
-                                    w="230px"
-                                    marginTop="10"
-                                    onClick={handleCancel}
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
-                                    bg={theme.purple}
-                                    _hover={{bg: theme.onHoverPurple}}
-                                    color="#ffffff"
-                                    variant="solid"
-                                    w="230px"
-                                    marginTop="10"
-                                    onClick={handleSubmit}
-                                >
-                                    Submit
-                                </Button>
-                            </div>
+                <div className="flex w-4/5 justify-end gap-10">
+                    <Button
+                        bg="gray.400"
+                        _hover={{bg: "gray.500"}}
+                        color="#ffffff"
+                        variant="solid"
+                        w="230px"
+                        marginTop="10"
+                        onClick={handleCancel}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        bg={theme.purple}
+                        _hover={{bg: theme.onHoverPurple}}
+                        color="#ffffff"
+                        variant="solid"
+                        w="230px"
+                        marginTop="10"
+                        onClick={handleSubmit}
+                    >
+                        Submit
+                    </Button>
+                </div>
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
