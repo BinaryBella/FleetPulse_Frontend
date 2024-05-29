@@ -12,7 +12,7 @@ export default function AddVehicleModel() {
 
     /**/
     const breadcrumbs = [
-        {label: 'Vehicle', link: '/'},
+        {label: 'Vehicle', link: '/app/VehicleDetailsTable'},
         {label: 'Vehicle Model Details', link: '/'},
         {label: 'Add Vehicle Model Details', link: '/'}
     ];

@@ -5,7 +5,7 @@ import theme from "../config/ThemeConfig.jsx";
 
 export default function AddVehicleType() {
     const breadcrumbs = [
-        {label: 'Vehicle', link: '/'},
+        {label: 'Vehicle', link: '/app/VehicleDetailsTable'},
         {label: 'Vehicle Type Details', link: '/'},
         {label: 'Add Vehicle Type Details', link: '/'}
     ];

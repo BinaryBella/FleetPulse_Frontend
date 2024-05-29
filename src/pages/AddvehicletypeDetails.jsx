@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Flex, IconButton, Input } from "@chakra-ui/react";
 import { FaCheckSquare } from "react-icons/fa";
 import PageHeader from "../components/PageHeader.jsx";
@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function AddVehicleTypeDetails() {
   const breadcrumbs = [
-    { label: "Vehicle", link: "/" },
+    { label: "Vehicle", link: "/app/VehicleDetailsTable" },
     { label: "Vehicle Type", link: "/app/VehicleType" },
     { label: "Add Vehicle Type Details", link: "/app/AddVehicleTypeDetails" },
   ];
@@ -34,7 +34,7 @@ export default function AddVehicleTypeDetails() {
 
   return (
     <>
-    
+
       <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
 
       {/* Form section */}
@@ -42,7 +42,7 @@ export default function AddVehicleTypeDetails() {
         <p>Vehicle Type</p>
         <Input
           type="text"
-          value={type} 
+          value={type}
           onChange={(e) => settype(e.target.value)}
           variant="filled"
           borderRadius="md"
@@ -54,7 +54,7 @@ export default function AddVehicleTypeDetails() {
           placeholder="Vehicle Type"
         />
 
-   
+
         <div className="flex flex-col gap-3">
           <Flex align="center" gap={2}>
             <input type="checkbox" value={status} onChange={(e) => setstatus(e.target.checked)}></input>
@@ -71,13 +71,13 @@ export default function AddVehicleTypeDetails() {
           _hover={{ bg: "gray.500" }}
           color="#ffffff"
           variant="solid"
-          w="230px" 
+          w="230px"
           marginTop="10"
           onClick={handleCancel}
         >
           Cancel
         </Button>
-        
+
 
         {/* Save button */}
         <Button
@@ -85,7 +85,7 @@ export default function AddVehicleTypeDetails() {
           _hover={{ bg: theme.onHoverPurple }}
           color="#ffffff"
           variant="solid"
-          w="230px" 
+          w="230px"
           marginTop="10"
           onClick={handleSubmit}
         >

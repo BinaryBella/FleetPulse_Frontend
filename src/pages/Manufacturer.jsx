@@ -47,9 +47,8 @@ export default function Manufacturer() {
   }, []);
 
   const breadcrumbs = [
-    { label: "Manufacturer", link: "/" },
+    { label: "Manufacturer", link: "/app/VehicleDetailsTable" },
     { label: "Manufacturer Type", link: "/app/Manufacturer Type" },
-    { label: "Add Manufacturer Type Details", link: "/app/AddManufacturerTypeDetails" },
   ];
 
   if (error) {

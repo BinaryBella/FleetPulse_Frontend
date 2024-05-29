@@ -71,7 +71,7 @@ export default function AddVehicleMaintenanceDetails() {
     }, []);
 
     const breadcrumbs = [
-        {label: "Vehicle", link: "/app/Vehicle"},
+        {label: "Vehicle", link: "/app/VehicleDetails"},
         {label: "Vehicle Maintenance", link: "/app/MaintenanceTable"},
         {label: "Add Vehicle Maintenance Details", link: "/app/AddVehicleMaintenanceDetails"},
     ];

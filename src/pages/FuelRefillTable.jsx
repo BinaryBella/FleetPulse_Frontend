@@ -176,7 +176,7 @@ export default function FuelRefillTable() {
     const iconStyle = {display: "inline-block", verticalAlign: "middle", marginLeft: "5px"};
 
     const breadcrumbs = [
-        {label: "Vehicle", link: "/app/Vehicle"},
+        {label: "Vehicle", link: "/app/VehicleDetailsTable"},
         {label: "Fuel Refill Details", link: "/app/FuelRefillTable"},
     ];
 

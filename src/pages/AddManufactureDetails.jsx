@@ -4,9 +4,9 @@ import theme from "../config/ThemeConfig.jsx";
 
 export default function AddManufactureDetails() {
     const breadcrumbs = [
-        {label: 'Vehicle', link: '/'},
-        {label: 'Manufacture Details', link: '/'},
-        {label: 'Add Manufacture Details', link: '/'}
+        {label: 'Vehicle', link: '/app/VehicleDetailsTable'},
+        {label: 'Manufacture Details', link: '/app/Manufacturer'},
+        {label: 'Add Manufacture Details', link: '/app/AddManufactureDetails'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {
