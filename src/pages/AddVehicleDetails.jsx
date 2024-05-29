@@ -4,14 +4,14 @@ import { Button, Checkbox, Input } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 
 export default function AddVehicleDetails() {
-  const [vehicleRegistrationNo, setVehicleRegistrationNo] = useState(""); 
-  const [licenseNo, setLicenseNo] = useState(""); 
-  const [licenseExpireDate, setLicenseExpireDate] = useState(""); 
-  const [vehicleColor, setVehicleColor] = useState(""); 
-  const [vehicleModelId, setVehicleModelId] = useState(""); 
-  const [vehicleTypeId, setVehicleTypeId] = useState(""); 
-  const [manufactureId, setManufactureId] = useState(""); 
-  const [fuelRefillId, setFuelRefillId] = useState(""); 
+  const [vehicleRegistrationNo, setVehicleRegistrationNo] = useState("");
+  const [licenseNo, setLicenseNo] = useState("");
+  const [licenseExpireDate, setLicenseExpireDate] = useState("");
+  const [vehicleColor, setVehicleColor] = useState("");
+  const [vehicleModelId, setVehicleModelId] = useState("");
+  const [vehicleTypeId, setVehicleTypeId] = useState("");
+  const [manufactureId, setManufactureId] = useState("");
+  const [fuelRefillId, setFuelRefillId] = useState("");
 
   const breadcrumbs = [
     { label: "Vehicle", link: "/" },

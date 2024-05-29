@@ -70,3 +70,10 @@
     background-color: #2c2c59;
     color: #fff;
 }
+.custom-table tr {
+    padding: 15px;
+    width: fit-content;
+    font-size: 1.125rem;
+    text-align: center;      /* Horizontal centering */
+    vertical-align: middle;  /* Vertical centering */
+}

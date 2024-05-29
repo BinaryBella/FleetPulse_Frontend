@@ -49,6 +49,20 @@ import EditHelperDetails from "./pages/EditHelperDetails.jsx";
 import EditStaffDetails from "./pages/EditStaffDetails.jsx";
 import EditTripDetails from "./pages/EditTripDetails.jsx";
 import EditManufacturerTypeDetails from "./pages/EditManufacturerTypeDetails.jsx";
+import Reports from "./pages/Reports.jsx";
+import VehicleReports from "./pages/VehicleReports.jsx";
+import VehicleDetailsReport from "./pages/VehicleDetailsReport.jsx";
+import VehicleTypeReport from "./pages/VehicleTypeReport.jsx";
+import VehicleModelReport from "./pages/VehicleModelReport.jsx";
+import VehicleManufacturerReport from "./pages/VehicleManufacturerReport.jsx";
+import VehicleMaintenanceReport from "./pages/VehicleMaintenanceReport.jsx";
+import VehicleMaintenanceTypeReport from "./pages/VehicleMaintenanceTypeReport.jsx";
+import VehicleFuelRefillReport from "./pages/VehicleFuelRefillReport.jsx";
+import DriverReport from "./pages/DriverReport.jsx";
+import HelperReport from "./pages/HelperReport.jsx";
+import StaffReport from "./pages/StaffReport.jsx";
+import TripReport from "./pages/TripReport.jsx";
+import AccidentReport from "./pages/AccidentReport.jsx";
 
 export default function App() {
     const currentUser = localStorage.getItem('token');
@@ -106,6 +120,20 @@ export default function App() {
                     <Route path='EditStaffDetails' element={<EditStaffDetails/>}/>
                     <Route path='EditTripDetails' element={<EditTripDetails/>}/>
                     <Route path='EditManufacturerTypeDetails' element={<EditManufacturerTypeDetails/>}/>
+                    <Route path="Reports/*" element={<Reports/>}/> {/* Updated Route for Reports */}
+                    <Route path="VehicleReports" element={<VehicleReports/>}/>
+                    <Route path="VehicleDetailsReport" element={<VehicleDetailsReport/>}/>
+                    <Route path="VehicleTypeReport" element={<VehicleTypeReport/>}/>
+                    <Route path="VehicleModelReport" element={<VehicleModelReport/>}/>
+                    <Route path="VehicleManufacturerReport" element={<VehicleManufacturerReport/>}/>
+                    <Route path="VehicleMaintenanceReport" element={<VehicleMaintenanceReport/>}/>
+                    <Route path="VehicleMainTypeReport" element={<VehicleMaintenanceTypeReport/>}/>
+                    <Route path="VehicleFuelRefillReport" element={<VehicleFuelRefillReport/>}/>
+                    <Route path="DriverReport" element={<DriverReport/>}/>
+                    <Route path="HelperReport" element={<HelperReport/>}/>
+                    <Route path="StaffReport" element={<StaffReport/>}/>
+                    <Route path="TripReport" element={<TripReport/>}/>
+                    <Route path="AccidentReport" element={<AccidentReport/>}/>
                 </Route>
 
                 {/* Unauthorized and NotFound routes */}

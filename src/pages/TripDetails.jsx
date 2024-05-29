@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   Thead,
@@ -45,10 +45,10 @@ export default function TripDetails() {
     fetchTripDetails();
 }, []);
 
- 
+
     const fetchTripDetails = () => {
-      
-        
+
+
         const dummyData = [
           {
             id: 1,
@@ -149,7 +149,7 @@ export default function TripDetails() {
         ];
         setTripDetails(dummyData);
       } ;
-    
+
       const columns = [
         {
           accessorKey: "driversNIC",
@@ -196,7 +196,7 @@ export default function TripDetails() {
           header: "Status",
           meta: { isNumeric: false, filter: "text" },
         },
-        
+
         {
           id: "actions",
           header: "Actions",
@@ -225,7 +225,7 @@ export default function TripDetails() {
           enableSorting: false,
         },
       ];
-    
+
       const table = useReactTable({
         data: tripDetails,
         columns,
@@ -235,18 +235,18 @@ export default function TripDetails() {
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
       });
-    
+
       const handleSearchInputChange = (event) => {
         const inputValue = event.target.value.toLowerCase();
         setSearchInput(inputValue);
         table.setGlobalFilter(inputValue);
         setCurrentPage(0);
       };
-    
+
       const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
       };
-    
+
       const startOffset = currentPage * itemsPerPage;
       const endOffset = startOffset + itemsPerPage;
       const sortedData = table.getRowModel().rows.map(row => row.original);
@@ -254,7 +254,7 @@ export default function TripDetails() {
       const pageCount = Math.ceil(table.getFilteredRowModel().rows.length / itemsPerPage);
       const isEmpty = currentData.length === 0;
       const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "5px" };
-   
+
 
   const breadcrumbs = [
     { label: "Trip", link: "/app/Trip" },
