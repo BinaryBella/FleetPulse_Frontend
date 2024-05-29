@@ -19,7 +19,7 @@ import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
 import FuelRefillTable from "./pages/FuelRefillTable.jsx";
 import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
 import DriverDetails from "./pages/DriverDetails.jsx";
-
+import AccidentDetails from "./pages/AccidentDetails.jsx";
  import AddAccidentDetails from "./pages/AddAccidentDetails.jsx";
  import AddVehicleDetails from "./pages/AddVehicleDetails.jsx";
  import AddVehicleModel from "./pages/AddVehicleModel.jsx";
@@ -33,7 +33,16 @@ import DriverDetails from "./pages/DriverDetails.jsx";
 import VehicleType from "./pages/VehicleType.jsx";
 import AddvehicletypeDetails from "./pages/AddvehicletypeDetails.jsx";
 import AddDriverDetails from "./pages/AddDriverDetails.jsx";
-
+import Manufacturer from "./pages/Manufacturer.jsx";
+import AddManufacturerTypeDetails from "./pages/AddManufacturerTypeDetails.jsx";
+import EditAccidentDetails from "./pages/EditAccidentDetails.jsx";
+import EditVehicleDetails from "./pages/EditVehicleDetails.jsx";
+import EditVehicleType from "./pages/EditVehicleType.jsx";
+import EditDriverDetails from "./pages/EditDriverDetails.jsx";
+import EditHelperDetails from "./pages/EditHelperDetails.jsx";
+import EditStaffDetails from "./pages/EditStaffDetails.jsx";
+import EditTripDetails from "./pages/EditTripDetails.jsx";
+import EditManufacturerTypeDetails from "./pages/EditManufacturerTypeDetails.jsx";
 export default function App() {
     return (
         <Routes>
@@ -48,6 +57,7 @@ export default function App() {
                 <Route path="MaintenanceTable" element={<MaintenanceTable/>}/>
                 <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable/>}/>
                 <Route path="FuelRefillTable" element={<FuelRefillTable/>}/>
+                <Route path="AccidentDetails" element={<AccidentDetails/>}/>
                 <Route path="AddAccidentDetails" element={<AddAccidentDetails/>}/>
                 <Route path="AddVehicleDetails" element={<AddVehicleDetails />}/>
                 <Route path="AddVehicleModel" element={<AddVehicleModel/>}/>
@@ -63,6 +73,19 @@ export default function App() {
                 <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
                 <Route path='VehicleType' element={<VehicleType/>}/>
                 <Route path='AddvehicletypeDetails' element={<AddvehicletypeDetails />}/>
+                <Route path='Manufacturer' element={<Manufacturer />}/>
+                <Route path='AddManufacturerTypeDetails' element={<AddManufacturerTypeDetails />}/>
+                <Route path='EditAccidentDetails' element={<EditAccidentDetails />}/>
+                <Route path='EditVehicleDetails' element={<EditVehicleDetails />}/>
+                <Route path='EditVehicleType' element={<EditVehicleType />}/>
+                <Route path='EditDriverDetails' element={<EditDriverDetails />}/>
+                <Route path='EditHelperDetails' element={<EditHelperDetails />}/>
+                <Route path='EditStaffDetails' element={<EditStaffDetails />}/>
+                <Route path='EditTripDetails' element={<EditTripDetails />}/>
+                <Route path='EditManufacturerTypeDetails' element={<EditManufacturerTypeDetails />}/>
+
+
+                
             </Route>
             <Route path="/app" element={<AnonymousLayout/>}>
                 <Route path="login" element={<Login/>}/>

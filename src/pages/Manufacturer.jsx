@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import axios from "axios";
 import {
   Table,
   Thead,
@@ -19,37 +19,37 @@ import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import { IoSettingsSharp } from "react-icons/io5";
 
-export default function VehicleType() {
-  const [vehicleTypeDetails, setVehicleTypeDetails] = useState([]);
+export default function Manufacturer() {
+  const [manufacturerDetails, setManufacturerDetails] = useState([]);
   const [error, setError] = useState(null);
 
-  // Dummy data for vehicle types
-  const dummyVehicleTypes = [
-    { id: 1, type: "Sedan", status: true },
-    { id: 2, type: "SUV", status: true },
-    { id: 3, type: "Truck", status: false },
-    { id: 4, type: "Van", status: true },
-    { id: 5, type: "Motorcycle", status: false },
+  // Dummy data for manufacturers
+  const dummyManufacturers = [
+    { id: 1, name: "Toyota", status: true },
+    { id: 2, name: "Honda", status: true },
+    { id: 3, name: "Ford", status: false },
+    { id: 4, name: "Chevrolet", status: true },
+    { id: 5, name: "BMW", status: false },
   ];
 
   useEffect(() => {
     // Simulate API call with dummy data
-    // axios.get('https://localhost:7265/api/VehicleType')
+    // axios.get('https://localhost:7265/api/Manufacturer')
     // .then((res)=>{
-    //    setVehicleTypeDetails(res.data)
+    //    setManufacturerDetails(res.data)
     // })
     // .catch((er)=>{
     //    setError(er.message)
     // })
 
     // Use dummy data for this example
-    setVehicleTypeDetails(dummyVehicleTypes);
+    setManufacturerDetails(dummyManufacturers);
   }, []);
 
   const breadcrumbs = [
-    { label: "Vehicle", link: "/" },
-    { label: "Vehicle Type", link: "/app/VehicleType" },
-    { label: "Add Vehicle Type Details", link: "/app/AddvehicletypeDetails" }
+    { label: "Manufacturer", link: "/" },
+    { label: "Manufacturer Type", link: "/app/Manufacturer Type" },
+    { label: "Add Manufacturer Type Details", link: "/app/AddManufacturerTypeDetails" },
   ];
 
   if (error) {
@@ -58,9 +58,9 @@ export default function VehicleType() {
 
   return (
     <>
-      <PageHeader title="Vehicle Type Details" breadcrumbs={breadcrumbs} />
+      <PageHeader title="Manufacturer Details" breadcrumbs={breadcrumbs} />
 
-      <Link to="/app/AddvehicletypeDetails">
+      <Link to="/app/AddManufacturerTypeDetails">
         <Button
           bg={theme.purple}
           _hover={{ bg: theme.onHoverPurple }}
@@ -69,28 +69,28 @@ export default function VehicleType() {
           w="230px"
           marginTop="60px"
           marginBottom="20px"
-          mr="50px"
+          mr="10px"
           position="absolute"
-          top="130"
+          top="130px"
           right="0"
         >
-          Add New Vehicle Type
+          Add New Manufacturer
         </Button>
       </Link>
 
       <Table className="custom-table" mt="20px">
         <Thead>
           <Tr>
-            <Th sx={{ textAlign: "center" }}>Vehicle Type</Th>
+            <Th sx={{ textAlign: "center" }}>Manufacturer Name</Th>
             <Th sx={{ textAlign: "center" }}>Status</Th>
             <Th sx={{ textAlign: "center" }}>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {vehicleTypeDetails.map((vehicle) => (
-            <Tr key={vehicle.id}>
-              <Td sx={{ textAlign: "center" }}>{vehicle.type}</Td>
-              <Td sx={{ textAlign: "center" }}>{vehicle.status ? "Active" : "Inactive"}</Td>
+          {manufacturerDetails.map((manufacturer) => (
+            <Tr key={manufacturer.id}>
+              <Td sx={{ textAlign: "center" }}>{manufacturer.name}</Td>
+              <Td sx={{ textAlign: "center" }}>{manufacturer.status ? "Active" : "Inactive"}</Td>
               <Td sx={{ textAlign: "center" }}>
                 <Menu>
                   <MenuButton
@@ -102,10 +102,10 @@ export default function VehicleType() {
                   />
                   <MenuList>
                     <MenuItem>
-                      <Link to={`/app/EditVehicleType`}>Edit</Link>
+                      <Link to={`/app/EditManufacturerTypeDetails`}>Edit</Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link to="">Deactive</Link>
+                      <Link to="">Inactive</Link>
                     </MenuItem>
                   </MenuList>
                 </Menu>
@@ -117,4 +117,3 @@ export default function VehicleType() {
     </>
   );
 }
-

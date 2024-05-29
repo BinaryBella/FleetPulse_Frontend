@@ -2,11 +2,11 @@ import PageHeader from "../components/PageHeader.jsx";
 import {Button, Checkbox, Input} from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 
-export default function AddManufactureDetails() {
+export default function EditManufactureDetails() {
     const breadcrumbs = [
-        {label: 'Vehicle', link: '/'},
-        {label: 'Manufacture Details', link: '/'},
-        {label: 'Add Manufacture Details', link: '/'}
+        {label: 'Manufacturer', link: '/'},
+        {label: 'Manufacturer Type', link: '/'},
+        {label: 'Edit Manufacturer Type Details', link: '/'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {
@@ -23,7 +23,7 @@ export default function AddManufactureDetails() {
 
     return (
         <>
-            <PageHeader title="Add Manufacture Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Edit Manufacturer Type Details" breadcrumbs={breadcrumbs}/>
             <div className="grid grid-cols-2 gap-10 mt-8">
                 <div className="flex flex-col gap-3">
                     <p>Manufacture</p>

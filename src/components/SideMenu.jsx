@@ -77,7 +77,7 @@ export default function SideMenu() {
                                             Vehicle Model
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-16" to="/app/ManufactureTable">
+                                    <Link className="flex items-center pl-16" to="/app/Manufacturer">
                                         <Text color={theme.orange} fontSize="lg">
                                             Manufacturer
                                         </Text>
@@ -154,7 +154,7 @@ export default function SideMenu() {
                         Trip
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/AddAccidentDetails">
+                <Link className="flex items-center pl-16" to="/app/AccidentDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}

@@ -3,7 +3,7 @@ import PageHeader from "../components/PageHeader.jsx";
 import { Button, Checkbox, Input } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 
-export default function AddVehicleDetails() {
+export default function EditVehicleDetails() {
   const [vehicleRegistrationNo, setVehicleRegistrationNo] = useState(""); 
   const [licenseNo, setLicenseNo] = useState(""); 
   const [licenseExpireDate, setLicenseExpireDate] = useState(""); 
@@ -16,7 +16,7 @@ export default function AddVehicleDetails() {
   const breadcrumbs = [
     { label: "Vehicle", link: "/" },
     { label: "Vehicle Details", link: "/app/VehicleType" },
-    { label: "Add Vehicle Details", link: "/app/AddvehicleTypeDetails" },
+    { label: "Edit Vehicle Details", link: "/app/EditvehicleTypeDetails" },
   ];
 
   const handleSubmit = (e) => {
@@ -44,7 +44,7 @@ export default function AddVehicleDetails() {
 
   return (
     <>
-      <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
+      <PageHeader title="Edit Vehicle Details" breadcrumbs={breadcrumbs} />
       <div className="flex flex-col items-center my-8">
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-3">

@@ -14,6 +14,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@tanstack/react-table": "^8.17.3",
     "axios": "^1.6.8",
     "formik": "^2.4.5",
     "framer-motion": "^11.0.5",
@@ -21,7 +22,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-paginate": "^8.2.0",
     "react-router-dom": "^6.22.1",
+    "react-table": "^7.8.0",
     "react-verification-input": "^4.1.1"
   },
   "devDependencies": {

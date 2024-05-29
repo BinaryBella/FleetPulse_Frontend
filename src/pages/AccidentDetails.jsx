@@ -34,184 +34,153 @@ import {
 } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 
-export default function DriverDetails() {
-  const [driverDetails, setDriverDetails] = useState([]);
+export default function AccidentDetails() {
+  const [accidentDetails, setAccidentDetails] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [searchInput, setSearchInput] = useState("");
   const itemsPerPage = 10;
 
+
   useEffect(() => {
-    fetchDriverDetails();
+    fetchAccidentDetails();
 }, []);
-
-const fetchDriverDetails = () => {
-    // Dummy data for demonstration purposes
-    const dummyData = [
-      {
-        id: 1,
-        firstName: "John",
-        lastName: "Doe",
-        DoB: "1990-01-01",
-        NIC: "123456789V",
-        emailAddress: "john.doe@gmail.com",
-        phoneNo: "0712345678",
-        emContact: "Jane Doe",
-        bloodGroup: "O+",
-        status: "Active",
-        isActive: true,
-      },
-      {
-        id: 2,
-        firstName: "Jane",
-        lastName: "Smith",
-        DoB: "1985-05-15",
-        NIC: "987654321V",
-        emailAddress: "jane.smith@gmail.com",
-        phoneNo: "0718765432",
-        emContact: "John Smith",
-        bloodGroup: "A+",
-        status: "Inactive",
-        isActive: false,
-      },
-      {
-        id: 3,
-        firstName: "Emily",
-        lastName: "Harris",
-        DoB: "1980-01-01",
-        NIC: "1256456789V",
-        emailAddress: "emilyharris@gmail.com",
-        phoneNo: "0712349678",
-        emContact: "Emily Harris",
-        bloodGroup: "A+",
-        status: "Active",
-        isActive: true,
-      },
-      
-    
-  
-      {
-        id: 4,
-        firstName: "James",
-        lastName: "Brown",
-        DoB: "1970-11-30",
-        NIC: "2576456789V",
-        emailAddress: "jamesbrown@gmail.com",
-        phoneNo: "0786349678",
-        emContact: "James Brown",
-        bloodGroup: "A-",
-        status: "Active",
-        isActive: true,
-      },
-  
-      
-      {
-        id: 5,
-        firstName: "Charles",
-        lastName: "Wilson",
-        DoB: "1994-09-28",
-        NIC: "3476456789V",
-        emailAddress: "charleswilson@gmail.com",
-        phoneNo: "0746149678",
-        emContact: "Charles Wilson",
-        bloodGroup: "o-",
-        status: "Active",
-        isActive: true,
-      },
-  
-      {
-        id: 6,
-        firstName: "Max",
-        lastName: "Leo",
-        DoB: "1982-07-18",
-        NIC: "1457456789V",
-        emailAddress: "maxleo@gmail.com",
-        phoneNo: "0716149479",
-        emContact: "Max Leo",
-        bloodGroup: "B-",
-        status: "Active",
-        isActive: true,
-      },
-  
-      {
-        id: 7,
-        firstName: "Sam",
-        lastName: "Gus",
-        DoB: "1993-05-27",
-        NIC: "6457256789V",
-        emailAddress: "samgus@gmail.com",
-        phoneNo: "0751566696",
-        emContact: "Sam Gus",
-        bloodGroup: "B+",
-        status: "Active",
-        isActive: true,
-      },
-  
-      {
-        id: 8,
-        firstName: "Tom",
-        lastName: "Ian",
-        DoB: "1989-02-17",
-        NIC: "6489206289V",
-        emailAddress: "tomian@gmail.com",
-        phoneNo: "0776754292",
-        emContact: "Tom Ian",
-        bloodGroup: "o-",
-        status: "Active",
-        isActive: true,
-      },
-    ];
-
-    setDriverDetails(dummyData);
+const fetchAccidentDetails = () => {
+  const dummyData= [
+    {
+      id: 1,
+      driverInjured: "John Doe",
+      dateTime: "2024-01-01 14:30",
+      venue: "Main Street",
+      helperInjured: "None",
+      vehicleDamaged: "Car A",
+      loss: "$5000",
+      specialNote: "Heavy rain",
+      photos: "URL to photos",
+    },
+    {
+      id: 2,
+      driverInjured: "Jane Smith",
+      dateTime: "2024-02-15 09:00",
+      venue: "Highway 21",
+      helperInjured: "John Smith",
+      vehicleDamaged: "Truck B",
+      loss: "$2000",
+      specialNote: "Foggy conditions",
+      photos: "URL to photos",
+    },
+    {
+      id: 3,
+      driverInjured: "Alice Johnson",
+      dateTime: "2024-03-10 16:45",
+      venue: "Downtown",
+      helperInjured: "None",
+      vehicleDamaged: "Van C",
+      loss: "$3500",
+      specialNote: "Slippery road",
+      photos: "URL to photos",
+    },
+    {
+      id: 4,
+      driverInjured: "Bob Brown",
+      dateTime: "2024-04-22 12:30",
+      venue: "City Park",
+      helperInjured: "Sarah Brown",
+      vehicleDamaged: "Bike D",
+      loss: "$800",
+      specialNote: "Pedestrian involved",
+      photos: "URL to photos",
+    },
+    {
+      id: 5,
+      driverInjured: "Charlie Davis",
+      dateTime: "2024-05-05 19:00",
+      venue: "Old Bridge",
+      helperInjured: "None",
+      vehicleDamaged: "Car E",
+      loss: "$6000",
+      specialNote: "Bridge collapse",
+      photos: "URL to photos",
+    },
+    {
+      id: 6,
+      driverInjured: "Diana Evans",
+      dateTime: "2024-06-18 11:15",
+      venue: "Airport Road",
+      helperInjured: "Mike Evans",
+      vehicleDamaged: "Bus F",
+      loss: "$7000",
+      specialNote: "Engine failure",
+      photos: "URL to photos",
+    },
+    {
+      id: 7,
+      driverInjured: "Frank Green",
+      dateTime: "2024-07-08 21:00",
+      venue: "Seaside Boulevard",
+      helperInjured: "None",
+      vehicleDamaged: "Truck G",
+      loss: "$4500",
+      specialNote: "High tide",
+      photos: "URL to photos",
+    },
+    {
+      id: 8,
+      driverInjured: "Gina Harris",
+      dateTime: "2024-08-14 05:30",
+      venue: "Mountain Pass",
+      helperInjured: "Tom Harris",
+      vehicleDamaged: "Car H",
+      loss: "$9000",
+      specialNote: "Rockslide",
+      photos: "URL to photos",
+    },
+  ];
+  setAccidentDetails(dummyData);
 };
 
   const columns = [
     {
-      accessorKey: "firstName",
-      header: "First Name",
+      accessorKey: "driverInjured",
+      header: "Driver Injured",
       meta: { isNumeric: false, filter: "text" },
     },
     {
-      accessorKey: "lastName",
-      header: "Last Name",
+      accessorKey: "dateTime",
+      header: "Date Time",
       meta: { isNumeric: false, filter: "text" },
     },
     {
-      accessorKey: "DoB",
-      header: "DoB",
+      accessorKey: "venue",
+      header: "Venue",
       meta: { isNumeric: false, filter: "date" },
     },
     {
-      accessorKey: "NIC",
-      header: "NIC",
+      accessorKey: "helperInjured",
+      header: "Helper Injured",
       meta: { isNumeric: false, filter: "text" },
     },
     {
-      accessorKey: "emailAddress",
-      header: "Email Address",
+      accessorKey: "vehicleDamaged",
+      header: "Vehicle Damaged",
       meta: { isNumeric: false, filter: "text" },
     },
     {
-      accessorKey: "phoneNo",
-      header: "Phone No.",
+      accessorKey: "loss",
+      header: "Loss",
       meta: { isNumeric: false, filter: "text" },
     },
     {
-      accessorKey: "emContact",
-      header: "Em. Contact",
+      accessorKey: "specialNote",
+      header: "Special Note",
       meta: { isNumeric: false, filter: "text" },
     },
     {
-      accessorKey: "bloodGroup",
-      header: "Blood Group",
+      accessorKey: "photos",
+      header: "Photos",
       meta: { isNumeric: false, filter: "text" },
     },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: info => (info.getValue() ? "Active" : "Inactive"),
-      meta: { isNumeric: false, filter: "boolean" },
-    },
+    
     {
       id: "actions",
       header: "Actions",
@@ -226,7 +195,7 @@ const fetchDriverDetails = () => {
           />
           <MenuList>
             <MenuItem>
-              <Link to={`/app/EditDriverDetails`}>
+              <Link to={`/app/EditAccidentDetails`}>
                 Edit
               </Link>
             </MenuItem>
@@ -242,7 +211,7 @@ const fetchDriverDetails = () => {
   ];
 
   const table = useReactTable({
-    data: driverDetails,
+    data: accidentDetails,
     columns,
     state: { sorting, globalFilter: searchInput },
     onSortingChange: setSorting,
@@ -271,14 +240,14 @@ const fetchDriverDetails = () => {
   const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "5px" };
 
   const breadcrumbs = [
-    { label: "Driver", link: "/app/Driver" },
-    { label: "Driver Details", link: "/app/DriverDetails" },
-    { label: "Add Driver Details", link: "/app/AddDriverDetails" },
+    { label: "Accidents", link: "/app/Accidents" },
+    { label: "Accident Details", link: "/app/AccidentDetails" },
+    { label: "Add Accident Details", link: "/app/AddAccidentDetails" },
   ];
 
   return (
     <div className="main-content">
-      <PageHeader title="Driver Details" breadcrumbs={breadcrumbs} />
+      <PageHeader title="Accident Details" breadcrumbs={breadcrumbs} />
       <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginBottom="10px">
         <InputGroup>
           <InputLeftElement pointerEvents="none">
@@ -292,7 +261,7 @@ const fetchDriverDetails = () => {
             width="300px"
           />
         </InputGroup>
-        <Link to="/app/AddDriverDetails">
+        <Link to="/app/AddAccidentDetails">
           <Button
             bg={theme.purple}
             _hover={{ bg: theme.onHoverPurple }}
@@ -301,7 +270,7 @@ const fetchDriverDetails = () => {
             ml="auto"
             mr="50px"
           >
-            Add New Driver
+            Add New Accident
           </Button>
         </Link>
       </Box>
@@ -347,18 +316,17 @@ const fetchDriverDetails = () => {
               </Td>
             </Tr>
           ) : (
-            currentData.map((driver, index) => (
+            currentData.map((accident, index) => (
               <Tr key={index}>
-                <Td>{driver.firstName}</Td>
-                <Td>{driver.lastName}</Td>
-                <Td>{driver.DoB}</Td>
-                <Td>{driver.NIC}</Td>
-                <Td>{driver.emailAddress}</Td>
-                <Td>{driver.phoneNo}</Td>
-                <Td>{driver.emContact}</Td>
-                <Td>{driver.bloodGroup}</Td>
-                <Td>{driver.status}</Td>
-                <Td>
+                  <Td>{accident.driverInjured}</Td>
+                  <Td>{accident.dateTime}</Td>
+                  <Td>{accident.venue}</Td>
+                  <Td>{accident.helperInjured}</Td>
+                  <Td>{accident.vehicleDamaged}</Td>
+                  <Td>{accident.loss}</Td>
+                  <Td>{accident.specialNote}</Td>
+                  <Td><a href={accident.photos} target="_blank" rel="noopener noreferrer">View Photos</a></Td>
+                  <Td>
                   <Menu>
                     <MenuButton
                       color={theme.purple}
@@ -369,16 +337,16 @@ const fetchDriverDetails = () => {
                     />
                     <MenuList>
                       <MenuItem>
-                        <Link to={`/app/EditDriverDetails`}>
+                        <Link to={`/app/EditAccidentDetails`}>
                           Edit
                         </Link>
                       </MenuItem>
                       <MenuItem>
-                        {driver.isActive ? "Deactivate" : "Activate"}
+                        {accident.isActive ? "Deactivate" : "Activate"}
                       </MenuItem>
                     </MenuList>
                   </Menu>
-                </Td>
+                  </Td>
               </Tr>
             ))
           )}
@@ -393,7 +361,4 @@ const fetchDriverDetails = () => {
     </div>
   );
 }
-
-
-
 
