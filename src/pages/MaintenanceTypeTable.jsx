@@ -76,7 +76,7 @@ export default function MaintenanceTypeTable() {
             setVehicleMaintenanceTypeDetails(updatedDetails);
 
             // Refresh the list after update
-            fetchVehicleMaintenanceTypes();
+            // fetchVehicleMaintenanceTypes();
             onDialogClose();
         } catch (error) {
             if (error.response && error.response.status === 400 && error.response.data === "MaintenanceType is active and associated with maintenance records. Cannot deactivate.") {
@@ -125,6 +125,7 @@ export default function MaintenanceTypeTable() {
         }
     };
 
+    // Remove the enableSorting property from the action column definition
     const columns = [
         {
             accessorKey: 'typeName',
@@ -162,6 +163,7 @@ export default function MaintenanceTypeTable() {
                 </Menu>
             ),
             meta: { isNumeric: false, filter: null },
+            // Disable sorting for the action column
             enableSorting: false,
         },
     ];
@@ -202,7 +204,7 @@ export default function MaintenanceTypeTable() {
 
     return (
         <div className="main-content">
-            <PageHeader title="Vehicle Maintenance Type" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Vehicle Maintenance Type Details" breadcrumbs={breadcrumbs} />
             <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
                 <InputGroup>
                     <InputLeftElement pointerEvents="none">
@@ -244,7 +246,8 @@ export default function MaintenanceTypeTable() {
                                         className="custom-table-th"
                                     >
                                         {flexRender(header.column.columnDef.header, header.getContext())}
-                                        <chakra.span pl="4">
+                                        {header.column.getCanSort() && (
+                                            <chakra.span pl="4">
                                             {header.column.getIsSorted() ? (
                                                 header.column.getIsSorted() === "desc" ? (
                                                     <TriangleDownIcon aria-label="sorted descending" style={iconStyle} />
@@ -255,6 +258,7 @@ export default function MaintenanceTypeTable() {
                                                 <TiArrowUnsorted aria-label="unsorted" style={iconStyle} />
                                             )}
                                         </chakra.span>
+                                            )}
                                     </Th>
                                 );
                             })}

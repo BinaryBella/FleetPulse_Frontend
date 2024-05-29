@@ -18,6 +18,12 @@ import {
     InputGroup,
     InputLeftElement,
     Text,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
 } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
@@ -33,12 +39,15 @@ import {
     getFilteredRowModel,
 } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
+// import axios from "axios";
 
 export default function MaintenanceTable() {
     const [vehicleMaintenance, setVehicleMaintenance] = useState([]);
     const [sorting, setSorting] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchInput, setSearchInput] = useState("");
+    const [selectedMaintenance, setSelectedMaintenance] = useState(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const itemsPerPage = 10;
 
     useEffect(() => {
@@ -159,6 +168,34 @@ export default function MaintenanceTable() {
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
     };
+    const openDialog = (maintenance) => {
+        setSelectedMaintenance(maintenance);
+        setIsDialogOpen(true);
+    };
+
+    const closeDialog = () => {
+        setIsDialogOpen(false);
+    };
+    const onDeleteMaintenance = () => {
+        // Perform deletion or activation/deactivation logic here
+        // For example, you can make a request to your backend to perform the action
+        // Once the action is successful, you can close the dialog
+        // and possibly fetch updated data if needed
+        // Example:
+        // axios.delete(`/maintenance/${selectedMaintenance.maintenanceId}`)
+        //     .then(response => {
+        //         // handle success
+        //         console.log("Maintenance deleted successfully");
+        //         closeDialog();
+        //         fetchVehicleMaintenance(); // Optionally fetch updated data
+        //     })
+        //     .catch(error => {
+        //         // handle error
+        //         console.error("Error deleting maintenance:", error);
+        //     });
+        closeDialog(); // Temporarily closing the dialog since the logic is not implemented
+    };
+
 
     const startOffset = currentPage * itemsPerPage;
     const endOffset = startOffset + itemsPerPage;
@@ -178,6 +215,24 @@ export default function MaintenanceTable() {
         { label: "Vehicle", link: "/app/Vehicle" },
         { label: "Vehicle Maintenance Details", link: "/app/MaintenanceTable" },
     ];
+
+    const dialog = (
+        <AlertDialog isOpen={isDialogOpen} onClose={closeDialog}>
+            <AlertDialogOverlay />
+            <AlertDialogContent>
+                <AlertDialogHeader>Confirmation</AlertDialogHeader>
+                <AlertDialogBody>
+                    Are you sure you want to {selectedMaintenance?.status ? "deactivate" : "activate"} this maintenance?
+                </AlertDialogBody>
+                <AlertDialogFooter>
+                    <Button onClick={closeDialog}>Cancel</Button>
+                    <Button colorScheme="red" onClick={onDeleteMaintenance}>
+                        {selectedMaintenance?.status ? "Deactivate" : "Activate"}
+                    </Button>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
 
     return (
         <div className="main-content">

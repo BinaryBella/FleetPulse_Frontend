@@ -15,15 +15,13 @@ import {
     Select
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
-// import axios from "axios"; // Comment out the axios import
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 
 export default function EditVehicleMaintenanceDetails() {
     const navigate = useNavigate();
-    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
-    const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
     const [VehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
@@ -76,7 +74,7 @@ export default function EditVehicleMaintenanceDetails() {
         { label: "Edit Vehicle Maintenance Details", link: "/app/EditVehicleMaintenanceDetails" },
     ];
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async () => {
         try {
             // Backend request
             /*
@@ -104,8 +102,7 @@ export default function EditVehicleMaintenanceDetails() {
             }
 
             if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Vehicle Maintenance already exists');
-                onDialogOpen();
+                alert('Vehicle Maintenance already exists');
             } else {
                 setSuccessDialogMessage('Maintenance added successfully');
                 onSuccessDialogOpen();
@@ -116,12 +113,7 @@ export default function EditVehicleMaintenanceDetails() {
             setSuccessDialogMessage('Maintenance added successfully');
             onSuccessDialogOpen();
         } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server');
-            } else {
-                setDialogMessage(error.message || 'Failed to add maintenance.');
-            }
-            onDialogOpen();
+            alert(error.message || 'Failed to add maintenance.');
         }
     };
 
@@ -132,8 +124,6 @@ export default function EditVehicleMaintenanceDetails() {
     const handleSuccessDialogClose = () => {
         // Close the success dialog
         onSuccessDialogClose();
-        // Show alert with success message
-        alert(successDialogMessage);
         // Redirect to maintenance table page
         navigate('/app/MaintenanceTable');
     };
@@ -399,22 +389,6 @@ export default function EditVehicleMaintenanceDetails() {
                     </Form>
                 )}
             </Formik>
-            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay />
-                <AlertDialogContent
-                    position="absolute"
-                    top="30%"
-                    left="50%"
-                    transform="translate(-50%, -50%)">
-                    <AlertDialogHeader>Error</AlertDialogHeader>
-                    <AlertDialogBody>
-                        {dialogMessage}
-                    </AlertDialogBody>
-                    <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={onDialogClose}>Close</Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
 
             <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
                 <AlertDialogOverlay />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 // import axios from "axios";
 import {
     Table,
@@ -20,12 +20,12 @@ import {
     chakra,
     Text
 } from "@chakra-ui/react";
-import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-import { TiArrowUnsorted } from "react-icons/ti";
-import { IoSearchOutline, IoSettingsSharp } from "react-icons/io5";
-import { useReactTable, getCoreRowModel, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table';
-import { flexRender } from '@tanstack/react-table';
-import { Link } from "react-router-dom";
+import {TriangleDownIcon, TriangleUpIcon} from "@chakra-ui/icons";
+import {TiArrowUnsorted} from "react-icons/ti";
+import {IoSearchOutline, IoSettingsSharp} from "react-icons/io5";
+import {useReactTable, getCoreRowModel, getSortedRowModel, getFilteredRowModel} from '@tanstack/react-table';
+import {flexRender} from '@tanstack/react-table';
+import {Link} from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import ReactPaginate from 'react-paginate';
@@ -36,7 +36,7 @@ export default function FuelRefillTable() {
     const [currentPage, setCurrentPage] = useState(0);
     const [searchInput, setSearchInput] = useState("");
     const itemsPerPage = 10;
-    const [ setError] = useState(null);
+    const [setError] = useState(null);
 
     useEffect(() => {
         fetchFuelRefill();
@@ -49,7 +49,7 @@ export default function FuelRefillTable() {
             // setFuelRefillDetails(responseData);
 
             // Dummy data for fuel refills
-            const dummyData = Array.from({ length: 20 }, (_, index) => ({
+            const dummyData = Array.from({length: 20}, (_, index) => ({
                 fuelRefillId: index + 1,
                 nic: `NIC${index + 1}`,
                 vehicleRegistrationNo: `REG${index + 1}`,
@@ -78,56 +78,56 @@ export default function FuelRefillTable() {
         {
             accessorKey: 'nic',
             header: 'User NIC',
-            meta: { isNumeric: false, filter: 'text' }
+            meta: {isNumeric: false, filter: 'text'}
         },
         {
             accessorKey: 'vehicleRegistrationNo',
             header: 'Vehicle Registration No',
-            meta: { isNumeric: false, filter: 'text' }
+            meta: {isNumeric: false, filter: 'text'}
         },
         {
             accessorKey: 'literCount',
             header: 'Liter Count',
-            meta: { isNumeric: true, filter: 'number' }
+            meta: {isNumeric: true, filter: 'number'}
         },
         {
             accessorKey: 'date',
             header: 'Date',
             cell: info => formatDate(info.row.original),
-            meta: { isNumeric: false, filter: 'text' }
+            meta: {isNumeric: false, filter: 'text'}
         },
         {
             accessorKey: 'time',
             header: 'Time',
-            meta: { isNumeric: false, filter: 'text' }
+            meta: {isNumeric: false, filter: 'text'}
         },
         {
             accessorKey: 'fType',
             header: 'Refill Type',
-            meta: { isNumeric: false, filter: 'text' }
+            meta: {isNumeric: false, filter: 'text'}
         },
         {
             accessorKey: 'cost',
             header: 'Cost',
-            meta: { isNumeric: true, filter: 'number' }
+            meta: {isNumeric: true, filter: 'number'}
         },
         {
             accessorKey: 'status',
             header: 'Status',
             cell: info => (info.getValue() ? "Active" : "Inactive"),
-            meta: { isNumeric: false, filter: 'boolean' }
+            meta: {isNumeric: false, filter: 'boolean'}
         },
         {
             id: 'actions',
             header: 'Actions',
-            cell: ({ row }) => (
+            cell: ({row}) => (
                 <Menu>
                     <MenuButton
                         color={theme.purple}
                         as={IconButton}
                         aria-label="profile-options"
                         fontSize="20px"
-                        icon={<IoSettingsSharp />}
+                        icon={<IoSettingsSharp/>}
                     />
                     <MenuList>
                         <MenuItem>
@@ -141,14 +141,15 @@ export default function FuelRefillTable() {
                     </MenuList>
                 </Menu>
             ),
-            meta: { isNumeric: false, filter: null }
+            meta: {isNumeric: false, filter: null},
+            enableSorting: false,
         }
     ];
 
     const table = useReactTable({
         data: fuelRefillDetails,
         columns,
-        state: { sorting, globalFilter: searchInput },
+        state: {sorting, globalFilter: searchInput},
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -162,7 +163,7 @@ export default function FuelRefillTable() {
         setCurrentPage(0); // Reset pagination when searching
     };
 
-    const handlePageClick = ({ selected }) => {
+    const handlePageClick = ({selected}) => {
         setCurrentPage(selected);
     };
 
@@ -172,21 +173,21 @@ export default function FuelRefillTable() {
     const currentData = sortedData.slice(startOffset, endOffset);
     const pageCount = Math.ceil(table.getFilteredRowModel().rows.length / itemsPerPage);
     const isEmpty = currentData.length === 0;
-    const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "5px" };
+    const iconStyle = {display: "inline-block", verticalAlign: "middle", marginLeft: "5px"};
 
     const breadcrumbs = [
-        { label: "Vehicle", link: "/app/Vehicle" },
-        { label: "Fuel Refill Details", link: "/app/FuelRefillTable" },
+        {label: "Vehicle", link: "/app/Vehicle"},
+        {label: "Fuel Refill Details", link: "/app/FuelRefillTable"},
     ];
 
     return (
         <div className="main-content">
-            <PageHeader title="Fuel Refill Details" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Fuel Refill Details" breadcrumbs={breadcrumbs}/>
 
             <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
                 <InputGroup>
                     <InputLeftElement pointerEvents="none">
-                        <IoSearchOutline />
+                        <IoSearchOutline/>
                     </InputLeftElement>
                     <Input
                         placeholder="Search"
@@ -199,7 +200,7 @@ export default function FuelRefillTable() {
                 <Link to="/app/AddFuelRefillDetails">
                     <Button
                         bg={theme.purple}
-                        _hover={{ bg: theme.onHoverPurple }}
+                        _hover={{bg: theme.onHoverPurple}}
                         color="white"
                         variant="solid"
                         w="230px"
@@ -224,17 +225,21 @@ export default function FuelRefillTable() {
                                         className="custom-table-th"
                                     >
                                         {flexRender(header.column.columnDef.header, header.getContext())}
-                                        <chakra.span pl="4">
-                                            {header.column.getIsSorted() ? (
-                                                header.column.getIsSorted() === "desc" ? (
-                                                    <TriangleDownIcon aria-label="sorted descending" style={iconStyle} />
+                                        {header.column.getCanSort() && (
+                                            <chakra.span pl="4">
+                                                {header.column.getIsSorted() ? (
+                                                    header.column.getIsSorted() === "desc" ? (
+                                                        <TriangleDownIcon aria-label="sorted descending"
+                                                                          style={iconStyle}/>
+                                                    ) : (
+                                                        <TriangleUpIcon aria-label="sorted ascending"
+                                                                        style={iconStyle}/>
+                                                    )
                                                 ) : (
-                                                    <TriangleUpIcon aria-label="sorted ascending" style={iconStyle} />
-                                                )
-                                            ) : (
-                                                <TiArrowUnsorted aria-label="unsorted" style={iconStyle} />
-                                            )}
-                                        </chakra.span>
+                                                    <TiArrowUnsorted aria-label="unsorted" style={iconStyle}/>
+                                                )}
+                                            </chakra.span>
+                                        )}
                                     </Th>
                                 );
                             })}
@@ -266,7 +271,7 @@ export default function FuelRefillTable() {
                                             as={IconButton}
                                             aria-label="profile-options"
                                             fontSize="20px"
-                                            icon={<IoSettingsSharp />}
+                                            icon={<IoSettingsSharp/>}
                                         />
                                         <MenuList>
                                             <MenuItem>

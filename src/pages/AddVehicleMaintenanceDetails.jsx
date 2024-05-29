@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Formik, Form, Field } from "formik";
+import {useEffect, useState} from "react";
+import {Formik, Form, Field} from "formik";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -16,13 +16,13 @@ import {
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 // import axios from "axios"; // Comment out the axios import
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 
 export default function AddVehicleMaintenanceDetails() {
     const navigate = useNavigate();
-    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
-    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
+    const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
+    const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
@@ -30,8 +30,8 @@ export default function AddVehicleMaintenanceDetails() {
 
     // Dummy data for demonstration
     const exampleVehicleData = [
-        { VehicleId: 2, VehicleRegistrationNo: "REG123" },
-        { VehicleId: 3, VehicleRegistrationNo: "REG456" },
+        {VehicleId: 2, VehicleRegistrationNo: "REG123"},
+        {VehicleId: 3, VehicleRegistrationNo: "REG456"},
     ];
 
     // Fetch vehicle registration numbers (dummy function for demonstration)
@@ -58,8 +58,8 @@ export default function AddVehicleMaintenanceDetails() {
             // setMaintenanceTypeDetails(response.data);
             // Simulate setting maintenance type details
             setMaintenanceTypeDetails([
-                { id: 1, typeName: "Maintenance Type 1" },
-                { id: 2, typeName: "Maintenance Type 2" },
+                {id: 1, typeName: "Maintenance Type 1"},
+                {id: 2, typeName: "Maintenance Type 2"},
             ]);
         } catch (error) {
             console.error("Error fetching vehicle maintenance types:", error);
@@ -71,12 +71,12 @@ export default function AddVehicleMaintenanceDetails() {
     }, []);
 
     const breadcrumbs = [
-        { label: "Vehicle", link: "/app/Vehicle" },
-        { label: "Vehicle Maintenance", link: "/app/MaintenanceTable" },
-        { label: "Add Vehicle Maintenance Details", link: "/app/AddVehicleMaintenanceDetails" },
+        {label: "Vehicle", link: "/app/Vehicle"},
+        {label: "Vehicle Maintenance", link: "/app/MaintenanceTable"},
+        {label: "Add Vehicle Maintenance Details", link: "/app/AddVehicleMaintenanceDetails"},
     ];
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async () => {
         try {
             // Backend request
             /*
@@ -132,15 +132,13 @@ export default function AddVehicleMaintenanceDetails() {
     const handleSuccessDialogClose = () => {
         // Close the success dialog
         onSuccessDialogClose();
-        // Show alert with success message
-        alert(successDialogMessage);
         // Redirect to maintenance table page
         navigate('/app/MaintenanceTable');
     };
 
     return (
         <>
-            <PageHeader title="Add Vehicle Maintenance Details" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Add Vehicle Maintenance Details" breadcrumbs={breadcrumbs}/>
             <Formik
                 initialValues={{
                     VehicleRegistrationNo: "",
@@ -400,7 +398,7 @@ export default function AddVehicleMaintenanceDetails() {
                 )}
             </Formik>
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay />
+                <AlertDialogOverlay/>
                 <AlertDialogContent
                     position="absolute"
                     top="30%"
@@ -416,8 +414,8 @@ export default function AddVehicleMaintenanceDetails() {
                 </AlertDialogContent>
             </AlertDialog>
 
-            <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay />
+            <AlertDialog isOpen={isSuccessDialogOpen} onClose={handleSuccessDialogClose} motionPreset="slideInBottom">
+                <AlertDialogOverlay/>
                 <AlertDialogContent
                     position="absolute"
                     top="30%"
@@ -429,7 +427,7 @@ export default function AddVehicleMaintenanceDetails() {
                         {successDialogMessage}
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={handleSuccessDialogClose}>Ok</Button>
+                        <Button bg={theme.purple} color="#FFFFFF" onClick={onDialogClose}>Close</Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

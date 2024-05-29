@@ -26,32 +26,55 @@ export default function EditMaintenanceType() {
     const [initialValues, setInitialValues] = useState({ TypeName: "", isActive: false });
 
     useEffect(() => {
+        // Fetching maintenance type data - Dummy Data
+        const fetchMaintenanceTypeData = async (id) => {
+            try {
+                // Dummy data simulating the API response
+                const data = { typeName: "Oil Change", status: true };
+
+                // Simulating delay for fetching data
+                setTimeout(() => {
+                    setInitialValues({
+                        TypeName: data.typeName || "",
+                        isActive: data.status || false
+                    });
+                }, 1000);
+
+                // Uncomment below lines if connecting to actual backend
+                /*
+                const response = await fetch(`https://localhost:7265/api/VehicleMaintenanceType/${id}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to fetch maintenance type data.');
+                }
+
+                setInitialValues({
+                    TypeName: data.typeName || "",
+                    isActive: data.status || false
+                });
+                */
+            } catch (error) {
+                setDialogMessage(error.message || 'Failed to fetch maintenance type data.');
+                onDialogOpen();
+            }
+        };
+
         fetchMaintenanceTypeData(id);
     }, [id]);
-
-    const fetchMaintenanceTypeData = async (id) => {
-        try {
-            const response = await fetch(`https://localhost:7265/api/VehicleMaintenanceType/${id}`);
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to fetch maintenance type data.');
-            }
-
-            setInitialValues({
-                TypeName: data.typeName || "", // Use the correct key 'typeName'
-                isActive: data.status || false // Use the correct key 'status'
-            });
-        } catch (error) {
-            setDialogMessage(error.message || 'Failed to fetch maintenance type data.');
-            onDialogOpen();
-        }
-    };
 
     const handleSubmit = async (values) => {
         try {
             const status = values.isActive ? true : false;
 
+            // Simulating a successful update operation
+            setTimeout(() => {
+                setSuccessDialogMessage('Maintenance type updated successfully.');
+                onSuccessDialogOpen();
+            }, 1000);
+
+            // Uncomment below lines if connecting to actual backend
+            /*
             const response = await fetch(`https://localhost:7265/api/VehicleMaintenanceType/UpdateVehicleMaintenanceType`, {
                 method: 'PUT',
                 headers: {
@@ -71,6 +94,7 @@ export default function EditMaintenanceType() {
 
             setSuccessDialogMessage('Maintenance type updated successfully.');
             onSuccessDialogOpen();
+            */
         } catch (error) {
             setDialogMessage(error.message || 'Failed to update maintenance type.');
             onDialogOpen();
