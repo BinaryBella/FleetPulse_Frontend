@@ -14,16 +14,15 @@ import {
     Select
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 
-export default function AddFuelRefillDetails() {
+export default function EditFuelRefillDetails() {
     const navigate = useNavigate();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
-    const [nic, setNIC] = useState("");
+    const [ setNIC] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
@@ -34,72 +33,31 @@ export default function AddFuelRefillDetails() {
 
     const fetchVehicleRegNos = async () => {
         setVehicleRegNoDetails(exampleVehicleData);
-        // try {
-        //     const response = await axios.get("https://localhost:7265/api/Vehicle");
-        // } catch (error) {
-        //     console.error("Error fetching vehicle registration numbers:", error);
-        // }
     };
 
     const fetchUser = async (setFieldValue) => {
-        try {
-            const username = sessionStorage.getItem("Username");
-            if (username) {
-                const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
-                const responseData = response.data;
-                setNIC(responseData.nic);
-                setFieldValue("nic", responseData.nic); // Set the NIC field in Formik
-            } else {
-                console.error("Username not found in session storage.");
-            }
-        } catch (error) {
-            console.error("Error fetching user profile:", error);
-        }
+        const exampleUser = { nic: "123456789V" };
+        setNIC(exampleUser.nic);
+        setFieldValue("nic", exampleUser.nic);
     };
 
     useEffect(() => {
         fetchVehicleRegNos();
     }, []);
 
-    const handleSubmit = async (values) => {
-        try {
-            const response = await fetch('https://localhost:7265/api/FuelRefill', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    VehicleId: parseInt(values.vehicleRegistrationNo),
-                    NIC: values.nic,
-                    Cost: values.cost,
-                    LiterCount: values.literCount,
-                    Date: values.date,
-                    Time: values.time,
-                    RefillType: values.fType,
-                    Status: values.IsActive
-                })
-            });
+    const handleSubmit = async () => {
+        const dummyResponse = { ok: true, message: "Fuel Refill edited successfully" };
 
-            const data = await response.json();
+        if (!dummyResponse.ok) {
+            throw new Error(dummyResponse.message || 'Failed to edit Fuel Refill.');
+        }
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to add Fuel Refill.');
-            }
-
-            if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Fuel Refill already exists');
-                onDialogOpen();
-            } else {
-                setSuccessDialogMessage('Fuel Refill added successfully');
-                onSuccessDialogOpen();
-            }
-        } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server');
-            } else {
-                setDialogMessage(error.message || 'Failed to add Fuel Refill.');
-            }
+        if (dummyResponse.message && dummyResponse.message.toLowerCase().includes('exist')) {
+            setDialogMessage('Fuel Refill editing failed');
             onDialogOpen();
+        } else {
+            setSuccessDialogMessage('Fuel Refill edited successfully');
+            onSuccessDialogOpen();
         }
     };
 
@@ -115,12 +73,12 @@ export default function AddFuelRefillDetails() {
     const breadcrumbs = [
         { label: "Vehicle", link: "/app/Vehicle" },
         { label: "Fuel Refill", link: "/app/FuelRefillTable" },
-        { label: "Add Fuel Refill Details", link: "/app/AddFuelRefillDetails" },
+        { label: "Edit Fuel Refill Details", link: "/app/EditFuelRefillDetails" },
     ];
 
     return (
         <>
-            <PageHeader title="Add Fuel Refill Details" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Edit Fuel Refill Details" breadcrumbs={breadcrumbs} />
             <Formik
                 initialValues={{
                     vehicleRegistrationNo: "",
@@ -135,6 +93,7 @@ export default function AddFuelRefillDetails() {
                 onSubmit={handleSubmit}
             >
                 {({ errors, touched, isSubmitting, setFieldValue }) => {
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
                     useEffect(() => {
                         fetchUser(setFieldValue);
                     }, [setFieldValue]);

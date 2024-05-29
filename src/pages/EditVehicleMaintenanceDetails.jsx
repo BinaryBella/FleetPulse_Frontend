@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {Formik, Form, Field} from "formik";
+import { useEffect, useState } from "react";
+import { Formik, Form, Field } from "formik";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -15,23 +15,21 @@ import {
     Select
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
-// import axios from "axios"; // Comment out the axios import
-import {useNavigate} from "react-router-dom";
+// import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 
-export default function AddVehicleMaintenanceDetails() {
+export default function EditVehicleMaintenanceDetails() {
     const navigate = useNavigate();
-    const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
-    const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
-    const [dialogMessage, setDialogMessage] = useState("");
+    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
     const [VehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
     // Dummy data for demonstration
     const exampleVehicleData = [
-        {VehicleId: 2, VehicleRegistrationNo: "REG123"},
-        {VehicleId: 3, VehicleRegistrationNo: "REG456"},
+        { VehicleId: 2, VehicleRegistrationNo: "REG123" },
+        { VehicleId: 3, VehicleRegistrationNo: "REG456" },
     ];
 
     // Fetch vehicle registration numbers (dummy function for demonstration)
@@ -58,8 +56,8 @@ export default function AddVehicleMaintenanceDetails() {
             // setMaintenanceTypeDetails(response.data);
             // Simulate setting maintenance type details
             setMaintenanceTypeDetails([
-                {id: 1, typeName: "Maintenance Type 1"},
-                {id: 2, typeName: "Maintenance Type 2"},
+                { id: 1, typeName: "Maintenance Type 1" },
+                { id: 2, typeName: "Maintenance Type 2" },
             ]);
         } catch (error) {
             console.error("Error fetching vehicle maintenance types:", error);
@@ -71,9 +69,9 @@ export default function AddVehicleMaintenanceDetails() {
     }, []);
 
     const breadcrumbs = [
-        {label: "Vehicle", link: "/app/Vehicle"},
-        {label: "Vehicle Maintenance", link: "/app/MaintenanceTable"},
-        {label: "Add Vehicle Maintenance Details", link: "/app/AddVehicleMaintenanceDetails"},
+        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Vehicle Maintenance", link: "/app/MaintenanceTable" },
+        { label: "Edit Vehicle Maintenance Details", link: "/app/EditVehicleMaintenanceDetails" },
     ];
 
     const handleSubmit = async () => {
@@ -104,8 +102,7 @@ export default function AddVehicleMaintenanceDetails() {
             }
 
             if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Vehicle Maintenance already exists');
-                onDialogOpen();
+                alert('Vehicle Maintenance already exists');
             } else {
                 setSuccessDialogMessage('Maintenance added successfully');
                 onSuccessDialogOpen();
@@ -116,12 +113,7 @@ export default function AddVehicleMaintenanceDetails() {
             setSuccessDialogMessage('Maintenance added successfully');
             onSuccessDialogOpen();
         } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server');
-            } else {
-                setDialogMessage(error.message || 'Failed to add maintenance.');
-            }
-            onDialogOpen();
+            alert(error.message || 'Failed to add maintenance.');
         }
     };
 
@@ -138,7 +130,7 @@ export default function AddVehicleMaintenanceDetails() {
 
     return (
         <>
-            <PageHeader title="Add Vehicle Maintenance Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Edit Vehicle Maintenance Details" breadcrumbs={breadcrumbs} />
             <Formik
                 initialValues={{
                     VehicleRegistrationNo: "",
@@ -397,25 +389,9 @@ export default function AddVehicleMaintenanceDetails() {
                     </Form>
                 )}
             </Formik>
-            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay/>
-                <AlertDialogContent
-                    position="absolute"
-                    top="30%"
-                    left="50%"
-                    transform="translate(-50%, -50%)">
-                    <AlertDialogHeader>Error</AlertDialogHeader>
-                    <AlertDialogBody>
-                        {dialogMessage}
-                    </AlertDialogBody>
-                    <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={onDialogClose}>Close</Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
 
-            <AlertDialog isOpen={isSuccessDialogOpen} onClose={handleSuccessDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay/>
+            <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
+                <AlertDialogOverlay />
                 <AlertDialogContent
                     position="absolute"
                     top="30%"
@@ -427,7 +403,7 @@ export default function AddVehicleMaintenanceDetails() {
                         {successDialogMessage}
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={onDialogClose}>Close</Button>
+                        <Button bg={theme.purple} color="#FFFFFF" onClick={handleSuccessDialogClose}>Ok</Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
