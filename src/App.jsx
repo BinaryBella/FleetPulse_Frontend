@@ -28,7 +28,6 @@ import DriverDetails from "./pages/DriverDetails.jsx";
 import AccidentDetails from "./pages/AccidentDetails.jsx";
 import AddAccidentDetails from "./pages/AddAccidentDetails.jsx";
 import AddVehicleDetails from "./pages/AddVehicleDetails.jsx";
-import AddVehicleModel from "./pages/AddVehicleModel.jsx";
 import AddVehicleType from "./pages/AddDriverDetails.jsx";
 import AddHelperDetails from "./pages/AddHelperDetails.jsx";
 import HelperDetails from "./pages/HelperDetails.jsx";
@@ -40,7 +39,7 @@ import VehicleType from "./pages/VehicleType.jsx";
 import AddvehicletypeDetails from "./pages/AddvehicletypeDetails.jsx";
 import AddDriverDetails from "./pages/AddDriverDetails.jsx";
 import Manufacturer from "./pages/Manufacturer.jsx";
-import AddManufacturerTypeDetails from "./pages/AddManufacturerTypeDetails.jsx";
+import AddManufacturerTypeDetails from "./pages/AddManufactureDetails.jsx";
 import EditAccidentDetails from "./pages/EditAccidentDetails.jsx";
 import EditVehicleDetails from "./pages/EditVehicleDetails.jsx";
 import EditVehicleType from "./pages/EditVehicleType.jsx";
@@ -97,7 +96,6 @@ export default function App() {
                     <Route path="AccidentDetails" element={<AccidentDetails/>}/>
                     <Route path="AddAccidentDetails" element={<AddAccidentDetails/>}/>
                     <Route path="AddVehicleDetails" element={<AddVehicleDetails/>}/>
-                    <Route path="AddVehicleModel" element={<AddVehicleModel/>}/>
                     <Route path="AddVehicleType" element={<AddVehicleType/>}/>
                     <Route path="DriverDetails" element={<DriverDetails/>}/>
                     <Route path="AddDriverDetails" element={<AddDriverDetails/>}/>

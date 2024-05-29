@@ -49,7 +49,6 @@ export default function VehicleType() {
   const breadcrumbs = [
     { label: "Vehicle", link: "/" },
     { label: "Vehicle Type", link: "/app/VehicleType" },
-    { label: "Add Vehicle Type Details", link: "/app/AddvehicletypeDetails" }
   ];
 
   if (error) {
@@ -70,7 +69,7 @@ export default function VehicleType() {
               width="250px"
           />
         </InputGroup>
-        <Link to="/app/AddVehicleType">
+        <Link to="/app/AddvehicletypeDetails">
           <Button
               bg={theme.purple}
               _hover={{ bg: theme.onHoverPurple }}

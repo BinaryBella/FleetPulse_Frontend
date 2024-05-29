@@ -35,7 +35,7 @@ export default function AddVehicleTypeDetails() {
   return (
     <>
 
-      <PageHeader title="Add Vehicle Details" breadcrumbs={breadcrumbs} />
+      <PageHeader title="Add Vehicle Type Details" breadcrumbs={breadcrumbs} />
 
       {/* Form section */}
       <div className="flex flex-col gap-3">

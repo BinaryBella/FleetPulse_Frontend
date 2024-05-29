@@ -4,9 +4,8 @@ import theme from "../config/ThemeConfig.jsx";
 
 export default function AddManufactureDetails() {
     const breadcrumbs = [
-        {label: 'Vehicle', link: '/app/VehicleDetailsTable'},
-        {label: 'Manufacture Details', link: '/app/Manufacturer'},
-        {label: 'Add Manufacture Details', link: '/app/AddManufactureDetails'}
+        { label: "Manufacturer Details", link: "/app/Manufacturer" },
+        {label: 'Add Manufacturer Details', link: '/app/AddManufacturerTypeDetails'}
     ];
     // Function to handle form submission
     const handleSubmit = (e) => {
@@ -23,7 +22,7 @@ export default function AddManufactureDetails() {
 
     return (
         <>
-            <PageHeader title="Add Manufacture Details" breadcrumbs={breadcrumbs}/>
+            <PageHeader title="Add Manufacturer Type Details" breadcrumbs={breadcrumbs}/>
             <div className="grid grid-cols-2 gap-10 mt-8">
                 <div className="flex flex-col gap-3">
                     <p>Manufacture</p>

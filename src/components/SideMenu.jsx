@@ -80,11 +80,6 @@ export default function SideMenu() {
                                             Type
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-3" to="/app/VehicleModelTable">
-                                        <Text color={theme.orange} fontSize="sm">
-                                            Model
-                                        </Text>
-                                    </Link>
                                     <Link className="flex items-center pl-3" to="/app/Manufacturer">
                                         <Text color={theme.orange} fontSize="sm">
                                             Manufacturer
