@@ -27,8 +27,8 @@
     "react-paginate": "^8.2.0",
     "react-password-strength-bar": "^0.4.1",
     "react-router-dom": "^6.22.1",
-    "react-verification-input": "^4.1.1",
-    "zustand": "^4.5.2"
+    "react-table": "^7.8.0",
+    "react-verification-input": "^4.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
@@ -40,6 +40,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.35",
+    "react-datepicker": "^6.9.0",
     "tailwindcss": "^3.4.1",
     "vite": "^5.1.0"
   }
