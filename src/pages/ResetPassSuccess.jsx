@@ -14,7 +14,7 @@ export default function ResetPassSuccess() {
     return (
         <>
             <p className="font-sans text-3xl text-[#393970] mb-7">Reset Password</p>
-            <img src={ResetPass3} alt="ResetPassword" className="w-1/4 mb-4"/>
+            <img src={ResetPass3} alt="ResetPassword" className="w-1/3 mb-4"/>
             <Box textAlign="center" w="50%" fontSize="sm">
                 <p className="text-2xl text-[#D49458] font-bold mb-4">Password Updated</p>
                 <p className="mb-6">Your password has been updated</p>

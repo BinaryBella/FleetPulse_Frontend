@@ -1,42 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FormControl, FormErrorMessage, FormLabel, IconButton, Input, InputGroup, InputRightElement, Stack, Button, Alert, AlertIcon, Box } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Field, Formik } from "formik";
 import ResetPass2 from "../assets/images/ResetPass2.png";
 import theme from "../config/ThemeConfig.jsx";
+import PasswordStrengthBar from 'react-password-strength-bar';
+import $ from 'jquery';
 
 export default function ResetPassword() {
-    const [showPassword1, setShowPassword1] = useState(false);
-    const [showPassword2, setShowPassword2] = useState(false);
+    const [newPasswordVisibility, setNewPasswordVisibility] = useState(false);
+    const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
     let email = "";
 
-    if (location.state == null) {
-        navigate("/auth/login");
-    } else {
-        email = location.state.email;
-    }
 
-    const handleShowPassword1 = () => {
-        setShowPassword1(!showPassword1);
+
+    useEffect(() => {
+        // Password strength meter style
+        $(".pwd-meter > div").children().each(function () {
+            $(this).css({"height": "5px", "border-radius": "5px"})
+        });
+
+        if (location.state == null) {
+            navigate("/auth/login");
+        } else {
+            email = location.state.email;
+        }
+    }, []);
+
+    const handleNewPasswordVisibility = () => {
+        setNewPasswordVisibility(!newPasswordVisibility);
     };
 
-    const handleShowPassword2 = () => {
-        setShowPassword2(!showPassword2);
+    const handleConfirmPasswordVisibility = () => {
+        setConfirmPasswordVisibility(!confirmPasswordVisibility);
     };
 
     const handleSubmit = async (values) => {
         try {
+            console.log(email);
             const response = await fetch('https://localhost:7265/api/Auth/reset-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: email,
+                    email: location.state.email,
                     newPassword: values.newpassword
                 })
             });
@@ -72,55 +84,55 @@ export default function ResetPassword() {
                     }
                     if (!values.confirmpassword) {
                         errors.confirmpassword = "Confirm Password is required.";
-                    }
-                    if (values.newpassword !== values.confirmpassword) {
-                        errors.confirmpassword = "Passwords do not match";
+                    } else if (values.newpassword !== values.confirmpassword) {
+                        errors.confirmpassword = "Passwords do not match.";
                     }
                     return errors;
                 }}
                 onSubmit={handleSubmit}
             >
-                {({handleSubmit, errors, touched}) => (
+                {({ handleSubmit, errors, touched, values }) => (
                     <form onSubmit={handleSubmit} className="w-1/2">
                         <Stack spacing={3}>
                             {error && ( // Display error message if error state is not empty
                                 <Alert status="error" mb={4}>
-                                    <AlertIcon/>
+                                    <AlertIcon />
                                     {error}
                                 </Alert>
                             )}
-                            <FormControl isInvalid={!!errors.newpassword || touched.newpassword}>
+                            <FormControl isInvalid={!!errors.newpassword && touched.newpassword}>
                                 <FormLabel htmlFor="newpassword">New Password</FormLabel>
                                 <InputGroup>
                                     <Field
                                         as={Input}
                                         id="newpassword"
                                         name="newpassword"
-                                        type={showPassword1 ? "text" : "password"}
+                                        type={newPasswordVisibility ? "text" : "password"}
                                         variant="filled"
                                         placeholder="New Password"
+                                        mb="10px"
                                     />
                                     <InputRightElement width="4.5rem">
                                         <IconButton
                                             h="1.75rem"
                                             size="sm"
                                             variant="ghost"
-                                            onClick={handleShowPassword1}
-                                            icon={showPassword1 ? <ViewOffIcon/> : <ViewIcon/>}
-                                            aria-label="password-icon"
+                                            onClick={handleNewPasswordVisibility}
+                                            icon={newPasswordVisibility ? <ViewOffIcon /> : <ViewIcon />}
                                         />
                                     </InputRightElement>
                                 </InputGroup>
+                                <PasswordStrengthBar className="pwd-meter" password={values.newpassword} />
                                 <FormErrorMessage>{errors.newpassword}</FormErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={!!errors.confirmpassword || touched.confirmpassword}>
+                            <FormControl isInvalid={!!errors.confirmpassword && touched.confirmpassword}>
                                 <FormLabel htmlFor="confirmpassword">Confirm Password</FormLabel>
                                 <InputGroup>
                                     <Field
                                         as={Input}
                                         id="confirmpassword"
                                         name="confirmpassword"
-                                        type={showPassword2 ? "text" : "password"}
+                                        type={confirmPasswordVisibility ? "text" : "password"}
                                         variant="filled"
                                         placeholder="Confirm Password"
                                     />
@@ -129,9 +141,8 @@ export default function ResetPassword() {
                                             h="1.75rem"
                                             size="sm"
                                             variant="ghost"
-                                            onClick={handleShowPassword2}
-                                            icon={showPassword2 ? <ViewOffIcon/> : <ViewIcon/>}
-                                            aria-label="password-icon"
+                                            onClick={handleConfirmPasswordVisibility}
+                                            icon={confirmPasswordVisibility ? <ViewOffIcon /> : <ViewIcon />}
                                         />
                                     </InputRightElement>
                                 </InputGroup>
@@ -141,7 +152,7 @@ export default function ResetPassword() {
                                 type="submit"
                                 mt={5}
                                 bg={theme.purple}
-                                _hover={{bg: theme.onHoverPurple}}
+                                _hover={{ bg: theme.onHoverPurple }}
                                 color="#ffffff"
                                 variant="solid">
                                 Save

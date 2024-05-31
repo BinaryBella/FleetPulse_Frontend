@@ -12,9 +12,9 @@ export default function ResetEmail() {
     return (
         <>
             <p className="font-sans text-3xl text-[#393970] mb-10">Reset Password Verification</p>
-            <img src={forgotPassword} alt="ResetPasswordConfirmation" className="w-1/4 mb-10"/>
-            <Box textAlign="center" w="50%" fontSize="sm">
-                <p className="mb-10">Enter your email address to continue.</p>
+            <img src={forgotPassword} alt="ResetPasswordConfirmation" className="w-1/2 mb-10"/>
+            <Box textAlign="center" w="50%" fontSize="sm" marginBottom="10">
+                <p>Enter your email address to continue.</p>
             </Box>
             <Formik
                 initialValues={{

@@ -1,12 +1,12 @@
+import Logo from './../assets/images/logo.png'; // Importing the Logo image
 import { Outlet } from "react-router-dom"; // Importing the Outlet component from react-router-dom
-import Logo from "../assets/images/logo.png";
 // AnonymousLayout component definition
 export default function AnonymousLayout() {
     // Rendering the layout structure
     return (
         <div className="flex w-screen h-screen">
             {/* Left side containing the logo */}
-            <div className="bg-[#393970] w-1/2 flex items-center justify-center">
+            <div className="bg-[#2c2c59] w-1/2 flex items-center justify-center">
                 <img src={Logo} alt="Logo" className="w-1/2"/>
             </div>
 
