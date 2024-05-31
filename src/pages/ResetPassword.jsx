@@ -66,11 +66,11 @@ export default function ResetPassword() {
 
     return (
         <>
-            <p className="font-sans text-3xl text-[#393970] mb-7">Reset Password</p>
-            <img src={ResetPass2} alt="ResetPassword" className="w-1/4 mb-4"/>
-            <Box textAlign="center" w="50%" fontSize="sm">
+            <p className="font-sans text-2xl text-[#393970] mb-7">Reset Password</p>
+            <img src={ResetPass2} alt="ResetPassword" className="w-1/5 mb-4" />
+            <Box textAlign="center" w="40%" fontSize="sm">
                 <p className="text-2xl text-[#D49458] font-bold mb-4">Create new password</p>
-                <p className="mb-4">Your new password must be different from the previously used password</p>
+                <p className="mb-4 text-1xl">Your new password must be different from the previously used password</p>
             </Box>
             <Formik
                 initialValues={{
@@ -111,6 +111,7 @@ export default function ResetPassword() {
                                         variant="filled"
                                         placeholder="New Password"
                                         mb="10px"
+                                        fontSize="sm"
                                     />
                                     <InputRightElement width="4.5rem">
                                         <IconButton
@@ -135,6 +136,7 @@ export default function ResetPassword() {
                                         type={confirmPasswordVisibility ? "text" : "password"}
                                         variant="filled"
                                         placeholder="Confirm Password"
+                                        fontSize="sm"
                                     />
                                     <InputRightElement width="4.5rem">
                                         <IconButton

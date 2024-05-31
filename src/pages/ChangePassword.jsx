@@ -28,6 +28,33 @@ import {useNavigate} from "react-router-dom";
 import $ from "jquery";
 import axios from "axios";
 
+const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, placeholder, error }) => (
+    <FormControl isInvalid={!!error}>
+        <FormLabel htmlFor={fieldId}>{label}</FormLabel>
+        <InputGroup>
+            <Field
+                as={Input}
+                id={fieldId}
+                name={fieldId}
+                type={showPassword ? "text" : "password"}
+                variant="filled"
+                placeholder={placeholder}
+            />
+            <InputRightElement width="4.5rem">
+                <IconButton
+                    h="1.75rem"
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleShowPassword}
+                    icon={showPassword ? <ViewOffIcon/> : <ViewIcon/>}
+                    aria-label="password-icon"
+                />
+            </InputRightElement>
+        </InputGroup>
+        <FormErrorMessage>{error}</FormErrorMessage>
+    </FormControl>
+);
+
 export default function ChangePassword() {
     const [error, setError] = useState('');
     const [showPassword1, setShowPassword1] = useState(false);
@@ -38,43 +65,31 @@ export default function ChangePassword() {
     const cancelRef = useRef();
     const navigate = useNavigate();
 
-    const handleShowPassword1 = () => {
-        setShowPassword1(!showPassword1);
-    };
-
-    const handleShowPassword2 = () => {
-        setShowPassword2(!showPassword2);
-    };
-
-    const handleShowPassword3 = () => {
-        setShowPassword3(!showPassword3);
-    };
+    const handleShowPassword = (setter) => () => setter(prev => !prev);
 
     const handleAlertClose = () => {
         setIsAlertOpen(false);
         navigate('/app/Dashboard');
     };
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values, { setSubmitting }) => {
+        setSubmitting(true);
         try {
             const storedUsername = sessionStorage.getItem('Username');
-
             if (!storedUsername) {
                 navigate("/auth/login");
                 return;
             }
 
             const response = await axios.post('https://localhost:7265/api/Auth/change-password', {
-                    username: storedUsername,
-                    oldPassword: values.oldPassword,
-                    newPassword: values.newPassword,
+                username: storedUsername,
+                oldPassword: values.oldPassword,
+                newPassword: values.newPassword,
+            }, {
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
                 },
-                {
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            );
+            });
 
             if (response.data.status) {
                 setIsAlertOpen(true);
@@ -87,10 +102,11 @@ export default function ChangePassword() {
                     setResetPasswordResponse(response.data.error);
                 }
             }
-
         } catch (error) {
             console.error('Error:', error.message);
             setError('An error occurred. Please try again.');
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -100,19 +116,16 @@ export default function ChangePassword() {
 
     useEffect(() => {
         sessionStorage.getItem('Username');
-
-        // Password strength meter style
         $(".pwd-meter > div").children().each(function () {
             $(this).css({"height": "5px", "border-radius": "5px"})
         });
-
     }, []);
 
     return (
         <>
-            <PageHeader title="Change Password"/>
+            <PageHeader title="Change Password" className="mb-14"/>
             <div className="flex justify-between vertical-container">
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-8 mt-5">
                     <Formik
                         onSubmit={handleSubmit}
                         initialValues={{
@@ -140,85 +153,33 @@ export default function ChangePassword() {
                             return errors;
                         }}
                     >
-                        {({handleSubmit, errors, touched, values}) => (
-                            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                                <FormControl
-                                    isInvalid={!!errors.oldPassword || (error && error === "Your old password is incorrect.")}>
-                                    <FormLabel htmlFor="oldPassword">Old Password</FormLabel>
-                                    <InputGroup>
-                                        <Field
-                                            as={Input}
-                                            id="oldPassword"
-                                            name="oldPassword"
-                                            type={showPassword3 ? "text" : "password"}
-                                            variant="filled"
-                                            placeholder="Old Password"
-                                        />
-                                        <InputRightElement width="4.5rem">
-                                            <IconButton
-                                                h="1.75rem"
-                                                size="sm"
-                                                variant="ghost"
-                                                onClick={handleShowPassword3}
-                                                icon={showPassword3 ? <ViewOffIcon/> : <ViewIcon/>}
-                                                aria-label="password-icon"
-                                            />
-                                        </InputRightElement>
-                                    </InputGroup>
-                                    <FormErrorMessage>
-                                        {errors.oldPassword || (error && error === "Your old password is incorrect.")}
-                                    </FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.newPassword && touched.newPassword}>
-                                    <FormLabel htmlFor="newPassword">New Password</FormLabel>
-                                    <InputGroup>
-                                        <Field
-                                            as={Input}
-                                            id="newPassword"
-                                            name="newPassword"
-                                            type={showPassword1 ? "text" : "password"}
-                                            variant="filled"
-                                            placeholder="New Password"
-                                            mb="10px"
-                                        />
-                                        <InputRightElement width="4.5rem">
-                                            <IconButton
-                                                h="1.75rem"
-                                                size="sm"
-                                                variant="ghost"
-                                                onClick={handleShowPassword1}
-                                                icon={showPassword1 ? <ViewOffIcon/> : <ViewIcon/>}
-                                                aria-label="password-icon"
-                                            />
-                                        </InputRightElement>
-                                    </InputGroup>
-                                    <PasswordStrengthBar className="pwd-meter" password={values.newPassword}/>
-                                    <FormErrorMessage>{errors.newPassword}</FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.confirmPassword && touched.confirmPassword}>
-                                    <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-                                    <InputGroup>
-                                        <Field
-                                            as={Input}
-                                            id="confirmPassword"
-                                            name="confirmPassword"
-                                            type={showPassword2 ? "text" : "password"}
-                                            variant="filled"
-                                            placeholder="Confirm Password"
-                                        />
-                                        <InputRightElement width="4.5rem">
-                                            <IconButton
-                                                h="1.75rem"
-                                                size="sm"
-                                                variant="ghost"
-                                                onClick={handleShowPassword2}
-                                                icon={showPassword2 ? <ViewOffIcon/> : <ViewIcon/>}
-                                                aria-label="password-icon"
-                                            />
-                                        </InputRightElement>
-                                    </InputGroup>
-                                    <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
-                                </FormControl>
+                        {({ handleSubmit, errors, touched, values, isSubmitting }) => (
+                            <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-4/5">
+                                <PasswordField
+                                    fieldId="oldPassword"
+                                    label="Old Password"
+                                    showPassword={showPassword3}
+                                    handleShowPassword={handleShowPassword(setShowPassword3)}
+                                    placeholder="Old Password"
+                                    error={errors.oldPassword || (error && error === "Your old password is incorrect.")}
+                                />
+                                <PasswordField
+                                    fieldId="newPassword"
+                                    label="New Password"
+                                    showPassword={showPassword1}
+                                    handleShowPassword={handleShowPassword(setShowPassword1)}
+                                    placeholder="New Password"
+                                    error={errors.newPassword}
+                                />
+                                <PasswordStrengthBar className="pwd-meter" password={values.newPassword}/>
+                                <PasswordField
+                                    fieldId="confirmPassword"
+                                    label="Confirm Password"
+                                    showPassword={showPassword2}
+                                    handleShowPassword={handleShowPassword(setShowPassword2)}
+                                    placeholder="Confirm Password"
+                                    error={errors.confirmPassword}
+                                />
                                 {error && (
                                     <Alert status="error">
                                         <AlertIcon/>
@@ -234,6 +195,7 @@ export default function ChangePassword() {
                                         w="240px"
                                         gap="18"
                                         onClick={handleCancel}
+                                        isDisabled={isSubmitting}
                                     >
                                         Cancel
                                     </Button>
@@ -244,6 +206,7 @@ export default function ChangePassword() {
                                         variant="solid"
                                         w="240px"
                                         type="submit"
+                                        isLoading={isSubmitting}
                                     >
                                         Save
                                     </Button>
@@ -253,7 +216,7 @@ export default function ChangePassword() {
                     </Formik>
                 </div>
                 <div className="flex items-end">
-                    <img src={Password} alt="Change Password" width="400" height="400" className=" mr-14"/>
+                    <img src={Password} alt="Change Password" width="400" height="400" className="mr-14"/>
                 </div>
             </div>
             <AlertDialog

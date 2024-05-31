@@ -44,44 +44,48 @@ export default function MyCalendar() {
 
     return (
         <div className="custom-datepicker">
-            <Flex alignItems="center" justifyContent="flex-start">
-                <Flex alignItems="center" mr={8}>
+            <Flex alignItems="center" justifyContent="flex-start" mb={4}>
+                <Flex alignItems="center" mr={4}>
                     {/* Start Date */}
-                    <Text mb={2} mr={4}>Start Date</Text>
+                    <Text mb={2} mr={2} fontSize="sm">Start Date</Text>
                     <Flex alignItems="center" position="relative">
                         <Input
                             type="date"
                             variant="filled"
                             borderRadius="md"
-                            px={3}
-                            width="300px"
+                            px={2}
+                            width="200px"
+                            height="32px"
                             name="startDate"
                             placeholder="Start Date"
+                            fontSize="sm"
                             value={startDate ? startDate.toISOString().split('T')[0] : ''}
                             onClick={toggleStartCalendar}
                             readOnly
                         />
-                        <Icon as={BsCalendar} onClick={toggleStartCalendar} cursor="pointer" position="absolute" right="10px" top="50%" transform="translateY(-50%)" />
+                        <Icon as={BsCalendar} onClick={toggleStartCalendar} cursor="pointer" position="absolute" right="8px" top="50%" transform="translateY(-50%)" />
                     </Flex>
                 </Flex>
 
                 <Flex alignItems="center">
                     {/* End Date */}
-                    <Text mb={2} mr={4}>End Date</Text>
+                    <Text mb={2} mr={2} fontSize="sm">End Date</Text>
                     <Flex alignItems="center" position="relative">
                         <Input
                             type="date"
                             variant="filled"
                             borderRadius="md"
-                            px={3}
-                            width="300px"
+                            px={2}
+                            width="200px"
+                            height="32px"
                             name="endDate"
                             placeholder="End Date"
+                            fontSize="sm"
                             value={endDate ? endDate.toISOString().split('T')[0] : ''}
                             onClick={toggleEndCalendar}
                             readOnly
                         />
-                        <Icon as={BsCalendar} onClick={toggleEndCalendar} cursor="pointer" position="absolute" right="10px" top="50%" transform="translateY(-50%)" />
+                        <Icon as={BsCalendar} onClick={toggleEndCalendar} cursor="pointer" position="absolute" right="8px" top="50%" transform="translateY(-50%)" />
                     </Flex>
                 </Flex>
             </Flex>

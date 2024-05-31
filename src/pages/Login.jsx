@@ -24,7 +24,7 @@ export default function Login() {
     return (
         <>
             <p className="font-sans text-3xl text-[#393970]">Login</p>
-            <img src={first} alt="login" width="400" height="400" />
+            <img src={first} alt="login" width="300" height="300" />
             <Formik
                 initialValues={{
                     username: "",
@@ -64,10 +64,10 @@ export default function Login() {
                 }}
             >
                 {({ handleSubmit, errors, touched }) => (
-                    <form onSubmit={handleSubmit} className="w-1/2">
-                        <Stack spacing={3}>
+                    <form onSubmit={handleSubmit} className="w-2/4">
+                        <Stack spacing={2}>
                             <FormControl isInvalid={errors.username && touched.username}>
-                                <FormLabel htmlFor="username">Username</FormLabel>
+                                <FormLabel htmlFor="username" fontSize="sm">Username</FormLabel>
                                 <Field
                                     as={Input}
                                     id="username"
@@ -75,16 +75,18 @@ export default function Login() {
                                     type="text"
                                     variant="filled"
                                     placeholder="Username"
+                                    fontSize="sm"
+                                    padding="2"
                                     validate={(value) => {
                                         if (!value) {
                                             return "Username is required.";
                                         }
                                     }}
                                 />
-                                <FormErrorMessage>{errors.username}</FormErrorMessage>
+                                <FormErrorMessage fontSize="xs">{errors.username}</FormErrorMessage>
                             </FormControl>
                             <FormControl isInvalid={errors.password && touched.password}>
-                                <FormLabel htmlFor="password">Password</FormLabel>
+                                <FormLabel htmlFor="password" fontSize="sm">Password</FormLabel>
                                 <InputGroup>
                                     <Field
                                         as={Input}
@@ -93,16 +95,18 @@ export default function Login() {
                                         type={showPassword ? "text" : "password"}
                                         variant="filled"
                                         placeholder="Password"
+                                        fontSize="sm"
+                                        padding="2"
                                         validate={(value) => {
                                             if (!value) {
                                                 return "Password is required.";
                                             }
                                         }}
                                     />
-                                    <InputRightElement width="4.5rem">
+                                    <InputRightElement width="3rem">
                                         <IconButton
-                                            h="1.75rem"
-                                            size="sm"
+                                            h="1.5rem"
+                                            size="xs"
                                             variant="ghost"
                                             onClick={handleShowPassword}
                                             icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
@@ -110,19 +114,19 @@ export default function Login() {
                                         />
                                     </InputRightElement>
                                 </InputGroup>
-                                <FormErrorMessage>{errors.password}</FormErrorMessage>
+                                <FormErrorMessage fontSize="xs">{errors.password}</FormErrorMessage>
                             </FormControl>
                             <div className="flex justify-end">
                                 {!resetClicked && (
                                     <Link to="/auth/ResetEmail" onClick={handleResetClick}>
-                                        <Button variant="link" className="mb-5">
+                                        <Button variant="link" className="mb-4" fontSize="sm">
                                             Reset Password
                                         </Button>
                                     </Link>
                                 )}
                             </div>
                             {backendError && (
-                                <Text color="red.500" fontSize="sm" align="center">
+                                <Text color="red.500" fontSize="xs" align="center">
                                     {backendError}
                                 </Text>
                             )}
@@ -132,6 +136,7 @@ export default function Login() {
                                 color="#ffffff"
                                 variant="solid"
                                 type="submit"
+                                size="sm"
                             >
                                 Login
                             </Button>

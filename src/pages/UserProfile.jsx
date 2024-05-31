@@ -132,7 +132,7 @@ export default function UserProfile() {
 
     return (
         <>
-            <Text fontSize="4xl" color="#393970" mb="7" fontFamily="sans-serif">
+            <Text fontSize="3xl" color="#393970" mb="7" fontFamily="sans-serif">
                 User Profile
             </Text>
             <Formik
@@ -150,7 +150,7 @@ export default function UserProfile() {
             >
                 {({errors, touched}) => (
                     <Form>
-                        <div className="flex flex-grow gap-6">
+                        <div className="flex flex-grow gap-8">
                             <div className="w-1/5">
                                 <AvatarGroup size="2xl" mb="4" mt="8" ml="12">
                                     <div
@@ -221,7 +221,7 @@ export default function UserProfile() {
                                 )}
                             </div>
                             <div className="w-4/5 flex flex-col">
-                                <div className="flex gap-8 mt-6">
+                                <div className="flex gap-16 mt-6">
                                     <div className="w-2/5">
                                         <div className="mb-10">
                                             <p style={{marginBottom: "0.5rem"}}>First Name</p>
@@ -242,7 +242,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="320px"
                                                             id="FirstName"
                                                             placeholder="First Name"
                                                         />
@@ -273,7 +273,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="320px"
                                                             id="DateofBirth"
                                                             placeholder="Date of Birth"
                                                         />
@@ -306,7 +306,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="320px"
                                                             id="PhoneNo"
                                                             placeholder="Phone No"
                                                             maxLength="10"
@@ -342,7 +342,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="320px"
                                                             id="LastName"
                                                             placeholder="Last Name"
                                                         />
@@ -358,7 +358,7 @@ export default function UserProfile() {
                                             <Field name="EmailAddress" validate={(value) => {
                                                 let error;
                                                 if (!value) {
-                                                    error = "Last Name is required.";
+                                                    error = "Email Address is required.";
                                                 }else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
                                                     error = "Invalid email address.";
                                                 }
@@ -374,7 +374,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="320px"
                                                             id="EmailAddress"
                                                             placeholder="Email Address"
                                                         />
@@ -406,7 +406,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
-                                                            width="500px"
+                                                            width="320px"
                                                             id="NIC"
                                                             placeholder="NIC"
                                                         />
@@ -419,13 +419,13 @@ export default function UserProfile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-5/6 flex justify-end gap-6 mt-20">
+                                <div className="w-5/6 flex justify-end gap-4 mt-20 mb-10">
                                     <Button
                                         bg="gray.400"
                                         _hover={{bg: "gray.500"}}
                                         color="#ffffff"
                                         variant="solid"
-                                        w="210px"
+                                        w="150px"
                                         onClick={handleCancel}
                                     >
                                         Cancel
@@ -435,7 +435,7 @@ export default function UserProfile() {
                                         _hover={{bg: theme.onHoverPurple}}
                                         color="#ffffff"
                                         variant="solid"
-                                        w="210px"
+                                        w="150px"
                                         type="submit"
                                     >
                                         Save
