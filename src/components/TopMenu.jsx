@@ -5,10 +5,12 @@ import { FaUser } from "react-icons/fa";
 import theme from "../config/ThemeConfig.jsx";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import './TopMenu.css';
 
 export default function TopMenu() {
     const navigate = useNavigate();
     const [image, setImage] = useState("");
+    const [notifications, setNotifications] = useState(3); // Example notification count
 
     const fetchUser = async () => {
         try {
@@ -39,15 +41,16 @@ export default function TopMenu() {
         <>
             <div className="flex justify-end">
                 <div className="flex gap-6 me-10">
-                    <Link className="flex items-center" to="/app/Notification">
+                    <Link className="flex items-center notification" to="/app/Notification">
                         <IconButton
                             variant='link'
                             color={theme.purple}
                             aria-label='notification'
                             fontSize='30px'
                             mt={5}
-                            icon={< IoIosNotifications />}
+                            icon={<IoIosNotifications />}
                         />
+                        {notifications > 0 && <span className="badge">{notifications}</span>}
                     </Link>
                     <div className="flex items-center">
                         <Menu>
@@ -59,27 +62,27 @@ export default function TopMenu() {
                                 mt={5}
                                 variant='outline'
                             >
-                            {image ? (
-                                <img
-                                    src={`data:image/jpeg;base64,${image}`}
-                                    alt="User Avatar"
-                                    style={{
-                                        width: "32px",
-                                        height: "32px",
-                                        borderRadius: "50%",
-                                    }}
-                                />
-                            ) : (
-                                <FaUser /> // Default icon if no image is uploaded
-                            )}</MenuButton>
+                                {image ? (
+                                    <img
+                                        src={`data:image/jpeg;base64,${image}`}
+                                        alt="User Avatar"
+                                        style={{
+                                            width: "32px",
+                                            height: "32px",
+                                            borderRadius: "50%",
+                                        }}
+                                    />
+                                ) : (
+                                    <FaUser /> // Default icon if no image is uploaded
+                                )}</MenuButton>
                             <MenuList>
                                 <MenuItem>
-                                    <Link to="/app/UserProfile" >
+                                    <Link to="/app/UserProfile">
                                         User Profile
                                     </Link>
                                 </MenuItem>
                                 <MenuItem>
-                                    <Link to="/app/ChangePassword" >
+                                    <Link to="/app/ChangePassword">
                                         Change Password
                                     </Link>
                                 </MenuItem>

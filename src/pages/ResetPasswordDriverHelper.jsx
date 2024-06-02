@@ -57,11 +57,10 @@ const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, place
     </FormControl>
 );
 
-export default function ChangePassword() {
+export default function ResetPasswordDriverHelper() {
     const [error, setError] = useState('');
-    const [showPassword1, setShowPassword1] = useState(false);
-    const [showPassword2, setShowPassword2] = useState(false);
-    const [showPassword3, setShowPassword3] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [resetPasswordResponse, setResetPasswordResponse] = useState("");
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const cancelRef = useRef();
@@ -83,10 +82,9 @@ export default function ChangePassword() {
                 return;
             }
 
-            const response = await axios.post('https://localhost:7265/api/Auth/change-password-staff', {
+            const response = await axios.post('https://localhost:7265/api/Auth/reset-password-driverhelper', {
                 username: storedUsername,
-                oldPassword: values.oldPassword,
-                newPassword: values.newPassword,
+                newPassword: values.newPassword
             }, {
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -125,29 +123,22 @@ export default function ChangePassword() {
 
     return (
         <>
-            <PageHeader title="Change Password" className="mb-14"/>
+            <PageHeader title="Reset Password" className="mb-14"/>
             <div className="flex justify-between vertical-container">
                 <div className="flex flex-col gap-8 mt-5">
                     <Formik
                         onSubmit={handleSubmit}
                         initialValues={{
-                            oldPassword: "",
                             newPassword: "",
                             confirmPassword: ""
                         }}
                         validate={(values) => {
                             const errors = {};
-                            if (!values.oldPassword) {
-                                errors.oldPassword = "Please enter your old password.";
-                            }
                             if (!values.newPassword) {
                                 errors.newPassword = "Please enter your new password.";
                             }
                             if (!values.confirmPassword) {
                                 errors.confirmPassword = "Please confirm your new password.";
-                            }
-                            if (values.oldPassword === values.newPassword) {
-                                errors.newPassword = "New password must be different from old password.";
                             }
                             if (values.newPassword !== values.confirmPassword) {
                                 errors.confirmPassword = "Passwords do not match with new password.";
@@ -158,18 +149,10 @@ export default function ChangePassword() {
                         {({ handleSubmit, errors, touched, values, isSubmitting }) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-4/5">
                                 <PasswordField
-                                    fieldId="oldPassword"
-                                    label="Old Password"
-                                    showPassword={showPassword3}
-                                    handleShowPassword={handleShowPassword(setShowPassword3)}
-                                    placeholder="Old Password"
-                                    error={errors.oldPassword || (error && error === "Your old password is incorrect.")}
-                                />
-                                <PasswordField
                                     fieldId="newPassword"
                                     label="New Password"
-                                    showPassword={showPassword1}
-                                    handleShowPassword={handleShowPassword(setShowPassword1)}
+                                    showPassword={showNewPassword}
+                                    handleShowPassword={handleShowPassword(setShowNewPassword)}
                                     placeholder="New Password"
                                     error={errors.newPassword}
                                 />
@@ -177,8 +160,8 @@ export default function ChangePassword() {
                                 <PasswordField
                                     fieldId="confirmPassword"
                                     label="Confirm Password"
-                                    showPassword={showPassword2}
-                                    handleShowPassword={handleShowPassword(setShowPassword2)}
+                                    showPassword={showConfirmPassword}
+                                    handleShowPassword={handleShowPassword(setShowConfirmPassword)}
                                     placeholder="Confirm Password"
                                     error={errors.confirmPassword}
                                 />
@@ -196,9 +179,9 @@ export default function ChangePassword() {
                                         variant="solid"
                                         w="200px"
                                         gap="18"
-                                        size="sm"
                                         onClick={handleCancel}
                                         isDisabled={isSubmitting}
+                                        size="sm"
                                     >
                                         Cancel
                                     </Button>
@@ -209,8 +192,8 @@ export default function ChangePassword() {
                                         variant="solid"
                                         w="200px"
                                         type="submit"
-                                        size="sm"
                                         isLoading={isSubmitting}
+                                        size="sm"
                                     >
                                         Save
                                     </Button>

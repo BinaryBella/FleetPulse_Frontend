@@ -243,6 +243,7 @@ export default function UserProfile() {
                                                             py={2}
                                                             mt={1}
                                                             width="320px"
+                                                            size="sm"
                                                             id="FirstName"
                                                             placeholder="First Name"
                                                         />
@@ -273,6 +274,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
+                                                            size="sm"
                                                             width="320px"
                                                             id="DateofBirth"
                                                             placeholder="Date of Birth"
@@ -306,6 +308,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
+                                                            size="sm"
                                                             width="320px"
                                                             id="PhoneNo"
                                                             placeholder="Phone No"
@@ -342,6 +345,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
+                                                            size="sm"
                                                             width="320px"
                                                             id="LastName"
                                                             placeholder="Last Name"
@@ -374,6 +378,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
+                                                            size="sm"
                                                             width="320px"
                                                             id="EmailAddress"
                                                             placeholder="Email Address"
@@ -406,6 +411,7 @@ export default function UserProfile() {
                                                             px={3}
                                                             py={2}
                                                             mt={1}
+                                                            size="sm"
                                                             width="320px"
                                                             id="NIC"
                                                             placeholder="NIC"
@@ -426,6 +432,7 @@ export default function UserProfile() {
                                         color="#ffffff"
                                         variant="solid"
                                         w="150px"
+                                        size="sm"
                                         onClick={handleCancel}
                                     >
                                         Cancel
@@ -436,6 +443,7 @@ export default function UserProfile() {
                                         color="#ffffff"
                                         variant="solid"
                                         w="150px"
+                                        size="sm"
                                         type="submit"
                                     >
                                         Save

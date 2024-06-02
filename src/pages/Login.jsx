@@ -76,6 +76,8 @@ export default function Login() {
                                     variant="filled"
                                     placeholder="Username"
                                     fontSize="sm"
+                                    size="sm"
+                                    borderRadius="md"
                                     padding="2"
                                     validate={(value) => {
                                         if (!value) {
@@ -96,6 +98,8 @@ export default function Login() {
                                         variant="filled"
                                         placeholder="Password"
                                         fontSize="sm"
+                                        size="sm"
+                                        borderRadius="md"
                                         padding="2"
                                         validate={(value) => {
                                             if (!value) {
