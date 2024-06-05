@@ -1,9 +1,11 @@
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { getToken, onMessage } from "firebase/messaging";
-import { messaging } from "./firebase/firebaseConfig";
+import { ChakraProvider } from "@chakra-ui/react";
 import MainLayout from './layouts/MainLayout';
 import AnonymousLayout from './layouts/AnonymousLayout';
+import { NotificationProvider } from './context/NotificationContext';
+import NotificationHandler from './components/NotificationHandler';
+import Notifications from './pages/Notifications';
 import ResetPassword from './pages/ResetPassword';
 import ResetPasswordConfirmation from './pages/ResetPasswordConfirmation';
 import ResetPassSuccess from './pages/ResetPassSuccess';
@@ -46,52 +48,15 @@ import HelperReport from "./pages/HelperReport.jsx";
 import StaffReport from "./pages/StaffReport.jsx";
 import TripReport from "./pages/TripReport.jsx";
 import AccidentReport from "./pages/AccidentReport.jsx";
-import {useEffect} from "react";
-import {ChakraProvider, useToast} from "@chakra-ui/react";
 import ResetPasswordDriverHelper from "./pages/ResetPasswordDriverHelper.jsx";
 
 export default function App() {
     const currentUser = localStorage.getItem('Token');
-    const { VITE_APP_VAPID_KEY } = import.meta.env;
-    const toast = useToast();
-
-    async function requestPermission() {
-        try {
-            const permission = await Notification.requestPermission();
-
-            if (permission === "granted") {
-                const token = await getToken(messaging, {
-                    vapidKey: VITE_APP_VAPID_KEY,
-                });
-                console.log("Token generated: ", token);
-            } else if (permission === "denied") {
-                alert("You denied the notification");
-            }
-        } catch (error) {
-            console.error("Error requesting permission or getting token: ", error);
-        }
-    }
-
-    useEffect(() => {
-        requestPermission();
-
-        return () => unsubscribe();
-    }, []);
-
-        const unsubscribe = onMessage(messaging, (payload) => {
-            console.log("Incoming message");
-            toast({
-                title: payload.notification.title,
-                description: payload.notification.body,
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-                position: "top-right",
-            });
-        });
 
     return (
         <ChakraProvider>
+            <NotificationProvider>
+                <NotificationHandler />
                 <Routes>
                     {/* Public routes */}
                     <Route path="/auth" element={<AnonymousLayout />}>
@@ -141,6 +106,7 @@ export default function App() {
                             <Route path="TripReport" element={<TripReport />} />
                             <Route path="AccidentReport" element={<AccidentReport />} />
                             <Route path="ResetPasswordDriverHelper" element={<ResetPasswordDriverHelper />} />
+                            <Route path="Notification" element={<Notifications />} />
                         </Route>
                     </Route>
 
@@ -152,6 +118,7 @@ export default function App() {
                     <Route path="/"
                            element={currentUser ? <Navigate to="/app/Dashboard" /> : <Navigate to="/auth/Login" />} />
                 </Routes>
+            </NotificationProvider>
         </ChakraProvider>
     );
 }

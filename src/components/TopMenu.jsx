@@ -1,16 +1,17 @@
+import { useEffect, useState } from 'react';
 import { IconButton, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosNotifications } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import theme from "../config/ThemeConfig.jsx";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import './TopMenu.css';
+import { useNotifications } from '../context/NotificationContext';
 
 export default function TopMenu() {
     const navigate = useNavigate();
     const [image, setImage] = useState("");
-    const [notifications, setNotifications] = useState(3); // Example notification count
+    const { notifications, getUnreadCount, markAsRead, deleteNotification } = useNotifications();
 
     const fetchUser = async () => {
         try {
@@ -28,13 +29,33 @@ export default function TopMenu() {
     };
 
     useEffect(() => {
-        fetchUser().then();
+        fetchUser();
     }, []);
 
     const handleLogout = () => {
         sessionStorage.clear();
         localStorage.removeItem('Token');
         navigate("/auth/Login");
+    };
+
+    const unreadCount = getUnreadCount();
+
+    const handleMarkAsRead = async (index, id) => {
+        try {
+            await axios.post(`https://localhost:7265/api/Notification/mark-as-read/${id}`);
+            markAsRead(index); // Update local state as well
+        } catch (error) {
+            console.error("Error marking notification as read:", error);
+        }
+    };
+
+    const handleDeleteNotification = async (index, id) => {
+        try {
+            await axios.delete(`https://localhost:7265/api/Notification/delete/${id}`);
+            deleteNotification(index); // Update local state as well
+        } catch (error) {
+            console.error("Error deleting notification:", error);
+        }
     };
 
     return (
@@ -50,7 +71,7 @@ export default function TopMenu() {
                             mt={5}
                             icon={<IoIosNotifications />}
                         />
-                        {notifications > 0 && <span className="badge">{notifications}</span>}
+                        {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
                     </Link>
                     <div className="flex items-center">
                         <Menu>
@@ -73,8 +94,9 @@ export default function TopMenu() {
                                         }}
                                     />
                                 ) : (
-                                    <FaUser /> // Default icon if no image is uploaded
-                                )}</MenuButton>
+                                    <FaUser />
+                                )}
+                            </MenuButton>
                             <MenuList>
                                 <MenuItem>
                                     <Link to="/app/UserProfile">

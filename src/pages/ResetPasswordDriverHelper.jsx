@@ -82,7 +82,7 @@ export default function ResetPasswordDriverHelper() {
                 return;
             }
 
-            const response = await axios.post('https://localhost:7265/api/Auth/reset-password-driverhelper', {
+            const response = await axios.post('https://localhost:7265/api/Auth/reset-password', {
                 username: storedUsername,
                 newPassword: values.newPassword
             }, {
