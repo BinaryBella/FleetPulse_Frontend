@@ -90,7 +90,7 @@ export default function TripDetails() {
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/editTrip/${row.original.id}`}>
+                            <Link to={`/app/EditTripDetails/${row.original.id}`}>
                                 Edit
                             </Link>
                         </MenuItem>
