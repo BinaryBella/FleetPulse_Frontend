@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Table,
   Thead,
@@ -18,6 +18,14 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
+  useToast,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  useDisclosure
 } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
@@ -30,114 +38,34 @@ import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
-  getFilteredRowModel,
+  getFilteredRowModel
 } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
+import axios from "axios";
 
 export default function AccidentDetails() {
   const [accidentDetails, setAccidentDetails] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [searchInput, setSearchInput] = useState("");
+  const [selectedAccident, setSelectedAccident] = useState(null);
+  const cancelRef = useRef();
+  const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
   const itemsPerPage = 10;
-
+  const toast = useToast();
 
   useEffect(() => {
     fetchAccidentDetails();
-}, []);
-const fetchAccidentDetails = () => {
-  const dummyData= [
-    {
-      id: 1,
-      driverInjured: "John Doe",
-      dateTime: "2024-01-01 14:30",
-      venue: "Main Street",
-      helperInjured: "None",
-      vehicleDamaged: "Car A",
-      loss: "$5000",
-      specialNote: "Heavy rain",
-      photos: "URL to photos",
-    },
-    {
-      id: 2,
-      driverInjured: "Jane Smith",
-      dateTime: "2024-02-15 09:00",
-      venue: "Highway 21",
-      helperInjured: "John Smith",
-      vehicleDamaged: "Truck B",
-      loss: "$2000",
-      specialNote: "Foggy conditions",
-      photos: "URL to photos",
-    },
-    {
-      id: 3,
-      driverInjured: "Alice Johnson",
-      dateTime: "2024-03-10 16:45",
-      venue: "Downtown",
-      helperInjured: "None",
-      vehicleDamaged: "Van C",
-      loss: "$3500",
-      specialNote: "Slippery road",
-      photos: "URL to photos",
-    },
-    {
-      id: 4,
-      driverInjured: "Bob Brown",
-      dateTime: "2024-04-22 12:30",
-      venue: "City Park",
-      helperInjured: "Sarah Brown",
-      vehicleDamaged: "Bike D",
-      loss: "$800",
-      specialNote: "Pedestrian involved",
-      photos: "URL to photos",
-    },
-    {
-      id: 5,
-      driverInjured: "Charlie Davis",
-      dateTime: "2024-05-05 19:00",
-      venue: "Old Bridge",
-      helperInjured: "None",
-      vehicleDamaged: "Car E",
-      loss: "$6000",
-      specialNote: "Bridge collapse",
-      photos: "URL to photos",
-    },
-    {
-      id: 6,
-      driverInjured: "Diana Evans",
-      dateTime: "2024-06-18 11:15",
-      venue: "Airport Road",
-      helperInjured: "Mike Evans",
-      vehicleDamaged: "Bus F",
-      loss: "$7000",
-      specialNote: "Engine failure",
-      photos: "URL to photos",
-    },
-    {
-      id: 7,
-      driverInjured: "Frank Green",
-      dateTime: "2024-07-08 21:00",
-      venue: "Seaside Boulevard",
-      helperInjured: "None",
-      vehicleDamaged: "Truck G",
-      loss: "$4500",
-      specialNote: "High tide",
-      photos: "URL to photos",
-    },
-    {
-      id: 8,
-      driverInjured: "Gina Harris",
-      dateTime: "2024-08-14 05:30",
-      venue: "Mountain Pass",
-      helperInjured: "Tom Harris",
-      vehicleDamaged: "Car H",
-      loss: "$9000",
-      specialNote: "Rockslide",
-      photos: "URL to photos",
-    },
-  ];
-  setAccidentDetails(dummyData);
-};
+  }, []);
+
+  const fetchAccidentDetails = async () => {
+    try {
+      const response = await axios.get("https://localhost:7265/api/AccidentDetails");
+      setAccidentDetails(response.data);
+    } catch (error) {
+      console.error("Error fetching accident details:", error);
+    }
+  };
 
   const columns = [
     {
@@ -153,7 +81,7 @@ const fetchAccidentDetails = () => {
     {
       accessorKey: "venue",
       header: "Venue",
-      meta: { isNumeric: false, filter: "date" },
+      meta: { isNumeric: false, filter: "text" },
     },
     {
       accessorKey: "helperInjured",
@@ -179,8 +107,10 @@ const fetchAccidentDetails = () => {
       accessorKey: "photos",
       header: "Photos",
       meta: { isNumeric: false, filter: "text" },
+      cell: ({ row }) => (
+        <a href={row.original.photos} target="_blank" rel="noopener noreferrer">View Photos</a>
+      ),
     },
-    
     {
       id: "actions",
       header: "Actions",
@@ -190,17 +120,15 @@ const fetchAccidentDetails = () => {
             color={theme.purple}
             as={IconButton}
             aria-label="profile-options"
-            fontSize="20px"
+            fontSize="15px"
             icon={<IoSettingsSharp />}
           />
           <MenuList>
             <MenuItem>
-              <Link to={`/app/EditAccidentDetails`}>
-                Edit
-              </Link>
+              <Link to={`/app/EditAccidentDetails/${row.original.id}`}>Edit</Link>
             </MenuItem>
-            <MenuItem>
-              {row.original.status ? "Deactivate" : "Activate"}
+            <MenuItem onClick={() => onClickDelete(row.original)}>
+              {row.original.isActive ? "Deactivate" : "Activate"}
             </MenuItem>
           </MenuList>
         </Menu>
@@ -237,18 +165,43 @@ const fetchAccidentDetails = () => {
   const currentData = sortedData.slice(startOffset, endOffset);
   const pageCount = Math.ceil(table.getFilteredRowModel().rows.length / itemsPerPage);
   const isEmpty = currentData.length === 0;
-  const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "5px" };
+  const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "3.75px" };
 
   const breadcrumbs = [
     { label: "Accidents", link: "/app/Accidents" },
     { label: "Accident Details", link: "/app/AccidentDetails" },
-    { label: "Add Accident Details", link: "/app/AddAccidentDetails" },
   ];
+
+  const onClickDelete = (accident) => {
+    setSelectedAccident(accident);
+    onDialogOpen();
+  };
+
+  const onConfirmDelete = async () => {
+    try {
+      const endpoint = `https://localhost:7265/api/AccidentDetails/${selectedAccident.id}/${selectedAccident.isActive ? 'deactivate' : 'activate'}`;
+      await axios.put(endpoint);
+      fetchAccidentDetails();
+      onDialogClose();
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast({
+          title: "Error",
+          description: "Unable to update accident status.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        console.error("Error updating accident status:", error);
+      }
+    }
+  };
 
   return (
     <div className="main-content">
       <PageHeader title="Accident Details" breadcrumbs={breadcrumbs} />
-      <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginBottom="10px">
+      <Box mb="15px" mt="37.5px" display="flex" alignItems="center" gap="15px" marginBottom="7.5px">
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <IoSearchOutline />
@@ -258,7 +211,7 @@ const fetchAccidentDetails = () => {
             value={searchInput}
             onChange={handleSearchInputChange}
             variant="filled"
-            width="300px"
+            width="225px"
           />
         </InputGroup>
         <Link to="/app/AddAccidentDetails">
@@ -268,14 +221,15 @@ const fetchAccidentDetails = () => {
             color="white"
             variant="solid"
             ml="auto"
-            mr="50px"
+            mr="37.5px"
+            fontSize="0.75rem"
           >
             Add New Accident
           </Button>
         </Link>
       </Box>
 
-      <Table className="custom-table">
+      <Table className="custom-table" size="sm">
         <Thead>
           {table.getHeaderGroups().map(headerGroup => (
             <Tr key={headerGroup.id}>
@@ -287,10 +241,11 @@ const fetchAccidentDetails = () => {
                     onClick={header.column.getToggleSortingHandler()}
                     isNumeric={meta?.isNumeric}
                     className="custom-table-th"
+                    fontSize="0.75rem"
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                     {header.column.getCanSort() && (
-                      <chakra.span pl="4">
+                      <chakra.span pl="3">
                         {header.column.getIsSorted() ? (
                           header.column.getIsSorted() === "desc" ? (
                             <TriangleDownIcon aria-label="sorted descending" style={iconStyle} />
@@ -318,35 +273,35 @@ const fetchAccidentDetails = () => {
           ) : (
             currentData.map((accident, index) => (
               <Tr key={index}>
-                  <Td>{accident.driverInjured}</Td>
-                  <Td>{accident.dateTime}</Td>
-                  <Td>{accident.venue}</Td>
-                  <Td>{accident.helperInjured}</Td>
-                  <Td>{accident.vehicleDamaged}</Td>
-                  <Td>{accident.loss}</Td>
-                  <Td>{accident.specialNote}</Td>
-                  <Td><a href={accident.photos} target="_blank" rel="noopener noreferrer">View Photos</a></Td>
-                  <Td>
+                <Td fontSize="0.75rem">{accident.driverInjured}</Td>
+                <Td fontSize="0.75rem">{accident.dateTime}</Td>
+                <Td fontSize="0.75rem">{accident.venue}</Td>
+                <Td fontSize="0.75rem">{accident.helperInjured}</Td>
+                <Td fontSize="0.75rem">{accident.vehicleDamaged}</Td>
+                <Td fontSize="0.75rem">{accident.loss}</Td>
+                <Td fontSize="0.75rem">{accident.specialNote}</Td>
+                <Td fontSize="0.75rem">
+                  <a href={accident.photos} target="_blank" rel="noopener noreferrer">View Photos</a>
+                </Td>
+                <Td fontSize="0.75rem">
                   <Menu>
                     <MenuButton
                       color={theme.purple}
                       as={IconButton}
                       aria-label="profile-options"
-                      fontSize="20px"
+                      fontSize="15px"
                       icon={<IoSettingsSharp />}
                     />
                     <MenuList>
                       <MenuItem>
-                        <Link to={`/app/EditAccidentDetails`}>
-                          Edit
-                        </Link>
+                        <Link to={`/app/EditAccidentDetails/${accident.id}`}>Edit</Link>
                       </MenuItem>
-                      <MenuItem>
+                      <MenuItem onClick={() => onClickDelete(accident)}>
                         {accident.isActive ? "Deactivate" : "Activate"}
                       </MenuItem>
                     </MenuList>
                   </Menu>
-                  </Td>
+                </Td>
               </Tr>
             ))
           )}
@@ -356,9 +311,29 @@ const fetchAccidentDetails = () => {
         <Pagination
           pageCount={pageCount}
           onPageChange={handlePageClick}
+          fontSize="0.75rem"
         />
       )}
+
+      <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
+        <AlertDialogOverlay />
+        <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
+          <AlertDialogHeader>{selectedAccident?.isActive ? "Deactivate" : "Activate"} Accident</AlertDialogHeader>
+          <AlertDialogBody>
+            Are you sure you want to {selectedAccident?.isActive ? "deactivate" : "activate"} this accident?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <div className="flex flex-row gap-8">
+              <Button bg="gray.400" _hover={{ bg: "gray.500" }} color="#ffffff" variant="solid" onClick={onDialogClose} ref={cancelRef}>
+                Cancel
+              </Button>
+              <Button colorScheme='red' color="#FFFFFF" onClick={onConfirmDelete}>
+                {selectedAccident?.isActive ? "Deactivate" : "Activate"}
+              </Button>
+            </div>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
-

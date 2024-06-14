@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import {
     Table,
     Thead,
@@ -18,11 +19,19 @@ import {
     InputGroup,
     InputLeftElement,
     Text,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialog,
+    useDisclosure,
+    useToast
 } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { TiArrowUnsorted } from "react-icons/ti";
-import { IoSearchOutline, IoSettingsSharp } from "react-icons/io5";
+import { IoSettingsSharp, IoSearchOutline } from "react-icons/io5";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import Pagination from "../components/Pagination";
@@ -30,158 +39,108 @@ import {
     useReactTable,
     getCoreRowModel,
     getSortedRowModel,
-    getFilteredRowModel,
-} from "@tanstack/react-table";
-import { flexRender } from "@tanstack/react-table";
+    getFilteredRowModel
+} from '@tanstack/react-table';
+import { flexRender } from '@tanstack/react-table';
 
 export default function VehicleDetailsTable() {
     const [vehicleDetails, setVehicleDetails] = useState([]);
     const [sorting, setSorting] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchInput, setSearchInput] = useState("");
+    const [selectedVehicle, setSelectedVehicle] = useState(null);
+    const cancelRef = useRef();
+    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const itemsPerPage = 10;
+    const toast = useToast();
 
     useEffect(() => {
         fetchVehicleDetails();
     }, []);
 
-    const fetchVehicleDetails = () => {
-        // Dummy data for demonstration purposes
-        const dummyData = [
-            {
-                id: 1,
-                registrationNo: "ABC123",
-                licenseExpireDate: "2024-12-31",
-                vehicleModelId: "Model X",
-                manufacturer: "Tesla",
-                type: "Electric",
-                fType: "Electric",
-                vehicleColor: "Red",
-                isActive: true,
-            },
-            {
-                id: 2,
-                registrationNo: "XYZ789",
-                licenseExpireDate: "2025-06-30",
-                vehicleModelId: "Model S",
-                manufacturer: "Tesla",
-                type: "Electric",
-                fType: "Electric",
-                vehicleColor: "Black",
-                isActive: false,
-            },
-            {
-                id: 3,
-                registrationNo: "LMN456",
-                licenseExpireDate: "2023-11-15",
-                vehicleModelId: "Model 3",
-                manufacturer: "Tesla",
-                type: "Electric",
-                fType: "Electric",
-                vehicleColor: "White",
-                isActive: true,
-            },
-            {
-                id: 4,
-                registrationNo: "PQR123",
-                licenseExpireDate: "2024-04-10",
-                vehicleModelId: "Civic",
-                manufacturer: "Honda",
-                type: "Sedan",
-                fType: "Gasoline",
-                vehicleColor: "Blue",
-                isActive: true,
-            },
-            {
-                id: 5,
-                registrationNo: "STU789",
-                licenseExpireDate: "2023-08-25",
-                vehicleModelId: "Accord",
-                manufacturer: "Honda",
-                type: "Sedan",
-                fType: "Gasoline",
-                vehicleColor: "Silver",
-                isActive: false,
-            },
-            {
-                id: 6,
-                registrationNo: "VWX234",
-                licenseExpireDate: "2026-02-19",
-                vehicleModelId: "Camry",
-                manufacturer: "Toyota",
-                type: "Sedan",
-                fType: "Gasoline",
-                vehicleColor: "Gray",
-                isActive: true,
-            },
-            {
-                id: 7,
-                registrationNo: "DEF678",
-                licenseExpireDate: "2025-09-13",
-                vehicleModelId: "Corolla",
-                manufacturer: "Toyota",
-                type: "Sedan",
-                fType: "Gasoline",
-                vehicleColor: "Black",
-                isActive: true,
-            },
-            {
-                id: 8,
-                registrationNo: "GHI345",
-                licenseExpireDate: "2024-07-22",
-                vehicleModelId: "Mustang",
-                manufacturer: "Ford",
-                type: "Coupe",
-                fType: "Gasoline",
-                vehicleColor: "Red",
-                isActive: false,
-            },
-        ];
-
-        setVehicleDetails(dummyData);
+    const fetchVehicleDetails = async () => {
+        try {
+            const response = await axios.get('https://localhost:7265/api/Vehicle');
+            setVehicleDetails(response.data);
+        } catch (error) {
+            console.error("Error fetching vehicle details:", error);
+            toast({
+                title: "Error",
+                description: "Error fetching vehicle details",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
+        }
     };
 
-    const columns = useMemo(() => [
+    const onClickDelete = (vehicle) => {
+        setSelectedVehicle(vehicle);
+        onDialogOpen();
+    };
+
+    const onConfirmDelete = async () => {
+        try {
+            const endpoint = `https://localhost:7265/api/Vehicle/${selectedVehicle.id}/${selectedVehicle.isActive ? 'deactivate' : 'activate'}`;
+            await axios.put(endpoint);
+            fetchVehicleDetails();
+            onDialogClose();
+        } catch (error) {
+            if (error.response && error.response.status === 400 && error.response.data === "Vehicle is active and associated with vehicle records. Cannot deactivate.") {
+                toast({
+                    title: "Error",
+                    description: "Vehicle is active and associated with vehicle records. Cannot deactivate.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
+            } else {
+                console.error("Error updating vehicle status:", error);
+            }
+        }
+    };
+
+    const columns = [
         {
             accessorKey: 'registrationNo',
             header: 'Reg No',
-            meta: { isNumeric: false, filter: 'text' },
+            meta: { isNumeric: false, filter: 'text' }
         },
         {
             accessorKey: 'licenseExpireDate',
             header: 'License Exp Date',
-            meta: { isNumeric: false, filter: 'date' },
+            meta: { isNumeric: false, filter: 'date' }
         },
         {
             accessorKey: 'vehicleModelId',
             header: 'Model',
-            meta: { isNumeric: false, filter: 'text' },
+            meta: { isNumeric: false, filter: 'text' }
         },
         {
             accessorKey: 'manufacturer',
             header: 'Manufacturer',
-            meta: { isNumeric: false, filter: 'text' },
+            meta: { isNumeric: false, filter: 'text' }
         },
         {
             accessorKey: 'type',
             header: 'Type',
-            meta: { isNumeric: false, filter: 'text' },
+            meta: { isNumeric: false, filter: 'text' }
         },
         {
             accessorKey: 'fType',
             header: 'Fuel Type',
-            meta: { isNumeric: false, filter: 'text' },
+            meta: { isNumeric: false, filter: 'text' }
         },
         {
             accessorKey: 'vehicleColor',
             header: 'Color',
-            meta: { isNumeric: false, filter: 'text' },
+            meta: { isNumeric: false, filter: 'text' }
         },
         {
             accessorKey: 'isActive',
             header: 'Status',
             cell: info => (info.getValue() ? "Active" : "Inactive"),
-            meta: { isNumeric: false, filter: 'boolean' },
+            meta: { isNumeric: false, filter: 'boolean' }
         },
         {
             id: 'actions',
@@ -191,17 +150,17 @@ export default function VehicleDetailsTable() {
                     <MenuButton
                         color={theme.purple}
                         as={IconButton}
-                        aria-label="profile-options"
-                        fontSize="20px"
+                        aria-label='profile-options'
+                        fontSize='20px'
                         icon={<IoSettingsSharp />}
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={'/app/EditVehicleDetails'}>
+                            <Link to={`/app/EditVehicleDetails/${row.original.id}`} >
                                 Edit
                             </Link>
                         </MenuItem>
-                        <MenuItem>
+                        <MenuItem onClick={() => onClickDelete(row.original)}>
                             {row.original.isActive ? "Deactivate" : "Activate"}
                         </MenuItem>
                     </MenuList>
@@ -209,8 +168,8 @@ export default function VehicleDetailsTable() {
             ),
             meta: { isNumeric: false, filter: null },
             enableSorting: false,
-        },
-    ], []);
+        }
+    ];
 
     const table = useReactTable({
         data: vehicleDetails,
@@ -229,6 +188,11 @@ export default function VehicleDetailsTable() {
         setCurrentPage(0);
     };
 
+    const breadcrumbs = [
+        { label: "Vehicle", link: "/" },
+        { label: "Vehicle Details", link: "/AddVehicleDetails" }
+    ];
+
     const handlePageClick = ({ selected }) => {
         setCurrentPage(selected);
     };
@@ -241,15 +205,10 @@ export default function VehicleDetailsTable() {
     const isEmpty = currentData.length === 0;
     const iconStyle = { display: "inline-block", verticalAlign: "middle", marginLeft: "5px" };
 
-    const breadcrumbs = [
-        { label: "Vehicle", link: "/" },
-        { label: "Vehicle Details", link: "/AddVehicleDetails" },
-    ];
-
     return (
         <div className="main-content">
-            <PageHeader title="Vehicle Details" breadcrumbs={breadcrumbs} />
-            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
+            <PageHeader title=" Vehicle Details" breadcrumbs={breadcrumbs} />
+            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px">
                 <InputGroup>
                     <InputLeftElement pointerEvents="none">
                         <IoSearchOutline />
@@ -268,8 +227,7 @@ export default function VehicleDetailsTable() {
                         _hover={{ bg: theme.onHoverPurple }}
                         color="white"
                         variant="solid"
-                        w="230px"
-                        mr="50px"
+                        w="260px"
                     >
                         Add Vehicle Details
                     </Button>
@@ -290,19 +248,17 @@ export default function VehicleDetailsTable() {
                                         className="custom-table-th"
                                     >
                                         {flexRender(header.column.columnDef.header, header.getContext())}
-                                        {header.column.getCanSort() && (
-                                            <chakra.span pl="4">
-                                                {header.column.getIsSorted() ? (
-                                                    header.column.getIsSorted() === "desc" ? (
-                                                        <TriangleDownIcon aria-label="sorted descending" style={iconStyle} />
-                                                    ) : (
-                                                        <TriangleUpIcon aria-label="sorted ascending" style={iconStyle} />
-                                                    )
+                                        <chakra.span pl="4">
+                                            {header.column.getIsSorted() ? (
+                                                header.column.getIsSorted() === "desc" ? (
+                                                    <TriangleDownIcon aria-label="sorted descending" style={iconStyle} />
                                                 ) : (
-                                                    <TiArrowUnsorted aria-label="unsorted" style={iconStyle} />
-                                                )}
-                                            </chakra.span>
-                                        )}
+                                                    <TriangleUpIcon aria-label="sorted ascending" style={iconStyle} />
+                                                )
+                                            ) : (
+                                                <TiArrowUnsorted aria-label="unsorted" style={iconStyle} />
+                                            )}
+                                        </chakra.span>
                                     </Th>
                                 );
                             })}
@@ -338,11 +294,11 @@ export default function VehicleDetailsTable() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={'/app/EditVehicleDetails'}>
+                                                <Link to={`/app/EditVehicleDetails/${vehicle.id}`} >
                                                     Edit
                                                 </Link>
                                             </MenuItem>
-                                            <MenuItem>
+                                            <MenuItem onClick={() => onClickDelete(vehicle)}>
                                                 {vehicle.isActive ? "Deactivate" : "Activate"}
                                             </MenuItem>
                                         </MenuList>
@@ -359,6 +315,23 @@ export default function VehicleDetailsTable() {
                     onPageChange={handlePageClick}
                 />
             )}
+
+            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} leastDestructiveRef={cancelRef}>
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>{selectedVehicle?.isActive ? "Deactivate" : "Activate"} Vehicle</AlertDialogHeader>
+                        <AlertDialogBody>
+                            Are you sure you want to {selectedVehicle?.isActive ? "deactivate" : "activate"} this vehicle?
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onDialogClose}>Cancel</Button>
+                            <Button colorScheme="red" onClick={onConfirmDelete} ml={3}>
+                                {selectedVehicle?.isActive ? "Deactivate" : "Activate"}
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
         </div>
     );
 }

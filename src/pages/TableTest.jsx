@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+/*import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
     Table,
@@ -28,8 +28,8 @@ import {
     useDisclosure,
     useToast
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 import { TiArrowUnsorted } from "react-icons/ti";
 import { IoSettingsSharp, IoSearchOutline } from "react-icons/io5";
 import theme from "../config/ThemeConfig.jsx";
@@ -43,50 +43,60 @@ import {
 } from '@tanstack/react-table';
 import { flexRender } from '@tanstack/react-table';
 
-export default function Manufacturer() {
-    const [manufacturerDetails, setManufacturerDetails] = useState([]);
+export default function MaintenanceTypeTable() {
+    const [vehicleDetails, setVehicleDetails] = useState([]);
     const [sorting, setSorting] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchInput, setSearchInput] = useState("");
-    const [selectedManufacturer, setSelectedManufacturer] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
     const cancelRef = useRef();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const itemsPerPage = 10;
     const toast = useToast();
 
     useEffect(() => {
-        fetchManufacturers();
+        fetchVehicleMaintenanceTypes();
     }, []);
 
-    const onClickDelete = (manufacturer) => {
-        setSelectedManufacturer(manufacturer);
+    const onClickDelete = (maintenanceType) => {
+        setSelectedType(maintenanceType);
         onDialogOpen();
     };
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/Manufacture/UpdateManufacture${selectedManufacturer.id}/${selectedManufacturer.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/VehicleMaintenanceType/${selectedType.id}/${selectedType.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
-            fetchManufacturers();
+            fetchVehicleMaintenanceTypes();
             onDialogClose();
         } catch (error) {
-            console.error("Error updating manufacturer status:", error);
+            if (error.response && error.response.status === 400 && error.response.data === "MaintenanceType is active and associated with maintenance records. Cannot deactivate.") {
+                toast({
+                    title: "Error",
+                    description: "MaintenanceType is active and associated with maintenance records. Cannot deactivate.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
+            } else {
+                console.error("Error updating vehicle maintenance type status:", error);
+            }
         }
     };
 
-    const fetchManufacturers = async () => {
+    const fetchVehicleMaintenanceTypes = async () => {
         try {
-            const response = await axios.get("https://localhost:7265/api/Manufacture");
-            setManufacturerDetails(response.data);
+            const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
+            setVehicleDetails(response.data);
         } catch (error) {
-            console.error("Error fetching manufacturers:", error);
+            console.error("Error fetching vehicle maintenance types:", error);
         }
     };
 
     const columns = [
         {
-            accessorKey: 'name',  // Removed leading space here
-            header: 'Manufacturer Name',
+            accessorKey: 'typeName',
+            header: 'Vehicle Maintenance Type',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
@@ -109,7 +119,7 @@ export default function Manufacturer() {
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/app/EditManufacturerTypeDetails/${row.original.id}`}>
+                            <Link to={`/app/EditMaintenanceType/${row.original.id}`}>
                                 Edit
                             </Link>
                         </MenuItem>
@@ -125,7 +135,7 @@ export default function Manufacturer() {
     ];
 
     const table = useReactTable({
-        data: manufacturerDetails,
+        data: vehicleDetails,
         columns,
         state: { sorting, globalFilter: searchInput },
         onSortingChange: setSorting,
@@ -142,9 +152,8 @@ export default function Manufacturer() {
     };
 
     const breadcrumbs = [
-        { label: "Manufacturer", link: "/" },
-        { label: "Manufacturer Type", link: "/app/ManufacturerType" },
-        { label: "Add Manufacturer Type Details", link: "/app/AddManufacturerTypeDetails" },
+        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Vehicle Maintenance Type", link: "/app/MaintenanceTypeTable" }
     ];
 
     const handlePageClick = ({ selected }) => {
@@ -161,8 +170,8 @@ export default function Manufacturer() {
 
     return (
         <div className="main-content">
-            <PageHeader title="Manufacturer Details" breadcrumbs={breadcrumbs} />
-            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px">
+            <PageHeader title="Vehicle Maintenance Type" breadcrumbs={breadcrumbs} />
+            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
                 <InputGroup>
                     <InputLeftElement pointerEvents="none">
                         <IoSearchOutline />
@@ -175,21 +184,21 @@ export default function Manufacturer() {
                         width="300px"
                     />
                 </InputGroup>
-                <Link to="/app/AddManufacturerTypeDetails">
+                <Link to="/app/AddMaintenanceType">
                     <Button
                         bg={theme.purple}
                         _hover={{ bg: theme.onHoverPurple }}
                         color="white"
                         variant="solid"
-                        ml="auto"
-                        mr="50px"
+                        w="260px"
+                        mr="60px"
                     >
-                        Add New Manufacturer
+                        Add Vehicle Maintenance Type
                     </Button>
                 </Link>
             </Box>
 
-            <Table className="custom-table" mt="20px">
+            <Table className="custom-table">
                 <Thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <Tr key={headerGroup.id}>
@@ -228,10 +237,10 @@ export default function Manufacturer() {
                             </Td>
                         </Tr>
                     ) : (
-                        currentData.map((manufacturer, index) => (
+                        currentData.map((maintenanceType, index) => (
                             <Tr key={index}>
-                                <Td className="custom-table-td">{manufacturer.name}</Td>
-                                <Td className="custom-table-td">{manufacturer.status ? "Active" : "Inactive"}</Td>
+                                <Td className="custom-table-td">{maintenanceType.typeName}</Td>
+                                <Td className="custom-table-td">{maintenanceType.status ? "Active" : "Inactive"}</Td>
                                 <Td className="custom-table-td">
                                     <Menu>
                                         <MenuButton
@@ -243,12 +252,12 @@ export default function Manufacturer() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditManufacturerTypeDetails/${manufacturer.id}`}>
+                                                <Link to={`/app/EditMaintenanceType/${maintenanceType.id}`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>
-                                            <MenuItem onClick={() => onClickDelete(manufacturer)}>
-                                                {manufacturer.status ? "Deactivate" : "Activate"}
+                                            <MenuItem onClick={() => onClickDelete(maintenanceType)}>
+                                                {maintenanceType.status ? "Deactivate" : "Activate"}
                                             </MenuItem>
                                         </MenuList>
                                     </Menu>
@@ -268,18 +277,22 @@ export default function Manufacturer() {
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
                 <AlertDialogOverlay />
                 <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
-                    <AlertDialogHeader>{selectedManufacturer?.status ? "Deactivate" : "Activate"} Manufacturer</AlertDialogHeader>
+                    <AlertDialogHeader>{selectedType?.status ? "Deactivate" : "Activate"} Maintenance Type</AlertDialogHeader>
                     <AlertDialogBody>
-                        Are you sure you want to {selectedManufacturer?.status ? "deactivate" : "activate"} this manufacturer?
+                        Are you sure you want to {selectedType?.status ? "deactivate" : "activate"} {selectedType?.typeName} Maintenance Type?
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button ref={cancelRef} onClick={onDialogClose}>Cancel</Button>
-                        <Button colorScheme="red" onClick={onConfirmDelete} ml={3}>
-                            Confirm
-                        </Button>
+                        <div className="flex flex-row gap-8">
+                            <Button bg="gray.400" _hover={{bg: "gray.500"}} color="#ffffff" variant="solid"
+                                    onClick={onDialogClose} ref={cancelRef}>Cancel</Button>
+                            <Button colorScheme='red' color="#FFFFFF" onClick={onConfirmDelete}>
+                                {selectedType?.status ? "Deactivate" : "Activate"}
+                            </Button>
+                        </div>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
         </div>
     );
 }
+    */

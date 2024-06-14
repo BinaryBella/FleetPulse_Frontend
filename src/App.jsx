@@ -23,7 +23,7 @@ import AccidentDetails from "./pages/AccidentDetails.jsx";
  import AddAccidentDetails from "./pages/AddAccidentDetails.jsx";
  import AddVehicleDetails from "./pages/AddVehicleDetails.jsx";
  import AddVehicleModel from "./pages/AddVehicleModel.jsx";
- import AddVehicleType from "./pages/AddDriverDetails.jsx";
+ import AddVehicleType from "./pages/AddVehicleType.jsx";
  import AddHelperDetails from "./pages/AddHelperDetails.jsx";
  import HelperDetails from "./pages/HelperDetails.jsx";
  import AddStaffDetails from "./pages/AddStaffDetails.jsx";
