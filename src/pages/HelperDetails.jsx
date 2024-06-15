@@ -147,7 +147,7 @@ export default function HelperDetails() {
   return (
     <>
       <PageHeader title='Helper Details' breadcrumbs={breadcrumbs} />
-      <div className='grid grid-cols-2 gap-10 mt-8'>
+      <div className='flex justify-between items-center mt-8'>
         <InputGroup>
           <InputLeftElement pointerEvents='none'>
             <IoSearchOutline />
@@ -166,31 +166,33 @@ export default function HelperDetails() {
             _hover={{ bg: theme.onHoverPurple }}
             color='white'
             variant='solid'
-            w='260px'
-            mr='60px'
           >
             Add New Helper
           </Button>
         </Link>
       </div>
-      <Table className='custom-table'>
+      <Table className='custom-table mt-4'>
         <Thead>
           <Tr>
             {table.getHeaderGroups().map(headerGroup => (
-              <Th key={headerGroup.id} onClick={header.column.getToggleSortingHandler()} isNumeric={headerGroup.meta?.isNumeric} className='custom-table-th'>
-                {flexRender(header.column.columnDef.header, header.getContext())}
-                <chakra.span pl='4'>
-                  {header.column.getIsSorted() ? (
-                    header.column.getIsSorted() === 'desc' ? (
-                      <TriangleDownIcon aria-label='sorted descending' />
-                    ) : (
-                      <TriangleUpIcon aria-label='sorted ascending' />
-                    )
-                  ) : (
-                    <TiArrowUnsorted aria-label='unsorted' />
-                  )}
-                </chakra.span>
-              </Th>
+              <React.Fragment key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <Th key={header.id} onClick={header.column.getToggleSortingHandler()} isNumeric={header.column.columnDef.meta?.isNumeric} className='custom-table-th'>
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    <chakra.span pl='4'>
+                      {header.column.getIsSorted() ? (
+                        header.column.getIsSorted() === 'desc' ? (
+                          <TriangleDownIcon aria-label='sorted descending' />
+                        ) : (
+                          <TriangleUpIcon aria-label='sorted ascending' />
+                        )
+                      ) : (
+                        <TiArrowUnsorted aria-label='unsorted' />
+                      )}
+                    </chakra.span>
+                  </Th>
+                ))}
+              </React.Fragment>
             ))}
           </Tr>
         </Thead>
