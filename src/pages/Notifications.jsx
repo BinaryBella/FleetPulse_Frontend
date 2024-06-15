@@ -1,12 +1,15 @@
 import { useNotifications } from '../context/NotificationContext';
 import { Box, List, ListItem, Heading, Text, Icon, Button, IconButton } from '@chakra-ui/react';
-import { MdNotifications, MdDelete } from 'react-icons/md';
+import { MdNotifications, MdDelete, MdNotificationsNone } from 'react-icons/md';
 import PageHeader from "../components/PageHeader.jsx";
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import axios from 'axios';
+import './Notification.css';
 
 const Notifications = () => {
-    const { notifications, markAsRead, deleteNotification, markAllAsRead, deleteAllNotifications } = useNotifications();
+    const { notifications, markAsRead, deleteNotification } = useNotifications();
+    const navigate = useNavigate();
 
     const handleMarkAsRead = async (index, id) => {
         try {
@@ -44,61 +47,65 @@ const Notifications = () => {
         }
     };
 
+    const handleNavigate = (username) => {
+        navigate(`/app/ResetPasswordDriverHelper/${username}`);
+    };
+
     return (
-        <Box p={4}>
+        <Box className="notification-container">
             <PageHeader title="Notifications" className="mb-14"/>
-            <Box mb={4} display="flex" justifyContent="flex-end">
-                <Button
-                    bg="#393970"
-                    color="white"
-                    size="sm"
-                    onClick={handleMarkAllAsRead}
-                    mr={2}
-                    _hover={{ bg: "#2e2e6a" }}
-                >
-                    Mark All as Read
-                </Button>
-                <Button
-                    colorScheme="red"
-                    size="sm"
-                    onClick={handleDeleteAllNotifications}
-                >
-                    Delete All
-                </Button>
-            </Box>
+            {notifications.length > 0 && (
+                <Box className="notification-controls">
+                    <Button
+                        className="mark-all-read-btn"
+                        onClick={handleMarkAllAsRead}
+                    >
+                        Mark All as Read
+                    </Button>
+                    <Button
+                        className="delete-all-btn"
+                        onClick={handleDeleteAllNotifications}
+                    >
+                        Delete All
+                    </Button>
+                </Box>
+            )}
+            {notifications.length === 0 && (
+                <Box className="no-notifications">
+                    <Icon as={MdNotificationsNone} w={9} h={9} color="ash" mb={2} />
+                    <Text>No Notification Here</Text>
+                </Box>
+            )}
             <List spacing={4}>
                 {notifications.map((notification, index) => (
                     <ListItem
                         key={index}
-                        p={4}
-                        borderWidth={1}
-                        borderRadius="md"
-                        bg={notification.read ? "gray.100" : "white"}
-                        boxShadow="sm"
-                        _hover={{ boxShadow: "md" }}
+                        className={`notification-item ${notification.read ? "read" : "unread"}`}
                     >
-                        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-                            <Box display="flex" alignItems="center">
-                                <Icon as={MdNotifications} w={8} h={8} color="#393970" mr={2} />
-                                <Heading as="h2" size="md">{notification.title}</Heading>
+                        <Box className="notification-header">
+                            <Box className="notification-info">
+                                <Icon as={MdNotifications} w={6} h={6} color="#393970" />
+                                <Heading as="h2" size="sm">{notification.title}</Heading>
                             </Box>
-                            <Box display="flex" alignItems="center">
+                            <Box className="notification-actions">
                                 {!notification.read && (
-                                    <Button size="sm" color="#393970" onClick={() => handleMarkAsRead(index, notification.notificationId)} mr={2}>
+                                    <Button className="mark-read-btn" onClick={() => handleMarkAsRead(index, notification.notificationId)}>
                                         Mark as Read
                                     </Button>
                                 )}
+                                <Button className="reset-password-btn" onClick={() => handleNavigate(notification.username)}>
+                                    Reset Password
+                                </Button>
                                 <IconButton
-                                    size="sm"
-                                    colorScheme="red"
+                                    className="delete-btn"
                                     aria-label="Delete notification"
                                     icon={<MdDelete size={20} />}
                                     onClick={() => handleDeleteNotification(index, notification.notificationId)}
                                 />
                             </Box>
                         </Box>
-                        <Text ml={10} mb={2}>{notification.body}</Text>
-                        <Text ml={10} color="gray.500" fontSize="sm">{format(new Date(notification.timestamp), 'PPpp')}</Text>
+                        <Text className="notification-body">{notification.body}</Text>
+                        <Text className="notification-timestamp">{format(new Date(notification.timestamp), 'PPpp')}</Text>
                     </ListItem>
                 ))}
             </List>

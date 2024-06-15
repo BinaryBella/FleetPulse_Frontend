@@ -67,7 +67,7 @@ export default function MaintenanceTypeTable() {
         try {
             const endpoint = `https://localhost:7265/api/VehicleMaintenanceType/${selectedType.id}/${selectedType.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
-            fetchVehicleMaintenanceTypes(); // Refresh the list after update
+            fetchVehicleMaintenanceTypes();
             onDialogClose();
         } catch (error) {
             if (error.response && error.response.status === 400 && error.response.data === "MaintenanceType is active and associated with maintenance records. Cannot deactivate.") {

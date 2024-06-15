@@ -59,7 +59,7 @@ export default function ResetEmail() {
                         console.error('Error:', error.message);
                     }
                     finally {
-                        setLoading(false); // Stop loading after form submission
+                        setLoading(false);
                     }
                 }}
             >
@@ -74,6 +74,8 @@ export default function ResetEmail() {
                                     name="email"
                                     type="email"
                                     variant="filled"
+                                    size="sm"
+                                    borderRadius="md"
                                     placeholder="Enter Your Email Address"
                                     mb={3}
                                 />
@@ -85,6 +87,7 @@ export default function ResetEmail() {
                                     _hover={{bg: theme.onHoverPurple}}
                                     color="#ffffff"
                                     mt={5}
+                                    size="sm"
                                     isLoading={loading}
                                     loadingText='Sending'
                                     variant='outline'
@@ -97,7 +100,7 @@ export default function ResetEmail() {
             </Formik>
             <div className="flex justify-end">
                     <Link to="/auth/login">
-                        <Button variant="link" className="mt-3">
+                        <Button variant="link" className="mt-3" size="sm">
                             Return to Login
                         </Button>
                     </Link>

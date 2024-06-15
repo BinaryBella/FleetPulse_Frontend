@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     Button,
     Input,
@@ -15,18 +15,20 @@ import {
     AlertDialogContent,
     AlertDialogHeader,
     AlertDialogBody,
-    AlertDialogFooter
+    AlertDialogFooter,
+
 } from "@chakra-ui/react";
-import {Field, Formik} from "formik";
+import { Field, Formik } from "formik";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import Password from "../assets/images/Password.png";
-import './ChangePassword.css';
-import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import PasswordStrengthBar from 'react-password-strength-bar';
-import {useNavigate} from "react-router-dom";
-import $ from "jquery";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { useNotifications } from '../context/NotificationContext';
+import $ from 'jquery';
+import PropTypes from 'prop-types';
 
 const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, placeholder, error }) => (
     <FormControl isInvalid={!!error}>
@@ -48,7 +50,7 @@ const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, place
                     size="sm"
                     variant="ghost"
                     onClick={handleShowPassword}
-                    icon={showPassword ? <ViewOffIcon/> : <ViewIcon/>}
+                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                     aria-label="password-icon"
                 />
             </InputRightElement>
@@ -56,6 +58,15 @@ const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, place
         <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
 );
+
+PasswordField.propTypes = {
+    fieldId: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    showPassword: PropTypes.bool.isRequired,
+    handleShowPassword: PropTypes.func.isRequired,
+    placeholder: PropTypes.string,
+    error: PropTypes.string
+};
 
 export default function ResetPasswordDriverHelper() {
     const [error, setError] = useState('');
@@ -65,6 +76,10 @@ export default function ResetPasswordDriverHelper() {
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const cancelRef = useRef();
     const navigate = useNavigate();
+    const { addNotification } = useNotifications();
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+    const username = query.get('username');
 
     const handleShowPassword = (setter) => () => setter(prev => !prev);
 
@@ -76,14 +91,8 @@ export default function ResetPasswordDriverHelper() {
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         try {
-            const storedUsername = sessionStorage.getItem('Username');
-            if (!storedUsername) {
-                navigate("/auth/login");
-                return;
-            }
-
             const response = await axios.post('https://localhost:7265/api/Auth/reset-password', {
-                username: storedUsername,
+                username,
                 newPassword: values.newPassword
             }, {
                 headers: {
@@ -94,6 +103,14 @@ export default function ResetPasswordDriverHelper() {
             if (response.data.status) {
                 setIsAlertOpen(true);
                 setResetPasswordResponse(response.data.message);
+
+                // Add a notification for the admin
+                addNotification({
+                    title: "Password Reset Successful",
+                    body: `Password for ${username} has been reset successfully.`,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                });
             } else {
                 if (response.data.error === "Old password is incorrect.") {
                     setError(response.data.error);
@@ -117,13 +134,13 @@ export default function ResetPasswordDriverHelper() {
     useEffect(() => {
         sessionStorage.getItem('Username');
         $(".pwd-meter > div").children().each(function () {
-            $(this).css({"height": "5px", "border-radius": "5px"})
+            $(this).css({ "height": "5px", "border-radius": "5px" })
         });
     }, []);
 
     return (
         <>
-            <PageHeader title="Reset Password" className="mb-14"/>
+            <PageHeader title={`Reset Password for ${username}`} className="mb-14" />
             <div className="flex justify-between vertical-container">
                 <div className="flex flex-col gap-8 mt-5">
                     <Formik
@@ -146,7 +163,7 @@ export default function ResetPasswordDriverHelper() {
                             return errors;
                         }}
                     >
-                        {({ handleSubmit, errors, touched, values, isSubmitting }) => (
+                        {({ handleSubmit, errors, values, isSubmitting }) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-4/5">
                                 <PasswordField
                                     fieldId="newPassword"
@@ -156,7 +173,7 @@ export default function ResetPasswordDriverHelper() {
                                     placeholder="New Password"
                                     error={errors.newPassword}
                                 />
-                                <PasswordStrengthBar className="pwd-meter" password={values.newPassword}/>
+                                <PasswordStrengthBar className="pwd-meter" password={values.newPassword} />
                                 <PasswordField
                                     fieldId="confirmPassword"
                                     label="Confirm Password"
@@ -167,14 +184,14 @@ export default function ResetPasswordDriverHelper() {
                                 />
                                 {error && (
                                     <Alert status="error">
-                                        <AlertIcon/>
+                                        <AlertIcon />
                                         {error}
                                     </Alert>
                                 )}
                                 <div className="flex gap-4 mt-10">
                                     <Button
                                         bg="gray.400"
-                                        _hover={{bg: "gray.500"}}
+                                        _hover={{ bg: "gray.500" }}
                                         color="#ffffff"
                                         variant="solid"
                                         w="200px"
@@ -187,7 +204,7 @@ export default function ResetPasswordDriverHelper() {
                                     </Button>
                                     <Button
                                         bg={theme.purple}
-                                        _hover={{bg: theme.onHoverPurple}}
+                                        _hover={{ bg: theme.onHoverPurple }}
                                         color="#ffffff"
                                         variant="solid"
                                         w="200px"
@@ -203,7 +220,7 @@ export default function ResetPasswordDriverHelper() {
                     </Formik>
                 </div>
                 <div className="flex items-end">
-                    <img src={Password} alt="Change Password" width="400" height="400" className="mr-14"/>
+                    <img src={Password} alt="Change Password" width="400" height="400" className="mr-14" />
                 </div>
             </div>
             <AlertDialog

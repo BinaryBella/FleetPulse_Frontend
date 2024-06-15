@@ -49,9 +49,27 @@ import StaffReport from "./pages/StaffReport.jsx";
 import TripReport from "./pages/TripReport.jsx";
 import AccidentReport from "./pages/AccidentReport.jsx";
 import ResetPasswordDriverHelper from "./pages/ResetPasswordDriverHelper.jsx";
+import { useEffect, useState } from "react";
+
 
 export default function App() {
-    const currentUser = localStorage.getItem('Token');
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        const currentUser = localStorage.getItem('Token');
+        const userRole = sessionStorage.getItem('UserRole');
+
+        if (currentUser && userRole === 'Admin') {
+            setIsAdmin(true);
+        } else {
+            setIsAdmin(false);
+        }
+    }, []);
+
+    // Update isAdmin in localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem('isAdmin', isAdmin);
+    }, [isAdmin]);
 
     return (
         <ChakraProvider>
@@ -59,54 +77,59 @@ export default function App() {
                 <NotificationHandler />
                 <Routes>
                     {/* Public routes */}
-                    <Route path="/auth" element={<AnonymousLayout />}>
-                        <Route path="Login" element={<Login />} />
-                        <Route path="ResetEmail" element={<ResetEmail />} />
-                        <Route path="ResetPassword" element={<ResetPassword />} />
-                        <Route path="ResetPasswordConfirmation" element={<ResetPasswordConfirmation />} />
-                        <Route path="ResetPassSuccess" element={<ResetPassSuccess />} />
+                    <Route path="/auth/" element={<AnonymousLayout />}>
+                        <Route path="/auth/Login" element={<Login />} />
+                        <Route path="/auth/ResetEmail" element={<ResetEmail />} />
+                        <Route path="/auth/ResetPassword" element={<ResetPassword />} />
+                        <Route path="/auth/ResetPasswordConfirmation" element={<ResetPasswordConfirmation />} />
+                        <Route path="/auth/ResetPassSuccess" element={<ResetPassSuccess />} />
                     </Route>
 
-                    {/* Private routes */}
-                    <Route element={<PrivateRoutes />}>
-                        <Route path="/app" element={<MainLayout />}>
-                            <Route path="Dashboard" element={<Dashboard />} />
-                            <Route path="UserProfile" element={<UserProfile />} />
-                            <Route path="AddVehicleMaintenanceDetails" element={<AddVehicleMaintenanceDetails />} />
-                            <Route path="AddFuelRefillDetails" element={<AddFuelRefillDetails />} />
-                            <Route path="ChangePassword" element={<ChangePassword />} />
-                            <Route path="AddMaintenanceType" element={<AddMaintenanceType />} />
-                            <Route path="MaintenanceTable" element={<MaintenanceTable />} />
-                            <Route path="MaintenanceTypeTable" element={<MaintenanceTypeTable />} />
-                            <Route path="FuelRefillTable" element={<FuelRefillTable />} />
-                            <Route path="EditMaintenanceType/:id" element={<EditMaintenanceType />} />
-                            <Route path="AddVehicleDetails" element={<AddVehicleDetails />} />
-                            <Route path="Driver" element={<Driver />} />
-                            <Route path="Helper" element={<Helper />} />
-                            <Route path="Staff" element={<Staff />} />
-                            <Route path="Trip" element={<Trip />} />
-                            <Route path="Reports/*" element={<Reports />} />
-                            <Route path="AddAccidentDetails" element={<AddAccidentDetails />} />
-                            <Route path="ChangePassword" element={<ChangePassword />} />
-                            <Route path="AddVehicleType" element={<AddVehicleType />} />
-                            <Route path="AddVehicleModel" element={<AddVehicleModel />} />
-                            <Route path="AddManufactureDetails" element={<AddManufactureDetails />} />
-                            <Route path="VehicleDetailsTable" element={<VehicleDetailsTable />} />
-                            <Route path="VehicleReports" element={<VehicleReports />} />
-                            <Route path="VehicleDetailsReport" element={<VehicleDetailsReport />} />
-                            <Route path="VehicleTypeReport" element={<VehicleTypeReport />} />
-                            <Route path="VehicleModelReport" element={<VehicleModelReport />} />
-                            <Route path="VehicleManufacturerReport" element={<VehicleManufacturerReport />} />
-                            <Route path="VehicleMaintenanceReport" element={<VehicleMaintenanceReport />} />
-                            <Route path="VehicleMaintenanceTypeReport" element={<VehicleMaintenanceTypeReport />} />
-                            <Route path="VehicleFuelRefillReport" element={<VehicleFuelRefillReport />} />
-                            <Route path="DriverReport" element={<DriverReport />} />
-                            <Route path="HelperReport" element={<HelperReport />} />
-                            <Route path="StaffReport" element={<StaffReport />} />
-                            <Route path="TripReport" element={<TripReport />} />
-                            <Route path="AccidentReport" element={<AccidentReport />} />
-                            <Route path="ResetPasswordDriverHelper" element={<ResetPasswordDriverHelper />} />
-                            <Route path="Notification" element={<Notifications />} />
+                    {/* Private routes for Admin and Staff */}
+                    <Route element={<PrivateRoutes roles={['Admin', 'Staff']} />}>
+                        <Route path="/app/" element={<MainLayout isAdmin={isAdmin} />}>
+                            <Route path="/app/Dashboard" element={<Dashboard />} />
+                            <Route path="/app/UserProfile" element={<UserProfile />} />
+                            <Route path="/app/AddVehicleMaintenanceDetails" element={<AddVehicleMaintenanceDetails />} />
+                            <Route path="/app/AddFuelRefillDetails" element={<AddFuelRefillDetails />} />
+                            <Route path="/app/ChangePassword" element={<ChangePassword />} />
+                            <Route path="/app/MaintenanceTable" element={<MaintenanceTable />} />
+                            <Route path="/app/MaintenanceTypeTable" element={<MaintenanceTypeTable />} />
+                            <Route path="/app/FuelRefillTable" element={<FuelRefillTable />} />
+                            <Route path="/app/EditMaintenanceType/:id" element={<EditMaintenanceType />} />
+                            <Route path="/app/AddVehicleDetails" element={<AddVehicleDetails />} />
+                            <Route path="/app/AddMaintenanceType" element={<AddMaintenanceType />} />
+                            <Route path="/app/Driver" element={<Driver />} />
+                            <Route path="/app/Helper" element={<Helper />} />
+                            <Route path="/app/Trip" element={<Trip />} />
+                            <Route path="/app/Reports/*" element={<Reports />} />
+                            <Route path="/app/AddAccidentDetails" element={<AddAccidentDetails />} />
+                            <Route path="/app/AddVehicleType" element={<AddVehicleType />} />
+                            <Route path="/app/AddVehicleModel" element={<AddVehicleModel />} />
+                            <Route path="/app/AddManufactureDetails" element={<AddManufactureDetails />} />
+                            <Route path="/app/VehicleDetailsTable" element={<VehicleDetailsTable />} />
+                            <Route path="/app/VehicleReports" element={<VehicleReports />} />
+                            <Route path="/app/VehicleDetailsReport" element={<VehicleDetailsReport />} />
+                            <Route path="/app/VehicleTypeReport" element={<VehicleTypeReport />} />
+                            <Route path="/app/VehicleModelReport" element={<VehicleModelReport />} />
+                            <Route path="/app/VehicleManufacturerReport" element={<VehicleManufacturerReport />} />
+                            <Route path="/app/VehicleMaintenanceReport" element={<VehicleMaintenanceReport />} />
+                            <Route path="/app/VehicleMaintenanceTypeReport" element={<VehicleMaintenanceTypeReport />} />
+                            <Route path="/app/VehicleFuelRefillReport" element={<VehicleFuelRefillReport />} />
+                            <Route path="/app/DriverReport" element={<DriverReport />} />
+                            <Route path="/app/HelperReport" element={<HelperReport />} />
+                            <Route path="/app/StaffReport" element={<StaffReport />} />
+                            <Route path="/app/TripReport" element={<TripReport />} />
+                            <Route path="/app/AccidentReport" element={<AccidentReport />} />
+                            <Route path="/app/Notification" element={<Notifications />} />
+                        </Route>
+                    </Route>
+
+                    {/* Admin-only routes */}
+                    <Route element={<PrivateRoutes roles={['Admin']} />}>
+                        <Route path="/app/" element={<MainLayout isAdmin={isAdmin} />}>
+                            <Route path="/app/Staff" element={<Staff />} />
+                            <Route path="/app/ResetPasswordDriverHelper" element={<ResetPasswordDriverHelper />} />
                         </Route>
                     </Route>
 
@@ -115,8 +138,16 @@ export default function App() {
                     <Route path="*" element={<NotFound />} />
 
                     {/* Default route handling */}
-                    <Route path="/"
-                           element={currentUser ? <Navigate to="/app/Dashboard" /> : <Navigate to="/auth/Login" />} />
+                    <Route
+                        path="/"
+                        element={
+                            isAdmin ? (
+                                <Navigate to="/app/Dashboard" />
+                            ) : (
+                                <Navigate to="/auth/Login" />
+                            )
+                        }
+                    />
                 </Routes>
             </NotificationProvider>
         </ChakraProvider>

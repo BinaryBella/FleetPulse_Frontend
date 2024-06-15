@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging } from "../firebase/firebaseConfig";
 import { useNotifications } from '../context/NotificationContext';
+import { useNavigate } from 'react-router-dom';
 
 const NotificationHandler = () => {
     const { VITE_APP_VAPID_KEY } = import.meta.env;
     const { addNotification } = useNotifications();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const requestPermission = async () => {
@@ -36,6 +38,7 @@ const NotificationHandler = () => {
                 UserId: token,
                 title: payload.notification.title,
                 body: payload.notification.body,
+                username: payload.data.username,
                 Date: new Date().toISOString(),
                 Time: new Date().toISOString(),
                 Status: false,

@@ -119,7 +119,7 @@ export default function ChangePassword() {
     useEffect(() => {
         sessionStorage.getItem('Username');
         $(".pwd-meter > div").children().each(function () {
-            $(this).css({"height": "5px", "border-radius": "5px"})
+            $(this).css({"height": "3px", "border-radius": "5px"})
         });
     }, []);
 
@@ -127,7 +127,7 @@ export default function ChangePassword() {
         <>
             <PageHeader title="Change Password" className="mb-14"/>
             <div className="flex justify-between vertical-container">
-                <div className="flex flex-col gap-8 mt-5">
+                <div className="flex flex-col gap-6 mt-5">
                     <Formik
                         onSubmit={handleSubmit}
                         initialValues={{
