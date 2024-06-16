@@ -16,7 +16,6 @@ import {
     AlertDialogHeader,
     AlertDialogBody,
     AlertDialogFooter,
-
 } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import theme from "../config/ThemeConfig.jsx";
@@ -27,7 +26,6 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNotifications } from '../context/NotificationContext';
-import $ from 'jquery';
 import PropTypes from 'prop-types';
 
 const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, placeholder, error }) => (
@@ -90,9 +88,10 @@ export default function ResetPasswordDriverHelper() {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
+        console.log("Email:", values.email); // Log the email to check if it is correct
         try {
             const response = await axios.post('https://localhost:7265/api/Auth/reset-password', {
-                username,
+                email: values.email, // Include email in the request
                 newPassword: values.newPassword
             }, {
                 headers: {
@@ -112,31 +111,24 @@ export default function ResetPasswordDriverHelper() {
                     read: false
                 });
             } else {
-                if (response.data.error === "Old password is incorrect.") {
-                    setError(response.data.error);
-                } else {
-                    setIsAlertOpen(true);
-                    setResetPasswordResponse(response.data.error);
-                }
+                setIsAlertOpen(true);
+                setResetPasswordResponse(response.data.error || "Failed to reset password.");
             }
         } catch (error) {
             console.error('Error:', error.message);
-            setError('An error occurred. Please try again.');
+            setResetPasswordResponse("An error occurred. Please try again.");
         } finally {
             setSubmitting(false);
         }
     };
 
+    useEffect(() => {
+        sessionStorage.getItem('Username');
+    }, []);
+
     const handleCancel = () => {
         navigate('/app/Dashboard');
     };
-
-    useEffect(() => {
-        sessionStorage.getItem('Username');
-        $(".pwd-meter > div").children().each(function () {
-            $(this).css({ "height": "5px", "border-radius": "5px" })
-        });
-    }, []);
 
     return (
         <>
@@ -146,11 +138,15 @@ export default function ResetPasswordDriverHelper() {
                     <Formik
                         onSubmit={handleSubmit}
                         initialValues={{
+                            email: '', // Initialize email field
                             newPassword: "",
                             confirmPassword: ""
                         }}
                         validate={(values) => {
                             const errors = {};
+                            if (!values.email) {
+                                errors.email = "Please enter your email.";
+                            }
                             if (!values.newPassword) {
                                 errors.newPassword = "Please enter your new password.";
                             }
@@ -158,13 +154,23 @@ export default function ResetPasswordDriverHelper() {
                                 errors.confirmPassword = "Please confirm your new password.";
                             }
                             if (values.newPassword !== values.confirmPassword) {
-                                errors.confirmPassword = "Passwords do not match with new password.";
+                                errors.confirmPassword = "Passwords do not match.";
                             }
                             return errors;
                         }}
                     >
                         {({ handleSubmit, errors, values, isSubmitting }) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-4/5">
+                                <Field
+                                    as={Input}
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    variant="filled"
+                                    placeholder="Email"
+                                    size="sm"
+                                    borderRadius="md"
+                                />
                                 <PasswordField
                                     fieldId="newPassword"
                                     label="New Password"
