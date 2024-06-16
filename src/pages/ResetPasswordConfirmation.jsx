@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
-import { Button, Stack, FormControl, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
+import { Button, Stack, FormControl, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Spinner } from '@chakra-ui/react';
 import ResetPass1 from "../assets/images/ResetPass1.png";
 import theme from "../config/ThemeConfig.jsx";
 import { Box } from "@chakra-ui/react";
@@ -14,6 +14,7 @@ export default function ResetPasswordConfirmation() {
     const location = useLocation();
     const [verificationCode, setVerificationCode] = useState("");
     const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const [loading, setLoading] = useState(false); // Add loading state
     const { email } = location.state;
 
     const handleChange = (value) => {
@@ -44,6 +45,7 @@ export default function ResetPasswordConfirmation() {
                 }}
                 onSubmit={() => {
                     try {
+                        setLoading(true); // Set loading to true when submitting form
                         if (verificationCode.toString().length === 6) {
                             fetch('https://localhost:7265/api/Auth/validate-verification-code', {
                                 method: 'POST',
@@ -69,6 +71,8 @@ export default function ResetPasswordConfirmation() {
                         }
                     } catch (error) {
                         console.error('Error:', error.message);
+                    } finally {
+                        setLoading(false); // Set loading to false when request is completed
                     }
                 }}
             >
@@ -82,6 +86,7 @@ export default function ResetPasswordConfirmation() {
                                     inputProps={{ inputMode: "numeric" }}
                                     value={verificationCode}
                                     onChange={handleChange}
+                                    size="sm"
                                     classNames={{
                                         container: "container",
                                         character: "character",
@@ -92,14 +97,16 @@ export default function ResetPasswordConfirmation() {
                                     <p className="text-red-500">{errors.pinValue}</p>
                                 )}
                             </FormControl>
+                            {/* Conditional rendering of loading spinner */}
                             <Button
                                 bg={theme.purple}
                                 _hover={{ bg: theme.onHoverPurple }}
                                 color="#ffffff"
                                 variant="solid"
                                 type="submit"
+                                size="sm"
                             >
-                                Verify
+                                {loading ? <Spinner size="sm" /> : "Verify"}
                             </Button>
                         </Stack>
                     </form>

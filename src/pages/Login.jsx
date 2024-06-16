@@ -10,6 +10,7 @@ import first from "../assets/images/login.png";
 export default function Login() {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false); // Add loading state
     const [resetClicked, setResetClicked] = useState(false);
     const [backendError, setBackendError] = useState("");
 
@@ -31,6 +32,7 @@ export default function Login() {
                     password: ""
                 }}
                 onSubmit={(values) => {
+                    setLoading(true); // Set loading to true when submitting form
                     fetch('https://localhost:7265/api/Auth/Login', {
                         method: 'POST',
                         body: JSON.stringify({
@@ -53,13 +55,15 @@ export default function Login() {
                                 if (jobTitle === "Admin" || jobTitle === "Staff") {
                                     sessionStorage.setItem('Username', values.username);
                                     localStorage.setItem('Token', token);
-                                    navigate('/app/Dashboard');
+                                    sessionStorage.setItem('UserRole', jobTitle);                                    navigate('/app/Dashboard');
                                 } else {
                                     navigate("/unauthorized");
                                 }
                             }
                         }).catch(() => {
                         setBackendError('Login failed. Please try again.');
+                    }).finally(() => {
+                        setLoading(false); // Set loading to false when request is completed
                     });
                 }}
             >
@@ -76,6 +80,8 @@ export default function Login() {
                                     variant="filled"
                                     placeholder="Username"
                                     fontSize="sm"
+                                    size="sm"
+                                    borderRadius="md"
                                     padding="2"
                                     validate={(value) => {
                                         if (!value) {
@@ -96,6 +102,8 @@ export default function Login() {
                                         variant="filled"
                                         placeholder="Password"
                                         fontSize="sm"
+                                        size="sm"
+                                        borderRadius="md"
                                         padding="2"
                                         validate={(value) => {
                                             if (!value) {
@@ -130,6 +138,7 @@ export default function Login() {
                                     {backendError}
                                 </Text>
                             )}
+                            {/* Conditional rendering of loading spinner */}
                             <Button
                                 bg={theme.purple}
                                 _hover={{ bg: theme.onHoverPurple }}
@@ -137,6 +146,7 @@ export default function Login() {
                                 variant="solid"
                                 type="submit"
                                 size="sm"
+                                isLoading={loading} // Add isLoading prop
                             >
                                 Login
                             </Button>

@@ -1,23 +1,22 @@
-import SideMenu from "../components/SideMenu.jsx"; // Importing the SideMenu component
-import TopMenu from "../components/TopMenu.jsx"; // Importing the TopMenu component
-import { Outlet } from "react-router-dom"; // Importing the Outlet component from react-router-dom
+import PropTypes from 'prop-types'; // Import PropTypes
+import SideMenu from '../components/SideMenu.jsx';
+import TopMenu from '../components/TopMenu.jsx';
+import { Outlet } from 'react-router-dom';
 
 // MainLayout component definition
-export default function MainLayout() {
-    // Rendering the layout structure
+export default function MainLayout({ isAdmin }) {
     return (
         <div className="flex min-w-screen min-h-screen bg-[#393970]">
-            {/* Rendering the SideMenu component */}
-            <SideMenu/>
-
-            {/* Main content area */}
+            <SideMenu isAdmin={isAdmin} />
             <div className="bg-[#E1E4EB] w-4/5 pl-16">
-                {/* Rendering the TopMenu component */}
-                <TopMenu/>
-
-                {/* Outlet for rendering nested routes */}
+                <TopMenu />
                 <Outlet />
             </div>
         </div>
     );
 }
+
+// PropTypes validation for MainLayout component
+MainLayout.propTypes = {
+    isAdmin: PropTypes.bool.isRequired, // Validate isAdmin prop
+};

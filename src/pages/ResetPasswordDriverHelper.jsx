@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     Button,
     Input,
@@ -15,18 +15,18 @@ import {
     AlertDialogContent,
     AlertDialogHeader,
     AlertDialogBody,
-    AlertDialogFooter
+    AlertDialogFooter,
 } from "@chakra-ui/react";
-import {Field, Formik} from "formik";
+import { Field, Formik } from "formik";
 import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import Password from "../assets/images/Password.png";
-import './ChangePassword.css';
-import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import PasswordStrengthBar from 'react-password-strength-bar';
-import {useNavigate} from "react-router-dom";
-import $ from "jquery";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { useNotifications } from '../context/NotificationContext';
+import PropTypes from 'prop-types';
 
 const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, placeholder, error }) => (
     <FormControl isInvalid={!!error}>
@@ -48,7 +48,7 @@ const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, place
                     size="sm"
                     variant="ghost"
                     onClick={handleShowPassword}
-                    icon={showPassword ? <ViewOffIcon/> : <ViewIcon/>}
+                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                     aria-label="password-icon"
                 />
             </InputRightElement>
@@ -57,15 +57,27 @@ const PasswordField = ({ fieldId, label, showPassword, handleShowPassword, place
     </FormControl>
 );
 
-export default function ChangePassword() {
+PasswordField.propTypes = {
+    fieldId: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    showPassword: PropTypes.bool.isRequired,
+    handleShowPassword: PropTypes.func.isRequired,
+    placeholder: PropTypes.string,
+    error: PropTypes.string
+};
+
+export default function ResetPasswordDriverHelper() {
     const [error, setError] = useState('');
-    const [showPassword1, setShowPassword1] = useState(false);
-    const [showPassword2, setShowPassword2] = useState(false);
-    const [showPassword3, setShowPassword3] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [resetPasswordResponse, setResetPasswordResponse] = useState("");
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const cancelRef = useRef();
     const navigate = useNavigate();
+    const { addNotification } = useNotifications();
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+    const username = query.get('username');
 
     const handleShowPassword = (setter) => () => setter(prev => !prev);
 
@@ -76,17 +88,11 @@ export default function ChangePassword() {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
+        console.log("Email:", values.email); // Log the email to check if it is correct
         try {
-            const storedUsername = sessionStorage.getItem('Username');
-            if (!storedUsername) {
-                navigate("/auth/login");
-                return;
-            }
-
-            const response = await axios.post('https://localhost:7265/api/Auth/change-password-staff', {
-                username: storedUsername,
-                oldPassword: values.oldPassword,
-                newPassword: values.newPassword,
+            const response = await axios.post('https://localhost:7265/api/Auth/reset-password', {
+                email: values.email, // Include email in the request
+                newPassword: values.newPassword
             }, {
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -96,49 +102,50 @@ export default function ChangePassword() {
             if (response.data.status) {
                 setIsAlertOpen(true);
                 setResetPasswordResponse(response.data.message);
+
+                // Add a notification for the admin
+                addNotification({
+                    title: "Password Reset Successful",
+                    body: `Password for ${username} has been reset successfully.`,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                });
             } else {
-                if (response.data.error === "Old password is incorrect.") {
-                    setError(response.data.error);
-                } else {
-                    setIsAlertOpen(true);
-                    setResetPasswordResponse(response.data.error);
-                }
+                setIsAlertOpen(true);
+                setResetPasswordResponse(response.data.error || "Failed to reset password.");
             }
         } catch (error) {
             console.error('Error:', error.message);
-            setError('An error occurred. Please try again.');
+            setResetPasswordResponse("An error occurred. Please try again.");
         } finally {
             setSubmitting(false);
         }
     };
 
+    useEffect(() => {
+        sessionStorage.getItem('Username');
+    }, []);
+
     const handleCancel = () => {
         navigate('/app/Dashboard');
     };
 
-    useEffect(() => {
-        sessionStorage.getItem('Username');
-        $(".pwd-meter > div").children().each(function () {
-            $(this).css({"height": "3px", "border-radius": "5px"})
-        });
-    }, []);
-
     return (
         <>
-            <PageHeader title="Change Password" className="mb-14"/>
+            <PageHeader title={`Reset Password for ${username}`} className="mb-14" />
             <div className="flex justify-between vertical-container">
-                <div className="flex flex-col gap-6 mt-5">
+                <div className="flex flex-col gap-8 mt-5">
                     <Formik
                         onSubmit={handleSubmit}
                         initialValues={{
-                            oldPassword: "",
+                            email: '', // Initialize email field
                             newPassword: "",
                             confirmPassword: ""
                         }}
                         validate={(values) => {
                             const errors = {};
-                            if (!values.oldPassword) {
-                                errors.oldPassword = "Please enter your old password.";
+                            if (!values.email) {
+                                errors.email = "Please enter your email.";
                             }
                             if (!values.newPassword) {
                                 errors.newPassword = "Please enter your new password.";
@@ -146,71 +153,70 @@ export default function ChangePassword() {
                             if (!values.confirmPassword) {
                                 errors.confirmPassword = "Please confirm your new password.";
                             }
-                            if (values.oldPassword === values.newPassword) {
-                                errors.newPassword = "New password must be different from old password.";
-                            }
                             if (values.newPassword !== values.confirmPassword) {
-                                errors.confirmPassword = "Passwords do not match with new password.";
+                                errors.confirmPassword = "Passwords do not match.";
                             }
                             return errors;
                         }}
                     >
-                        {({ handleSubmit, errors, touched, values, isSubmitting }) => (
+                        {({ handleSubmit, errors, values, isSubmitting }) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-4/5">
-                                <PasswordField
-                                    fieldId="oldPassword"
-                                    label="Old Password"
-                                    showPassword={showPassword3}
-                                    handleShowPassword={handleShowPassword(setShowPassword3)}
-                                    placeholder="Old Password"
-                                    error={errors.oldPassword || (error && error === "Your old password is incorrect.")}
+                                <Field
+                                    as={Input}
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    variant="filled"
+                                    placeholder="Email"
+                                    size="sm"
+                                    borderRadius="md"
                                 />
                                 <PasswordField
                                     fieldId="newPassword"
                                     label="New Password"
-                                    showPassword={showPassword1}
-                                    handleShowPassword={handleShowPassword(setShowPassword1)}
+                                    showPassword={showNewPassword}
+                                    handleShowPassword={handleShowPassword(setShowNewPassword)}
                                     placeholder="New Password"
                                     error={errors.newPassword}
                                 />
-                                <PasswordStrengthBar className="pwd-meter" password={values.newPassword}/>
+                                <PasswordStrengthBar className="pwd-meter" password={values.newPassword} />
                                 <PasswordField
                                     fieldId="confirmPassword"
                                     label="Confirm Password"
-                                    showPassword={showPassword2}
-                                    handleShowPassword={handleShowPassword(setShowPassword2)}
+                                    showPassword={showConfirmPassword}
+                                    handleShowPassword={handleShowPassword(setShowConfirmPassword)}
                                     placeholder="Confirm Password"
                                     error={errors.confirmPassword}
                                 />
                                 {error && (
                                     <Alert status="error">
-                                        <AlertIcon/>
+                                        <AlertIcon />
                                         {error}
                                     </Alert>
                                 )}
                                 <div className="flex gap-4 mt-10">
                                     <Button
                                         bg="gray.400"
-                                        _hover={{bg: "gray.500"}}
+                                        _hover={{ bg: "gray.500" }}
                                         color="#ffffff"
                                         variant="solid"
                                         w="200px"
                                         gap="18"
-                                        size="sm"
                                         onClick={handleCancel}
                                         isDisabled={isSubmitting}
+                                        size="sm"
                                     >
                                         Cancel
                                     </Button>
                                     <Button
                                         bg={theme.purple}
-                                        _hover={{bg: theme.onHoverPurple}}
+                                        _hover={{ bg: theme.onHoverPurple }}
                                         color="#ffffff"
                                         variant="solid"
                                         w="200px"
                                         type="submit"
-                                        size="sm"
                                         isLoading={isSubmitting}
+                                        size="sm"
                                     >
                                         Save
                                     </Button>
@@ -220,7 +226,7 @@ export default function ChangePassword() {
                     </Formik>
                 </div>
                 <div className="flex items-end">
-                    <img src={Password} alt="Change Password" width="400" height="400" className="mr-14"/>
+                    <img src={Password} alt="Change Password" width="400" height="400" className="mr-14" />
                 </div>
             </div>
             <AlertDialog

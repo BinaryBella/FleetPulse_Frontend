@@ -12,16 +12,15 @@ export default function ResetPassword() {
     const [newPasswordVisibility, setNewPasswordVisibility] = useState(false);
     const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(false);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate();
     const location = useLocation();
     let email = "";
 
-
-
     useEffect(() => {
         // Password strength meter style
         $(".pwd-meter > div").children().each(function () {
-            $(this).css({"height": "5px", "border-radius": "5px"})
+            $(this).css({"height": "3px", "border-radius": "5px"})
         });
 
         if (location.state == null) {
@@ -41,6 +40,7 @@ export default function ResetPassword() {
 
     const handleSubmit = async (values) => {
         try {
+            setLoading(true); // Set loading to true when submitting form
             console.log(email);
             const response = await fetch('https://localhost:7265/api/Auth/reset-password', {
                 method: 'POST',
@@ -61,6 +61,8 @@ export default function ResetPassword() {
         } catch (error) {
             console.error('Error:', error.message);
             setError("An error occurred. Please try again.");
+        } finally {
+            setLoading(false); // Set loading to false when request is completed
         }
     };
 
@@ -111,12 +113,15 @@ export default function ResetPassword() {
                                         variant="filled"
                                         placeholder="New Password"
                                         mb="10px"
+                                        size="sm"
+                                        borderRadius="md"
                                         fontSize="sm"
                                     />
                                     <InputRightElement width="4.5rem">
                                         <IconButton
                                             h="1.75rem"
                                             size="sm"
+                                            marginBottom="3px"
                                             variant="ghost"
                                             onClick={handleNewPasswordVisibility}
                                             icon={newPasswordVisibility ? <ViewOffIcon /> : <ViewIcon />}
@@ -137,11 +142,14 @@ export default function ResetPassword() {
                                         variant="filled"
                                         placeholder="Confirm Password"
                                         fontSize="sm"
+                                        size="sm"
+                                        borderRadius="md"
                                     />
                                     <InputRightElement width="4.5rem">
                                         <IconButton
                                             h="1.75rem"
                                             size="sm"
+                                            marginBottom="3px"
                                             variant="ghost"
                                             onClick={handleConfirmPasswordVisibility}
                                             icon={confirmPasswordVisibility ? <ViewOffIcon /> : <ViewIcon />}
@@ -156,7 +164,10 @@ export default function ResetPassword() {
                                 bg={theme.purple}
                                 _hover={{ bg: theme.onHoverPurple }}
                                 color="#ffffff"
-                                variant="solid">
+                                size="sm"
+                                variant="solid"
+                                isLoading={loading} // Add isLoading prop
+                            >
                                 Save
                             </Button>
                         </Stack>

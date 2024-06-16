@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Logo from "../assets/images/logo.png";
 import {
     Accordion,
@@ -21,8 +22,7 @@ import { BiTrip } from "react-icons/bi";
 import { TbReportAnalytics } from "react-icons/tb";
 import $ from 'jquery';
 
-export default function SideMenu() {
-
+export default function SideMenu({ isAdmin }) {
     useEffect(() => {
         $(".chakra-accordion__item").css({ "border-color": "transparent" });
     }, []);
@@ -43,7 +43,7 @@ export default function SideMenu() {
                         fontSize="15px"
                         icon={<AiOutlineDashboard />}
                     />
-                    <Text color={theme.orange} fontSize="sm" paddingLeft="6"> {/* Reduced font size */}
+                    <Text color={theme.orange} fontSize="sm" paddingLeft="6">
                         Dashboard
                     </Text>
                 </Link>
@@ -61,8 +61,7 @@ export default function SideMenu() {
                         <AccordionItem>
                             <h2>
                                 <AccordionButton>
-                                    <Box as="span" flex='1' textAlign='left' color={theme.orange} fontSize='sm'
-                                         paddingLeft="0">
+                                    <Box as="span" flex='1' textAlign='left' color={theme.orange} fontSize='sm' paddingLeft="0">
                                         Vehicle
                                     </Box>
                                     <AccordionIcon color={theme.orange}/>
@@ -129,18 +128,20 @@ export default function SideMenu() {
                         Helper
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/StaffDetails">
-                    <IconButton
-                        variant='link'
-                        color={theme.orange}
-                        aria-label='staff'
-                        fontSize="15px"
-                        icon={<IoMdPeople/>}
-                    />
-                    <Text color={theme.orange} fontSize="sm" paddingLeft="6">
-                        Staff
-                    </Text>
-                </Link>
+                {isAdmin && ( // Render only if isAdmin is true (admin user)
+                    <Link className="flex items-center pl-16" to="/app/StaffDetails">
+                        <IconButton
+                            variant='link'
+                            color={theme.orange}
+                            aria-label='staff'
+                            fontSize="15px"
+                            icon={<IoMdPeople/>}
+                        />
+                        <Text color={theme.orange} fontSize="sm" paddingLeft="6">
+                            Staff
+                        </Text>
+                    </Link>
+                )}
                 <Link className="flex items-center pl-16" to="/app/TripDetails">
                     <IconButton
                         variant='link'
@@ -269,3 +270,8 @@ export default function SideMenu() {
         </div>
     );
 }
+
+// PropTypes validation for SideMenu component
+SideMenu.propTypes = {
+    isAdmin: PropTypes.bool.isRequired, // Validate isAdmin prop
+};

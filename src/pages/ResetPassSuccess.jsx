@@ -32,6 +32,7 @@ export default function ResetPassSuccess() {
                                 color="#ffffff"
                                 variant="solid"
                                 type="submit"
+                                size="sm"
                             >
                                 Login
                             </Button>
