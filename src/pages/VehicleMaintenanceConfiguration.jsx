@@ -57,6 +57,7 @@ const VehicleMaintenanceConfiguration = () => {
 
     const breadcrumbs = [
         { label: 'Vehicle', link: '/app/Vehicle' },
+        { label: 'Vehicle Maintenance Configuration', link: '/app/VehicleMaintenanceConfigurationTable' },
         { label: 'Add Vehicle Maintenance Configuration', link: '/app/VehicleMaintenanceConfiguration' }
     ];
 
@@ -99,12 +100,12 @@ const VehicleMaintenanceConfiguration = () => {
     };
 
     const handleCancel = () => {
-        navigate('/app/VehicleTable');
+        navigate('/app/VehicleMaintenanceConfigurationTable');
     };
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
-        navigate('/app/VehicleTable');
+        navigate('/app/VehicleMaintenanceConfigurationTable');
     };
 
     return (

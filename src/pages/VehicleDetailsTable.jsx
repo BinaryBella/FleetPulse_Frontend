@@ -107,7 +107,7 @@ export default function VehicleDetailsTable() {
                                             </Link>
                                         </MenuItem>
                                         <MenuItem>
-                                            <Link to="/app/VehicleMaintenanceConfiguration" >
+                                            <Link to="/app/VehicleMaintenanceConfigurationTable" >
                                                 Vehicle Maintenance Configuration
                                             </Link>
                                         </MenuItem>

@@ -113,12 +113,13 @@ export default function Login() {
                                     />
                                     <InputRightElement width="3rem">
                                         <IconButton
-                                            h="1.5rem"
+                                            h="1.3rem"
                                             size="xs"
                                             variant="ghost"
                                             onClick={handleShowPassword}
                                             icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                                             aria-label="password-icon"
+                                            margin-top="5px"
                                         />
                                     </InputRightElement>
                                 </InputGroup>
