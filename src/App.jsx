@@ -50,6 +50,8 @@ import TripReport from "./pages/TripReport.jsx";
 import AccidentReport from "./pages/AccidentReport.jsx";
 import ResetPasswordDriverHelper from "./pages/ResetPasswordDriverHelper.jsx";
 import { useEffect, useState } from "react";
+import VehicleMaintenanceConfiguration from "./pages/VehicleMaintenanceConfiguration.jsx";
+import VehicleMaintenanceConfigurationTable from "./pages/VehicleMaintenanceConfigurationTable.jsx";
 
 
 export default function App() {
@@ -122,6 +124,8 @@ export default function App() {
                             <Route path="/app/TripReport" element={<TripReport />} />
                             <Route path="/app/AccidentReport" element={<AccidentReport />} />
                             <Route path="/app/Notification" element={<Notifications />} />
+                            <Route path="/app/VehicleMaintenanceConfiguration" element={<VehicleMaintenanceConfiguration />} />
+                            <Route path="VehicleMaintenanceConfigurationTable" element={<VehicleMaintenanceConfigurationTable/>} />
                         </Route>
                     </Route>
 
