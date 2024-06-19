@@ -34,11 +34,14 @@ const NotificationHandler = () => {
             console.log("Incoming message");
             console.log(payload);
             const token = sessionStorage.getItem("deviceToken");
+
+            // Check if payload.data exists and contains the necessary properties
+            const notificationData = payload.data || {};
             const notification = {
                 UserId: token,
-                title: payload.notification.title,
-                body: payload.notification.body,
-                username: payload.data.username,
+                title: payload.notification?.title || 'No title',
+                body: payload.notification?.body || 'No body',
+                username: notificationData.username || 'Unknown',
                 Date: new Date().toISOString(),
                 Time: new Date().toISOString(),
                 Status: false,
