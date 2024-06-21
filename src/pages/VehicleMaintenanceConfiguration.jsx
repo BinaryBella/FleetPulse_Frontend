@@ -9,7 +9,8 @@ import {
     AlertDialogContent,
     AlertDialogHeader,
     AlertDialogBody,
-    AlertDialogFooter, Checkbox
+    AlertDialogFooter,
+    Checkbox
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -27,8 +28,8 @@ const VehicleMaintenanceConfiguration = () => {
     const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
     const exampleVehicleData = [
-        { VehicleId: 2, VehicleRegistrationNo: 'REG123' },
-        { VehicleId: 3, VehicleRegistrationNo: 'REG456' },
+        { VehicleId: 1, VehicleRegistrationNo: 'ABC123' },
+        { VehicleId: 2, VehicleRegistrationNo: 'DEF456' },
     ];
 
     const fetchVehicleRegNos = async () => {
@@ -37,6 +38,7 @@ const VehicleMaintenanceConfiguration = () => {
             setVehicleRegNoDetails(response.data);
         } catch (error) {
             console.error('Error fetching vehicle registration numbers:', error);
+            setVehicleRegNoDetails(exampleVehicleData); // Using dummy data in case of an error
         }
     };
 
@@ -52,7 +54,6 @@ const VehicleMaintenanceConfiguration = () => {
     useEffect(() => {
         fetchVehicleMaintenanceTypes();
         fetchVehicleRegNos();
-        setVehicleRegNoDetails(exampleVehicleData);
     }, []);
 
     const breadcrumbs = [
@@ -117,6 +118,7 @@ const VehicleMaintenanceConfiguration = () => {
                     registrationNo: '',
                     maintenanceType: '',
                     duration: '',
+                    isActive: false,
                 }}
                 onSubmit={handleSubmit}
                 validate={(values) => {
@@ -134,11 +136,11 @@ const VehicleMaintenanceConfiguration = () => {
                 }}
             >
                 {({ errors, touched }) => (
-                    <Form className="flex justify-between vertical-container ">
+                    <Form className="flex justify-between vertical-container">
                         <div className="flex flex-col gap-6 mt-5 w-1/4">
                             <p>Vehicle Registration No</p>
                             <Field name="registrationNo">
-                                {({field}) => (
+                                {({ field }) => (
                                     <div>
                                         <Select
                                             {...field}
@@ -162,7 +164,7 @@ const VehicleMaintenanceConfiguration = () => {
                             </Field>
                             <p>Vehicle Maintenance Type</p>
                             <Field name="maintenanceType">
-                                {({field}) => (
+                                {({ field }) => (
                                     <div>
                                         <Select
                                             {...field}
@@ -186,7 +188,7 @@ const VehicleMaintenanceConfiguration = () => {
                             </Field>
                             <p>Duration</p>
                             <Field name="duration">
-                                {({field}) => (
+                                {({ field }) => (
                                     <div>
                                         <Select
                                             {...field}
@@ -228,7 +230,7 @@ const VehicleMaintenanceConfiguration = () => {
                             <div className="flex gap-4 mt-10">
                                 <Button
                                     bg="gray.400"
-                                    _hover={{bg: 'gray.500'}}
+                                    _hover={{ bg: 'gray.500' }}
                                     color="#ffffff"
                                     variant="solid"
                                     size="sm"
@@ -239,7 +241,7 @@ const VehicleMaintenanceConfiguration = () => {
                                 </Button>
                                 <Button
                                     bg={theme.purple}
-                                    _hover={{bg: theme.onHoverPurple}}
+                                    _hover={{ bg: theme.onHoverPurple }}
                                     color="#ffffff"
                                     variant="solid"
                                     size="sm"
@@ -251,10 +253,9 @@ const VehicleMaintenanceConfiguration = () => {
                             </div>
                         </div>
                         <div className="flex items-end">
-                            <img src={Maintenance} alt="Change Password" width="400" height="400" className="mr-14"/>
+                            <img src={Maintenance} alt="Change Password" width="400" height="400" className="mr-14" />
                         </div>
                     </Form>
-
                 )}
             </Formik>
 
