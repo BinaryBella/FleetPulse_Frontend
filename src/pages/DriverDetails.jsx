@@ -115,6 +115,16 @@ export default function DriverDetails() {
             meta: { isNumeric: false, filter: 'text' }
         },
         {
+            accessorKey: 'driverLicenseNo',
+            header: 'Driver License No',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'licenseExpiryDate',
+            header: 'License Expiry Date',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
             accessorKey: 'emailAddress',
             header: 'Email Address',
             meta: { isNumeric: false, filter: 'text' }
@@ -154,7 +164,7 @@ export default function DriverDetails() {
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/editDriver/${row.original.id}`}>
+                            <Link to={`/app/EditDriverDetails/${row.original.id}`}>
                                 Edit
                             </Link>
                         </MenuItem>
@@ -278,6 +288,8 @@ export default function DriverDetails() {
                                 <Td className="custom-table-td">{driver.lastName}</Td>
                                 <Td className="custom-table-td">{driver.DoB}</Td>
                                 <Td className="custom-table-td">{driver.lNIC}</Td>
+                                <Td className="custom-table-td">{driver.driverLicenseNo}</Td>
+                                <Td className="custom-table-td">{driver.licenseExpiryDate}</Td>
                                 <Td className="custom-table-td">{driver.emailAddress}</Td>
                                 <Td className="custom-table-td">{driver.phoneNo}</Td>
                                 <Td className="custom-table-td">{driver.emergencyContact}</Td>
@@ -294,7 +306,7 @@ export default function DriverDetails() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/editDriver/${driver.id}`}>Edit</Link>
+                                                <Link to={`/app/EditDriverDetails/${driver.id}`}>Edit</Link>
                                             </MenuItem>
                                             <MenuItem onClick={() => onClickDelete(driver)}>
                                                 {driver.status ? "Deactivate" : "Activate"}

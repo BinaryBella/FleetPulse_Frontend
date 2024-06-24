@@ -15,14 +15,14 @@ export default function AddVehicleType() {
     
     const breadcrumbs = [
         { label: 'Vehicle', link: '/' },
-        { label: 'Vehicle Type Details', link: '/' },
-        { label: 'Add Vehicle Type Details', link: '/' }
+        { label: 'Vehicle Type ', link: '/app/VehicleType' },
+        { label: 'Add Vehicle Type ', link: '/app/AddVehicleType' }
     ];
 
     const handleSubmit = async (values) => {
         try {
             console.log(values.TypeName, values.isActive);
-            const status = values.isActive === false ? false : true;
+            const status = values.isActive === false ? "false" : "true";
 
             const response = await fetch('https://localhost:7265/api/VehicleType', {
                 method: 'POST',
@@ -30,8 +30,8 @@ export default function AddVehicleType() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    TypeName: values.TypeName,
-                    status: status
+                    Type: values.TypeName,
+                    Status: status
                 })
             });
 

@@ -76,6 +76,7 @@ export default function TripDetails() {
         { accessorKey: 'endTime', header: 'End Time', meta: { isNumeric: false, filter: 'text' } },
         { accessorKey: 'startLocation', header: 'Start Location', meta: { isNumeric: false, filter: 'text' } },
         { accessorKey: 'endLocation', header: 'End Location', meta: { isNumeric: false, filter: 'text' } },
+        { accessorKey: 'status', header: 'Status', meta: { isNumeric: false, filter: 'text' } },
         {
             accessorKey: 'actions',
             header: 'Actions',
@@ -123,8 +124,8 @@ export default function TripDetails() {
     };
 
     const breadcrumbs = [
-        { label: "Trip", link: "/app/Trip" },
-        { label: "Trip Details", link: "/app/TripDetails" }
+        { label: 'Trip', link: '/app/Trip' },
+        { label: 'Trip Details', link: '/app/TripDetails' }
     ];
 
     const handlePageClick = ({ selected }) => {
@@ -242,7 +243,7 @@ export default function TripDetails() {
                                 <Td>{trip.endTime}</Td>
                                 <Td>{trip.startLocation}</Td>
                                 <Td>{trip.endLocation}</Td>
-                                <Td>{trip.isActive ? "Active" : "Inactive"}</Td>
+                                <Td>{trip.status ? "Active" : "Inactive"}</Td>
                                 <Td>
                                     <Menu>
                                         <MenuButton

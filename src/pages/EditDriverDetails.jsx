@@ -43,8 +43,8 @@ export default function EditDriverDetails() {
 
     const breadcrumbs = [
         { label: 'Driver', link: '/' },
-        { label: 'Driver Details', link: '/' },
-        { label: 'Edit Driver Details', link: '/' }
+        { label: 'Driver Details', link: '/app/DriverDetails' },
+        { label: 'Edit Driver Details', link: '/app/EditDriverDetails' }
     ];
 
     useEffect(() => {
@@ -65,8 +65,9 @@ export default function EditDriverDetails() {
                 lastName: data.lastName || "",
                 dateOfBirth: data.dateOfBirth || "",
                 nationalId: data.nationalId || "",
-                email: data.email || "",
-                licenseNo: data.licenseNo || "",
+                driverLicenseNo: data.driverLicenseNo|| "",
+                licenseExpiryDate: data.licenseExpiryDate|| "",
+                email: data.email || "",              
                 contactNumber: data.contactNumber || "",
                 emergencyContact: data.emergencyContact || "",
                 bloodGroup: data.bloodGroup || "",
@@ -94,8 +95,9 @@ export default function EditDriverDetails() {
                     LastName: values.lastName,
                     DateOfBirth: values.dateOfBirth,
                     NationalId: values.nationalId,
-                    Email: values.email,
-                    LicenseNo: values.licenseNo,
+                    DriverLicenseNo: values.driverLicenseNo,
+                    LicenseExpiryDate: values.licenseExpiryDate,
+                    Email: values.email,                  
                     ContactNumber: values.contactNumber,
                     EmergencyContact: values.emergencyContact,
                     BloodGroup: values.bloodGroup,
@@ -218,9 +220,10 @@ export default function EditDriverDetails() {
                                 )}
                             </Field>
                         </div>
+                        
                         <div className="flex flex-col gap-3">
-                            <p>National Identity Card No</p>
-                            <Field name="nationalId">
+                            <p>Driver License No</p>
+                            <Field name="driverLicenseNo">
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -232,8 +235,28 @@ export default function EditDriverDetails() {
                                         mt={1}
                                         width="500px"
                                         id="nationalId"
-                                        value={values.nationalId}
-                                        placeholder="National Identity Card No"
+                                        value={values.driverLicenseNo}
+                                        placeholder="Driver License No"
+                                    />
+                                )}
+                            </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>License Expiry Date</p>
+                            <Field name="licenseExpiryDate">
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        type="text"
+                                        variant="filled"
+                                        borderRadius="md"
+                                        px={3}
+                                        py={2}
+                                        mt={1}
+                                        width="500px"
+                                        id="nationalId"
+                                        value={values.licenseExpiryDate}
+                                        placeholder="License Expiry Date"
                                     />
                                 )}
                             </Field>
@@ -258,26 +281,7 @@ export default function EditDriverDetails() {
                                 )}
                             </Field>
                         </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Driver License No</p>
-                            <Field name="licenseNo">
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        type="text"
-                                        variant="filled"
-                                        borderRadius="md"
-                                        px={3}
-                                        py={2}
-                                        mt={1}
-                                        width="500px"
-                                        id="licenseNo"
-                                        value={values.licenseNo}
-                                        placeholder="Driver License No"
-                                    />
-                                )}
-                            </Field>
-                        </div>
+                        
                         <div className="flex flex-col gap-3">
                             <p>Contact Number</p>
                             <Field name="contactNumber">

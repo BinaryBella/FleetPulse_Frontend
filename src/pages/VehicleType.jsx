@@ -151,15 +151,15 @@ export default function VehicleType() {
     setSearchInput(inputValue);
     table.setGlobalFilter(inputValue);
     setCurrentPage(0);
-  };
+};
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
 
   const breadcrumbs = [
-    { label: "Vehicle", link: "/" },
-    { label: "Vehicle Type", link: "/app/VehicleType" },
+    { label: 'Vehicle', link: '/' },
+    { label: 'Vehicle Type', link: '/app/VehicleType' },
   ];
 
   const startOffset = currentPage * itemsPerPage;
@@ -187,7 +187,7 @@ export default function VehicleType() {
             width="300px"
           />
         </InputGroup>
-        <Link to="/app/AddVehicleTypeDetails">
+        <Link to="/app/AddVehicleType">
           <Button
             bg={theme.purple}
             _hover={{ bg: theme.onHoverPurple }}
@@ -255,7 +255,7 @@ export default function VehicleType() {
                     />
                     <MenuList>
                       <MenuItem>
-                        <Link to={`/app/EditVehicleType/${vehicleType.id}`}>
+                        <Link to={`/app/EditVehicleType/${vehicleType.vehicleTypeId}`}>
                           Edit
                         </Link>
                       </MenuItem>

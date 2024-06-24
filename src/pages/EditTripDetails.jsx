@@ -113,8 +113,8 @@ export default function EditTripDetails() {
         <>
             <PageHeader title="Edit Trip Details" breadcrumbs={[
                 { label: 'Trip', link: '/' },
-                { label: 'Trip Details', link: '/' },
-                { label: 'Edit Trip Details', link: '/' }
+                { label: 'Trip Details', link: '/app/TripDetails' },
+                { label: 'Edit Trip Details', link: '/app/EditTripDetails' }
             ]} />
             <Formik
                 enableReinitialize

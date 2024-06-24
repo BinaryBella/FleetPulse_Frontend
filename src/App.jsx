@@ -76,13 +76,13 @@ export default function App() {
                 <Route path='Manufacturer' element={<Manufacturer />}/>
                 <Route path='AddManufacturerTypeDetails' element={<AddManufacturerTypeDetails />}/>
                 <Route path='EditAccidentDetails' element={<EditAccidentDetails />}/>
-                <Route path='EditVehicleDetails' element={<EditVehicleDetails />}/>
-                <Route path='EditVehicleType' element={<EditVehicleType />}/>
+                <Route path='EditVehicleDetails/:id' element={<EditVehicleDetails />}/>
+                <Route path='EditVehicleType/:id' element={<EditVehicleType />}/>
                 <Route path='EditDriverDetails' element={<EditDriverDetails />}/>
                 <Route path='EditHelperDetails' element={<EditHelperDetails />}/>
                 <Route path='EditStaffDetails' element={<EditStaffDetails />}/>
                 <Route path='EditTripDetails' element={<EditTripDetails />}/>
-                <Route path='EditManufacturerTypeDetails' element={<EditManufacturerTypeDetails />}/>
+                <Route path='EditManufacturerTypeDetails/:id' element={<EditManufacturerTypeDetails />}/>
 
 
                 

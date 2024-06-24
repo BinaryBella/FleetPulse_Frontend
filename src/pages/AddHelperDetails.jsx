@@ -27,8 +27,8 @@ export default function AddHelperDetails() {
 
   const breadcrumbs = [
     { label: 'Helper', link: '/' },
-    { label: 'Helper Details', link: '/' },
-    { label: 'Add Helper Details', link: '/' },
+    { label: 'Helper Details', link: '/app/HelperDetails' },
+    { label: 'Add Helper Details', link: '/app/HelperDetails' },
   ];
 
   const handleSubmit = async (values) => {

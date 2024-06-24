@@ -15,8 +15,7 @@ export default function AddManufactureDetails() {
 
     const breadcrumbs = [
         { label: 'Manufacturer', link: '/' },
-        { label: 'Manufacturer Type', link: '/' },
-        { label: 'Add Manufacturer Type Details', link: '/' }
+        { label: 'Add Manufacturer Type Details', link: '/app/AddManufacturerTypeDetails' }
     ];
 
     const handleSubmit = async (values) => {
@@ -30,8 +29,8 @@ export default function AddManufactureDetails() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    TypeName: values.TypeName,
-                    status: status
+                    Manufacturer: values.TypeName,
+                    Status: status
                 })
             });
 
@@ -59,12 +58,12 @@ export default function AddManufactureDetails() {
     };
 
     const handleCancel = () => {
-        navigate('/app/ManufacturerTypeTable');
+        navigate('/app/Manufacturer');
     };
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
-        navigate('/app/ManufacturerTypeTable');
+        navigate('/app/Manufacturer');
     };
 
     return (

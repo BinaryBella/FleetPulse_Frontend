@@ -70,7 +70,7 @@ export default function HelperDetails() {
   const handleSearchInputChange = (event) => {
     const inputValue = event.target.value.toLowerCase();
     setSearchInput(inputValue);
-    setCurrentPage(0); // Reset to the first page when searching
+    setCurrentPage(0); 
   };
 
   const onClickInactive = (helper) => {
@@ -219,7 +219,7 @@ export default function HelperDetails() {
                   <Menu>
                     <MenuButton as={IconButton} aria-label='options' icon={<IoSettingsSharp />} />
                     <MenuList>
-                      <MenuItem onClick={() => navigate(`/editHelper/${helper.id}`)}>Edit</MenuItem>
+                      <MenuItem onClick={() => navigate(`/app/EditHelperDetails/${helper.id}`)}>Edit</MenuItem>
                       <MenuItem onClick={() => onClickInactive(helper)}>{helper.isActive ? 'Deactivate' : 'Activate'}</MenuItem>
                     </MenuList>
                   </Menu>

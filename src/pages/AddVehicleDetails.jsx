@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 import { Button, Checkbox, Input, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useDisclosure } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
+import axios from 'axios';
 
 
 export default function AddVehicleDetails() {
@@ -15,55 +16,137 @@ export default function AddVehicleDetails() {
 
   const breadcrumbs = [
     { label: "Vehicle", link: "/" },
-    { label: "Vehicle Details", link: "/app/VehicleType" },
-    { label: "Add Vehicle Details", link: "/app/AddvehicleTypeDetails" },
+    { label: "Vehicle DetailsTable", link: "/app/VehicleDetailsTable" },
+    { label: "Add Vehicle Details", link: "/app/AddvehicleDetails" },
   ];
+
+  const [Manufacture, setManufacture] = useState();
+  const [VehicleType, setVehicleType] = useState();
+  // const [FuelType, setFuelType] = useState();
+
+      
+  useEffect(() => {
+    axios.get('https://localhost:7265/api/Manufacture')
+    .then(response => {
+      console.log('Manufacture data fetched:', response.data);
+      setManufacture(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching manufacture data:', error);
+    });
+
+    axios.get('https://localhost:7265/api/VehicleType')
+    .then(response => {
+      console.log('type  data fetched:', response.data);
+      setVehicleType(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching manufacture data:', error);
+    });
+
+    // axios.get('https://localhost:7265/api/Manufacture')
+    // .then(response => {
+    //   console.log('Manufacture data fetched:', response.data);
+    //   setFuelType(response.data);
+    // })
+    // .catch(error => {
+    //   console.error('Error fetching manufacture data:', error);
+    // });
+  }, []);
 
   const handleSubmit = async (values) => {
     try {
       
+        console.log(values)
+      // const response = await fetch('https://localhost:7265/api/Vehicle', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({
+      //     vehicleId: 0,
+      //     vehicleRegistrationNo: values.vehicleRegistrationNo,
+      //     licenseNo: values.licenseNo,
+      //     licenseExpireDate: values.licenseExpireDate,
+      //     vehicleColor: values.vehicleColor,
+      //     status: true,
+      //     vehicleTypeId: values.vehicleTypeId,
+      //     manufactureId: values.manufactureId,
+      //     fuelRefillId: values.fuelRefillId,
+      //   })
+      // });
 
-      const response = await fetch('https://localhost:7265/api/Vehicle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          vehicleId: 0,
-          vehicleRegistrationNo: values.vehicleRegistrationNo,
-          licenseNo: values.licenseNo,
-          licenseExpireDate: values.licenseExpireDate,
-          vehicleColor: values.vehicleColor,
-          status: true,
-          vehicleModelId: values.vehicleModelId,
-          vehicleTypeId: values.vehicleTypeId,
-          manufactureId: values.manufactureId,
-          fuelRefillId: values.fuelRefillId,
-        })
-      });
+      
 
+      
+//   const vehicleTypeMap = {
+//   'Truck': 1,
+//   'Car': 2,
+//   // other types...
+// };
+const vehicleTypeMap = {};
+VehicleType.forEach(type => {
+  vehicleTypeMap[type.type] = type.vehicleTypeId;
+});
+
+
+const manufactureMap = {};
+Manufacture.forEach(manufacture => {
+  manufactureMap[manufacture.manufacturer] = manufacture.manufactureId;
+});
+// const manufactureMap={
+//   'Tata':2
+// }
+
+const fuelRefillMap = {
+  'Diesel': 1,
+  'Petrol': 2,
+  // other fuel types...
+};
+
+values = {
+  vehicleRegistrationNo: values.vehicleRegistrationNo,
+  licenseNo: values.licenseNo,
+  licenseExpireDate: values.licenseExpireDate,
+  vehicleColor: values.vehicleColor,
+  vehicleTypeId: vehicleTypeMap[values.vehicleTypeId], // use map to convert to integer
+  manufactureId: manufactureMap[values.manufactureId], // use map to convert to integer
+  fuelRefillId: fuelRefillMap[values.fuelRefillId], // use map to convert to integer
+  isActive: values.isActive
+};
+console.log('this is values whch sub',values)
+axios.post('https://localhost:7265/api/Vehicle', values)
+  .then(response => {
+    setSuccessDialogMessage('Vehicle details added successfully.');
+    onSuccessDialogOpen();
+    console.log('Data added', response.data);
+  })
+  .catch(error => {
+    console.error('There was an error adding the data!', error);
+  });
+
+    
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to add vehicle details.');
+        throw new Error('Failed to add vehicle details.');
       }
 
-      setSuccessDialogMessage('Vehicle details added successfully.');
-      onSuccessDialogOpen();
     } catch (error) {
-      setDialogMessage(error.message || 'Failed to add vehicle details.');
+      setDialogMessage( 'Failed to add vehicle details.');
       onDialogOpen();
     }
   };
 
   const handleCancel = () => {
-    navigate('/app/VehicleTypeTable');
+    navigate('/app/VehicleDetailsTable');
   };
 
   const handleSuccessDialogClose = () => {
     onSuccessDialogClose();
-    navigate('/app/VehicleTypeTable');
+    navigate('/app/VehicleDetailsTable');
   };
+
 
   return (
     <>
@@ -74,7 +157,6 @@ export default function AddVehicleDetails() {
           licenseNo: "",
           licenseExpireDate: "",
           vehicleColor: "",
-          vehicleModelId: "",
           vehicleTypeId: "",
           manufactureId: "",
           fuelRefillId: "",
@@ -115,48 +197,6 @@ export default function AddVehicleDetails() {
               </Field>
             </div>
             <div className="flex flex-col gap-3">
-              <p>Vehicle Model</p>
-              <Field name="vehicleModelId">
-                {({ field }) => (
-                  <div>
-                    <Input
-                      {...field}
-                      type="text"
-                      variant="filled"
-                      borderRadius="md"
-                      px={3}
-                      py={2}
-                      mt={1}
-                      width="500px"
-                      id="vehicleModelId"
-                      placeholder="Enter Vehicle Model"
-                    />
-                  </div>
-                )}
-              </Field>
-            </div>
-            <div className="flex flex-col gap-3">
-              <p>Manufacture</p>
-              <Field name="manufactureId">
-                {({ field }) => (
-                  <div>
-                    <Input
-                      {...field}
-                      type="text"
-                      variant="filled"
-                      borderRadius="md"
-                      px={3}
-                      py={2}
-                      mt={1}
-                      width="500px"
-                      id="manufactureId"
-                      placeholder="Enter Manufacture"
-                    />
-                  </div>
-                )}
-              </Field>
-            </div>
-            <div className="flex flex-col gap-3">
               <p>License No</p>
               <Field name="licenseNo">
                 {({ field }) => (
@@ -177,6 +217,7 @@ export default function AddVehicleDetails() {
                 )}
               </Field>
             </div>
+
             <div className="flex flex-col gap-3">
               <p>License Expire Date</p>
               <Field name="licenseExpireDate">
@@ -197,6 +238,7 @@ export default function AddVehicleDetails() {
                 )}
               </Field>
             </div>
+                 
             <div className="flex flex-col gap-3">
               <p>Vehicle Color</p>
               <Field name="vehicleColor">
@@ -213,27 +255,6 @@ export default function AddVehicleDetails() {
                       width="500px"
                       id="vehicleColor"
                       placeholder="Enter Vehicle Color"
-                    />
-                  </div>
-                )}
-              </Field>
-            </div>
-            <div className="flex flex-col gap-3">
-              <p>Fuel Type</p>
-              <Field name="fuelRefillId">
-                {({ field }) => (
-                  <div>
-                    <Input
-                      {...field}
-                      type="text"
-                      variant="filled"
-                      borderRadius="md"
-                      px={3}
-                      py={2}
-                      mt={1}
-                      width="500px"
-                      id="fuelRefillId"
-                      placeholder="Enter Fuel Type"
                     />
                   </div>
                 )}
@@ -260,6 +281,51 @@ export default function AddVehicleDetails() {
                 )}
               </Field>
             </div>
+
+            <div className="flex flex-col gap-3">
+              <p>Manufacture</p>
+              <Field name="manufactureId">
+                {({ field }) => (
+                  <div>
+                    <Input
+                      {...field}
+                      type="text"
+                      variant="filled"
+                      borderRadius="md"
+                      px={3}
+                      py={2}
+                      mt={1}
+                      width="500px"
+                      id="manufactureId"
+                      placeholder="Enter Manufacture"
+                    />
+                  </div>
+                )}
+              </Field>
+            </div>  
+          
+            <div className="flex flex-col gap-3">
+              <p>Fuel Type</p>
+              <Field name="fuelRefillId">
+                {({ field }) => (
+                  <div>
+                    <Input
+                      {...field}
+                      type="text"
+                      variant="filled"
+                      borderRadius="md"
+                      px={3}
+                      py={2}
+                      mt={1}
+                      width="500px"
+                      id="fuelRefillId"
+                      placeholder="Enter Fuel Type"
+                    />
+                  </div>
+                )}
+              </Field>
+            </div>
+            
             <Field name="isActive">
               {({ field, form }) => (
                 <div>

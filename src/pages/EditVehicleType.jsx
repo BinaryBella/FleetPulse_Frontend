@@ -23,12 +23,12 @@ export default function EditVehicleType() {
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
-    const [initialValues, setInitialValues] = useState({ typeName: "", isActive: false });
+    const [initialValues, setInitialValues] = useState({ typeName: "", isActive: true });
 
     const breadcrumbs = [
         { label: 'Vehicle', link: '/' },
-        { label: 'Vehicle Type Details', link: '/' },
-        { label: 'Edit Vehicle Type Details', link: '/' }
+        { label: 'Vehicle Type', link: '/app/VehicleType' },
+        { label: 'Edit Vehicle Type Details', link: '/app/VehicleType' }
     ];
 
     useEffect(() => {
@@ -45,8 +45,8 @@ export default function EditVehicleType() {
             }
 
             setInitialValues({
-                typeName: data.typeName || "",
-                isActive: data.status || false
+                typeName: data.type || "",
+                isActive: data.status
             });
         } catch (error) {
             setDialogMessage(error.message || 'Failed to fetch vehicle type data.');
@@ -64,8 +64,8 @@ export default function EditVehicleType() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    Id: id,
-                    TypeName: values.typeName,
+                    VehicleTypeId: id,
+                    Type: values.typeName,
                     Status: status
                 })
             });
@@ -84,12 +84,12 @@ export default function EditVehicleType() {
     };
 
     const handleCancel = () => {
-        navigate('/app/VehicleTypeTable');
+        navigate('/app/VehicleType');
     };
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
-        navigate('/app/VehicleTypeTable');
+        navigate('/app/VehicleType');
     };
 
     return (
@@ -135,21 +135,22 @@ export default function EditVehicleType() {
                             <Field name="isActive">
                                 {({ field }) => (
                                     <div>
-                                        <Checkbox
-                                            {...field}
-                                            size='lg'
-                                            checked={values.isActive}
-                                            className="mt-8"
-                                            onChange={e => setFieldValue('isActive', e.target.checked)}
-                                        >
-                                            Is Active
-                                        </Checkbox>
-                                        {errors.isActive && touched.isActive && (
-                                            <div className="text-red-500">{errors.isActive}</div>
-                                        )}
+                                    <Checkbox
+                                        {...field}
+                                        size='lg'
+                                        isChecked={values.isActive}
+                                        className="mt-8"
+                                        id="isActive"
+                                        onChange={e => setFieldValue('isActive', e.target.checked)}
+                                    >
+                                        Is Active
+                                    </Checkbox>
+                                    {errors.isActive && touched.isActive && (
+                                        <div className="text-red-500">{errors.isActive}</div>
+                                    )}
                                     </div>
                                 )}
-                            </Field>
+                                </Field>
                             <div className="flex gap-10">
                                 <Button
                                     bg="gray.400"

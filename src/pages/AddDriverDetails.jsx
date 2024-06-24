@@ -28,8 +28,9 @@ export default function AddDriverDetails() {
         lastName: "",
         dob: "",
         nationalId: "",
+        driverLicenseNo: "",
+        licenseExpiryDate: "",
         email: "",
-        licenseNo: "",
         contactNo: "",
         emergencyContactNo: "",
         bloodGroup: "",
@@ -41,8 +42,8 @@ export default function AddDriverDetails() {
 
     const breadcrumbs = [
         { label: 'Driver', link: '/' },
-        { label: 'Driver Details', link: '/' },
-        { label: 'Add Driver Details', link: '/' }
+        { label: 'Driver Details', link: '/app/DriverDetails' },
+        { label: 'Add Driver Details', link: '/appAddDriverDetails' }
     ];
 
     useEffect(() => {
@@ -63,8 +64,9 @@ export default function AddDriverDetails() {
                     lastName: data.lastName,
                     dob: data.dob,
                     nationalId: data.nationalId,
+                    driverLicenseNo: data.driverLicenseNo,
+                    licenseExpiryDate: data.licenseExpiryDate,
                     email: data.email,
-                    licenseNo: data.licenseNo,
                     contactNo: data.contactNo,
                     emergencyContactNo: data.emergencyContactNo,
                     bloodGroup: data.bloodGroup,
@@ -210,6 +212,50 @@ export default function AddDriverDetails() {
                                 )}
                             </div>
                             <div className="flex flex-col gap-3">
+                                <p>Driver License No</p>
+                                <Field name="driverLicenseNo">
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            type="text"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            id="driverLicenseNo"
+                                            placeholder="Driver License No"
+                                        />
+                                    )}
+                                </Field>
+                                {errors.driverLicenseNo && touched.driverLicenseNo && (
+                                    <div className="text-red-500">{errors.driverLicenseNo}</div>
+                                )}
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <p>License Expiry Date</p>
+                                <Field name="licenseExpiryDate">
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            type="text"
+                                            variant="filled"
+                                            borderRadius="md"
+                                            px={3}
+                                            py={2}
+                                            mt={1}
+                                            width="500px"
+                                            id="licenseExpiryDate"
+                                            placeholder="License Expiry Date"
+                                        />
+                                    )}
+                                </Field>
+                                {errors.licenseExpiryDate && touched.licenseExpiryDate && (
+                                    <div className="text-red-500">{errors.licenseExpiryDate}</div>
+                                )}
+                            </div>
+                            <div className="flex flex-col gap-3">
                                 <p>Email Address</p>
                                 <Field name="email">
                                     {({ field }) => (
@@ -231,28 +277,7 @@ export default function AddDriverDetails() {
                                     <div className="text-red-500">{errors.email}</div>
                                 )}
                             </div>
-                            <div className="flex flex-col gap-3">
-                                <p>Driver License No</p>
-                                <Field name="licenseNo">
-                                    {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            type="tel"
-                                            variant="filled"
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
-                                            mt={1}
-                                            width="500px"
-                                            id="licenseNo"
-                                            placeholder="Driver License No"
-                                        />
-                                    )}
-                                </Field>
-                                {errors.licenseNo && touched.licenseNo && (
-                                    <div className="text-red-500">{errors.licenseNo}</div>
-                                )}
-                            </div>
+                            
                             <div className="flex flex-col gap-3">
                                 <p>Contact Number</p>
                                 <Field name="contactNo">

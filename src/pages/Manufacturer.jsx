@@ -85,7 +85,7 @@ export default function Manufacturer() {
 
     const columns = [
         {
-            accessorKey: 'name',  // Removed leading space here
+            accessorKey: 'name', 
             header: 'Manufacturer Name',
             meta: { isNumeric: false, filter: 'text' }
         },
@@ -143,7 +143,6 @@ export default function Manufacturer() {
 
     const breadcrumbs = [
         { label: "Manufacturer", link: "/" },
-        { label: "Manufacturer Type", link: "/app/ManufacturerType" },
         { label: "Add Manufacturer Type Details", link: "/app/AddManufacturerTypeDetails" },
     ];
 
@@ -230,7 +229,7 @@ export default function Manufacturer() {
                     ) : (
                         currentData.map((manufacturer, index) => (
                             <Tr key={index}>
-                                <Td className="custom-table-td">{manufacturer.name}</Td>
+                                <Td className="custom-table-td">{manufacturer.manufacturer}</Td>
                                 <Td className="custom-table-td">{manufacturer.status ? "Active" : "Inactive"}</Td>
                                 <Td className="custom-table-td">
                                     <Menu>
@@ -243,7 +242,7 @@ export default function Manufacturer() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditManufacturerTypeDetails/${manufacturer.id}`}>
+                                                <Link to={`/app/EditManufacturerTypeDetails/${manufacturer.manufactureId}`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>

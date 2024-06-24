@@ -27,11 +27,11 @@ export default function EditVehicleDetails() {
         licenseNo: "",
         licenseExpireDate: "",
         vehicleColor: "",
-        vehicleModelId: "",
         vehicleTypeId: "",
         manufactureId: "",
         fuelRefillId: "",
         isActive: false,
+        vehicleId: 0
     });
 
     useEffect(() => {
@@ -52,11 +52,11 @@ export default function EditVehicleDetails() {
                 licenseNo: data.licenseNo || "",
                 licenseExpireDate: data.licenseExpireDate || "",
                 vehicleColor: data.vehicleColor || "",
-                vehicleModelId: data.vehicleModelId || "",
                 vehicleTypeId: data.vehicleTypeId || "",
                 manufactureId: data.manufactureId || "",
                 fuelRefillId: data.fuelRefillId || "",
                 isActive: data.status || false,
+                vehicleId: data.vehicleId || 0
             });
         } catch (error) {
             setDialogMessage(error.message || 'Failed to fetch vehicle details.');
@@ -93,12 +93,12 @@ export default function EditVehicleDetails() {
     };
 
     const handleCancel = () => {
-        navigate('/app/VehicleTypeTable');
+        navigate('/app/VehicleDetailsTable');
     };
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
-        navigate('/app/VehicleTypeTable');
+        navigate('/app/VehicleDetailsTable');
     };
 
     const handleChange = (e) => {
@@ -111,8 +111,8 @@ export default function EditVehicleDetails() {
 
     const breadcrumbs = [
         { label: "Vehicle", link: "/" },
-        { label: "Vehicle Details", link: "/app/VehicleType" },
-        { label: "Edit Vehicle Details", link: "/app/EditvehicleTypeDetails" },
+        { label: "VehicleDetailsTable", link: "/app/VehicleDetailsTable" },
+        { label: "EditVehicleDetails", link: "/app/EditvehicleDetails" },
     ];
 
     return (
@@ -137,21 +137,23 @@ export default function EditVehicleDetails() {
                         />
                     </div>
                     <div className="flex flex-col gap-3">
-                        <p>Vehicle Model</p>
+                        <p>License No</p>
                         <Input
                             type="text"
-                            name="vehicleModelId"
+                            name="licenseNo"
                             variant="filled"
                             borderRadius="md"
                             px={3}
                             py={2}
                             mt={1}
                             width="500px"
-                            placeholder="Vehicle Model"
-                            value={vehicleDetails.vehicleModelId}
+                            placeholder="License No"
+                            value={vehicleDetails.licenseNo}
                             onChange={handleChange}
                         />
                     </div>
+                   
+    
                     <div className="flex flex-col gap-3">
                         <p>Manufacture</p>
                         <Input
@@ -168,26 +170,11 @@ export default function EditVehicleDetails() {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="flex flex-col gap-3">
-                        <p>License No</p>
-                        <Input
-                            type="text"
-                            name="licenseNo"
-                            variant="filled"
-                            borderRadius="md"
-                            px={3}
-                            py={2}
-                            mt={1}
-                            width="500px"
-                            placeholder="License No"
-                            value={vehicleDetails.licenseNo}
-                            onChange={handleChange}
-                        />
-                    </div>
+                    
                     <div className="flex flex-col gap-3">
                         <p>License Expire Date</p>
                         <Input
-                            type="date"
+                            type="text"
                             name="licenseExpireDate"
                             variant="filled"
                             borderRadius="md"
@@ -195,6 +182,7 @@ export default function EditVehicleDetails() {
                             py={2}
                             mt={1}
                             width="500px"
+                            placeholder="License Expire"
                             value={vehicleDetails.licenseExpireDate}
                             onChange={handleChange}
                         />
@@ -216,22 +204,6 @@ export default function EditVehicleDetails() {
                         />
                     </div>
                     <div className="flex flex-col gap-3">
-                        <p>Fuel Type</p>
-                        <Input
-                            type="text"
-                            name="fuelRefillId"
-                            variant="filled"
-                            borderRadius="md"
-                            px={3}
-                            py={2}
-                            mt={1}
-                            width="500px"
-                            placeholder="Fuel Type"
-                            value={vehicleDetails.fuelRefillId}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-3">
                         <p>Vehicle Type</p>
                         <Input
                             type="text"
@@ -247,6 +219,39 @@ export default function EditVehicleDetails() {
                             onChange={handleChange}
                         />
                     </div>
+                    <div className="flex flex-col gap-3">
+                        <p>Manufacture</p>
+                        <Input
+                            type="text"
+                            name="manufactureId"
+                            variant="filled"
+                            borderRadius="md"
+                            px={3}
+                            py={2}
+                            mt={1}
+                            width="500px"
+                            placeholder="Manufacture"
+                            value={vehicleDetails.manufactureId}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <p>Fuel Type</p>
+                        <Input
+                            type="text"
+                            name="fuelRefillId"
+                            variant="filled"
+                            borderRadius="md"
+                            px={3}
+                            py={2}
+                            mt={1}
+                            width="500px"
+                            placeholder="Fuel Type"
+                            value={vehicleDetails.fuelRefillId}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    
                     <Checkbox
                         size="lg"
                         name="isActive"

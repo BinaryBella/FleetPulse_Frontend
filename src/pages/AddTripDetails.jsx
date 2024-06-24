@@ -16,8 +16,8 @@ export default function AddTripDetails() {
 
     const breadcrumbs = [
         { label: 'Trip', link: '/' },
-        { label: 'Trip Details', link: '/' },
-        { label: 'Add Trip Details', link: '/' }
+        { label: 'Trip Details', link: '/app/TripDetails' },
+        { label: 'Add Trip Details', link: '/app/AddTripDetails' }
     ];
 
     const handleSubmit = async (values) => {

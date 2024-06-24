@@ -29,8 +29,8 @@ export default function EditManufactureDetails() {
 
     const breadcrumbs = [
         {label: 'Manufacturer', link: '/'},
-        {label: 'Manufacturer Type', link: '/'},
-        {label: 'Edit Manufacturer Type Details', link: '/'}
+        
+        {label: 'Edit Manufacturer Type Details', link: '/app/ManufacturerTypeDetails'}
     ];
 
     useEffect(() => {
@@ -39,7 +39,7 @@ export default function EditManufactureDetails() {
 
     const fetchManufactureData = async (id) => {
         try {
-            const response = await fetch(`https://localhost:7265/api/Manufacturer/${id}`);
+            const response = await fetch(`https://localhost:7265/api/Manufacture/${id}`);
             const data = await response.json();
 
             if (!response.ok) {
@@ -47,8 +47,8 @@ export default function EditManufactureDetails() {
             }
 
             setInitialValues({
-                Manufacture: data.manufacture || "",
-                isActive: data.status || false
+                Manufacture: data.manufacturer || "",
+                isActive: data.status
             });
         } catch (error) {
             setDialogMessage(error.message || 'Failed to fetch manufacturer data.');
@@ -140,22 +140,23 @@ export default function EditManufactureDetails() {
                                     )}
                                 </Field>
                                 <Field name="isActive">
-                                    {({ field }) => (
-                                        <div>
-                                            <Checkbox
-                                                {...field}
-                                                size='lg'
-                                                checked={values.isActive}
-                                                className="mt-8"
-                                                onChange={e => setFieldValue('isActive', e.target.checked)}
-                                            >
-                                                Is Active
-                                            </Checkbox>
-                                            {errors.isActive && touched.isActive && (
-                                                <div className="text-red-500">{errors.isActive}</div>
-                                            )}
-                                        </div>
+                                {({ field }) => (
+                                    <div>
+                                    <Checkbox
+                                        {...field}
+                                        size='lg'
+                                        isChecked={values.isActive}
+                                        className="mt-8"
+                                        id="isActive"
+                                        onChange={e => setFieldValue('isActive', e.target.checked)}
+                                    >
+                                        Is Active
+                                    </Checkbox>
+                                    {errors.isActive && touched.isActive && (
+                                        <div className="text-red-500">{errors.isActive}</div>
                                     )}
+                                    </div>
+                                )}
                                 </Field>
                                 <div className="flex gap-10">
                                     <Button
