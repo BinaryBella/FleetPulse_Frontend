@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Formik, Form, Field } from "formik";
+import {useEffect, useState} from "react";
+import {Formik, Form, Field} from "formik";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -16,14 +16,14 @@ import {
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 
-export default function AddVehicleMaintenanceDetails() {
-    const { id } = useParams();
+export default function EditMaintenance() {
+    const {id} = useParams();
     const navigate = useNavigate();
-    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
-    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
+    const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
+    const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
@@ -39,74 +39,71 @@ export default function AddVehicleMaintenanceDetails() {
         isActive: false,
     });
 
-    const exampleVehicleData = [
-        { VehicleId: 1, VehicleRegistrationNo: "ABC123" },
-        { VehicleId: 2, VehicleRegistrationNo: "DEF456" },
-        { VehicleId: 3, VehicleRegistrationNo: "GHI789" }
-    ];
-
-    const fetchVehicleRegNos = async () => {
-        try {
-            const response = await axios.get("https://localhost:7265/api/Vehicle");
-            setVehicleRegNoDetails(response.data);
-        } catch (error) {
-            console.error("Error fetching vehicle registration numbers:", error);
-        }
-    };
-
-    const fetchVehicleMaintenanceDetails = async () => {
-        if (id) {
-            try {
-                const response = await axios.get(`https://localhost:7265/api/VehicleMaintenance/${id}`);
-                const maintenance = response.data;
-                setInitialValues({
-                    VehicleRegistrationNo: maintenance.VehicleId,
-                    maintenanceDate: maintenance.MaintenanceDate,
-                    VehicleMaintenanceTypeId: maintenance.VehicleMaintenanceTypeId,
-                    cost: maintenance.Cost,
-                    serviceProvider: maintenance.ServiceProvider,
-                    replacedParts: maintenance.PartsReplaced,
-                    specialNotes: maintenance.SpecialNotes,
-                    isActive: maintenance.Status,
-                });
-            } catch (error) {
-                console.error("Error fetching vehicle maintenance details:", error);
-            }
-        }
-    };
-
     useEffect(() => {
-        fetchVehicleMaintenanceTypes();
-        setVehicleRegNoDetails(exampleVehicleData);
-        fetchVehicleMaintenanceDetails();
-    }, []);
+        const fetchVehicleRegNos = async () => {
+            try {
+                const response = await axios.get("https://localhost:7265/api/Vehicle");
+                setVehicleRegNoDetails(response.data);
+            } catch (error) {
+                console.error("Error fetching vehicle registration numbers:", error);
+            }
+        };
 
-    const fetchVehicleMaintenanceTypes = async () => {
-        try {
-            const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
-            setMaintenanceTypeDetails(response.data);
-        } catch (error) {
-            console.error("Error fetching vehicle maintenance types:", error);
-        }
-    };
+        const fetchVehicleMaintenanceDetails = async () => {
+            if (id) {
+                try {
+                    const response = await axios.get(`https://localhost:7265/api/VehicleMaintenance/${id}`);
+                    const maintenance = response.data;
+                    setInitialValues({
+                        VehicleRegistrationNo: maintenance.vehicleId,
+                        maintenanceDate: maintenance.maintenanceDate.split("T")[0], // Only set the date part
+                        VehicleMaintenanceTypeId: maintenance.vehicleMaintenanceTypeId,
+                        cost: maintenance.cost,
+                        serviceProvider: maintenance.serviceProvider,
+                        replacedParts: maintenance.partsReplaced,
+                        specialNotes: maintenance.specialNotes,
+                        isActive: maintenance.status,
+                    });
+                } catch (error) {
+                    console.error("Error fetching vehicle maintenance details:", error);
+                }
+            }
+        };
+
+        const fetchVehicleMaintenanceTypes = async () => {
+            try {
+                const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
+                setMaintenanceTypeDetails(response.data);
+            } catch (error) {
+                console.error("Error fetching vehicle maintenance types:", error);
+            }
+        };
+
+        fetchVehicleMaintenanceTypes();
+        fetchVehicleRegNos();
+        fetchVehicleMaintenanceDetails();
+    }, [id]);
 
     const breadcrumbs = [
-        { label: "Vehicle", link: "/app/Vehicle" },
-        { label: "Vehicle Maintenance", link: "/app/MaintenanceTable" },
-        { label: id ? "Edit Vehicle Maintenance Details" : "Add Vehicle Maintenance Details", link: id ? `/app/EditVehicleMaintenanceDetails/${id}` : "/app/AddVehicleMaintenanceDetails" },
+        {label: "Vehicle", link: "/app/Vehicle"},
+        {label: "Vehicle Maintenance", link: "/app/MaintenanceTable"},
+        {
+            label: id ? "Edit Vehicle Maintenance Details" : "Add Vehicle Maintenance Details",
+            link: id ? `/app/EditMaintenance/${id}` : "/app/AddVehicleMaintenanceDetails"
+        },
     ];
 
     const handleSubmit = async (values) => {
         try {
             const payload = {
-                VehicleId: values.VehicleRegistrationNo,
-                MaintenanceDate: values.maintenanceDate,
-                VehicleMaintenanceTypeId: parseInt(values.VehicleMaintenanceTypeId),
-                Cost: parseFloat(values.cost),
-                PartsReplaced: values.replacedParts,
-                ServiceProvider: values.serviceProvider,
-                SpecialNotes: values.specialNotes,
-                Status: values.isActive
+                vehicleId: values.VehicleRegistrationNo,
+                maintenanceDate: values.maintenanceDate,
+                vehicleMaintenanceTypeId: parseInt(values.VehicleMaintenanceTypeId),
+                cost: parseFloat(values.cost),
+                partsReplaced: values.replacedParts,
+                serviceProvider: values.serviceProvider,
+                specialNotes: values.specialNotes,
+                status: values.isActive
             };
 
             let response;
@@ -146,13 +143,14 @@ export default function AddVehicleMaintenanceDetails() {
 
     return (
         <>
-            <PageHeader title={id ? "Edit Vehicle Maintenance Details" : "Add Vehicle Maintenance Details"} breadcrumbs={breadcrumbs} />
+            <PageHeader title={id ? "Edit Vehicle Maintenance Details" : "Add Vehicle Maintenance Details"}
+                        breadcrumbs={breadcrumbs}/>
             <Formik
                 initialValues={initialValues}
                 enableReinitialize
                 onSubmit={handleSubmit}
             >
-                {({ errors, touched }) => (
+                {({errors, touched}) => (
                     <Form className="grid grid-cols-2 gap-10 mt-8">
                         <div className="flex flex-col gap-3">
                             <p>Vehicle Registration No</p>
@@ -163,7 +161,7 @@ export default function AddVehicleMaintenanceDetails() {
                                 }
                                 return error;
                             }}>
-                                {({ field }) => (
+                                {({field}) => (
                                     <div>
                                         <Select
                                             {...field}
@@ -177,8 +175,8 @@ export default function AddVehicleMaintenanceDetails() {
                                             width="500px"
                                         >
                                             {VehicleRegNoDetails.map((option, index) => (
-                                                <option key={index} value={option.VehicleId}>
-                                                    {option.VehicleRegistrationNo}
+                                                <option key={index} value={option.vehicleId}>
+                                                    {option.vehicleRegistrationNo}
                                                 </option>
                                             ))}
                                         </Select>
@@ -198,7 +196,7 @@ export default function AddVehicleMaintenanceDetails() {
                                 }
                                 return error;
                             }}>
-                                {({ field }) => (
+                                {({field}) => (
                                     <div>
                                         <Select
                                             {...field}
@@ -234,19 +232,18 @@ export default function AddVehicleMaintenanceDetails() {
                                 }
                                 return error;
                             }}>
-                                {({ field }) => (
+                                {({field}) => (
                                     <div>
                                         <Input
                                             {...field}
-                                            type="date"
-                                            variant="filled"
+                                            type='date'
+                                            size='md'
+                                            variant='filled'
                                             borderRadius="md"
                                             px={3}
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            name="maintenanceDate"
-                                            placeholder="Maintenance Date"
                                         />
                                         {errors.maintenanceDate && touched.maintenanceDate && (
                                             <div className="text-red-500">{errors.maintenanceDate}</div>
@@ -261,24 +258,21 @@ export default function AddVehicleMaintenanceDetails() {
                                 let error;
                                 if (!value) {
                                     error = "Cost is required.";
-                                } else if (isNaN(value)) {
-                                    error = "Cost must be a number.";
                                 }
                                 return error;
                             }}>
-                                {({ field }) => (
+                                {({field}) => (
                                     <div>
                                         <Input
                                             {...field}
-                                            type="number"
-                                            variant="filled"
+                                            placeholder='Cost'
+                                            size='md'
+                                            variant='filled'
                                             borderRadius="md"
                                             px={3}
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            name="cost"
-                                            placeholder="Cost"
                                         />
                                         {errors.cost && touched.cost && (
                                             <div className="text-red-500">{errors.cost}</div>
@@ -289,49 +283,36 @@ export default function AddVehicleMaintenanceDetails() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>Service Provider</p>
-                            <Field name="serviceProvider" validate={(value) => {
-                                let error;
-                                if (!value) {
-                                    error = "Service Provider is required.";
-                                }
-                                return error;
-                            }}>
-                                {({ field }) => (
-                                    <div>
-                                        <Input
-                                            {...field}
-                                            type="text"
-                                            variant="filled"
-                                            borderRadius="md"
-                                            px={3}
-                                            py={2}
-                                            mt={1}
-                                            width="500px"
-                                            name="serviceProvider"
-                                            placeholder="Service Provider"
-                                        />
-                                        {errors.serviceProvider && touched.serviceProvider && (
-                                            <div className="text-red-500">{errors.serviceProvider}</div>
-                                        )}
-                                    </div>
-                                )}
-                            </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            <p>Parts Replaced</p>
-                            <Field name="replacedParts">
-                                {({ field }) => (
+                            <Field name="serviceProvider">
+                                {({field}) => (
                                     <Input
                                         {...field}
-                                        type="text"
-                                        variant="filled"
+                                        placeholder='Service Provider'
+                                        size='md'
+                                        variant='filled'
                                         borderRadius="md"
                                         px={3}
                                         py={2}
                                         mt={1}
                                         width="500px"
-                                        name="replacedParts"
-                                        placeholder="Parts Replaced"
+                                    />
+                                )}
+                            </Field>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <p>Replaced Parts</p>
+                            <Field name="replacedParts">
+                                {({field}) => (
+                                    <Input
+                                        {...field}
+                                        placeholder='Replaced Parts'
+                                        size='md'
+                                        variant='filled'
+                                        borderRadius="md"
+                                        px={3}
+                                        py={2}
+                                        mt={1}
+                                        width="500px"
                                     />
                                 )}
                             </Field>
@@ -339,41 +320,40 @@ export default function AddVehicleMaintenanceDetails() {
                         <div className="flex flex-col gap-3">
                             <p>Special Notes</p>
                             <Field name="specialNotes">
-                                {({ field }) => (
+                                {({field}) => (
                                     <Textarea
                                         {...field}
-                                        variant="filled"
+                                        placeholder='Special Notes'
+                                        size='md'
+                                        variant='filled'
                                         borderRadius="md"
                                         px={3}
                                         py={2}
                                         mt={1}
                                         width="500px"
-                                        name="specialNotes"
-                                        placeholder="Special Notes"
                                     />
                                 )}
                             </Field>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <p>Status</p>
                             <Field name="isActive" type="checkbox">
-                                {({ field }) => (
+                                {({field}) => (
                                     <Checkbox
                                         {...field}
-                                        colorScheme={theme.colors.brand}
+                                        colorScheme="blue"
+                                        borderRadius="md"
                                         size="lg"
-                                        mt={1}
+                                        isChecked={field.value}
                                     >
-                                        Active
+                                        Is Active
                                     </Checkbox>
                                 )}
                             </Field>
                         </div>
-                        <div></div>
-                        <div className="flex flex-row gap-14">
+                        <div className="flex gap-10">
                             <Button
                                 bg="gray.400"
-                                _hover={{ bg: "gray.500" }}
+                                _hover={{bg: "gray.500"}}
                                 color="#ffffff"
                                 variant="solid"
                                 w="230px"
@@ -384,7 +364,7 @@ export default function AddVehicleMaintenanceDetails() {
                             </Button>
                             <Button
                                 bg={theme.purple}
-                                _hover={{ bg: theme.onHoverPurple }}
+                                _hover={{bg: theme.onHoverPurple}}
                                 color="#ffffff"
                                 variant="solid"
                                 w="230px"
@@ -397,39 +377,49 @@ export default function AddVehicleMaintenanceDetails() {
                     </Form>
                 )}
             </Formik>
-            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay />
-                <AlertDialogContent
-                    position="absolute"
-                    top="30%"
-                    left="50%"
-                    transform="translate(-50%, -50%)">
-                    <AlertDialogHeader>Error</AlertDialogHeader>
-                    <AlertDialogBody>
-                        {dialogMessage}
-                    </AlertDialogBody>
-                    <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={onDialogClose}>Close</Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
+
+            <AlertDialog
+                isOpen={isDialogOpen}
+                leastDestructiveRef={undefined}
+                onClose={onDialogClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Alert
+                        </AlertDialogHeader>
+                        <AlertDialogBody>
+                            {dialogMessage}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button onClick={onDialogClose} ml={3}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
             </AlertDialog>
 
-            <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay />
-                <AlertDialogContent
-                    position="absolute"
-                    top="30%"
-                    left="50%"
-                    transform="translate(-50%, -50%)"
-                >
-                    <AlertDialogHeader>Success</AlertDialogHeader>
-                    <AlertDialogBody>
-                        {successDialogMessage}
-                    </AlertDialogBody>
-                    <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={handleSuccessDialogClose}>Ok</Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
+            <AlertDialog
+                isOpen={isSuccessDialogOpen}
+                leastDestructiveRef={undefined}
+                onClose={handleSuccessDialogClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Success
+                        </AlertDialogHeader>
+                        <AlertDialogBody>
+                            {successDialogMessage}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button onClick={handleSuccessDialogClose} ml={3}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
             </AlertDialog>
         </>
     );

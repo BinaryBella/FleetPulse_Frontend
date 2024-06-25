@@ -116,7 +116,7 @@ export default function FuelRefillTable() {
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/app/EditFuelRefill/${row.original.fuelRefillId}`}>
+                            <Link to={`/app/EditFuelRefillDetails/${row.original.fuelRefillId}`}>
                                 Edit
                             </Link>
                         </MenuItem>
@@ -255,7 +255,7 @@ export default function FuelRefillTable() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditFuelRefill/${fuelRefill.fuelRefillId}`}>
+                                                <Link to={`/app/EditFuelRefillDetails/${fuelRefill.fuelRefillId}`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>
