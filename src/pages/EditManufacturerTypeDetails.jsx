@@ -68,8 +68,8 @@ export default function EditManufactureDetails() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    Id: id,
-                    Manufacture: values.Manufacture,
+                    ManufactureId: id,
+                    Manufacturer: values.Manufacture,
                     Status: status
                 })
             });
@@ -88,12 +88,12 @@ export default function EditManufactureDetails() {
     };
 
     const handleCancel = () => {
-        navigate('/app/ManufacturerTable');
+        navigate('/app/Manufacturer');
     };
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
-        navigate('/app/ManufacturerTable');
+        navigate('/app/Manufacturer');
     };
 
     return (

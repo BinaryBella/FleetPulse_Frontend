@@ -78,7 +78,7 @@ export default function App() {
                 <Route path='EditAccidentDetails' element={<EditAccidentDetails />}/>
                 <Route path='EditVehicleDetails/:id' element={<EditVehicleDetails />}/>
                 <Route path='EditVehicleType/:id' element={<EditVehicleType />}/>
-                <Route path='EditDriverDetails' element={<EditDriverDetails />}/>
+                <Route path='EditDriverDetails/:id' element={<EditDriverDetails />}/>
                 <Route path='EditHelperDetails' element={<EditHelperDetails />}/>
                 <Route path='EditStaffDetails' element={<EditStaffDetails />}/>
                 <Route path='EditTripDetails' element={<EditTripDetails />}/>

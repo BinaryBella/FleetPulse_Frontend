@@ -86,7 +86,7 @@ export default function DriverDetails() {
 
     const fetchDriverDetails = async () => {
         try {
-            const response = await axios.get("https://localhost:7265/api/DriverDetails");
+            const response = await axios.get("https://localhost:7265/api/Driver");
             setDriverDetails(response.data);
         } catch (error) {
             console.error("Error fetching driver details:", error);
@@ -286,8 +286,8 @@ export default function DriverDetails() {
                             <Tr key={index}>
                                 <Td className="custom-table-td">{driver.firstName}</Td>
                                 <Td className="custom-table-td">{driver.lastName}</Td>
-                                <Td className="custom-table-td">{driver.DoB}</Td>
-                                <Td className="custom-table-td">{driver.lNIC}</Td>
+                                <Td className="custom-table-td">{driver.dateOfBirth}</Td>
+                                <Td className="custom-table-td">{driver.nic}</Td>
                                 <Td className="custom-table-td">{driver.driverLicenseNo}</Td>
                                 <Td className="custom-table-td">{driver.licenseExpiryDate}</Td>
                                 <Td className="custom-table-td">{driver.emailAddress}</Td>
@@ -306,7 +306,7 @@ export default function DriverDetails() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditDriverDetails/${driver.id}`}>Edit</Link>
+                                                <Link to={`/app/EditDriverDetails/${driver.userId}`}>Edit</Link>
                                             </MenuItem>
                                             <MenuItem onClick={() => onClickDelete(driver)}>
                                                 {driver.status ? "Deactivate" : "Activate"}
