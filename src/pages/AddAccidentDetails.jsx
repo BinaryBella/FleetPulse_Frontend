@@ -70,13 +70,14 @@ export default function AddAccidentDetails() {
       <PageHeader title="Add Accident Details" breadcrumbs={breadcrumbs} />
       <Formik
         initialValues={{
-          date: "",
-          location: "",
+          dateTime: "",
+          venue: "",
           vehicleRegistrationNo: "",
           driversNIC: "",
           helpersNIC: "",
           loss: 0,
           specialNotes: "",
+          photos:"",
           driverInjured: false,
           helperInjured: false,
           vehicleDamaged: false,
@@ -94,10 +95,12 @@ export default function AddAccidentDetails() {
               <TabPanels>
                 <TabPanel>
                   <div className="grid grid-cols-2 gap-10 mt-8">
+
+                  
                     <Field name="date">
                       {({ field }) => (
                         <div className="flex flex-col gap-3">
-                          <p>Date</p>
+                          <p>Date & Time</p>
                           <Input
                             {...field}
                             type="date"
@@ -107,15 +110,15 @@ export default function AddAccidentDetails() {
                             py={2}
                             mt={1}
                             width="500px"
-                            placeholder="Date"
+                            placeholder="DateTime"
                           />
                         </div>
                       )}
                     </Field>
-                    <Field name="location">
+                    <Field name="venue">
                       {({ field }) => (
                         <div className="flex flex-col gap-3">
-                          <p>Location</p>
+                          <p>Venue</p>
                           <Input
                             {...field}
                             type="text"
@@ -125,7 +128,7 @@ export default function AddAccidentDetails() {
                             py={2}
                             mt={1}
                             width="500px"
-                            placeholder="Location"
+                            placeholder="Venue"
                           />
                         </div>
                       )}

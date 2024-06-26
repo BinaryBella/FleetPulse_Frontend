@@ -1,17 +1,16 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-import { useNavigate, useParams, Link } from "react-router-dom"; // Import Link
+import { useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 import {
-    Box,
-    Button, Checkbox, HStack,
+    Button,
+    Checkbox,
     Input,
-    Tab,
-    TabIndicator,
-    TabList,
-    TabPanel,
-    TabPanels,
     Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
     Textarea,
     AlertDialog,
     AlertDialogOverlay,
@@ -19,9 +18,9 @@ import {
     AlertDialogHeader,
     AlertDialogBody,
     AlertDialogFooter,
-    useDisclosure
+    useDisclosure,
 } from "@chakra-ui/react";
-import { FaImage } from "react-icons/fa6";
+import { FaImage } from "react-icons/fa";
 import theme from "../config/ThemeConfig.jsx";
 
 export default function EditAccidentDetails() {
@@ -32,8 +31,8 @@ export default function EditAccidentDetails() {
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [initialValues, setInitialValues] = useState({
-        date: "",
-        location: "",
+        dateTime: "",
+        venue: "",
         vehicleRegNo: "",
         driverNic: "",
         helperNic: "",
@@ -64,8 +63,8 @@ export default function EditAccidentDetails() {
             }
 
             setInitialValues({
-                date: data.date || "",
-                location: data.location || "",
+                dateTime: data.dateTime || "",
+                venue: data.venue || "",
                 vehicleRegNo: data.vehicleRegNo || "",
                 driverNic: data.driverNic || "",
                 helperNic: data.helperNic || "",
@@ -90,8 +89,8 @@ export default function EditAccidentDetails() {
                 },
                 body: JSON.stringify({
                     Id: id,
-                    Date: values.date,
-                    Location: values.location,
+                    DateTime: values.dateTime,
+                    Venue: values.venue,
                     VehicleRegNo: values.vehicleRegNo,
                     DriverNic: values.driverNic,
                     HelperNic: values.helperNic,
@@ -117,12 +116,12 @@ export default function EditAccidentDetails() {
     };
 
     const handleCancel = () => {
-        navigate('/app/AccidentDetailsTable');
+        navigate('/app/AccidentDetails');
     };
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
-        navigate('/app/AccidentDetailsTable');
+        navigate('/app/AccidentDetails');
     };
 
     return (
@@ -140,17 +139,11 @@ export default function EditAccidentDetails() {
                                 <Tab>Accident Details</Tab>
                                 <Tab>Upload Photos</Tab>
                             </TabList>
-                            <TabIndicator
-                                mt="-1.5px"
-                                height="2px"
-                                bg="#5858af"
-                                borderRadius="1px"
-                            />
                             <TabPanels>
                                 <TabPanel>
                                     <div className="grid grid-cols-2 gap-10 mt-8">
                                         <div className="flex flex-col gap-3">
-                                            <p>Date</p>
+                                            <p>Date & Time</p>
                                             <Field name="date">
                                                 {({ field }) => (
                                                     <Input
@@ -162,14 +155,14 @@ export default function EditAccidentDetails() {
                                                         py={2}
                                                         mt={1}
                                                         width="500px"
-                                                        placeholder="Date"
+                                                        placeholder="DateTime"
                                                     />
                                                 )}
                                             </Field>
                                         </div>
                                         <div className="flex flex-col gap-3">
-                                            <p>Location</p>
-                                            <Field name="location">
+                                            <p>Venue</p>
+                                            <Field name="venue">
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
@@ -180,7 +173,7 @@ export default function EditAccidentDetails() {
                                                         py={2}
                                                         mt={1}
                                                         width="500px"
-                                                        placeholder="Location"
+                                                        placeholder="Venue"
                                                     />
                                                 )}
                                             </Field>
@@ -275,7 +268,7 @@ export default function EditAccidentDetails() {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div className="flex gap-7">
+                                      /* <div className="flex gap-7">
                                             <Field name="driverInjured">
                                                 {({ field }) => (
                                                     <Checkbox
@@ -314,44 +307,36 @@ export default function EditAccidentDetails() {
                                             </Field>
                                         </div>
                                     </div>
-                                    <div className="flex w-5/6 justify-end gap-10">
-                            <Button
-                                bg="gray.400"
-                                _hover={{ bg: "gray.500" }}
-                                color="#ffffff"
-                                variant="solid"
-                                w="230px"
-                                marginTop="10"
-                                onClick={handleCancel}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                bg={theme.purple}
-                                _hover={{ bg: theme.onHoverPurple }}
-                                color="#ffffff"
-                                variant="solid"
-                                w="230px"
-                                marginTop="10"
-                                type="submit"
-                            >
-                                Save
-                            </Button>
-                        </div>
                                 </TabPanel>
                                 <TabPanel>
                                     <div className="mt-8 flex flex-col items-center">
                                         <Button leftIcon={<FaImage />} colorScheme="blue" mb={4}>Upload Photos</Button>
-                                        <HStack spacing={4}>
+                                        <div className="flex justify-center space-x-4">
                                             <div className="w-32 h-32 border border-gray-300 flex items-center justify-center">1</div>
                                             <div className="w-32 h-32 border border-gray-300 flex items-center justify-center">2</div>
                                             <div className="w-32 h-32 border border-gray-300 flex items-center justify-center">3</div>
                                             <div className="w-32 h-32 border border-gray-300 flex items-center justify-center">4</div>
-                                        </HStack>
+                                        </div>
                                     </div>
                                 </TabPanel>
                             </TabPanels>
-                        </Tabs>
+                       </Tabs>
+                        <div className="flex justify-end mt-10 space-x-4">
+                            <Button
+                                onClick={handleCancel}
+                                colorScheme="gray"
+                                variant="outline"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                colorScheme="purple"
+                                variant="solid"
+                            >
+                                Save
+                            </Button>
+                        </div>
                     </Form>
                 )}
             </Formik>
@@ -366,7 +351,9 @@ export default function EditAccidentDetails() {
                         <AlertDialogHeader>Error</AlertDialogHeader>
                         <AlertDialogBody>{dialogMessage}</AlertDialogBody>
                         <AlertDialogFooter>
-                            <Button colorScheme="red" onClick={onDialogClose}>Close</Button>
+                            <Button colorScheme="red" onClick={onDialogClose}>
+                                Close
+                            </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
@@ -382,7 +369,9 @@ export default function EditAccidentDetails() {
                         <AlertDialogHeader>Success</AlertDialogHeader>
                         <AlertDialogBody>{successDialogMessage}</AlertDialogBody>
                         <AlertDialogFooter>
-                            <Button colorScheme="blue" onClick={handleSuccessDialogClose}>OK</Button>
+                            <Button colorScheme="blue" onClick={handleSuccessDialogClose}>
+                                OK
+                            </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>

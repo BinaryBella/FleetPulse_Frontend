@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 import PageHeader from "../components/PageHeader.jsx";
 import {
   Button,
@@ -17,6 +18,42 @@ import {
 } from "@chakra-ui/react";
 import { MdArrowDropDown } from "react-icons/md";
 import theme from "../config/ThemeConfig.jsx";
+
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .required("First Name is required")
+    .min(2, "First Name must be at least 2 characters"),
+  lastName: Yup.string()
+    .required("Last Name is required")
+    .min(2, "Last Name must be at least 2 characters"),
+  dob: Yup.date()
+    .required("Date of Birth is required")
+    .max(new Date(), "Date of Birth cannot be in the future"),
+  nic: Yup.string()
+    .required("NIC is required")
+    .min(10, "NIC must be at least 10 characters")
+    .max(12, "NIC cannot be more than 12 characters"),
+  emailAddress: Yup.string()
+    .required("Email Address is required")
+    .email("Invalid email address"),
+  phoneNo: Yup.string()
+    .required("Contact No is required")
+    .matches(/^[0-9]{10}$/, "Contact No must be exactly 10 digits"),
+  emergencyContact: Yup.string()
+    .required("Emergency Contact No is required")
+    .matches(/^[0-9]{10}$/, "Emergency Contact No must be exactly 10 digits"),
+  bloodGroup: Yup.string()
+    .required("Blood Group is required"),
+  userName: Yup.string()
+    .required("User Name is required"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
+  confirmPassword: Yup.string()
+    .required("Confirm Password is required")
+    .oneOf([Yup.ref('password'), null], "Passwords must match"),
+  isActive: Yup.boolean(),
+});
 
 export default function AddHelperDetails() {
   const navigate = useNavigate();
@@ -105,6 +142,7 @@ export default function AddHelperDetails() {
           confirmPassword: "",
           isActive: false,
         }}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
@@ -123,8 +161,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="firstName"
                       placeholder="First Name"
                     />
+                    {errors.firstName && touched.firstName ? (
+                      <div className="text-red-500">{errors.firstName}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -143,8 +185,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="lastName"
                       placeholder="Last Name"
                     />
+                    {errors.lastName && touched.lastName ? (
+                      <div className="text-red-500">{errors.lastName}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -163,8 +209,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="dob"
                       placeholder="Date of Birth"
                     />
+                    {errors.dob && touched.dob ? (
+                      <div className="text-red-500">{errors.dob}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -183,8 +233,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
-                      placeholder="NIC"
+                      id="nic"
+                      placeholder="NIC No"
                     />
+                    {errors.nic && touched.nic ? (
+                      <div className="text-red-500">{errors.nic}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -203,8 +257,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="emailAddress"
                       placeholder="Email Address"
                     />
+                    {errors.emailAddress && touched.emailAddress ? (
+                      <div className="text-red-500">{errors.emailAddress}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -223,8 +281,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="phoneNo"
                       placeholder="Contact No"
                     />
+                    {errors.phoneNo && touched.phoneNo ? (
+                      <div className="text-red-500">{errors.phoneNo}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -243,8 +305,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="emergencyContact"
                       placeholder="Emergency Contact No"
                     />
+                    {errors.emergencyContact && touched.emergencyContact ? (
+                      <div className="text-red-500">{errors.emergencyContact}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -265,10 +331,18 @@ export default function AddHelperDetails() {
                       mt={1}
                       icon={<MdArrowDropDown />}
                     >
-                      <option value="BloodGroup1">Blood Group 1</option>
-                      <option value="BloodGroup2">Blood Group 2</option>
-                      <option value="BloodGroup3">Blood Group 3</option>
+                      <option value="A+">A+</option>
+                      <option value="B+">B+</option>
+                      <option value="AB+">AB+</option>
+                      <option value="O+">O+</option>
+                      <option value="A-">A-</option>
+                      <option value="B-">B-</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O-">O-</option>
                     </Select>
+                    {errors.bloodGroup && touched.bloodGroup ? (
+                      <div className="text-red-500">{errors.bloodGroup}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -287,8 +361,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="userName"
                       placeholder="User Name"
                     />
+                    {errors.userName && touched.userName ? (
+                      <div className="text-red-500">{errors.userName}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -307,8 +385,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="password"
                       placeholder="Password"
                     />
+                    {errors.password && touched.password ? (
+                      <div className="text-red-500">{errors.password}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>
@@ -327,8 +409,12 @@ export default function AddHelperDetails() {
                       py={2}
                       mt={1}
                       width="500px"
+                      id="confirmPassword"
                       placeholder="Confirm Password"
                     />
+                    {errors.confirmPassword && touched.confirmPassword ? (
+                      <div className="text-red-500">{errors.confirmPassword}</div>
+                    ) : null}
                   </div>
                 )}
               </Field>

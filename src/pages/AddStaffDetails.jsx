@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { MdArrowDropDown } from "react-icons/md";
 import theme from "../config/ThemeConfig.jsx";
+import * as Yup from "yup";
 
 export default function AddStaffDetails() {
     const navigate = useNavigate();
@@ -83,6 +84,20 @@ export default function AddStaffDetails() {
         fetchStaffData();
     }, []);
 
+    const validationSchema = Yup.object({
+        firstName: Yup.string().required('First Name is required'),
+        lastName: Yup.string().required('Last Name is required'),
+        dob: Yup.date().required('Date of Birth is required'),
+        nationalId: Yup.string().required('National Identity Card No is required'),
+        email: Yup.string().email('Invalid email address').required('Email is required'),
+        contactNo: Yup.string().required('Contact Number is required'),
+        emergencyContactNo: Yup.string().required('Emergency Contact No is required'),
+        jobTitle: Yup.string().required('Job Title is required'),
+        username: Yup.string().required('Username is required'),
+        password: Yup.string().required('Password is required'),
+        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
+    });
+
     const handleSubmit = async (values, actions) => {
         try {
             console.log(values); 
@@ -106,12 +121,6 @@ export default function AddStaffDetails() {
         navigate('/app/StaffDetails');
     };
 
-    const handleSuccessDialogClose = () => {
-        onSuccessDialogClose();
-        navigate('/app/StaffDetails');
-    };
-
-
     return (
         <>
             <PageHeader title="Add Staff Details" breadcrumbs={breadcrumbs} />
@@ -120,6 +129,7 @@ export default function AddStaffDetails() {
             ) : (
                 <Formik
                     initialValues={initialValues}
+                    validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
                     {({ errors, touched }) => (
@@ -286,7 +296,7 @@ export default function AddStaffDetails() {
                                     {({ field }) => (
                                         <Input
                                             {...field}
-                                            type="tel"
+                                            type="text"
                                             variant="filled"
                                             borderRadius="md"
                                             px={3}

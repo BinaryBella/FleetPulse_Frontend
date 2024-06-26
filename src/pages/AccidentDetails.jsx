@@ -94,6 +94,21 @@ export default function AccidentDetails() {
       meta: { isNumeric: false, filter: "text" },
     },
     {
+      accessorKey: "vehicleRegistrationNo",
+      header: "Vehicle Reg No",
+      meta: { isNumeric: false, filter: "text" },
+    },
+    {
+      accessorKey: "driversNic",
+      header: "Driver's NIC",
+      meta: { isNumeric: false, filter: "text" },
+    },
+    {
+      accessorKey: "helpersNic",
+      header: "Helper's NIC",
+      meta: { isNumeric: false, filter: "text" },
+    },
+    {
       accessorKey: "loss",
       header: "Loss",
       meta: { isNumeric: false, filter: "text" },
@@ -111,6 +126,7 @@ export default function AccidentDetails() {
         <a href={row.original.photos} target="_blank" rel="noopener noreferrer">View Photos</a>
       ),
     },
+    
     {
       id: "actions",
       header: "Actions",
@@ -135,6 +151,12 @@ export default function AccidentDetails() {
       ),
       meta: { isNumeric: false, filter: null },
       enableSorting: false,
+    },
+
+    {
+      accessorKey: "status",
+      header: "Status",
+      meta: { isNumeric: false, filter: "text" },
     },
   ];
 
@@ -278,6 +300,10 @@ export default function AccidentDetails() {
                 <Td fontSize="0.75rem">{accident.venue}</Td>
                 <Td fontSize="0.75rem">{accident.helperInjured}</Td>
                 <Td fontSize="0.75rem">{accident.vehicleDamaged}</Td>
+                <Td fontSize="0.75rem">{accident.vehicleRegistrationNo}</Td>
+                <Td fontSize="0.75rem">{accident.driversNic}</Td>
+                <Td fontSize="0.75rem">{accident.helpersNic}</Td>
+
                 <Td fontSize="0.75rem">{accident.loss}</Td>
                 <Td fontSize="0.75rem">{accident.specialNote}</Td>
                 <Td fontSize="0.75rem">
