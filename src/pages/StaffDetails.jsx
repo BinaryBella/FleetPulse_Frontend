@@ -59,13 +59,13 @@ export default function StaffDetails() {
     }, []);
 
     const onClickDelete = (staff) => {
-        setSelectedDriver(staff);
+        setSelectedStaff(staff);
         onDialogOpen();
     };
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/StaffDetails/${selectedStaff.id}/${selectedStaff.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/Staff/UpdateStaff/${selectedStaff.id}/${selectedStaff.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
             fetchStaffDetails();
             onDialogClose();
@@ -86,7 +86,7 @@ export default function StaffDetails() {
 
     const fetchStaffDetails = async () => {
         try {
-            const response = await axios.get("https://localhost:7265/api/StaffDetails");
+            const response = await axios.get("https://localhost:7265/api/Staff");
             setStaffDetails(response.data);
         } catch (error) {
             console.error("Error fetching staff details:", error);
@@ -272,7 +272,7 @@ export default function StaffDetails() {
                             </Td>
                         </Tr>
                     ) : (
-                        currentData.map((driver, index) => (
+                        currentData.map((staff, index) => (
                             <Tr key={index}>
                                 <Td className="custom-table-td">{staff.firstName}</Td>
                                 <Td className="custom-table-td">{staff.lastName}</Td>
@@ -294,7 +294,7 @@ export default function StaffDetails() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditStaffDetails/${staffr.id}`}>Edit</Link>
+                                                <Link to={`/app/EditStaffDetails/${staff.id}`}>Edit</Link>
                                             </MenuItem>
                                             <MenuItem onClick={() => onClickDelete(staff)}>
                                                 {staff.status ? "Deactivate" : "Activate"}
