@@ -91,7 +91,7 @@ export default function ResetPasswordDriverHelper() {
         setSubmitting(true);
         console.log("Email:", values.emailAddress); // Check if email is logged
         try {
-            const response = await axios.post('https://localhost:7265/api/Auth/reset-password', {
+            const response = await axios.post('https://localhost:7265/api/Auth/reset-password-driver', {
                 emailAddress: values.emailAddress,
                 newPassword: values.newPassword
             }, {
