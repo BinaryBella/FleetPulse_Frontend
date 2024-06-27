@@ -52,7 +52,8 @@ import ResetPasswordDriverHelper from "./pages/ResetPasswordDriverHelper.jsx";
 import { useEffect, useState } from "react";
 import VehicleMaintenanceConfiguration from "./pages/VehicleMaintenanceConfiguration.jsx";
 import VehicleMaintenanceConfigurationTable from "./pages/VehicleMaintenanceConfigurationTable.jsx";
-
+import EditMaintenance from "./pages/EditMaintenance.jsx";
+import EditFuelRefillDetails from "./pages/EditFuelRefillDetails.jsx";
 
 export default function App() {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -99,6 +100,8 @@ export default function App() {
                             <Route path="/app/MaintenanceTypeTable" element={<MaintenanceTypeTable />} />
                             <Route path="/app/FuelRefillTable" element={<FuelRefillTable />} />
                             <Route path="/app/EditMaintenanceType/:id" element={<EditMaintenanceType />} />
+                            <Route path="/app/EditMaintenance/:id" element={<EditMaintenance />} />
+                            <Route path="/app/EditFuelRefillDetails/:id" element={<EditFuelRefillDetails />} />
                             <Route path="/app/AddVehicleDetails" element={<AddVehicleDetails />} />
                             <Route path="/app/AddMaintenanceType" element={<AddMaintenanceType />} />
                             <Route path="/app/Driver" element={<Driver />} />

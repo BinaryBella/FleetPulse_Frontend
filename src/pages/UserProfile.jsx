@@ -21,8 +21,8 @@ import { AiOutlineCamera, AiOutlineUser } from "react-icons/ai";
 
 export default function UserProfile() {
     const navigate = useNavigate();
-    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
-    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
+    const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
+    const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [image, setImage] = useState("");
@@ -147,7 +147,7 @@ export default function UserProfile() {
                 }}
                 onSubmit={handleSubmit}
             >
-                {({ errors, touched }) => (
+                {({errors, touched}) => (
                     <Form>
                         <div className="flex flex-grow gap-8">
                             <div className="w-1/5">
@@ -172,7 +172,7 @@ export default function UserProfile() {
                                             src={image ? `data:image/jpeg;base64,${image}` : undefined}
                                             size="2xl"
                                             bg={theme.purple}
-                                            icon={<AiOutlineUser fontSize='2rem' />}
+                                            icon={<AiOutlineUser fontSize='2rem'/>}
                                             cursor="pointer"
                                             id="pro-pic"
                                             onMouseEnter={(e) => e.currentTarget.style.opacity = 0.5}
@@ -190,7 +190,7 @@ export default function UserProfile() {
                                         >
                                             <AiOutlineCamera size={26} onMouseEnter={() => {
                                                 document.getElementById("pro-pic").style.opacity = 0.5;
-                                            }} />
+                                            }}/>
                                         </div>
                                     </div>
                                 </AvatarGroup>
@@ -201,7 +201,7 @@ export default function UserProfile() {
                                     type="file"
                                     accept="image/*"
                                     onChange={handleImageChange}
-                                    style={{ display: 'none' }}
+                                    style={{display: 'none'}}
                                 />
                                 {image && (
                                     <div className="flex justify-right">
@@ -223,7 +223,7 @@ export default function UserProfile() {
                                 <div className="flex gap-16 mt-6">
                                     <div className="w-2/5">
                                         <div className="mb-10">
-                                            <p style={{ marginBottom: "0.5rem" }}>First Name</p>
+                                            <p style={{marginBottom: "0.5rem"}}>First Name</p>
                                             <Field name="FirstName" validate={(value) => {
                                                 let error;
                                                 if (!value) {
@@ -231,7 +231,7 @@ export default function UserProfile() {
                                                 }
                                                 return error;
                                             }}>
-                                                {({ field }) => (
+                                                {({field}) => (
                                                     <div>
                                                         <Input
                                                             {...field}
@@ -254,8 +254,8 @@ export default function UserProfile() {
                                             </Field>
                                         </div>
                                         <div className="mb-10">
-                                            <p style={{ marginBottom: "0.5rem" }}>Date of Birth</p>
-                                            <Field style={{ margintop: "0.5rem" }} name="DateOfBirth"
+                                            <p style={{marginBottom: "0.5rem"}}>Date of Birth</p>
+                                            <Field style={{margintop: "0.5rem"}} name="DateOfBirth"
                                                    validate={(value) => {
                                                        let error;
                                                        if (!value) {
@@ -263,7 +263,7 @@ export default function UserProfile() {
                                                        }
                                                        return error;
                                                    }}>
-                                                {({ field }) => (
+                                                {({field}) => (
                                                     <div>
                                                         <Input
                                                             {...field}
@@ -286,7 +286,7 @@ export default function UserProfile() {
                                             </Field>
                                         </div>
                                         <div className="mb-10">
-                                            <p style={{ marginBottom: "0.5rem" }}>Phone Number</p>
+                                            <p style={{marginBottom: "0.5rem"}}>Phone Number</p>
                                             <Field name="PhoneNo" validate={(value) => {
                                                 let error;
                                                 if (!value) {
@@ -297,7 +297,7 @@ export default function UserProfile() {
                                                 return error;
                                             }}
                                             >
-                                                {({ field, form }) => (
+                                                {({field, form}) => (
                                                     <div>
                                                         <Input
                                                             {...field}
@@ -326,7 +326,7 @@ export default function UserProfile() {
                                     </div>
                                     <div className="w-2/5">
                                         <div className="mb-10">
-                                            <p style={{ marginBottom: "0.5rem" }}>Last Name</p>
+                                            <p style={{marginBottom: "0.5rem"}}>Last Name</p>
                                             <Field name="LastName" validate={(value) => {
                                                 let error;
                                                 if (!value) {
@@ -334,7 +334,7 @@ export default function UserProfile() {
                                                 }
                                                 return error;
                                             }}>
-                                                {({ field }) => (
+                                                {({field}) => (
                                                     <div>
                                                         <Input
                                                             {...field}
@@ -357,7 +357,7 @@ export default function UserProfile() {
                                             </Field>
                                         </div>
                                         <div className="mb-10">
-                                            <p style={{ marginBottom: "0.5rem" }}>Email Address</p>
+                                            <p style={{marginBottom: "0.5rem"}}>Email Address</p>
                                             <Field name="EmailAddress" validate={(value) => {
                                                 let error;
                                                 if (!value) {
@@ -367,7 +367,7 @@ export default function UserProfile() {
                                                 }
                                                 return error;
                                             }}>
-                                                {({ field }) => (
+                                                {({field}) => (
                                                     <div>
                                                         <Input
                                                             {...field}
@@ -390,7 +390,7 @@ export default function UserProfile() {
                                             </Field>
                                         </div>
                                         <div className="mb-10">
-                                            <p style={{ marginBottom: "0.5rem" }}>NIC</p>
+                                            <p style={{marginBottom: "0.5rem"}}>NIC</p>
                                             <Field name="NIC" validate={(value) => {
                                                 let error;
                                                 if (!value) {
@@ -400,7 +400,7 @@ export default function UserProfile() {
                                                 }
                                                 return error;
                                             }}>
-                                                {({ field }) => (
+                                                {({field}) => (
                                                     <div>
                                                         <Input
                                                             {...field}
@@ -427,7 +427,7 @@ export default function UserProfile() {
                                 <div className="w-5/6 flex justify-end gap-4 mt-20 mb-10">
                                     <Button
                                         bg="gray.400"
-                                        _hover={{ bg: "gray.500" }}
+                                        _hover={{bg: "gray.500"}}
                                         color="#ffffff"
                                         variant="solid"
                                         w="150px"
@@ -438,7 +438,7 @@ export default function UserProfile() {
                                     </Button>
                                     <Button
                                         bg={theme.purple}
-                                        _hover={{ bg: theme.onHoverPurple }}
+                                        _hover={{bg: theme.onHoverPurple}}
                                         color="#ffffff"
                                         variant="solid"
                                         w="150px"
@@ -455,7 +455,7 @@ export default function UserProfile() {
             </Formik>
 
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay />
+                <AlertDialogOverlay/>
                 <AlertDialogContent
                     position="absolute"
                     top="30%"
@@ -472,7 +472,7 @@ export default function UserProfile() {
             </AlertDialog>
 
             <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
-                <AlertDialogOverlay />
+                <AlertDialogOverlay/>
                 <AlertDialogContent
                     position="absolute"
                     top="30%"

@@ -1,4 +1,3 @@
-import { useNotifications } from '../context/NotificationContext';
 import { Box, List, ListItem, Heading, Text, Icon, Button, IconButton } from '@chakra-ui/react';
 import { MdNotifications, MdDelete, MdNotificationsNone } from 'react-icons/md';
 import PageHeader from "../components/PageHeader.jsx";
@@ -6,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import axios from 'axios';
 import './Notification.css';
+
+import { useNotifications } from '../context/NotificationContext';
 
 const Notifications = () => {
     const { notifications, markAsRead, deleteNotification } = useNotifications();
@@ -22,7 +23,7 @@ const Notifications = () => {
 
     const handleDeleteNotification = async (index, id) => {
         try {
-            await axios.delete(`https://localhost:7265/api/Notification/delete${id}`);
+            await axios.delete(`https://localhost:7265/api/Notification/delete/${id}`);
             deleteNotification(index);
         } catch (error) {
             console.error("Error deleting notification:", error);
@@ -47,8 +48,9 @@ const Notifications = () => {
         }
     };
 
-    const handleNavigate = (username) => {
-        navigate(`/app/ResetPasswordDriverHelper/${username}`);
+    const handleNavigate = (username, emailAddress, notification) => {
+        console.log(notification);
+        navigate(`/app/ResetPasswordDriverHelper?username=${username}&emailAddress=${emailAddress}`);
     };
 
     return (
@@ -93,9 +95,14 @@ const Notifications = () => {
                                         Mark as Read
                                     </Button>
                                 )}
-                                <Button className="reset-password-btn" onClick={() => handleNavigate(notification.username)}>
-                                    Reset Password
-                                </Button>
+                                {notification.title === "Password Reset Request" && (
+                                    <Button
+                                        className="reset-password-btn"
+                                        onClick={() => handleNavigate(notification.username, notification.emailAddress, notification)}
+                                    >
+                                        Reset Password
+                                    </Button>
+                                )}
                                 <IconButton
                                     className="delete-btn"
                                     aria-label="Delete notification"

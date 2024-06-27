@@ -23,19 +23,20 @@ export default function AddFuelRefillDetails() {
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
-    const [nic, setNIC] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
     const exampleVehicleData = [
-        { VehicleId: 2, VehicleRegistrationNo: "DEF789" },
+        { VehicleId: 2, VehicleRegistrationNo: "DEF456" },
         { VehicleId: 1, VehicleRegistrationNo: "ABC123" },
     ];
 
     const fetchVehicleRegNos = async () => {
         setVehicleRegNoDetails(exampleVehicleData);
+        // Uncomment and update the following lines with the actual API endpoint
         // try {
         //     const response = await axios.get("https://localhost:7265/api/Vehicle");
+        //     setVehicleRegNoDetails(response.data);
         // } catch (error) {
         //     console.error("Error fetching vehicle registration numbers:", error);
         // }
@@ -47,8 +48,8 @@ export default function AddFuelRefillDetails() {
             if (username) {
                 const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
                 const responseData = response.data;
-                setNIC(responseData.nic);
-                setFieldValue("nic", responseData.nic); // Set the NIC field in Formik
+                setFieldValue("nic", responseData.nic);
+                setFieldValue("userId", responseData.userId); // Assuming the user profile response contains userId
             } else {
                 console.error("Username not found in session storage.");
             }
@@ -60,48 +61,6 @@ export default function AddFuelRefillDetails() {
     useEffect(() => {
         fetchVehicleRegNos();
     }, []);
-
-    const handleSubmit = async (values) => {
-        try {
-            const response = await fetch('https://localhost:7265/api/FuelRefill', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    VehicleId: parseInt(values.vehicleRegistrationNo),
-                    NIC: values.nic,
-                    Cost: values.cost,
-                    LiterCount: values.literCount,
-                    Date: values.date,
-                    Time: values.time,
-                    RefillType: values.fType,
-                    Status: values.IsActive
-                })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to add Fuel Refill.');
-            }
-
-            if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Fuel Refill already exists');
-                onDialogOpen();
-            } else {
-                setSuccessDialogMessage('Fuel Refill added successfully');
-                onSuccessDialogOpen();
-            }
-        } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server');
-            } else {
-                setDialogMessage(error.message || 'Failed to add Fuel Refill.');
-            }
-            onDialogOpen();
-        }
-    };
 
     const handleCancel = () => {
         navigate('/app/FuelRefillTable');
@@ -124,6 +83,7 @@ export default function AddFuelRefillDetails() {
             <Formik
                 initialValues={{
                     vehicleRegistrationNo: "",
+                    userId: "",
                     nic: "",
                     literCount: "",
                     date: "",
@@ -132,7 +92,61 @@ export default function AddFuelRefillDetails() {
                     cost: "",
                     IsActive: false
                 }}
-                onSubmit={handleSubmit}
+                onSubmit={async (values, { setSubmitting }) => {
+                    const selectedVehicle = vehicleRegNoDetails.find(
+                        (vehicle) => vehicle.VehicleId === parseInt(values.vehicleRegistrationNo)
+                    );
+
+                    if (!selectedVehicle) {
+                        setDialogMessage("Invalid vehicle selected.");
+                        onDialogOpen();
+                        setSubmitting(false);
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('https://localhost:7265/api/FuelRefill', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                VehicleId: selectedVehicle.VehicleId,
+                                VehicleRegistrationNo: selectedVehicle.VehicleRegistrationNo,
+                                UserId: values.userId,
+                                NIC: values.nic,
+                                Cost: values.cost,
+                                LiterCount: values.literCount,
+                                Date: values.date,
+                                Time: values.time,
+                                RefillType: values.fType,
+                                Status: values.IsActive
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.message || 'Failed to add Fuel Refill.');
+                        }
+
+                        if (data.message && data.message.toLowerCase().includes('exist')) {
+                            setDialogMessage('Fuel Refill already exists');
+                            onDialogOpen();
+                        } else {
+                            setSuccessDialogMessage('Fuel Refill added successfully');
+                            onSuccessDialogOpen();
+                        }
+                    } catch (error) {
+                        if (error instanceof TypeError) {
+                            setDialogMessage('Failed to connect to the server');
+                        } else {
+                            setDialogMessage(error.message || 'Failed to add Fuel Refill.');
+                        }
+                        onDialogOpen();
+                    }
+                    setSubmitting(false);
+                }}
             >
                 {({ errors, touched, isSubmitting, setFieldValue }) => {
                     useEffect(() => {
@@ -424,7 +438,7 @@ export default function AddFuelRefillDetails() {
                 </AlertDialogContent>
             </AlertDialog>
 
-            <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
+            <AlertDialog isOpen={isSuccessDialogOpen} onClose={handleSuccessDialogClose} motionPreset="slideInBottom">
                 <AlertDialogOverlay />
                 <AlertDialogContent
                     position="absolute"

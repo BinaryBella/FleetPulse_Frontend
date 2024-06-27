@@ -21,7 +21,7 @@ export default function AddMaintenanceType() {
     const handleSubmit = async (values) => {
         try {
             console.log(values.TypeName, values.isActive);
-            const status = values.isActive === false ? false : true;
+            const status = values.isActive || false; // Ensure it defaults to false if not set
 
             const response = await fetch('https://localhost:7265/api/VehicleMaintenanceType', {
                 method: 'POST',
@@ -74,7 +74,7 @@ export default function AddMaintenanceType() {
             <PageHeader title="Add Vehicle Maintenance Type Details" breadcrumbs={breadcrumbs}/>
             <Formik
                 initialValues={{
-                    TypeName:"",
+                    TypeName: "",
                     isActive: false
                 }}
                 onSubmit={handleSubmit}
@@ -90,7 +90,7 @@ export default function AddMaintenanceType() {
                                 }
                                 return error;
                             }}>
-                                {({ field}) => (
+                                {({ field }) => (
                                     <div>
                                         <Input
                                             {...field}
