@@ -53,7 +53,7 @@ export default function AddDriverDetails() {
             setIsLoading(true);
             try {
                 // Replace with your API endpoint
-                const response = await fetch('https://api.example.com/driver-details'); // Example API endpoint
+                const response = await fetch('https://localhost:7265/api/Driver'); 
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

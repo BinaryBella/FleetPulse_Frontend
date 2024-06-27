@@ -99,8 +99,8 @@ export default function HelperDetails() {
   const columns = [
     { accessorKey: 'firstName', header: 'First Name', meta: { isNumeric: false, filter: 'text' } },
     { accessorKey: 'lastName', header: 'Last Name', meta: { isNumeric: false, filter: 'text' } },
-    { accessorKey: 'DoB', header: 'DoB', meta: { isNumeric: false, filter: 'text' } },
-    { accessorKey: 'NIC', header: 'NIC', meta: { isNumeric: false, filter: 'text' } },
+    { accessorKey: 'dateOfBirth', header: 'DoB', meta: { isNumeric: false, filter: 'text' } },
+    { accessorKey: 'nic', header: 'NIC', meta: { isNumeric: false, filter: 'text' } },
     { accessorKey: 'emailAddress', header: 'Email Address', meta: { isNumeric: false, filter: 'text' } },
     { accessorKey: 'phoneNo', header: 'Phone No.', meta: { isNumeric: false, filter: 'text' } },
     { accessorKey: 'emergencyContact', header: 'Em.Contact', meta: { isNumeric: false, filter: 'text' } },
@@ -208,8 +208,8 @@ export default function HelperDetails() {
               <Tr key={index}>
                 <Td>{helper.firstName}</Td>
                 <Td>{helper.lastName}</Td>
-                <Td>{helper.DoB}</Td>
-                <Td>{helper.NIC}</Td>
+                <Td>{helper.dateOfBirth}</Td>
+                <Td>{helper.nic}</Td>
                 <Td>{helper.emailAddress}</Td>
                 <Td>{helper.phoneNo}</Td>
                 <Td>{helper.emergencyContact}</Td>
@@ -219,7 +219,7 @@ export default function HelperDetails() {
                   <Menu>
                     <MenuButton as={IconButton} aria-label='options' icon={<IoSettingsSharp />} />
                     <MenuList>
-                      <MenuItem onClick={() => navigate(`/app/EditHelperDetails/${helper.id}`)}>Edit</MenuItem>
+                      <MenuItem onClick={() => navigate(`/app/EditHelperDetails/${helper.userId}`)}>Edit</MenuItem>
                       <MenuItem onClick={() => onClickInactive(helper)}>{helper.isActive ? 'Deactivate' : 'Activate'}</MenuItem>
                     </MenuList>
                   </Menu>

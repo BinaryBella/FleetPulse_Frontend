@@ -13,7 +13,7 @@ import {
     AlertDialogHeader,
     AlertDialogBody,
     AlertDialogFooter,
-    useDisclosure
+    useDisclosure,
 } from "@chakra-ui/react";
 import { MdArrowDropDown } from "react-icons/md";
 import theme from "../config/ThemeConfig.jsx";
@@ -28,8 +28,7 @@ export default function EditDriverDetails() {
     const [initialValues, setInitialValues] = useState({
         firstName: "",
         lastName: "",
-        dateOfBirth: "",
-        nationalId: "",
+        dateOfBirth: null,
         email: "",
         licenseNo: "",
         contactNumber: "",
@@ -39,6 +38,7 @@ export default function EditDriverDetails() {
         password: "",
         confirmPassword: "",
         isActive: false,
+        licenseExpiryDate: null
     });
 
     const breadcrumbs = [
@@ -63,18 +63,17 @@ export default function EditDriverDetails() {
             setInitialValues({
                 firstName: data.firstName || "",
                 lastName: data.lastName || "",
-                dateOfBirth: data.dateOfBirth || "",
-                nationalId: data.nationalId || "",
+                dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
                 driverLicenseNo: data.driverLicenseNo|| "",
-                licenseExpiryDate: data.licenseExpiryDate|| "",
-                email: data.email || "",              
-                contactNumber: data.contactNumber || "",
+                licenseExpiryDate: data.licenseExpiryDate ? new Date(data.licenseExpiryDate) : null,
+                email: data.emailAddress || "",              
+                contactNumber: data.phoneNo || "",
                 emergencyContact: data.emergencyContact || "",
                 bloodGroup: data.bloodGroup || "",
                 userName: data.userName || "",
                 password: "",
                 confirmPassword: "",
-                isActive: data.isActive || false,
+                isActive: data.status || false,
             });
         } catch (error) {
             setDialogMessage(error.message || 'Failed to fetch driver data.');
@@ -84,26 +83,25 @@ export default function EditDriverDetails() {
 
     const handleSubmit = async (values) => {
         try {
-            const response = await fetch(`https://localhost:7265/api/Driver/UpdateDriver`, {
+            const response = await fetch(`https://localhost:7265/api/Driver/UpdateDriver/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    Id: id,
+                    UserId: id,
                     FirstName: values.firstName,
                     LastName: values.lastName,
                     DateOfBirth: values.dateOfBirth,
-                    NationalId: values.nationalId,
                     DriverLicenseNo: values.driverLicenseNo,
                     LicenseExpiryDate: values.licenseExpiryDate,
-                    Email: values.email,                  
-                    ContactNumber: values.contactNumber,
+                    EmailAddress: values.email,                  
+                    PhoneNo: values.contactNumber,
                     EmergencyContact: values.emergencyContact,
                     BloodGroup: values.bloodGroup,
                     UserName: values.userName,
                     Password: values.password,
-                    IsActive: values.isActive,
+                    Status: values.isActive,
                 })
             });
 
@@ -215,10 +213,15 @@ export default function EditDriverDetails() {
                                         mt={1}
                                         width="500px"
                                         id="dateOfBirth"
-                                        value={values.dateOfBirth}
+                                        value={values.dateOfBirth ? values.dateOfBirth.toISOString().substr(0, 10) : ''}
+                                        onChange={(e) => {
+                                            const newValue = e.target.value;
+                                            setFieldValue('dateOfBirth', newValue ? new Date(newValue) : null);
+                                        }}
                                     />
                                 )}
-                            </Field>
+</Field>
+                        
                         </div>
                         
                         <div className="flex flex-col gap-3">
@@ -234,7 +237,7 @@ export default function EditDriverDetails() {
                                         py={2}
                                         mt={1}
                                         width="500px"
-                                        id="nationalId"
+                                        id="driverLicenseNo"
                                         value={values.driverLicenseNo}
                                         placeholder="Driver License No"
                                     />
@@ -243,7 +246,7 @@ export default function EditDriverDetails() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>License Expiry Date</p>
-                            <Field name="licenseExpiryDate">
+                            {/* <Field name="licenseExpiryDate">
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -254,9 +257,29 @@ export default function EditDriverDetails() {
                                         py={2}
                                         mt={1}
                                         width="500px"
-                                        id="nationalId"
+                                        id="licenseExpiryDate"
                                         value={values.licenseExpiryDate}
                                         placeholder="License Expiry Date"
+                                    />
+                                )}
+                            </Field> */}
+                            <Field name="licenseExpiryDate">
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        type="date"
+                                        variant="filled"
+                                        borderRadius="md"
+                                        px={3}
+                                        py={2}
+                                        mt={1}
+                                        width="500px"
+                                        id="licenseExpiryDate"
+                                        value={values.licenseExpiryDate ? values.licenseExpiryDate.toISOString().substr(0, 10) : ''}
+                                        onChange={(e) => {
+                                            const newValue = e.target.value;
+                                            setFieldValue('licenseExpiryDate', newValue ? new Date(newValue) : null);
+                                        }}
                                     />
                                 )}
                             </Field>
@@ -338,9 +361,14 @@ export default function EditDriverDetails() {
                                         icon={<MdArrowDropDown />}
                                         value={values.bloodGroup}
                                     >
-                                        <option value="BloodGroup1">Blood Group 1</option>
-                                        <option value="BloodGroup2">Blood Group 2</option>
-                                        <option value="BloodGroup3">Blood Group 3</option>
+                                        <option value="A+">A+</option>
+                                        <option value="B+">B+</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="O+">O+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O-">O-</option>
                                     </Select>
                                 )}
                             </Field>
@@ -376,7 +404,7 @@ export default function EditDriverDetails() {
                                 )}
                             </Field>
                         </div>
-                        <div className="flex flex-col gap-3">
+                        {/* <div className="flex flex-col gap-3">
                             <p>Password</p>
                             <Field name="password" validate={(value) => {
                                 let error;
@@ -437,14 +465,14 @@ export default function EditDriverDetails() {
                                     </div>
                                 )}
                             </Field>
-                        </div>
+                        </div> */}
                         <div className="flex flex-col gap-3">
                             <Field name="isActive">
                                 {({ field }) => (
                                     <Checkbox
                                         {...field}
                                         size="lg"
-                                        checked={values.isActive}
+                                        isChecked={values.isActive}
                                         className="mt-8"
                                         onChange={e => setFieldValue('isActive', e.target.checked)}
                                     >

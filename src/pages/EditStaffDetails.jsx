@@ -28,7 +28,7 @@ export default function EditStaffDetails() {
     const [initialValues, setInitialValues] = useState({
         firstName: "",
         lastName: "",
-        dateOfBirth: "",
+        dateOfBirth: "null",
         nationalId: "",
         email: "",
         contactNumber: "",
@@ -62,16 +62,16 @@ export default function EditStaffDetails() {
             setInitialValues({
                 firstName: data.firstName || "",
                 lastName: data.lastName || "",
-                dateOfBirth: data.dateOfBirth || "",
-                nationalId: data.nationalId || "",
-                email: data.email || "",
-                contactNumber: data.contactNumber || "",
+                dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
+                nationalId: data.nic || "",
+                email: data.emailAddress || "",
+                contactNumber: data.phoneNo || "",
                 emergencyContact: data.emergencyContact || "",
                 jobTitle: data.jobTitle || "",
                 userName: data.userName || "",
                 password: "",
                 confirmPassword: "",
-                isActive: data.isActive || false,
+                isActive: data.status || false,
             });
         } catch (error) {
             setDialogMessage(error.message || 'Failed to fetch staff data.');
@@ -87,18 +87,18 @@ export default function EditStaffDetails() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    Id: id,
+                    UserId: id,
                     FirstName: values.firstName,
                     LastName: values.lastName,
                     DateOfBirth: values.dateOfBirth,
-                    NationalId: values.nationalId,
-                    Email: values.email,
-                    ContactNumber: values.contactNumber,
+                    NIC: values.nationalId,
+                    EmailAddress: values.email,
+                    PhoneNo: values.contactNumber,
                     EmergencyContact: values.emergencyContact,
-                    jobTitle: values.bloodGroup,
+                    JobTitle: values.bloodGroup,
                     UserName: values.userName,
                     Password: values.password,
-                    IsActive: values.isActive,
+                    Status: values.isActive,
                 })
             });
 
@@ -198,7 +198,7 @@ export default function EditStaffDetails() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>Date of Birth</p>
-                            <Field name="dateOfBirth">
+                           {  /* Field name="dateOfBirth">
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -213,7 +213,28 @@ export default function EditStaffDetails() {
                                         value={values.dateOfBirth}
                                     />
                                 )}
-                            </Field>
+                            </Field> */}
+
+                   <Field name="dateOfBirth">
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        type="date"
+                                        variant="filled"
+                                        borderRadius="md"
+                                        px={3}
+                                        py={2}
+                                        mt={1}
+                                        width="500px"
+                                        id="dateOfBirth"
+                                        value={values.dateOfBirth ? values.dateOfBirth.toISOString().substr(0, 10) : ''}
+                                        onChange={(e) => {
+                                            const newValue = e.target.value;
+                                            setFieldValue('dateOfBirth', newValue ? new Date(newValue) : null);
+                                        }}
+                                    />
+                                )}
+                                 </Field>
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>National Identity Card No</p>
@@ -417,7 +438,7 @@ export default function EditStaffDetails() {
                                     <Checkbox
                                         {...field}
                                         size="lg"
-                                        checked={values.isActive}
+                                        isChecked={values.isActive}
                                         className="mt-8"
                                         onChange={e => setFieldValue('isActive', e.target.checked)}
                                     >

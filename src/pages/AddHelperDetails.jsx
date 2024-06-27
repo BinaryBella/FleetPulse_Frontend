@@ -72,23 +72,23 @@ export default function AddHelperDetails() {
     try {
       const status = values.isActive ? true : false;
 
-      const response = await fetch('https://localhost:7265/api/HelperDetails', {
+      const response = await fetch('https://localhost:7265/api/Helper', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstName: values.firstName,
-          lastName: values.lastName,
-          dob: values.dob,
-          nic: values.nic,
-          emailAddress: values.emailAddress,
-          phoneNo: values.phoneNo,
-          emergencyContact: values.emergencyContact,
-          bloodGroup: values.bloodGroup,
-          userName: values.userName,
-          password: values.password,
-          status: status,
+          FirstName: values.firstName,
+          LastName: values.lastName,
+          DateOfBirth: values.dob,
+          NIC: values.nic,
+          EmailAddress: values.emailAddress,
+          PhoneNo: values.phoneNo,
+          EmergencyContact: values.emergencyContact,
+          BloodGroup: values.bloodGroup,
+          UserName: values.userName,
+          Password: values.password,
+          Status: values.isActive,
         }),
       });
 

@@ -276,8 +276,8 @@ export default function StaffDetails() {
                             <Tr key={index}>
                                 <Td className="custom-table-td">{staff.firstName}</Td>
                                 <Td className="custom-table-td">{staff.lastName}</Td>
-                                <Td className="custom-table-td">{staff.DoB}</Td>
-                                <Td className="custom-table-td">{staff.lNIC}</Td>
+                                <Td className="custom-table-td">{staff.dateOfBirth}</Td>
+                                <Td className="custom-table-td">{staff.nic}</Td>
                                 <Td className="custom-table-td">{staff.emailAddress}</Td>
                                 <Td className="custom-table-td">{staff.phoneNo}</Td>
                                 <Td className="custom-table-td">{staff.emergencyContact}</Td>

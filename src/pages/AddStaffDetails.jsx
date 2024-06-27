@@ -25,18 +25,18 @@ export default function AddStaffDetails() {
     const [dialogMessage, setDialogMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [initialValues, setInitialValues] = useState({
-        firstName: "",
-        lastName: "",
-        dob: "",
-        nationalId: "",
-        email: "",
-        contactNo: "",
-        emergencyContactNo: "",
-        jobTitle: "",
-        username: "",
-        password: "",
-        confirmPassword: "",
-        isActive: true, 
+        FirstName: "",
+        LastName: "",
+        DateOfBirth: "",
+        NIC: "",
+        EmailAddress: "",
+        PhoneNo: "",
+        EmergencyContactNo: "",
+        JobTitle: "",
+        UserName: "",
+        Password: "",
+        ConfirmPassword: "",
+        Status: true, 
     });
 
     const breadcrumbs = [
@@ -51,26 +51,26 @@ export default function AddStaffDetails() {
             setIsLoading(true);
             try {
                 // Replace with your API endpoint
-                const response = await fetch('https://api.example.com/staff-details'); // Example API endpoint
+                const response = await fetch('https://localhost:7265/api/Staff'); 
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
                 const data = await response.json();
 
-                // Set initial form values from fetched data
+                
                 setInitialValues({
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    dob: data.dob,
-                    nationalId: data.nationalId,
-                    email: data.email,
-                    contactNo: data.contactNo,
-                    emergencyContactNo: data.emergencyContactNo,
-                    jobTitle: data.jobTitle,
-                    username: data.username,
-                    password: data.password,
-                    confirmPassword: data.confirmPassword,
-                    isActive: data.isActive,
+                    FirstName: data.firstName,
+                    LastName: data.lastName,
+                    DateOfBirth: data.dob,
+                    NIC: data.nationalId,
+                    EmailAddress: data.email,
+                    PhoneNo: data.contactNo,
+                    EmergencyContactNo: data.emergencyContactNo,
+                    JobTitle: data.jobTitle,
+                    Username: data.username,
+                    Password: data.password,
+                    ConfirmPassword: data.confirmPassword,
+                    Status: data.isActive,
                 });
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -85,32 +85,45 @@ export default function AddStaffDetails() {
     }, []);
 
     const validationSchema = Yup.object({
-        firstName: Yup.string().required('First Name is required'),
-        lastName: Yup.string().required('Last Name is required'),
-        dob: Yup.date().required('Date of Birth is required'),
-        nationalId: Yup.string().required('National Identity Card No is required'),
-        email: Yup.string().email('Invalid email address').required('Email is required'),
-        contactNo: Yup.string().required('Contact Number is required'),
-        emergencyContactNo: Yup.string().required('Emergency Contact No is required'),
-        jobTitle: Yup.string().required('Job Title is required'),
-        username: Yup.string().required('Username is required'),
-        password: Yup.string().required('Password is required'),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
+        FirstName: Yup.string().required('First Name is required'),
+        LastName: Yup.string().required('Last Name is required'),
+        DateOfBirth: Yup.date().required('Date of Birth is required'),
+        NIC: Yup.string().required('National Identity Card No is required'),
+        EmailAddress: Yup.string().email('Invalid email address').required('Email is required'),
+        PhoneNo: Yup.string().required('Contact Number is required'),
+        EmergencyContactNo: Yup.string().required('Emergency Contact No is required'),
+        JobTitle: Yup.string().required('Job Title is required'),
+        UserName: Yup.string().required('Username is required'),
+        Password: Yup.string().required('Password is required'),
+        ConfirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
     });
 
     const handleSubmit = async (values, actions) => {
         try {
             console.log(values); 
-            
-            await new Promise((resolve) => setTimeout(resolve, 1000));
 
             
+            const response = await fetch('https://localhost:7265/api/Staff', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values)
+            });
+
+            if(response.ok){
+                const data = await response.json();
             setDialogMessage("Staff details saved successfully.");
             onDialogOpen();
 
             
             actions.resetForm();
-        } catch (error) {
+        } else{
+            setDialogMessage("Failed to save staff details.");
+            onDialogOpen();
+        }
+        
+        }catch (error) {
             
             setDialogMessage("Failed to save staff details.");
             onDialogOpen();
@@ -118,6 +131,11 @@ export default function AddStaffDetails() {
     };
 
     const handleCancel = () => {
+        navigate('/app/StaffDetails');
+    };
+
+    const handleSuccessDialogClose = () => {
+        onSuccessDialogClose();
         navigate('/app/StaffDetails');
     };
 
