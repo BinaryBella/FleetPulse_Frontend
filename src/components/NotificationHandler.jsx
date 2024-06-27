@@ -2,12 +2,10 @@ import { useEffect } from 'react';
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging } from "../firebase/firebaseConfig";
 import { useNotifications } from '../context/NotificationContext';
-import { useNavigate } from 'react-router-dom';
 
 const NotificationHandler = () => {
     const { VITE_APP_VAPID_KEY } = import.meta.env;
     const { addNotification } = useNotifications();
-    const navigate = useNavigate();
 
     useEffect(() => {
         const requestPermission = async () => {
@@ -35,13 +33,14 @@ const NotificationHandler = () => {
             console.log(payload);
             const token = sessionStorage.getItem("deviceToken");
 
-            // Check if payload.data exists and contains the necessary properties
             const notificationData = payload.data || {};
             const notification = {
                 UserId: token,
                 title: payload.notification?.title || 'No title',
                 body: payload.notification?.body || 'No body',
+                emailAddress: payload.data?.emailAddress || 'No email',
                 username: notificationData.username || 'Unknown',
+                isPasswordReset: payload.notification?.title === "Password Reset Request",
                 Date: new Date().toISOString(),
                 Time: new Date().toISOString(),
                 Status: false,

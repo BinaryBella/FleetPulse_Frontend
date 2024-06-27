@@ -51,10 +51,10 @@ export default function Login() {
                                     setBackendError(data.message);
                                 }
                             } else {
-                                const { token, jobTitle } = data.data;
+                                const { accessToken, jobTitle } = data.data;
                                 if (jobTitle === "Admin" || jobTitle === "Staff") {
                                     sessionStorage.setItem('Username', values.username);
-                                    localStorage.setItem('Token', token);
+                                    localStorage.setItem('Token', accessToken);
                                     sessionStorage.setItem('UserRole', jobTitle);                                    navigate('/app/Dashboard');
                                 } else {
                                     navigate("/unauthorized");

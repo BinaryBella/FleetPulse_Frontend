@@ -78,6 +78,7 @@ export default function ResetPasswordDriverHelper() {
     const location = useLocation();
     const query = new URLSearchParams(location.search);
     const username = query.get('username');
+    const emailAddress = query.get('emailAddress'); // Retrieve emailAddress from URL
 
     const handleShowPassword = (setter) => () => setter(prev => !prev);
 
@@ -88,10 +89,10 @@ export default function ResetPasswordDriverHelper() {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        console.log("Email:", values.email); // Log the email to check if it is correct
+        console.log("Email:", values.emailAddress); // Check if email is logged
         try {
             const response = await axios.post('https://localhost:7265/api/Auth/reset-password', {
-                email: values.email, // Include email in the request
+                emailAddress: values.emailAddress,
                 newPassword: values.newPassword
             }, {
                 headers: {
@@ -123,8 +124,8 @@ export default function ResetPasswordDriverHelper() {
     };
 
     useEffect(() => {
-        sessionStorage.getItem('Username');
-    }, []);
+        console.log("Retrieved emailAddress:", emailAddress); // Log email for debugging
+    }, [emailAddress]);
 
     const handleCancel = () => {
         navigate('/app/Dashboard');
@@ -138,14 +139,14 @@ export default function ResetPasswordDriverHelper() {
                     <Formik
                         onSubmit={handleSubmit}
                         initialValues={{
-                            email: '', // Initialize email field
+                            emailAddress: emailAddress || '', // Initialize emailAddress field with emailAddress from URL or empty
                             newPassword: "",
                             confirmPassword: ""
                         }}
                         validate={(values) => {
                             const errors = {};
-                            if (!values.email) {
-                                errors.email = "Please enter your email.";
+                            if (!values.emailAddress) {
+                                errors.emailAddress = "Please enter your emailAddress.";
                             }
                             if (!values.newPassword) {
                                 errors.newPassword = "Please enter your new password.";
@@ -163,13 +164,14 @@ export default function ResetPasswordDriverHelper() {
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-4/5">
                                 <Field
                                     as={Input}
-                                    id="email"
-                                    name="email"
-                                    type="email"
+                                    id="emailAddress"
+                                    name="emailAddress"
+                                    type="emailAddress"
                                     variant="filled"
                                     placeholder="Email"
                                     size="sm"
                                     borderRadius="md"
+                                    value={values.emailAddress}
                                 />
                                 <PasswordField
                                     fieldId="newPassword"
