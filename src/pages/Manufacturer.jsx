@@ -65,7 +65,7 @@ export default function Manufacturer() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/Manufacture/UpdateManufacture${selectedManufacturer.id}/${selectedManufacturer.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/Manufacture${selectedManufacturer.ManufactureId}/${selectedManufacturer.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
             fetchManufacturers();
             onDialogClose();

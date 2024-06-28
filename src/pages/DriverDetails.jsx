@@ -65,7 +65,7 @@ export default function DriverDetails() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/DriverDetails/${selectedDriver.id}/${selectedDriver.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/Driver/${selectedDriver.userId}/${selectedDriver.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
             fetchDriverDetails();
             onDialogClose();
@@ -166,6 +166,11 @@ export default function DriverDetails() {
                         <MenuItem>
                             <Link to={`/app/EditDriverDetails/${row.original.id}`}>
                                 Edit
+                            </Link>
+                        </MenuItem>
+                        <MenuItem>
+                            <Link to={`/app/ResetPassword/${row.original.id}`}>
+                                Reset Password
                             </Link>
                         </MenuItem>
                         <MenuItem onClick={() => onClickDelete(row.original)}>
@@ -307,6 +312,9 @@ export default function DriverDetails() {
                                         <MenuList>
                                             <MenuItem>
                                                 <Link to={`/app/EditDriverDetails/${driver.userId}`}>Edit</Link>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                <Link to={`/app/ResetPassword/${driver.userId}`}>Reset Password</Link>
                                             </MenuItem>
                                             <MenuItem onClick={() => onClickDelete(driver)}>
                                                 {driver.status ? "Deactivate" : "Activate"}
