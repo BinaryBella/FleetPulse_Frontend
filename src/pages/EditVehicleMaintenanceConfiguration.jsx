@@ -13,12 +13,13 @@ import {
     Checkbox
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PageHeader from '../components/PageHeader.jsx';
 import theme from '../config/ThemeConfig.jsx';
 import Maintenance from "../assets/images/maintenance.png";
 
-const VehicleMaintenanceConfiguration = () => {
+const EditVehicleMaintenanceConfiguration = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
@@ -26,6 +27,12 @@ const VehicleMaintenanceConfiguration = () => {
     const [successDialogMessage, setSuccessDialogMessage] = useState('');
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
     const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
+    const [initialValues, setInitialValues] = useState({
+        registrationNo: '',
+        maintenanceType: '',
+        duration: '',
+        isActive: false,
+    });
 
     const exampleVehicleData = [
         { VehicleId: 1, VehicleRegistrationNo: 'ABC123' },
@@ -38,7 +45,7 @@ const VehicleMaintenanceConfiguration = () => {
             setVehicleRegNoDetails(response.data);
         } catch (error) {
             console.error('Error fetching vehicle registration numbers:', error);
-            setVehicleRegNoDetails(exampleVehicleData); // Using dummy data in case of an error
+            setVehicleRegNoDetails(exampleVehicleData);
         }
     };
 
@@ -51,15 +58,32 @@ const VehicleMaintenanceConfiguration = () => {
         }
     };
 
+    const fetchMaintenanceConfiguration = async () => {
+        try {
+            const response = await axios.get(`https://localhost:7265/api/VehicleMaintenanceConfiguration/${id}`);
+            const data = response.data;
+            console.log(response.data);
+            setInitialValues({
+                registrationNo: data.vehicleId,
+                maintenanceType: data.vehicleMaintenanceTypeId,
+                duration: data.duration,
+                isActive: data.status,
+            });
+        } catch (error) {
+            console.error('Error fetching maintenance configuration:', error);
+        }
+    };
+
     useEffect(() => {
         fetchVehicleMaintenanceTypes();
         fetchVehicleRegNos();
+        fetchMaintenanceConfiguration();
     }, []);
 
     const breadcrumbs = [
         { label: 'Vehicle', link: '/app/Vehicle' },
         { label: 'Vehicle Maintenance Configuration', link: '/app/VehicleMaintenanceConfigurationTable' },
-        { label: 'Add Vehicle Maintenance Configuration', link: '/app/VehicleMaintenanceConfiguration' }
+        { label: 'Edit Vehicle Maintenance Configuration', link: `/app/EditVehicleMaintenanceConfiguration/${id}` }
     ];
 
     const handleSubmit = async (values) => {
@@ -76,8 +100,8 @@ const VehicleMaintenanceConfiguration = () => {
                 status: values.isActive
             };
 
-            const response = await fetch('https://localhost:7265/api/VehicleMaintenanceConfiguration', {
-                method: 'POST',
+            const response = await fetch(`https://localhost:7265/api/VehicleMaintenanceConfiguration/${id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -87,26 +111,25 @@ const VehicleMaintenanceConfiguration = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to add maintenance');
+                throw new Error(data.message || 'Failed to update maintenance');
             }
 
             if (data.message && data.message.toLowerCase().includes('exist')) {
                 setDialogMessage('Vehicle Maintenance already exists');
                 onDialogOpen();
             } else {
-                setSuccessDialogMessage('Maintenance added successfully');
+                setSuccessDialogMessage('Maintenance updated successfully');
                 onSuccessDialogOpen();
             }
         } catch (error) {
             if (error instanceof TypeError) {
                 setDialogMessage('Failed to connect to the server');
             } else {
-                setDialogMessage(error.message || 'Failed to add maintenance.');
+                setDialogMessage(error.message || 'Failed to update maintenance.');
             }
             onDialogOpen();
         }
     };
-
 
     const handleCancel = () => {
         navigate('/app/VehicleMaintenanceConfigurationTable');
@@ -119,15 +142,11 @@ const VehicleMaintenanceConfiguration = () => {
 
     return (
         <>
-            <PageHeader title="Add Vehicle Maintenance Configurations" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Edit Vehicle Maintenance Configuration" breadcrumbs={breadcrumbs} />
 
             <Formik
-                initialValues={{
-                    registrationNo: '',
-                    maintenanceType: '',
-                    duration: '',
-                    isActive: false,
-                }}
+                initialValues={initialValues}
+                enableReinitialize
                 onSubmit={handleSubmit}
                 validate={(values) => {
                     const errors = {};
@@ -261,7 +280,7 @@ const VehicleMaintenanceConfiguration = () => {
                             </div>
                         </div>
                         <div className="flex items-end">
-                            <img src={Maintenance} alt="Change Password" width="400" height="400" className="mr-14" />
+                            <img src={Maintenance} alt="Edit Vehicle Maintenance" width="400" height="400" className="mr-14" />
                         </div>
                     </Form>
                 )}
@@ -285,7 +304,7 @@ const VehicleMaintenanceConfiguration = () => {
                 </AlertDialogContent>
             </AlertDialog>
 
-            <AlertDialog isOpen={isSuccessDialogOpen} onClose={onSuccessDialogClose} motionPreset="slideInBottom">
+            <AlertDialog isOpen={isSuccessDialogOpen} onClose={handleSuccessDialogClose} motionPreset="slideInBottom">
                 <AlertDialogOverlay />
                 <AlertDialogContent
                     position="absolute"
@@ -306,4 +325,4 @@ const VehicleMaintenanceConfiguration = () => {
     );
 };
 
-export default VehicleMaintenanceConfiguration;
+export default EditVehicleMaintenanceConfiguration;

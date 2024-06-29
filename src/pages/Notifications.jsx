@@ -55,17 +55,20 @@ const Notifications = () => {
 
     return (
         <Box className="notification-container">
-            <PageHeader title="Notifications" className="mb-14"/>
+            <PageHeader title="Notifications"/>
+
             {notifications.length > 0 && (
                 <Box className="notification-controls">
                     <Button
                         className="mark-all-read-btn"
+                        style={{ color: 'white', backgroundColor: '#2c2c59', height: '30px' }}
                         onClick={handleMarkAllAsRead}
                     >
                         Mark All as Read
                     </Button>
                     <Button
                         className="delete-all-btn"
+                        style={{ color: 'white', backgroundColor: '#9d1518', height: '30px' }}
                         onClick={handleDeleteAllNotifications}
                     >
                         Delete All
@@ -90,17 +93,19 @@ const Notifications = () => {
                                 <Heading as="h2" size="sm">{notification.title}</Heading>
                             </Box>
                             <Box className="notification-actions">
-                                {!notification.read && (
-                                    <Button className="mark-read-btn" onClick={() => handleMarkAsRead(index, notification.notificationId)}>
-                                        Mark as Read
-                                    </Button>
-                                )}
+
                                 {notification.title === "Password Reset Request" && (
                                     <Button
                                         className="reset-password-btn"
+                                        style={{ color: 'white', backgroundColor: '#247ab7' }}
                                         onClick={() => handleNavigate(notification.username, notification.emailAddress, notification)}
                                     >
                                         Reset Password
+                                    </Button>
+                                )}
+                                {!notification.read && (
+                                    <Button className="mark-read-btn" onClick={() => handleMarkAsRead(index, notification.notificationId)}>
+                                        Mark as Read
                                     </Button>
                                 )}
                                 <IconButton

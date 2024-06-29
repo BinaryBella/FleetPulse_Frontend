@@ -130,7 +130,7 @@ export default function VehicleMaintenanceConfigurationTable() {
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/app/EditMaintenanceType/${row.original.id}`}>
+                            <Link to={`/app/EditVehicleMaintenanceConfiguration/${row.original.id}`}>
                                 Edit
                             </Link>
                         </MenuItem>
@@ -202,7 +202,7 @@ export default function VehicleMaintenanceConfigurationTable() {
                         color="white"
                         variant="solid"
                         w="260px"
-                        mr="60px"
+                        mr="50px"
                     >
                         Add Maintenance Configuration
                     </Button>
@@ -265,7 +265,7 @@ export default function VehicleMaintenanceConfigurationTable() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditMaintenanceType/${maintenanceType.id}`}>
+                                                <Link to={`/app/EditVehicleMaintenanceConfiguration/${maintenanceType.id}`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>
@@ -280,30 +280,32 @@ export default function VehicleMaintenanceConfigurationTable() {
                     )}
                 </Tbody>
             </Table>
-            {!isEmpty && (
-                <Pagination
-                    pageCount={pageCount}
-                    onPageChange={handlePageClick}
-                />
-            )}
-
-            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
-                <AlertDialogOverlay />
-                <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
-                    <AlertDialogHeader>{selectedType?.status ? "Deactivate" : "Activate"} Maintenance Type</AlertDialogHeader>
-                    <AlertDialogBody>
-                        Are you sure you want to {selectedType?.status ? "deactivate" : "activate"} {selectedType?.typeName} Maintenance Type?
-                    </AlertDialogBody>
-                    <AlertDialogFooter>
-                        <div className="flex flex-row gap-8">
-                            <Button bg="gray.400" _hover={{bg: "gray.500"}} color="#ffffff" variant="solid"
-                                    onClick={onDialogClose} ref={cancelRef}>Cancel</Button>
-                            <Button colorScheme='red' color="#FFFFFF" onClick={onConfirmDelete}>
+            <Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+            <AlertDialog
+                isOpen={isDialogOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onDialogClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            {selectedType?.status ? "Deactivate" : "Activate"} Maintenance Type
+                        </AlertDialogHeader>
+                        <AlertDialogBody>
+                            {selectedType?.status
+                                ? "Are you sure? You cannot undo this action afterwards."
+                                : "Are you sure you want to activate this maintenance type?"}
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onDialogClose}>
+                                Cancel
+                            </Button>
+                            <Button colorScheme="red" onClick={onConfirmDelete} ml={3}>
                                 {selectedType?.status ? "Deactivate" : "Activate"}
                             </Button>
-                        </div>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
             </AlertDialog>
         </div>
     );

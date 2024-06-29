@@ -1,9 +1,10 @@
 import './App.css';
+import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ChakraProvider } from "@chakra-ui/react";
+import { NotificationProvider } from './context/NotificationContext';
 import MainLayout from './layouts/MainLayout';
 import AnonymousLayout from './layouts/AnonymousLayout';
-import { NotificationProvider } from './context/NotificationContext';
 import NotificationHandler from './components/NotificationHandler';
 import Notifications from './pages/Notifications';
 import ResetPassword from './pages/ResetPassword';
@@ -49,11 +50,11 @@ import StaffReport from "./pages/StaffReport.jsx";
 import TripReport from "./pages/TripReport.jsx";
 import AccidentReport from "./pages/AccidentReport.jsx";
 import ResetPasswordDriverHelper from "./pages/ResetPasswordDriverHelper.jsx";
-import { useEffect, useState } from "react";
 import VehicleMaintenanceConfiguration from "./pages/VehicleMaintenanceConfiguration.jsx";
 import VehicleMaintenanceConfigurationTable from "./pages/VehicleMaintenanceConfigurationTable.jsx";
 import EditMaintenance from "./pages/EditMaintenance.jsx";
 import EditFuelRefillDetails from "./pages/EditFuelRefillDetails.jsx";
+import EditVehicleMaintenanceConfiguration from "./pages/EditVehicleMaintenanceConfiguration.jsx";
 
 export default function App() {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -102,6 +103,7 @@ export default function App() {
                             <Route path="/app/EditMaintenanceType/:id" element={<EditMaintenanceType />} />
                             <Route path="/app/EditMaintenance/:id" element={<EditMaintenance />} />
                             <Route path="/app/EditFuelRefillDetails/:id" element={<EditFuelRefillDetails />} />
+                            <Route path="/app/EditVehicleMaintenanceConfiguration/:id" element={<EditVehicleMaintenanceConfiguration />} />
                             <Route path="/app/AddVehicleDetails" element={<AddVehicleDetails />} />
                             <Route path="/app/AddMaintenanceType" element={<AddMaintenanceType />} />
                             <Route path="/app/Driver" element={<Driver />} />
