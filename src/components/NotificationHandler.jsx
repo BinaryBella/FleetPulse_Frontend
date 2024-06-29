@@ -39,7 +39,7 @@ const NotificationHandler = () => {
                 title: payload.notification?.title || 'No title',
                 body: payload.notification?.body || 'No body',
                 emailAddress: payload.data?.emailAddress || 'No email',
-                username: notificationData.username || 'Unknown',
+                username: payload.data?.username || 'Unknown',
                 isPasswordReset: payload.notification?.title === "Password Reset Request",
                 Date: new Date().toISOString(),
                 Time: new Date().toISOString(),

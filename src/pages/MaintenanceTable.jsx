@@ -225,7 +225,7 @@ export default function MaintenanceTable() {
                         color="white"
                         variant="solid"
                         w="260px"
-                        mr="60px"
+                        mr="50px"
                     >
                         Add Vehicle Maintenance Details
                     </Button>

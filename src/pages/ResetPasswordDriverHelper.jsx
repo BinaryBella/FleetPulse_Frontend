@@ -162,6 +162,7 @@ export default function ResetPasswordDriverHelper() {
                     >
                         {({ handleSubmit, errors, values, isSubmitting }) => (
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-4/5">
+                                <p className="font-semibold">Email Address</p>
                                 <Field
                                     as={Input}
                                     id="emailAddress"
