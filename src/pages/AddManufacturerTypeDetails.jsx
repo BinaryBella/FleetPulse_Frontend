@@ -4,33 +4,32 @@ import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 import { Button, Checkbox, Input, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useDisclosure } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
+   
 
-
-export default function AddVehicleType() {
+export default function AddManufactureDetails() {
     const navigate = useNavigate();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
-    
+
     const breadcrumbs = [
-        { label: 'Vehicle', link: '/' },
-        { label: 'Vehicle Type ', link: '/app/VehicleType' },
-        { label: 'Add Vehicle Type ', link: '/app/AddVehicleType' }
+        { label: 'Manufacturer', link: '/' },
+        { label: 'Add Manufacturer Type Details', link: '/app/AddManufacturerTypeDetails' }
     ];
 
     const handleSubmit = async (values) => {
         try {
             console.log(values.TypeName, values.isActive);
-            const status = values.isActive === false ? "false" : "true";
+            const status = values.isActive === false ? false : true;
 
-            const response = await fetch('https://localhost:7265/api/VehicleType', {
+            const response = await fetch('https://localhost:7265/api/Manufacture', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    Type: values.TypeName,
+                    Manufacturer: values.TypeName,
                     Status: status
                 })
             });
@@ -38,38 +37,38 @@ export default function AddVehicleType() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to add vehicle type.');
+                throw new Error(data.message || 'Failed to add manufacturer type.');
             }
 
             if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Vehicle Type already exists');
+                setDialogMessage('Manufacturer Type already exists');
                 onDialogOpen();
             } else {
-                setSuccessDialogMessage('Vehicle type added successfully.');
+                setSuccessDialogMessage('Manufacturer type added successfully.');
                 onSuccessDialogOpen();
             }
         } catch (error) {
             if (error instanceof TypeError) {
                 setDialogMessage('Failed to connect to the server.');
             } else {
-                setDialogMessage(error.message || 'Failed to add vehicle type.');
+                setDialogMessage(error.message || 'Failed to add manufacturer type.');
             }
             onDialogOpen();
         }
     };
 
     const handleCancel = () => {
-        navigate('/app/VehicleType');
+        navigate('/app/Manufacturer');
     };
 
     const handleSuccessDialogClose = () => {
         onSuccessDialogClose();
-        navigate('/app/VehicleType');
+        navigate('/app/Manufacturer');
     };
 
     return (
         <>
-            <PageHeader title="Add Vehicle Type Details" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Add Manufacturer Type Details" breadcrumbs={breadcrumbs} />
             <Formik
                 initialValues={{
                     TypeName: "",
@@ -80,11 +79,11 @@ export default function AddVehicleType() {
                 {({ errors, touched }) => (
                     <Form className="grid grid-cols-2 gap-10 mt-8">
                         <div className="flex flex-col gap-3">
-                            <p>Vehicle Type</p>
+                            <p>Manufacturer Type</p>
                             <Field name="TypeName" validate={(value) => {
                                 let error;
                                 if (!value) {
-                                    error = "Vehicle type is required.";
+                                    error = "Manufacturer type is required.";
                                 }
                                 return error;
                             }}>
@@ -100,7 +99,7 @@ export default function AddVehicleType() {
                                             mt={1}
                                             width="500px"
                                             id="TypeName"
-                                            placeholder="Enter Vehicle Type"
+                                            placeholder="Enter Manufacturer Type"
                                         />
                                         {errors.TypeName && touched.TypeName && (
                                             <div className="text-red-500">{errors.TypeName}</div>
@@ -111,19 +110,19 @@ export default function AddVehicleType() {
                             <Field name="isActive">
                                 {({ field, form }) => (
                                     <div>
-                                    <Checkbox
-                                        {...field}
-                                        size='lg'
-                                        defaultChecked={field.value}
-                                        className="mt-8"
-                                        onChange={e => form.setFieldValue(field.name, e.target.checked)}
-                                    >
-                                        Is Active
-                                    </Checkbox>
-                                    {form.errors.isActive && form.touched.isActive && (
-                                        <div className="text-red-500">{form.errors.isActive}</div>
-                                    )}
-                                </div>
+                                        <Checkbox
+                                            {...field}
+                                            size='lg'
+                                            defaultChecked={field.value}
+                                            className="mt-8"
+                                            onChange={e => form.setFieldValue(field.name, e.target.checked)}
+                                        >
+                                            Is Active
+                                        </Checkbox>
+                                        {form.errors.isActive && form.touched.isActive && (
+                                            <div className="text-red-500">{form.errors.isActive}</div>
+                                        )}
+                                    </div>
                                 )}
                             </Field>
                             <div className="flex gap-10">
@@ -192,3 +191,4 @@ export default function AddVehicleType() {
         </>
     );
 }
+    

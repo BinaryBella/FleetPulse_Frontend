@@ -116,7 +116,7 @@ export default function SideMenu({ isAdmin }) {
                         Driver
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/HelperDetails">
+                <Link className="flex items-center pl-16" to="/app/Helper">
                     <IconButton
                         variant='link'
                         color={theme.orange}
@@ -154,7 +154,7 @@ export default function SideMenu({ isAdmin }) {
                         Trip
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/AccidentDetails">
+                <Link className="flex items-center pl-16" to="/app/AddAccidentDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}

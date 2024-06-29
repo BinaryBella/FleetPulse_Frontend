@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import {
     Table,
     Thead,
@@ -43,102 +43,109 @@ import {
 } from '@tanstack/react-table';
 import { flexRender } from '@tanstack/react-table';
 
-export default function VehicleDetailsTable() {
-    const [vehicleDetails, setVehicleDetails] = useState([]);
+export default function DriverDetails() {
+    const [driverDetails, setDriverDetails] = useState([]);
     const [sorting, setSorting] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchInput, setSearchInput] = useState("");
-    const [selectedVehicle, setSelectedVehicle] = useState(null);
+    const [selectedDriver, setSelectedDriver] = useState(null);
     const cancelRef = useRef();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const itemsPerPage = 10;
     const toast = useToast();
 
     useEffect(() => {
-        fetchVehicleDetails();
+        fetchDriverDetails();
     }, []);
 
-    const fetchVehicleDetails = async () => {
-        try {
-            const response = await axios.get('https://localhost:7265/api/Vehicle');
-            setVehicleDetails(response.data);
-            console.log(response.data);
-        } catch (error) {
-            console.error("Error fetching vehicle details:", error);
-            toast({
-                title: "Error",
-                description: "Error fetching vehicle details",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-            });
-        }
-    };
-
-    const onClickDelete = (vehicle) => {
-        setSelectedVehicle(vehicle);
+    const onClickDelete = (driver) => {
+        setSelectedDriver(driver);
         onDialogOpen();
     };
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/Vehicle/${selectedVehicle.id}/${selectedVehicle.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/Driver/${selectedDriver.userId}/${selectedDriver.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
-            fetchVehicleDetails();
+            fetchDriverDetails();
             onDialogClose();
         } catch (error) {
-            if (error.response && error.response.status === 400 && error.response.data === "Vehicle is active and associated with vehicle records. Cannot deactivate.") {
+            if (error.response && error.response.status === 400 && error.response.data === "Driver is active and associated with driver records. Cannot deactivate.") {
                 toast({
                     title: "Error",
-                    description: "Vehicle is active and associated with vehicle records. Cannot deactivate.",
+                    description: "Driver is active and associated with driver records. Cannot deactivate.",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
                 });
             } else {
-                console.error("Error updating vehicle status:", error);
+                console.error("Error updating driver status:", error);
             }
+        }
+    };
+
+    const fetchDriverDetails = async () => {
+        try {
+            const response = await axios.get("https://localhost:7265/api/Driver");
+            setDriverDetails(response.data);
+        } catch (error) {
+            console.error("Error fetching driver details:", error);
         }
     };
 
     const columns = [
         {
-            accessorKey: 'registrationNo',
-            header: 'Reg No',
+            accessorKey: 'firstName',
+            header: 'First Name',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'licenseNo',
-            header: 'License No',
-            meta: { isNumeric: false, filter: 'date' }
-        },
-        {
-            accessorKey: 'licenseExpireDate',
-            header: 'License Exp Date',
+            accessorKey: 'lastName',
+            header: 'Last Name',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'manufacturerName',
-            header: 'Manufacturer',
+            accessorKey: 'DoB',
+            header: 'DoB',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'type',
-            header: 'Type',
+            accessorKey: 'lNIC',
+            header: 'NIC',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'fType',
-            header: 'Fuel Type',
+            accessorKey: 'driverLicenseNo',
+            header: 'Driver License No',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'color',
-            header: 'Color',
+            accessorKey: 'licenseExpiryDate',
+            header: 'License Expiry Date',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'isActive',
+            accessorKey: 'emailAddress',
+            header: 'Email Address',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'phoneNo',
+            header: 'Phone No',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'emergencyContact',
+            header: 'Emergency Contact',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'bloodGroup',
+            header: 'Blood Group',
+            meta: { isNumeric: false, filter: 'text' }
+        },
+        {
+            accessorKey: 'status',
             header: 'Status',
             cell: info => (info.getValue() ? "Active" : "Inactive"),
             meta: { isNumeric: false, filter: 'boolean' }
@@ -151,34 +158,34 @@ export default function VehicleDetailsTable() {
                     <MenuButton
                         color={theme.purple}
                         as={IconButton}
-                        aria-label='profile-options'
-                        fontSize='20px'
+                        aria-label="profile-options"
+                        fontSize="20px"
                         icon={<IoSettingsSharp />}
                     />
                     <MenuList>
-                            <Link to={`/app/EditVehicleDetails/${row.original.id}`} >
                         <MenuItem>
+                            <Link to={`/app/EditDriverDetails/${row.original.id}`}>
                                 Edit
-                        </MenuItem>
-                                <MenuItem>
-                                    <Link to="/app/VehicleMaintenanceConfigurationTable" >
-                                        Vehicle Maintenance Configuration
-                                    </Link>
-                                </MenuItem>
                             </Link>
+                        </MenuItem>
+                        <MenuItem>
+                            <Link to={`/app/ResetPassword/${row.original.id}`}>
+                                Reset Password
+                            </Link>
+                        </MenuItem>
                         <MenuItem onClick={() => onClickDelete(row.original)}>
-                            {row.original.isActive ? "Deactivate" : "Activate"}
+                            {row.original.status ? "Deactivate" : "Activate"}
                         </MenuItem>
                     </MenuList>
                 </Menu>
             ),
             meta: { isNumeric: false, filter: null },
             enableSorting: false,
-        }
+        },
     ];
 
     const table = useReactTable({
-        data: vehicleDetails,
+        data: driverDetails,
         columns,
         state: { sorting, globalFilter: searchInput },
         onSortingChange: setSorting,
@@ -195,8 +202,8 @@ export default function VehicleDetailsTable() {
     };
 
     const breadcrumbs = [
-        { label: 'Vehicle', link: '/' },
-        { label: 'Vehicle Details', link: '/app/VehicleDetails' }
+        { label: "Driver", link: "/app/Driver" },
+        { label: "Driver Details", link: "/app/DriverDetails" }
     ];
 
     const handlePageClick = ({ selected }) => {
@@ -213,8 +220,8 @@ export default function VehicleDetailsTable() {
 
     return (
         <div className="main-content">
-            <PageHeader title=" Vehicle Details" breadcrumbs={breadcrumbs} />
-            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px">
+            <PageHeader title="Driver Details" breadcrumbs={breadcrumbs} />
+            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
                 <InputGroup>
                     <InputLeftElement pointerEvents="none">
                         <IoSearchOutline />
@@ -227,15 +234,16 @@ export default function VehicleDetailsTable() {
                         width="300px"
                     />
                 </InputGroup>
-                <Link to="/app/AddVehicleDetails">
+                <Link to="/app/AddDriverDetails">
                     <Button
                         bg={theme.purple}
                         _hover={{ bg: theme.onHoverPurple }}
                         color="white"
                         variant="solid"
                         w="260px"
+                        mr="60px"
                     >
-                        Add Vehicle Details
+                        Add New Driver
                     </Button>
                 </Link>
             </Box>
@@ -279,33 +287,37 @@ export default function VehicleDetailsTable() {
                             </Td>
                         </Tr>
                     ) : (
-                        currentData.map((vehicle, index) => (
+                        currentData.map((driver, index) => (
                             <Tr key={index}>
-                                <Td>{vehicle.vehicleRegistrationNo}</Td>
-                                <Td>{vehicle.licenseNo}</Td>
-                                <Td>{vehicle.licenseExpireDate}</Td>
-                                <Td>{vehicle.manufacturerName}</Td>
-                                <Td>{vehicle.typeOf}</Td>
-                                <Td>{vehicle.fuelType}</Td>
-                                <Td>{vehicle.color}</Td>
-                                <Td>{vehicle.status}</Td>
-                                <Td>
+                                <Td className="custom-table-td">{driver.firstName}</Td>
+                                <Td className="custom-table-td">{driver.lastName}</Td>
+                                <Td className="custom-table-td">{driver.dateOfBirth}</Td>
+                                <Td className="custom-table-td">{driver.nic}</Td>
+                                <Td className="custom-table-td">{driver.driverLicenseNo}</Td>
+                                <Td className="custom-table-td">{driver.licenseExpiryDate}</Td>
+                                <Td className="custom-table-td">{driver.emailAddress}</Td>
+                                <Td className="custom-table-td">{driver.phoneNo}</Td>
+                                <Td className="custom-table-td">{driver.emergencyContact}</Td>
+                                <Td className="custom-table-td">{driver.bloodGroup}</Td>
+                                <Td className="custom-table-td">{driver.status ? "Active" : "Inactive"}</Td>
+                                <Td className="custom-table-td">
                                     <Menu>
                                         <MenuButton
                                             color={theme.purple}
                                             as={IconButton}
-                                            aria-label='profile-options'
-                                            fontSize='20px'
+                                            aria-label="profile-options"
+                                            fontSize="20px"
                                             icon={<IoSettingsSharp />}
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditVehicleDetails/${vehicle.id}`} >
-                                                    Edit
-                                                </Link>
+                                                <Link to={`/app/EditDriverDetails/${driver.userId}`}>Edit</Link>
                                             </MenuItem>
-                                            <MenuItem onClick={() => onClickDelete(vehicle)}>
-                                                {vehicle.status ? "Deactivate" : "Activate"}
+                                            <MenuItem>
+                                                <Link to={`/app/ResetPassword/${driver.userId}`}>Reset Password</Link>
+                                            </MenuItem>
+                                            <MenuItem onClick={() => onClickDelete(driver)}>
+                                                {driver.status ? "Deactivate" : "Activate"}
                                             </MenuItem>
                                         </MenuList>
                                     </Menu>
@@ -315,28 +327,37 @@ export default function VehicleDetailsTable() {
                     )}
                 </Tbody>
             </Table>
-            {!isEmpty && (
-                <Pagination
-                    pageCount={pageCount}
-                    onPageChange={handlePageClick}
-                />
-            )}
 
-            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} leastDestructiveRef={cancelRef}>
-                <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>{selectedVehicle?.status ? "Deactivate" : "Activate"} Vehicle</AlertDialogHeader>
-                        <AlertDialogBody>
-                            Are you sure you want to {selectedVehicle?.status ? "deactivate" : "activate"} this vehicle?
-                        </AlertDialogBody>
-                        <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onDialogClose}>Cancel</Button>
-                            <Button colorScheme="red" onClick={onConfirmDelete} ml={3}>
-                                {selectedVehicle?.status ? "Deactivate" : "Activate"}
-                            </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
+            {!isEmpty && <Pagination pageCount={pageCount} onPageChange={handlePageClick} />}
+
+            <AlertDialog
+                isOpen={isDialogOpen}
+                onClose={onDialogClose}
+                motionPreset="slideInBottom"
+                leastDestructiveRef={cancelRef}
+            >
+                <AlertDialogOverlay />
+                <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
+                    <AlertDialogHeader>{selectedDriver?.status ? "Deactivate" : "Activate"} Driver</AlertDialogHeader>
+                    <AlertDialogBody>
+                        Are you sure you want to {selectedDriver?.status ? "deactivate" : "activate"} {selectedDriver?.firstName} {selectedDriver?.lastName}?
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                        <Button
+                            bg="gray.400"
+                            _hover={{ bg: "gray.500" }}
+                            color="#ffffff"
+                            variant="solid"
+                            onClick={onDialogClose}
+                            ref={cancelRef}
+                        >
+                            Cancel
+                        </Button>
+                        <Button colorScheme="red" color="#FFFFFF" onClick={onConfirmDelete}>
+                            {selectedDriver?.status ? "Deactivate" : "Activate"}
+                        </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
             </AlertDialog>
         </div>
     );

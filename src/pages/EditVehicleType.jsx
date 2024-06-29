@@ -1,59 +1,84 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
-import { Button, Checkbox, Input, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useDisclosure } from "@chakra-ui/react";
+import {
+    Button,
+    Checkbox,
+    Input,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody,
+    AlertDialogFooter,
+    useDisclosure
+} from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 
-
-export default function AddVehicleType() {
+export default function EditVehicleType() {
     const navigate = useNavigate();
+    const { id } = useParams();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
-    
+    const [initialValues, setInitialValues] = useState({ typeName: "", isActive: true });
+
     const breadcrumbs = [
         { label: 'Vehicle', link: '/' },
-        { label: 'Vehicle Type ', link: '/app/VehicleType' },
-        { label: 'Add Vehicle Type ', link: '/app/AddVehicleType' }
+        { label: 'Vehicle Type', link: '/app/VehicleType' },
+        { label: 'Edit Vehicle Type Details', link: '/app/VehicleType' }
     ];
+
+    useEffect(() => {
+        fetchVehicleTypeData(id);
+    }, [id]);
+
+    const fetchVehicleTypeData = async (id) => {
+        try {
+            const response = await fetch(`https://localhost:7265/api/VehicleType/${id}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to fetch vehicle type data.');
+            }
+
+            setInitialValues({
+                typeName: data.type || "",
+                isActive: data.status
+            });
+        } catch (error) {
+            setDialogMessage(error.message || 'Failed to fetch vehicle type data.');
+            onDialogOpen();
+        }
+    };
 
     const handleSubmit = async (values) => {
         try {
-            console.log(values.TypeName, values.isActive);
-            const status = values.isActive === false ? "false" : "true";
+            const status = values.isActive ? true : false;
 
-            const response = await fetch('https://localhost:7265/api/VehicleType', {
-                method: 'POST',
+            const response = await fetch(`https://localhost:7265/api/VehicleType/UpdateVehicleType`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    Type: values.TypeName,
+                    VehicleTypeId: id,
+                    Type: values.typeName,
                     Status: status
                 })
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to add vehicle type.');
+                const data = await response.json();
+                throw new Error(data.message || 'Failed to update vehicle type.');
             }
 
-            if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Vehicle Type already exists');
-                onDialogOpen();
-            } else {
-                setSuccessDialogMessage('Vehicle type added successfully.');
-                onSuccessDialogOpen();
-            }
+            setSuccessDialogMessage('Vehicle type updated successfully.');
+            onSuccessDialogOpen();
         } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server.');
-            } else {
-                setDialogMessage(error.message || 'Failed to add vehicle type.');
-            }
+            setDialogMessage(error.message || 'Failed to update vehicle type.');
             onDialogOpen();
         }
     };
@@ -69,19 +94,17 @@ export default function AddVehicleType() {
 
     return (
         <>
-            <PageHeader title="Add Vehicle Type Details" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Edit Vehicle Type" breadcrumbs={breadcrumbs} />
             <Formik
-                initialValues={{
-                    TypeName: "",
-                    isActive: false
-                }}
+                enableReinitialize
+                initialValues={initialValues}
                 onSubmit={handleSubmit}
             >
-                {({ errors, touched }) => (
+                {({ errors, touched, values, setFieldValue }) => (
                     <Form className="grid grid-cols-2 gap-10 mt-8">
                         <div className="flex flex-col gap-3">
                             <p>Vehicle Type</p>
-                            <Field name="TypeName" validate={(value) => {
+                            <Field name="typeName" validate={(value) => {
                                 let error;
                                 if (!value) {
                                     error = "Vehicle type is required.";
@@ -99,33 +122,35 @@ export default function AddVehicleType() {
                                             py={2}
                                             mt={1}
                                             width="500px"
-                                            id="TypeName"
+                                            id="typeName"
                                             placeholder="Enter Vehicle Type"
+                                            value={values.typeName} // Ensure the value is controlled
                                         />
-                                        {errors.TypeName && touched.TypeName && (
-                                            <div className="text-red-500">{errors.TypeName}</div>
+                                        {errors.typeName && touched.typeName && (
+                                            <div className="text-red-500">{errors.typeName}</div>
                                         )}
                                     </div>
                                 )}
                             </Field>
                             <Field name="isActive">
-                                {({ field, form }) => (
+                                {({ field }) => (
                                     <div>
                                     <Checkbox
                                         {...field}
                                         size='lg'
-                                        defaultChecked={field.value}
+                                        isChecked={values.isActive}
                                         className="mt-8"
-                                        onChange={e => form.setFieldValue(field.name, e.target.checked)}
+                                        id="isActive"
+                                        onChange={e => setFieldValue('isActive', e.target.checked)}
                                     >
                                         Is Active
                                     </Checkbox>
-                                    {form.errors.isActive && form.touched.isActive && (
-                                        <div className="text-red-500">{form.errors.isActive}</div>
+                                    {errors.isActive && touched.isActive && (
+                                        <div className="text-red-500">{errors.isActive}</div>
                                     )}
-                                </div>
+                                    </div>
                                 )}
-                            </Field>
+                                </Field>
                             <div className="flex gap-10">
                                 <Button
                                     bg="gray.400"
@@ -178,14 +203,14 @@ export default function AddVehicleType() {
                     position="absolute"
                     top="30%"
                     left="50%"
-                    transform="translate(-50%, -50%)"
-                >
+                    transform="translate(-50%, -50%)">
                     <AlertDialogHeader>Success</AlertDialogHeader>
                     <AlertDialogBody>
                         {successDialogMessage}
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button bg={theme.purple} color="#FFFFFF" onClick={handleSuccessDialogClose}>Ok</Button>
+                        <Button bg={theme.purple} color="#
+FFFFFF" onClick={handleSuccessDialogClose}>Ok</Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+/*import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import {
     Table,
     Thead,
@@ -43,102 +43,64 @@ import {
 } from '@tanstack/react-table';
 import { flexRender } from '@tanstack/react-table';
 
-export default function VehicleDetailsTable() {
+export default function MaintenanceTypeTable() {
     const [vehicleDetails, setVehicleDetails] = useState([]);
     const [sorting, setSorting] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchInput, setSearchInput] = useState("");
-    const [selectedVehicle, setSelectedVehicle] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
     const cancelRef = useRef();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
     const itemsPerPage = 10;
     const toast = useToast();
 
     useEffect(() => {
-        fetchVehicleDetails();
+        fetchVehicleMaintenanceTypes();
     }, []);
 
-    const fetchVehicleDetails = async () => {
-        try {
-            const response = await axios.get('https://localhost:7265/api/Vehicle');
-            setVehicleDetails(response.data);
-            console.log(response.data);
-        } catch (error) {
-            console.error("Error fetching vehicle details:", error);
-            toast({
-                title: "Error",
-                description: "Error fetching vehicle details",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-            });
-        }
-    };
-
-    const onClickDelete = (vehicle) => {
-        setSelectedVehicle(vehicle);
+    const onClickDelete = (maintenanceType) => {
+        setSelectedType(maintenanceType);
         onDialogOpen();
     };
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/Vehicle/${selectedVehicle.id}/${selectedVehicle.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/VehicleMaintenanceType/${selectedType.id}/${selectedType.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
-            fetchVehicleDetails();
+            fetchVehicleMaintenanceTypes();
             onDialogClose();
         } catch (error) {
-            if (error.response && error.response.status === 400 && error.response.data === "Vehicle is active and associated with vehicle records. Cannot deactivate.") {
+            if (error.response && error.response.status === 400 && error.response.data === "MaintenanceType is active and associated with maintenance records. Cannot deactivate.") {
                 toast({
                     title: "Error",
-                    description: "Vehicle is active and associated with vehicle records. Cannot deactivate.",
+                    description: "MaintenanceType is active and associated with maintenance records. Cannot deactivate.",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
                 });
             } else {
-                console.error("Error updating vehicle status:", error);
+                console.error("Error updating vehicle maintenance type status:", error);
             }
+        }
+    };
+
+    const fetchVehicleMaintenanceTypes = async () => {
+        try {
+            const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
+            setVehicleDetails(response.data);
+        } catch (error) {
+            console.error("Error fetching vehicle maintenance types:", error);
         }
     };
 
     const columns = [
         {
-            accessorKey: 'registrationNo',
-            header: 'Reg No',
+            accessorKey: 'typeName',
+            header: 'Vehicle Maintenance Type',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'licenseNo',
-            header: 'License No',
-            meta: { isNumeric: false, filter: 'date' }
-        },
-        {
-            accessorKey: 'licenseExpireDate',
-            header: 'License Exp Date',
-            meta: { isNumeric: false, filter: 'text' }
-        },
-        {
-            accessorKey: 'manufacturerName',
-            header: 'Manufacturer',
-            meta: { isNumeric: false, filter: 'text' }
-        },
-        {
-            accessorKey: 'type',
-            header: 'Type',
-            meta: { isNumeric: false, filter: 'text' }
-        },
-        {
-            accessorKey: 'fType',
-            header: 'Fuel Type',
-            meta: { isNumeric: false, filter: 'text' }
-        },
-        {
-            accessorKey: 'color',
-            header: 'Color',
-            meta: { isNumeric: false, filter: 'text' }
-        },
-        {
-            accessorKey: 'isActive',
+            accessorKey: 'status',
             header: 'Status',
             cell: info => (info.getValue() ? "Active" : "Inactive"),
             meta: { isNumeric: false, filter: 'boolean' }
@@ -151,30 +113,25 @@ export default function VehicleDetailsTable() {
                     <MenuButton
                         color={theme.purple}
                         as={IconButton}
-                        aria-label='profile-options'
-                        fontSize='20px'
+                        aria-label="profile-options"
+                        fontSize="20px"
                         icon={<IoSettingsSharp />}
                     />
                     <MenuList>
-                            <Link to={`/app/EditVehicleDetails/${row.original.id}`} >
                         <MenuItem>
+                            <Link to={`/app/EditMaintenanceType/${row.original.id}`}>
                                 Edit
-                        </MenuItem>
-                                <MenuItem>
-                                    <Link to="/app/VehicleMaintenanceConfigurationTable" >
-                                        Vehicle Maintenance Configuration
-                                    </Link>
-                                </MenuItem>
                             </Link>
+                        </MenuItem>
                         <MenuItem onClick={() => onClickDelete(row.original)}>
-                            {row.original.isActive ? "Deactivate" : "Activate"}
+                            {row.original.status ? "Deactivate" : "Activate"}
                         </MenuItem>
                     </MenuList>
                 </Menu>
             ),
             meta: { isNumeric: false, filter: null },
             enableSorting: false,
-        }
+        },
     ];
 
     const table = useReactTable({
@@ -195,8 +152,8 @@ export default function VehicleDetailsTable() {
     };
 
     const breadcrumbs = [
-        { label: 'Vehicle', link: '/' },
-        { label: 'Vehicle Details', link: '/app/VehicleDetails' }
+        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Vehicle Maintenance Type", link: "/app/MaintenanceTypeTable" }
     ];
 
     const handlePageClick = ({ selected }) => {
@@ -213,8 +170,8 @@ export default function VehicleDetailsTable() {
 
     return (
         <div className="main-content">
-            <PageHeader title=" Vehicle Details" breadcrumbs={breadcrumbs} />
-            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px">
+            <PageHeader title="Vehicle Maintenance Type" breadcrumbs={breadcrumbs} />
+            <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
                 <InputGroup>
                     <InputLeftElement pointerEvents="none">
                         <IoSearchOutline />
@@ -227,15 +184,16 @@ export default function VehicleDetailsTable() {
                         width="300px"
                     />
                 </InputGroup>
-                <Link to="/app/AddVehicleDetails">
+                <Link to="/app/AddMaintenanceType">
                     <Button
                         bg={theme.purple}
                         _hover={{ bg: theme.onHoverPurple }}
                         color="white"
                         variant="solid"
                         w="260px"
+                        mr="60px"
                     >
-                        Add Vehicle Details
+                        Add Vehicle Maintenance Type
                     </Button>
                 </Link>
             </Box>
@@ -279,33 +237,27 @@ export default function VehicleDetailsTable() {
                             </Td>
                         </Tr>
                     ) : (
-                        currentData.map((vehicle, index) => (
+                        currentData.map((maintenanceType, index) => (
                             <Tr key={index}>
-                                <Td>{vehicle.vehicleRegistrationNo}</Td>
-                                <Td>{vehicle.licenseNo}</Td>
-                                <Td>{vehicle.licenseExpireDate}</Td>
-                                <Td>{vehicle.manufacturerName}</Td>
-                                <Td>{vehicle.typeOf}</Td>
-                                <Td>{vehicle.fuelType}</Td>
-                                <Td>{vehicle.color}</Td>
-                                <Td>{vehicle.status}</Td>
-                                <Td>
+                                <Td className="custom-table-td">{maintenanceType.typeName}</Td>
+                                <Td className="custom-table-td">{maintenanceType.status ? "Active" : "Inactive"}</Td>
+                                <Td className="custom-table-td">
                                     <Menu>
                                         <MenuButton
                                             color={theme.purple}
                                             as={IconButton}
-                                            aria-label='profile-options'
-                                            fontSize='20px'
+                                            aria-label="profile-options"
+                                            fontSize="20px"
                                             icon={<IoSettingsSharp />}
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditVehicleDetails/${vehicle.id}`} >
+                                                <Link to={`/app/EditMaintenanceType/${maintenanceType.id}`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>
-                                            <MenuItem onClick={() => onClickDelete(vehicle)}>
-                                                {vehicle.status ? "Deactivate" : "Activate"}
+                                            <MenuItem onClick={() => onClickDelete(maintenanceType)}>
+                                                {maintenanceType.status ? "Deactivate" : "Activate"}
                                             </MenuItem>
                                         </MenuList>
                                     </Menu>
@@ -322,22 +274,25 @@ export default function VehicleDetailsTable() {
                 />
             )}
 
-            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} leastDestructiveRef={cancelRef}>
-                <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>{selectedVehicle?.status ? "Deactivate" : "Activate"} Vehicle</AlertDialogHeader>
-                        <AlertDialogBody>
-                            Are you sure you want to {selectedVehicle?.status ? "deactivate" : "activate"} this vehicle?
-                        </AlertDialogBody>
-                        <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onDialogClose}>Cancel</Button>
-                            <Button colorScheme="red" onClick={onConfirmDelete} ml={3}>
-                                {selectedVehicle?.status ? "Deactivate" : "Activate"}
+            <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
+                <AlertDialogOverlay />
+                <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
+                    <AlertDialogHeader>{selectedType?.status ? "Deactivate" : "Activate"} Maintenance Type</AlertDialogHeader>
+                    <AlertDialogBody>
+                        Are you sure you want to {selectedType?.status ? "deactivate" : "activate"} {selectedType?.typeName} Maintenance Type?
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                        <div className="flex flex-row gap-8">
+                            <Button bg="gray.400" _hover={{bg: "gray.500"}} color="#ffffff" variant="solid"
+                                    onClick={onDialogClose} ref={cancelRef}>Cancel</Button>
+                            <Button colorScheme='red' color="#FFFFFF" onClick={onConfirmDelete}>
+                                {selectedType?.status ? "Deactivate" : "Activate"}
                             </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
+                        </div>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
             </AlertDialog>
         </div>
     );
 }
+    */
