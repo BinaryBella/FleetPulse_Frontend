@@ -170,7 +170,7 @@ export default function MaintenanceTypeTable() {
 
     return (
         <div className="main-content">
-            <PageHeader title="Vehicle Maintenance Type" breadcrumbs={breadcrumbs} />
+            <PageHeader title="Vehicle Maintenance Type Details" breadcrumbs={breadcrumbs} />
             <Box mb="20px" mt="50px" display="flex" alignItems="center" gap="20px" marginTop="60px" marginBottom="10px">
                 <InputGroup>
                     <InputLeftElement pointerEvents="none">

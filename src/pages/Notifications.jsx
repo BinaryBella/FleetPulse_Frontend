@@ -61,14 +61,14 @@ const Notifications = () => {
                 <Box className="notification-controls">
                     <Button
                         className="mark-all-read-btn"
-                        style={{ color: 'white', backgroundColor: '#2c2c59', height: '30px' }}
+                        style={{ color: 'white', backgroundColor: '#2c2c59', height: '35px' }}
                         onClick={handleMarkAllAsRead}
                     >
                         Mark All as Read
                     </Button>
                     <Button
                         className="delete-all-btn"
-                        style={{ color: 'white', backgroundColor: '#9d1518', height: '30px' }}
+                        style={{ color: 'white', backgroundColor: '#9d1518', height: '35px' }}
                         onClick={handleDeleteAllNotifications}
                     >
                         Delete All
