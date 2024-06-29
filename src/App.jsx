@@ -55,34 +55,13 @@ import VehicleMaintenanceConfigurationTable from "./pages/VehicleMaintenanceConf
 import EditMaintenance from "./pages/EditMaintenance.jsx";
 import EditFuelRefillDetails from "./pages/EditFuelRefillDetails.jsx";
 import EditVehicleMaintenanceConfiguration from "./pages/EditVehicleMaintenanceConfiguration.jsx";
-
-import ResetPassword from "./pages/ResetPassword.jsx";
-import ResetPasswordConfirmation from "./pages/ResetPasswordConfirmation.jsx";
-import ResetPassSuccess from "./pages/ResetPassSuccess.jsx";
-import ResetEmail from "./pages/ResetEmail.jsx";
-import UserProfile from "./pages/UserProfile.jsx";
-import ChangePassword from "./pages/ChangePassword.jsx";
-import Notification from "./pages/Notification.jsx";
-import AddVehicleMaintenanceDetails from "./pages/AddVehicleMaintenanceDetails.jsx";
-import AddFuelRefillDetails from "./pages/AddFuelRefillDetails.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import AddMaintenanceType from "./pages/AddMaintenanceType.jsx";
-import MaintenanceTable from "./pages/MaintenanceTable.jsx";
-import MaintenanceTypeTable from "./pages/MaintenanceTypeTable.jsx";
-import FuelRefillTable from "./pages/FuelRefillTable.jsx";
-import VehicleDetailsTable from './pages/VehicleDetailsTable.jsx';
 import DriverDetails from "./pages/DriverDetails.jsx";
-import AccidentDetails from "./pages/AccidentDetails.jsx";
- import AddAccidentDetails from "./pages/AddAccidentDetails.jsx";
- import AddVehicleDetails from "./pages/AddVehicleDetails.jsx";
- import AddVehicleModel from "./pages/AddVehicleModel.jsx";
- import AddVehicleType from "./pages/AddVehicleType.jsx";
- import AddHelperDetails from "./pages/AddHelperDetails.jsx";
- import HelperDetails from "./pages/HelperDetails.jsx";
- import AddStaffDetails from "./pages/AddStaffDetails.jsx";
- import StaffDetails from "./pages/StaffDetails.jsx";
- import AddTripDetails from "./pages/AddTripDetails.jsx";
- import TripDetails from "./pages/TripDetails.jsx";
+import AddHelperDetails from "./pages/AddHelperDetails.jsx";
+import HelperDetails from "./pages/HelperDetails.jsx";
+import AddStaffDetails from "./pages/AddStaffDetails.jsx";
+import StaffDetails from "./pages/StaffDetails.jsx";
+import AddTripDetails from "./pages/AddTripDetails.jsx";
+import TripDetails from "./pages/TripDetails.jsx";
 import VehicleType from "./pages/VehicleType.jsx";
 import AddvehicletypeDetails from "./pages/AddvehicletypeDetails.jsx";
 import AddDriverDetails from "./pages/AddDriverDetails.jsx";
@@ -180,7 +159,6 @@ export default function App() {
                             <Route path="AddHelperDetails" element={<AddHelperDetails/>}/>
                             <Route path="HelperDetails" element={<HelperDetails/>}/>
                             <Route path="AddStaffDetails" element={<AddStaffDetails/>}/>
-                            <Route path="StaffDetails" element={<StaffDetails/>}/>
                             <Route path="AddTripDetails" element={<AddTripDetails />}/>
                             <Route path="TripDetails" element={<TripDetails />}/>
                             <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
@@ -196,7 +174,6 @@ export default function App() {
                             <Route path='EditStaffDetails/:id' element={<EditStaffDetails />}/>
                             <Route path='EditTripDetails/:id' element={<EditTripDetails />}/>
                             <Route path='EditManufacturerTypeDetails/:id' element={<EditManufacturerTypeDetails />}/>
-
                         </Route>
                     </Route>
 
@@ -204,10 +181,10 @@ export default function App() {
                     <Route element={<PrivateRoutes roles={['Admin']} />}>
                         <Route path="/app/" element={<MainLayout isAdmin={isAdmin} />}>
                             <Route path="/app/Staff" element={<Staff />} />
+                            <Route path="StaffDetails" element={<StaffDetails/>}/>
                             <Route path='EditStaffDetails/:id' element={<EditStaffDetails />}/>
-                            <Route path="/app/ResetPasswordDriverHelper" element={<ResetPasswordDriverHelper />} />
                             <Route path="/app/StaffReport" element={<StaffReport />} />
-
+                            <Route path="/app/ResetPasswordDriverHelper" element={<ResetPasswordDriverHelper />} />
                         </Route>
                     </Route>
 
