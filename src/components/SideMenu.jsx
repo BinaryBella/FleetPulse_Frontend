@@ -1,60 +1,67 @@
-import Logo from "../assets/images/Logo.jpg";
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import Logo from "../assets/images/logo.png";
 import {
-    IconButton,
-    Text,
-    VStack,
     Accordion,
     AccordionItem,
     AccordionButton,
     AccordionPanel,
     AccordionIcon,
-} from "@chakra-ui/react";
-import {Link} from "react-router-dom";
+    Box,
+    Text,
+    VStack,
+    IconButton
+} from '@chakra-ui/react';
+import { Link } from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
-import {AiOutlineDashboard} from "react-icons/ai";
-import {FaCarAlt, FaCarCrash} from "react-icons/fa";
-import {MdAirlineSeatReclineNormal} from "react-icons/md";
-import {IoMdPeople, IoMdPerson} from "react-icons/io";
-import {BiTrip} from "react-icons/bi";
-import {TbReportAnalytics} from "react-icons/tb";
-import {Box} from "@chakra-ui/react";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { FaCarAlt, FaCarCrash } from "react-icons/fa";
+import { MdAirlineSeatReclineNormal } from "react-icons/md";
+import { IoMdPeople, IoMdPerson } from "react-icons/io";
+import { BiTrip } from "react-icons/bi";
+import { TbReportAnalytics } from "react-icons/tb";
+import $ from 'jquery';
 
+export default function SideMenu({ isAdmin }) {
+    useEffect(() => {
+        $(".chakra-accordion__item").css({ "border-color": "transparent" });
+    }, []);
 
-export default function SideMenu() {
     return (
-        <div className="bg-[#393970] w-1/5 flex flex-col h-fit">
-            <div className="flex justify-center w-full">
-                <img src={Logo} alt="Logo" className="w-3/5 mb-10"/>
+        <div className="bg-[#2c2c59] w-1/5">
+            <div className="flex justify-center items-center w-full h-40 mb-10 -mt-5">
+                <Link to="/app/Dashboard">
+                    <img src={Logo} alt="Logo" style={{height: "80%"}}/>
+                </Link>
             </div>
-            <VStack
-                spacing={4}
-                align='stretch'
-            >
+            <VStack spacing={4} align='stretch' width="full">
                 <Link className="flex items-center pl-16" to="/app/Dashboard">
                     <IconButton
-                        variant='link'
+                        variant="link"
                         color={theme.orange}
-                        aria-label='dashboard'
-                        fontSize='20px'
-                        icon={<AiOutlineDashboard/>}
+                        aria-label="dashboard"
+                        fontSize="15px"
+                        icon={<AiOutlineDashboard />}
                     />
-                    <Text color={theme.orange} fontSize="xl">
+                    <Text color={theme.orange} fontSize="sm" paddingLeft="6">
                         Dashboard
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
+                <div className="flex items-start pl-16">
                     <IconButton
                         variant='link'
                         color={theme.orange}
                         aria-label='vehicle'
-                        fontSize='20px'
+                        marginTop="4"
+                        fontSize="15px"
                         icon={<FaCarAlt/>}
+                        style={{marginRight: "8px"}}
                     />
                     <Accordion allowMultiple>
                         <AccordionItem>
                             <h2>
                                 <AccordionButton>
-                                    <Box as="span" flex='1' textAlign='left' color={theme.orange}>
+                                    <Box as="span" flex='1' textAlign='left' color={theme.orange} fontSize='sm' paddingLeft="0">
                                         Vehicle
                                     </Box>
                                     <AccordionIcon color={theme.orange}/>
@@ -62,38 +69,33 @@ export default function SideMenu() {
                             </h2>
                             <AccordionPanel pb={4}>
                                 <div>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleDetailsTable">
-                                        <Text color={theme.orange} fontSize="lg">
+                                    <Link className="flex items-center pl-3" to="/app/VehicleDetailsTable">
+                                        <Text color={theme.orange} fontSize="sm">
                                             Vehicle Details
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleType">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Type
+                                    <Link className="flex items-center pl-3" to="/app/VehicleType">
+                                        <Text color={theme.orange} fontSize="sm">
+                                            Type
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-16" to="/app/VehicleModelTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Model
-                                        </Text>
-                                    </Link>
-                                    <Link className="flex items-center pl-16" to="/app/Manufacturer">
-                                        <Text color={theme.orange} fontSize="lg">
+                                    <Link className="flex items-center pl-3" to="/app/Manufacturer">
+                                        <Text color={theme.orange} fontSize="sm">
                                             Manufacturer
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-16" to="/app/MaintenanceTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Maintenance
+                                    <Link className="flex items-center pl-3" to="/app/MaintenanceTable">
+                                        <Text color={theme.orange} fontSize="sm">
+                                            Maintenance
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-16" to="/app/MaintenanceTypeTable">
-                                        <Text color={theme.orange} fontSize="lg">
-                                            Vehicle Maintenance Type
+                                    <Link className="flex items-center pl-3" to="/app/MaintenanceTypeTable">
+                                        <Text color={theme.orange} fontSize="sm">
+                                            Maintenance Type
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-16" to="/app/FuelRefillTable">
-                                        <Text color={theme.orange} fontSize="lg">
+                                    <Link className="flex items-center pl-3" to="/app/FuelRefillTable">
+                                        <Text color={theme.orange} fontSize="sm">
                                             Fuel Refill
                                         </Text>
                                     </Link>
@@ -101,88 +103,175 @@ export default function SideMenu() {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-                </Link>
+                </div>
                 <Link className="flex items-center pl-16" to="/app/DriverDetails">
                     <IconButton
-                        variant='link'
+                        variant="link"
                         color={theme.orange}
                         aria-label='driver'
-                        fontSize='20px'
-                        icon={<MdAirlineSeatReclineNormal/>
-                        }
+                        fontSize="15px"
+                        icon={<MdAirlineSeatReclineNormal/>}
                     />
-                    <Text color={theme.orange} fontSize="xl">
+                    <Text color={theme.orange} fontSize="sm" paddingLeft="6">
                         Driver
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/HelperDetails">
+                <Link className="flex items-center pl-16" to="/app/Helper">
                     <IconButton
                         variant='link'
                         color={theme.orange}
                         aria-label='helper'
-                        fontSize='20px'
-                        icon={< IoMdPerson/>
-                        }
+                        fontSize="15px"
+                        icon={<IoMdPerson/>}
                     />
-                    <Text color={theme.orange} fontSize="xl">
+                    <Text color={theme.orange} fontSize="sm" paddingLeft="6">
                         Helper
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/StaffDetails">
-                    <IconButton
-                        variant='link'
-                        color={theme.orange}
-                        aria-label='staff'
-                        fontSize='20px'
-                        icon={< IoMdPeople/>
-                        }
-                    />
-                    <Text color={theme.orange} fontSize="xl">
-                        Staff
-                    </Text>
-                </Link>
+                {isAdmin && ( // Render only if isAdmin is true (admin user)
+                    <Link className="flex items-center pl-16" to="/app/StaffDetails">
+                        <IconButton
+                            variant='link'
+                            color={theme.orange}
+                            aria-label='staff'
+                            fontSize="15px"
+                            icon={<IoMdPeople/>}
+                        />
+                        <Text color={theme.orange} fontSize="sm" paddingLeft="6">
+                            Staff
+                        </Text>
+                    </Link>
+                )}
                 <Link className="flex items-center pl-16" to="/app/TripDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
                         aria-label='trip'
-                        fontSize='20px'
-                        icon={< BiTrip/>
-                        }
+                        fontSize="15px"
+                        icon={<BiTrip/>}
                     />
-                    <Text color={theme.orange} fontSize="xl">
+                    <Text color={theme.orange} fontSize="sm" paddingLeft="6">
                         Trip
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/AccidentDetails">
+                <Link className="flex items-center pl-16" to="/app/AddAccidentDetails">
                     <IconButton
                         variant='link'
                         color={theme.orange}
                         aria-label='accident'
-                        fontSize='20px'
-                        icon={< FaCarCrash/>
-                        }
+                        fontSize="15px"
+                        icon={<FaCarCrash/>}
                     />
-                    <Text color={theme.orange} fontSize="xl">
+                    <Text color={theme.orange} fontSize="sm" paddingLeft="6">
                         Accident
                     </Text>
                 </Link>
-                <Link className="flex items-center pl-16" to="/app/Report">
+                <div className="flex items-start pl-16">
                     <IconButton
                         variant='link'
                         color={theme.orange}
                         aria-label='report'
-                        fontSize='20px'
-                        icon={< TbReportAnalytics/>
-                        }
+                        marginTop="4"
+                        fontSize="15px"
+                        icon={<TbReportAnalytics />}
+                        style={{marginRight: "8px"}}
                     />
-                    <Text color={theme.orange} fontSize="xl">
-                        Reports
-                    </Text>
-                </Link>
+                    <Accordion allowMultiple>
+                        <AccordionItem>
+                            <h2>
+                                <AccordionButton>
+                                    <Box as="span" flex='1' textAlign='left' color={theme.orange} fontSize='sm'
+                                         paddingLeft="0">
+                                        Reports
+                                    </Box>
+                                    <AccordionIcon color={theme.orange}/>
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4}>
+                                <div>
+                                    <Accordion allowMultiple>
+                                        <AccordionItem>
+                                            <h2>
+                                                <AccordionButton>
+                                                    <Box as="span" flex='1' textAlign='left' color={theme.orange} fontSize='sm'
+                                                         paddingLeft="0">
+                                                        Vehicle Reports
+                                                    </Box>
+                                                    <AccordionIcon color={theme.orange}/>
+                                                </AccordionButton>
+                                            </h2>
+                                            <AccordionPanel pb={4}>
+                                                <div>
+                                                    <Link className="flex items-center pl-2" to="/app/VehicleDetailsReport">
+                                                        <Text color={theme.orange} fontSize="sm">
+                                                            Vehicle Details
+                                                        </Text>
+                                                    </Link>
+                                                    <Link className="flex items-center pl-2" to="/app/VehicleTypeReport">
+                                                        <Text color={theme.orange} fontSize="sm">
+                                                            Vehicle Type
+                                                        </Text>
+                                                    </Link>
+                                                    <Link className="flex items-center pl-2" to="/app/VehicleManufacturerReport">
+                                                        <Text color={theme.orange} fontSize="sm">
+                                                            Vehicle Manufacturer
+                                                        </Text>
+                                                    </Link>
+                                                    <Link className="flex items-center pl-2" to="/app/VehicleMaintenanceReport">
+                                                        <Text color={theme.orange} fontSize="sm">
+                                                            Maintenance
+                                                        </Text>
+                                                    </Link>
+                                                    <Link className="flex items-center pl-2" to="/app/VehicleMainTypeReport">
+                                                        <Text color={theme.orange} fontSize="sm">
+                                                            Maintenance Type
+                                                        </Text>
+                                                    </Link>
+                                                    <Link className="flex items-center pl-2" to="/app/VehicleFuelRefillReport">
+                                                        <Text color={theme.orange} fontSize="sm">
+                                                            Vehicle Fuel Refill
+                                                        </Text>
+                                                    </Link>
+                                                </div>
+                                            </AccordionPanel>
+                                        </AccordionItem>
+                                    </Accordion>
+                                    <Link className="flex items-center pl-5 mb-3" to="/app/DriverReport">
+                                        <Text color={theme.orange} fontSize="sm">
+                                            Driver Report
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-5 mb-3" to="/app/HelperReport">
+                                        <Text color={theme.orange} fontSize="sm">
+                                            Helper Report
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-5 mb-3" to="/app/StaffReport">
+                                        <Text color={theme.orange} fontSize="sm">
+                                            Staff Report
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-5 mb-3" to="/app/TripReport">
+                                        <Text color={theme.orange} fontSize="sm">
+                                            Trip Report
+                                        </Text>
+                                    </Link>
+                                    <Link className="flex items-center pl-5 mb-3" to="/app/AccidentReport">
+                                        <Text color={theme.orange} fontSize="sm">
+                                            Accident Report
+                                        </Text>
+                                    </Link>
+                                </div>
+                            </AccordionPanel>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
             </VStack>
         </div>
     );
 }
 
-
+// PropTypes validation for SideMenu component
+SideMenu.propTypes = {
+    isAdmin: PropTypes.bool.isRequired, // Validate isAdmin prop
+};

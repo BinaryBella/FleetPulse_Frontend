@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import PageHeader from "../components/PageHeader.jsx";
 import DashboardCard from "../components/DashboardCard.jsx";
 import testc from "../assets/images/testc.png";
@@ -9,22 +10,31 @@ import testa from "../assets/images/testa.png";
 
 export default function Dashboard() {
     const breadcrumbs = [
-        {label: 'Home', link: '/'},
-        {label: 'Dashboard', link: '/Dashboard'},
+        { label: 'Home', link: '/app/Dashboard' },
+        { label: 'Dashboard', link: '/app/Dashboard' },
     ];
-     return (
-      <>
-          <PageHeader title="Dashboard" breadcrumbs={breadcrumbs}/>
-          <div className="flex justify-between items-center mr-16 mb-16 space-x-14">
-              <DashboardCard img={testc} title="1000" subtitle="Vehicles" />
-              <DashboardCard img={testd} title="500" subtitle="Drivers" />
-              <DashboardCard img={testu} title="350" subtitle="Users" />
-          </div>
-          <div className="flex justify-between items-center mr-16 space-x-14">
-              <DashboardCard img={testt} title="400" subtitle="Daily Trips" />
-              <DashboardCard img={testcv} title="500" subtitle="Company Vehicles" />
-              <DashboardCard img={testa} title="02" subtitle="Recent Accident" />
-          </div>
-      </>
-     );
- }
+
+    useEffect(() => {
+        const hasRefreshed = sessionStorage.getItem('hasRefreshed');
+        if (!hasRefreshed) {
+            sessionStorage.setItem('hasRefreshed', 'true');
+            window.location.reload();
+        }
+    }, []);
+
+    return (
+        <>
+            <PageHeader title="Dashboard" breadcrumbs={breadcrumbs} />
+            <div className="flex justify-between items-center mr-16 mb-16 space-x-14">
+                <DashboardCard img={testc} title="1000" subtitle="Vehicles" />
+                <DashboardCard img={testd} title="500" subtitle="Drivers" />
+                <DashboardCard img={testu} title="350" subtitle="Users" />
+            </div>
+            <div className="flex justify-between items-center mr-16 space-x-14">
+                <DashboardCard img={testt} title="400" subtitle="Daily Trips" />
+                <DashboardCard img={testcv} title="500" subtitle="Company Vehicles" />
+                <DashboardCard img={testa} title="02" subtitle="Recent Accident" />
+            </div>
+        </>
+    );
+}

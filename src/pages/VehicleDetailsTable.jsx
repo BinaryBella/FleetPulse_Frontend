@@ -160,6 +160,11 @@ export default function VehicleDetailsTable() {
                         <MenuItem>
                                 Edit
                         </MenuItem>
+                                <MenuItem>
+                                    <Link to="/app/VehicleMaintenanceConfigurationTable" >
+                                        Vehicle Maintenance Configuration
+                                    </Link>
+                                </MenuItem>
                             </Link>
                         <MenuItem onClick={() => onClickDelete(row.original)}>
                             {row.original.isActive ? "Deactivate" : "Activate"}

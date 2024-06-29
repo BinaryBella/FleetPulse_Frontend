@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
-import { Button, Stack, FormControl, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
+import { Button, Stack, FormControl, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Spinner } from '@chakra-ui/react';
 import ResetPass1 from "../assets/images/ResetPass1.png";
 import theme from "../config/ThemeConfig.jsx";
 import { Box } from "@chakra-ui/react";
@@ -14,6 +14,7 @@ export default function ResetPasswordConfirmation() {
     const location = useLocation();
     const [verificationCode, setVerificationCode] = useState("");
     const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const [loading, setLoading] = useState(false); // Add loading state
     const { email } = location.state;
 
     const handleChange = (value) => {
@@ -26,9 +27,9 @@ export default function ResetPasswordConfirmation() {
 
     return (
         <>
-            <p className="font-sans text-3xl text-[#393970] mb-10">Reset Password Verification</p>
-            <img src={ResetPass1} alt="ResetPasswordConfirmation" className="w-1/4 mb-10" />
-            <Box textAlign="center" w="50%" fontSize="sm">
+            <p className="font-sans text-3xl text-[#393970] mb-4">Reset Password Verification</p>
+            <img src={ResetPass1} alt="ResetPasswordConfirmation" className="w-1/3 mb-4" />
+            <Box textAlign="center" w="50%" fontSize="small">
                 <p className="mb-10">We want to make sure its really you. In order to verify your identity, enter
                     the verification code that was sent to {email} </p>
             </Box>
@@ -38,12 +39,13 @@ export default function ResetPasswordConfirmation() {
                     const errors = {};
                     const pinText = verificationCode === undefined ? "" : verificationCode.toString();
                     if (pinText.length < 6) {
-                        errors.pinValue = "Pin number should contain 6 numbers";
+                        errors.pinValue = "Pin number should contain 6 numbers.";
                     }
                     return errors;
                 }}
                 onSubmit={() => {
                     try {
+                        setLoading(true); // Set loading to true when submitting form
                         if (verificationCode.toString().length === 6) {
                             fetch('https://localhost:7265/api/Auth/validate-verification-code', {
                                 method: 'POST',
@@ -59,9 +61,9 @@ export default function ResetPasswordConfirmation() {
                             }).then(data => {
                                 console.log(data);
                                 if (data.status === true) {
-                                    navigate(`/app/ResetPassword?email=${email}&pin=${verificationCode}`);
+                                    navigate(`/auth/ResetPassword`, { state: { email: email } });
                                 } else {
-                                    setIsAlertOpen(true); // Open the alert dialog
+                                    setIsAlertOpen(true);
                                 }
                             })
                         } else {
@@ -69,6 +71,8 @@ export default function ResetPasswordConfirmation() {
                         }
                     } catch (error) {
                         console.error('Error:', error.message);
+                    } finally {
+                        setLoading(false); // Set loading to false when request is completed
                     }
                 }}
             >
@@ -76,12 +80,13 @@ export default function ResetPasswordConfirmation() {
                     <form className="w-1/2" onSubmit={handleSubmit}>
                         <Stack spacing={3}>
                             <FormControl isInvalid={errors.pinValue && touched.pinValue}>
-                                <p className="mb-6">Verification Code</p>
+                                <p className="mb-4">Verification Code</p>
                                 <VerificationInput
                                     validChars="0-9"
                                     inputProps={{ inputMode: "numeric" }}
                                     value={verificationCode}
                                     onChange={handleChange}
+                                    size="sm"
                                     classNames={{
                                         container: "container",
                                         character: "character",
@@ -92,20 +97,21 @@ export default function ResetPasswordConfirmation() {
                                     <p className="text-red-500">{errors.pinValue}</p>
                                 )}
                             </FormControl>
+                            {/* Conditional rendering of loading spinner */}
                             <Button
                                 bg={theme.purple}
                                 _hover={{ bg: theme.onHoverPurple }}
                                 color="#ffffff"
                                 variant="solid"
                                 type="submit"
+                                size="sm"
                             >
-                                Verify
+                                {loading ? <Spinner size="sm" /> : "Verify"}
                             </Button>
                         </Stack>
                     </form>
                 )}
             </Formik>
-            {/* Alert Dialog for Invalid Verification Code */}
             <AlertDialog
                 isOpen={isAlertOpen}
                 leastDestructiveRef={undefined}
@@ -121,7 +127,6 @@ export default function ResetPasswordConfirmation() {
                         <AlertDialogBody>
                             The verification code you entered is invalid. Please try again.
                         </AlertDialogBody>
-
                         <AlertDialogFooter>
                             <Button onClick={handleAlertClose}>
                                 OK
