@@ -113,14 +113,14 @@ const EditVehicleMaintenanceConfiguration = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.message || 'Failed to update maintenance');
+                throw new Error(data.message || 'Failed to update maintenance configuration');
             }
 
-            setSuccessDialogMessage('Maintenance updated successfully');
+            setSuccessDialogMessage('Maintenance Configuration updated successfully');
             onSuccessDialogOpen();
         } catch (error) {
             console.error("Error during submission:", error);
-            setDialogMessage(error.message || 'Failed to update maintenance.');
+            setDialogMessage(error.message || 'Failed to update maintenance configuration.');
             onDialogOpen();
         }
     };

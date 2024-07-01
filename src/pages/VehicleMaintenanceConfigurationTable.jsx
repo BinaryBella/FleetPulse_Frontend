@@ -65,21 +65,21 @@ export default function VehicleMaintenanceConfigurationTable() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/VehicleMaintenanceType/${selectedType.id}/${selectedType.status ? 'deactivate' : 'activate'}`;
-            await axios.put(endpoint);
+            const endpoint = `https://localhost:7265/api/VehicleMaintenanceConfiguration/${selectedType.id}`;
+            await axios.delete(endpoint);
             fetchVehicleMaintenanceTypes();
             onDialogClose();
         } catch (error) {
-            if (error.response && error.response.status === 400 && error.response.data === "MaintenanceType is active and associated with maintenance records. Cannot deactivate.") {
+            if (error.response && error.response.status === 400 && error.response.data === "MaintenanceType is active and associated with maintenance records. Cannot delete.") {
                 toast({
                     title: "Error",
-                    description: "MaintenanceType is active and associated with maintenance records. Cannot deactivate.",
+                    description: "MaintenanceType is active and associated with maintenance records. Cannot delete.",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
                 });
             } else {
-                console.error("Error updating vehicle maintenance type status:", error);
+                console.error("Error deleting vehicle maintenance type:", error);
             }
         }
     };
@@ -135,7 +135,7 @@ export default function VehicleMaintenanceConfigurationTable() {
                             </Link>
                         </MenuItem>
                         <MenuItem onClick={() => onClickDelete(row.original)}>
-                            {row.original.status ? "Deactivate" : "Activate"}
+                            Delete
                         </MenuItem>
                     </MenuList>
                 </Menu>
@@ -270,7 +270,7 @@ export default function VehicleMaintenanceConfigurationTable() {
                                                 </Link>
                                             </MenuItem>
                                             <MenuItem onClick={() => onClickDelete(maintenanceType)}>
-                                                {maintenanceType.status ? "Deactivate" : "Activate"}
+                                                Delete
                                             </MenuItem>
                                         </MenuList>
                                     </Menu>
@@ -289,19 +289,17 @@ export default function VehicleMaintenanceConfigurationTable() {
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            {selectedType?.status ? "Deactivate" : "Activate"} Maintenance Type
+                            Delete Maintenance Type
                         </AlertDialogHeader>
                         <AlertDialogBody>
-                            {selectedType?.status
-                                ? "Are you sure? You cannot undo this action afterwards."
-                                : "Are you sure you want to activate this maintenance type?"}
+                            Are you sure? You cannot undo this action afterwards.
                         </AlertDialogBody>
                         <AlertDialogFooter>
                             <Button ref={cancelRef} onClick={onDialogClose}>
                                 Cancel
                             </Button>
                             <Button colorScheme="red" onClick={onConfirmDelete} ml={3}>
-                                {selectedType?.status ? "Deactivate" : "Activate"}
+                                Delete
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>

@@ -87,21 +87,21 @@ const VehicleMaintenanceConfiguration = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to add maintenance');
+                throw new Error(data.message || 'Failed to add maintenance configuration');
             }
 
             if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Vehicle Maintenance already exists');
+                setDialogMessage('Vehicle Maintenance configuration already exists');
                 onDialogOpen();
             } else {
-                setSuccessDialogMessage('Maintenance added successfully');
+                setSuccessDialogMessage('Maintenance configuration added successfully');
                 onSuccessDialogOpen();
             }
         } catch (error) {
             if (error instanceof TypeError) {
                 setDialogMessage('Failed to connect to the server');
             } else {
-                setDialogMessage(error.message || 'Failed to add maintenance.');
+                setDialogMessage(error.message || 'Failed to add maintenance configuration.');
             }
             onDialogOpen();
         }
