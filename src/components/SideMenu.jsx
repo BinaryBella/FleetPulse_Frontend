@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Logo from "../assets/images/logo.png";
 import {
@@ -12,23 +12,23 @@ import {
     VStack,
     IconButton
 } from '@chakra-ui/react';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import theme from "../config/ThemeConfig.jsx";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { FaCarAlt, FaCarCrash } from "react-icons/fa";
-import { MdAirlineSeatReclineNormal } from "react-icons/md";
-import { IoMdPeople, IoMdPerson } from "react-icons/io";
-import { BiTrip } from "react-icons/bi";
-import { TbReportAnalytics } from "react-icons/tb";
+import {AiOutlineDashboard} from "react-icons/ai";
+import {FaCarAlt, FaCarCrash} from "react-icons/fa";
+import {MdAirlineSeatReclineNormal} from "react-icons/md";
+import {IoMdPeople, IoMdPerson} from "react-icons/io";
+import {BiTrip} from "react-icons/bi";
+import {TbReportAnalytics} from "react-icons/tb";
 import $ from 'jquery';
 
-export default function SideMenu({ isAdmin }) {
+export default function SideMenu({isAdmin}) {
     useEffect(() => {
-        $(".chakra-accordion__item").css({ "border-color": "transparent" });
+        $(".chakra-accordion__item").css({"border-color": "transparent"});
     }, []);
 
     return (
-        <div className="bg-[#2c2c59] w-1/5">
+        <div className="side-menu">
             <div className="flex justify-center items-center w-full h-40 mb-10 -mt-5">
                 <Link to="/app/Dashboard">
                     <img src={Logo} alt="Logo" style={{height: "80%"}}/>
@@ -41,7 +41,7 @@ export default function SideMenu({ isAdmin }) {
                         color={theme.orange}
                         aria-label="dashboard"
                         fontSize="15px"
-                        icon={<AiOutlineDashboard />}
+                        icon={<AiOutlineDashboard/>}
                     />
                     <Text color={theme.orange} fontSize="sm" paddingLeft="6">
                         Dashboard
@@ -61,7 +61,8 @@ export default function SideMenu({ isAdmin }) {
                         <AccordionItem>
                             <h2>
                                 <AccordionButton>
-                                    <Box as="span" flex='1' textAlign='left' color={theme.orange} fontSize='sm' paddingLeft="0">
+                                    <Box as="span" flex='1' textAlign='left' color={theme.orange} fontSize='sm'
+                                         paddingLeft="0">
                                         Vehicle
                                     </Box>
                                     <AccordionIcon color={theme.orange}/>
@@ -173,7 +174,7 @@ export default function SideMenu({ isAdmin }) {
                         aria-label='report'
                         marginTop="4"
                         fontSize="15px"
-                        icon={<TbReportAnalytics />}
+                        icon={<TbReportAnalytics/>}
                         style={{marginRight: "8px"}}
                     />
                     <Accordion allowMultiple>
@@ -193,7 +194,8 @@ export default function SideMenu({ isAdmin }) {
                                         <AccordionItem>
                                             <h2>
                                                 <AccordionButton>
-                                                    <Box as="span" flex='1' textAlign='left' color={theme.orange} fontSize='sm'
+                                                    <Box as="span" flex='1' textAlign='left' color={theme.orange}
+                                                         fontSize='sm'
                                                          paddingLeft="0">
                                                         Vehicle Reports
                                                     </Box>
@@ -202,32 +204,38 @@ export default function SideMenu({ isAdmin }) {
                                             </h2>
                                             <AccordionPanel pb={4}>
                                                 <div>
-                                                    <Link className="flex items-center pl-2" to="/app/VehicleDetailsReport">
+                                                    <Link className="flex items-center pl-2"
+                                                          to="/app/VehicleDetailsReport">
                                                         <Text color={theme.orange} fontSize="sm">
                                                             Vehicle Details
                                                         </Text>
                                                     </Link>
-                                                    <Link className="flex items-center pl-2" to="/app/VehicleTypeReport">
+                                                    <Link className="flex items-center pl-2"
+                                                          to="/app/VehicleTypeReport">
                                                         <Text color={theme.orange} fontSize="sm">
                                                             Vehicle Type
                                                         </Text>
                                                     </Link>
-                                                    <Link className="flex items-center pl-2" to="/app/VehicleManufacturerReport">
+                                                    <Link className="flex items-center pl-2"
+                                                          to="/app/VehicleManufacturerReport">
                                                         <Text color={theme.orange} fontSize="sm">
                                                             Vehicle Manufacturer
                                                         </Text>
                                                     </Link>
-                                                    <Link className="flex items-center pl-2" to="/app/VehicleMaintenanceReport">
+                                                    <Link className="flex items-center pl-2"
+                                                          to="/app/VehicleMaintenanceReport">
                                                         <Text color={theme.orange} fontSize="sm">
                                                             Maintenance
                                                         </Text>
                                                     </Link>
-                                                    <Link className="flex items-center pl-2" to="/app/VehicleMainTypeReport">
+                                                    <Link className="flex items-center pl-2"
+                                                          to="/app/VehicleMainTypeReport">
                                                         <Text color={theme.orange} fontSize="sm">
                                                             Maintenance Type
                                                         </Text>
                                                     </Link>
-                                                    <Link className="flex items-center pl-2" to="/app/VehicleFuelRefillReport">
+                                                    <Link className="flex items-center pl-2"
+                                                          to="/app/VehicleFuelRefillReport">
                                                         <Text color={theme.orange} fontSize="sm">
                                                             Vehicle Fuel Refill
                                                         </Text>
@@ -271,7 +279,6 @@ export default function SideMenu({ isAdmin }) {
     );
 }
 
-// PropTypes validation for SideMenu component
 SideMenu.propTypes = {
-    isAdmin: PropTypes.bool.isRequired, // Validate isAdmin prop
+    isAdmin: PropTypes.bool.isRequired,
 };

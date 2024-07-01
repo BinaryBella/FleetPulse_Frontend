@@ -189,7 +189,7 @@ export default function FuelRefillTable() {
     const cancelRef = useRef();
 
     const breadcrumbs = [
-        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Vehicle", link: "/app/VehicleDetailsTable" },
         { label: "Fuel Refill Details", link: "/app/FuelRefillTable" },
     ];
 

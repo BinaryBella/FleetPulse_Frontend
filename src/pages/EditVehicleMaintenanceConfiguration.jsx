@@ -92,6 +92,7 @@ const EditVehicleMaintenanceConfiguration = () => {
             const selectedMaintenanceType = maintenanceTypeDetails.find(type => type.id === parseInt(values.maintenanceType));
 
             const payload = {
+                id: id,
                 vehicleId: parseInt(values.registrationNo),
                 vehicleRegistrationNo: selectedVehicle ? selectedVehicle.VehicleRegistrationNo : '',
                 vehicleMaintenanceTypeId: parseInt(values.maintenanceType),
@@ -99,6 +100,8 @@ const EditVehicleMaintenanceConfiguration = () => {
                 duration: values.duration,
                 status: values.isActive
             };
+
+            console.log("Submitting payload:", payload);
 
             const response = await fetch(`https://localhost:7265/api/VehicleMaintenanceConfiguration/${id}`, {
                 method: 'PUT',
@@ -108,25 +111,16 @@ const EditVehicleMaintenanceConfiguration = () => {
                 body: JSON.stringify(payload)
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
+                const data = await response.json();
                 throw new Error(data.message || 'Failed to update maintenance');
             }
 
-            if (data.message && data.message.toLowerCase().includes('exist')) {
-                setDialogMessage('Vehicle Maintenance already exists');
-                onDialogOpen();
-            } else {
-                setSuccessDialogMessage('Maintenance updated successfully');
-                onSuccessDialogOpen();
-            }
+            setSuccessDialogMessage('Maintenance updated successfully');
+            onSuccessDialogOpen();
         } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server');
-            } else {
-                setDialogMessage(error.message || 'Failed to update maintenance.');
-            }
+            console.error("Error during submission:", error);
+            setDialogMessage(error.message || 'Failed to update maintenance.');
             onDialogOpen();
         }
     };

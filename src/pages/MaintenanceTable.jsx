@@ -198,7 +198,7 @@ export default function MaintenanceTable() {
     };
 
     const breadcrumbs = [
-        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Vehicle", link: "/app/VehicleDetailsTable" },
         { label: "Vehicle Maintenance Details", link: "/app/MaintenanceTable" },
     ];
 
