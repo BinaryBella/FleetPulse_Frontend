@@ -78,7 +78,7 @@ export default function ResetPasswordDriverHelper() {
     const location = useLocation();
     const query = new URLSearchParams(location.search);
     const username = query.get('username');
-    const emailAddress = query.get('emailAddress'); // Retrieve emailAddress from URL
+    const emailAddress = query.get('emailAddress');
 
     const handleShowPassword = (setter) => () => setter(prev => !prev);
 
@@ -89,7 +89,6 @@ export default function ResetPasswordDriverHelper() {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        console.log("Email:", values.emailAddress); // Check if email is logged
         try {
             const response = await axios.post('https://localhost:7265/api/Auth/reset-password-driver', {
                 emailAddress: values.emailAddress,
@@ -167,7 +166,7 @@ export default function ResetPasswordDriverHelper() {
                                     as={Input}
                                     id="emailAddress"
                                     name="emailAddress"
-                                    type="emailAddress"
+                                    type="email"
                                     variant="filled"
                                     placeholder="Email"
                                     size="sm"

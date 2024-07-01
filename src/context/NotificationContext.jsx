@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 
 const NotificationContext = createContext();
 
-export const useNotifications = () => {
-    return useContext(NotificationContext);
-};
+export const useNotifications = () => useContext(NotificationContext);
 
 export const NotificationProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
@@ -44,16 +42,15 @@ export const NotificationProvider = ({ children }) => {
         });
     };
 
-    const deleteAllNotifications = () => {
-        setNotifications([]);
-    };
+    const deleteAllNotifications = () => setNotifications([]);
 
-    const getUnreadCount = () => {
-        return notifications.filter(notification => !notification.read).length;
-    };
+    const getUnreadCount = () => notifications.filter(notification => !notification.read).length;
 
     return (
-        <NotificationContext.Provider value={{ notifications, addNotification,getUnreadCount,deleteAllNotifications,markAsRead, markAllAsRead,deleteNotification }}>
+        <NotificationContext.Provider value={{
+            notifications, addNotification, getUnreadCount, deleteAllNotifications,
+            markAsRead, markAllAsRead, deleteNotification
+        }}>
             {children}
         </NotificationContext.Provider>
     );
