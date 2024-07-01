@@ -71,7 +71,7 @@ export default function ChangePassword() {
 
     const handleAlertClose = () => {
         setIsAlertOpen(false);
-        navigate('/app/Dashboard');
+        navigate('/app/ChangePassword');
     };
 
     const handleSubmit = async (values, { setSubmitting }) => {
