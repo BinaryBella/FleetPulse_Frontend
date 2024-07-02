@@ -44,46 +44,14 @@ export default function AddVehicleDetails() {
       console.error('Error fetching manufacture data:', error);
     });
 
-    // axios.get('https://localhost:7265/api/Manufacture')
-    // .then(response => {
-    //   console.log('Manufacture data fetched:', response.data);
-    //   setFuelType(response.data);
-    // })
-    // .catch(error => {
-    //   console.error('Error fetching manufacture data:', error);
-    // });
+    
   }, []);
 
   const handleSubmit = async (values) => {
     try {
       
         console.log(values)
-      // const response = await fetch('https://localhost:7265/api/Vehicle', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     vehicleId: 0,
-      //     vehicleRegistrationNo: values.vehicleRegistrationNo,
-      //     licenseNo: values.licenseNo,
-      //     licenseExpireDate: values.licenseExpireDate,
-      //     vehicleColor: values.vehicleColor,
-      //     status: true,
-      //     vehicleTypeId: values.vehicleTypeId,
-      //     manufactureId: values.manufactureId,
-      //     fuelRefillId: values.fuelRefillId,
-      //   })
-      // });
-
       
-
-      
-//   const vehicleTypeMap = {
-//   'Truck': 1,
-//   'Car': 2,
-//   // other types...
-// };
 const vehicleTypeMap = {};
 VehicleType.forEach(type => {
   vehicleTypeMap[type.type] = type.vehicleTypeId;
@@ -94,14 +62,12 @@ const manufactureMap = {};
 Manufacture.forEach(manufacture => {
   manufactureMap[manufacture.manufacturer] = manufacture.manufactureId;
 });
-// const manufactureMap={
-//   'Tata':2
-// }
+
 
 const fuelRefillMap = {
   'Diesel': 1,
   'Petrol': 2,
-  // other fuel types...
+  
 };
 
 values = {

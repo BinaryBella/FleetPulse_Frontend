@@ -65,7 +65,7 @@ export default function StaffDetails() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/Staff/UpdateStaff/${selectedStaff.id}/${selectedStaff.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/Staff/UpdateStaff/${selectedStaff.userId}/${selectedStaff.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
             fetchStaffDetails();
             onDialogClose();
@@ -105,12 +105,12 @@ export default function StaffDetails() {
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'DoB',
+            accessorKey: 'dateOfBirth',
             header: 'DoB',
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'lNIC',
+            accessorKey: 'nic',
             header: 'NIC',
             meta: { isNumeric: false, filter: 'text' }
         },
@@ -154,7 +154,7 @@ export default function StaffDetails() {
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/app/EditStaffDetails/${row.original.id}`}>
+                            <Link to={`/app/EditStaffDetails/${row.original.userId}`}>
                                 Edit
                             </Link>
                         </MenuItem>
@@ -294,7 +294,7 @@ export default function StaffDetails() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditStaffDetails/${staff.id}`}>Edit</Link>
+                                                <Link to={`/app/EditStaffDetails/${staff.userId}`}>Edit</Link>
                                             </MenuItem>
                                             <MenuItem onClick={() => onClickDelete(staff)}>
                                                 {staff.status ? "Deactivate" : "Activate"}

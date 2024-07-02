@@ -26,20 +26,14 @@ import PrivateRoutes from './utils/PrivateRoutes';
 import NotFound from './pages/NotFound';
 import Login from "./pages/Login.jsx";
 import AddVehicleDetails from "./pages/AddVehicleDetails.jsx";
-import Driver from "./pages/Driver.jsx";
-import Helper from "./pages/Helper.jsx";
-import Staff from "./pages/Staff.jsx";
-import Trip from "./pages/Trip.jsx";
 import Reports from "./pages/Reports.jsx";
+import AccidentDetails from "./pages/AccidentDetails.jsx";
 import AddAccidentDetails from "./pages/AddAccidentDetails.jsx";
-import AddVehicleModel from "./pages/AddVehicleModel.jsx";
-import AddManufactureDetails from "./pages/AddManufactureDetails.jsx";
 import AddVehicleType from "./pages/AddVehicleType.jsx";
 import VehicleDetailsTable from "./pages/VehicleDetailsTable.jsx";
 import VehicleReports from "./pages/VehicleReports.jsx";
 import VehicleDetailsReport from "./pages/VehicleDetailsReport.jsx";
 import VehicleTypeReport from "./pages/VehicleTypeReport.jsx";
-import VehicleModelReport from "./pages/VehicleModelReport.jsx";
 import VehicleManufacturerReport from "./pages/VehicleManufacturerReport.jsx";
 import VehicleMaintenanceReport from "./pages/VehicleMaintenanceReport.jsx";
 import VehicleMaintenanceTypeReport from "./pages/VehicleMaintenanceTypeReport.jsx";
@@ -112,6 +106,7 @@ export default function App() {
                     <Route element={<PrivateRoutes roles={['Admin', 'Staff']} />}>
                         <Route path="/app/" element={<MainLayout isAdmin={isAdmin} />}>
                             <Route path="/app/AddAccidentDetails" element={<AddAccidentDetails/>}/>
+                            <Route path="/app/AccidentDetails" element={<AccidentDetails/>}/>
                             <Route path="/app/Dashboard" element={<Dashboard />} />
                             <Route path="/app/UserProfile" element={<UserProfile />} />
                             <Route path="/app/AddVehicleMaintenanceDetails" element={<AddVehicleMaintenanceDetails />} />
@@ -125,20 +120,15 @@ export default function App() {
                             <Route path="/app/EditFuelRefillDetails/:id" element={<EditFuelRefillDetails />} />
                             <Route path="/app/EditVehicleMaintenanceConfiguration/:id" element={<EditVehicleMaintenanceConfiguration />} />
                             <Route path="/app/AddVehicleDetails" element={<AddVehicleDetails />} />
-                            <Route path="/app/AddMaintenanceType" element={<AddMaintenanceType />} />
-                            <Route path="/app/Driver" element={<Driver />} />
-                            <Route path="/app/Helper" element={<Helper />} />
-                            <Route path="/app/Trip" element={<Trip />} />
+                            <Route path="/app/AddMaintenanceType" element={<AddMaintenanceType />} />   
                             <Route path="/app/Reports/*" element={<Reports />} />
-                            <Route path="/app/AddAccidentDetails" element={<AddAccidentDetails />} />
                             <Route path="/app/AddVehicleType" element={<AddVehicleType />} />
-                            <Route path="/app/AddVehicleModel" element={<AddVehicleModel />} />
-                            <Route path="/app/AddManufactureDetails" element={<AddManufactureDetails />} />
+                            
+                            
                             <Route path="/app/VehicleDetailsTable" element={<VehicleDetailsTable />} />
                             <Route path="/app/VehicleReports" element={<VehicleReports />} />
                             <Route path="/app/VehicleDetailsReport" element={<VehicleDetailsReport />} />
                             <Route path="/app/VehicleTypeReport" element={<VehicleTypeReport />} />
-                            <Route path="/app/VehicleModelReport" element={<VehicleModelReport />} />
                             <Route path="/app/VehicleManufacturerReport" element={<VehicleManufacturerReport />} />
                             <Route path="/app/VehicleMaintenanceReport" element={<VehicleMaintenanceReport />} />
                             <Route path="/app/VehicleMaintenanceTypeReport" element={<VehicleMaintenanceTypeReport />} />
@@ -150,38 +140,36 @@ export default function App() {
                             <Route path="/app/Notification" element={<Notifications />} />
                             <Route path="/app/VehicleMaintenanceConfiguration" element={<VehicleMaintenanceConfiguration />} />
                             <Route path="VehicleMaintenanceConfigurationTable" element={<VehicleMaintenanceConfigurationTable/>} />
-                            <Route path="AddAccidentDetails" element={<AddAccidentDetails/>}/>
-                            <Route path="AddVehicleDetails" element={<AddVehicleDetails />}/>
-                            <Route path="AddVehicleModel" element={<AddVehicleModel/>}/>
-                            <Route path="AddVehicleType" element={<AddVehicleType/>}/>
-                            <Route  path="DriverDetails" element={<DriverDetails/>}/>
-                            <Route  path="AddDriverDetails" element={<AddDriverDetails/>}/>
-                            <Route path="AddHelperDetails" element={<AddHelperDetails/>}/>
-                            <Route path="HelperDetails" element={<HelperDetails/>}/>
-                            <Route path="AddStaffDetails" element={<AddStaffDetails/>}/>
-                            <Route path="AddTripDetails" element={<AddTripDetails />}/>
-                            <Route path="TripDetails" element={<TripDetails />}/>
-                            <Route path="VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
-                            <Route path='VehicleType' element={<VehicleType/>}/>
-                            <Route path='AddvehicletypeDetails' element={<AddvehicletypeDetails />}/>
-                            <Route path='Manufacturer' element={<Manufacturer />}/>
-                            <Route path='AddManufacturerTypeDetails' element={<AddManufacturerTypeDetails />}/>
-                            <Route path='EditAccidentDetails/:id' element={<EditAccidentDetails />}/>
-                            <Route path='EditVehicleDetails/:id' element={<EditVehicleDetails />}/>
-                            <Route path='EditVehicleType/:id' element={<EditVehicleType />}/>
-                            <Route path='EditDriverDetails/:id' element={<EditDriverDetails />}/>
-                            <Route path='EditHelperDetails/:id' element={<EditHelperDetails />}/>
-                            <Route path='EditStaffDetails/:id' element={<EditStaffDetails />}/>
-                            <Route path='EditTripDetails/:id' element={<EditTripDetails />}/>
-                            <Route path='EditManufacturerTypeDetails/:id' element={<EditManufacturerTypeDetails />}/>
+                            <Route path="/app/AccidentDetails" element={<AddAccidentDetails/>}/>
+                            <Route path="/app/AddVehicleDetails" element={<AddVehicleDetails />}/>
+                            <Route path="/app/AddVehicleType" element={<AddVehicleType/>}/>
+                            <Route  path="/app/DriverDetails" element={<DriverDetails/>}/>
+                            <Route  path="/app/AddDriverDetails" element={<AddDriverDetails/>}/>
+                            <Route path="/app/AddHelperDetails" element={<AddHelperDetails/>}/>
+                            <Route path="/app/HelperDetails" element={<HelperDetails/>}/>
+                            <Route path="/app/AddTripDetails" element={<AddTripDetails />}/>
+                            <Route path="/app/TripDetails" element={<TripDetails />}/>
+                            <Route path="/app/VehicleDetailsTable" element={<VehicleDetailsTable/>}/>
+                            <Route path='/app/VehicleType' element={<VehicleType/>}/>
+                            <Route path='/app/AddvehicletypeDetails' element={<AddvehicletypeDetails />}/>
+                            <Route path='/app/Manufacturer' element={<Manufacturer />}/>
+                            <Route path='/app/AddManufacturerTypeDetails' element={<AddManufacturerTypeDetails />}/>
+                            <Route path='/app/EditAccidentDetails/:id' element={<EditAccidentDetails />}/>
+                            <Route path='/app/EditVehicleDetails/:id' element={<EditVehicleDetails />}/>
+                            <Route path='/app/EditVehicleType/:id' element={<EditVehicleType />}/>
+                            <Route path='/app/EditDriverDetails/:id' element={<EditDriverDetails />}/>
+                            <Route path='/app/EditHelperDetails/:id' element={<EditHelperDetails />}/>
+                            <Route path='/app/EditTripDetails/:id' element={<EditTripDetails />}/>
+                            <Route path='/app/EditStaffDetails/:id' element={<EditStaffDetails />}/>
+                            <Route path='/app/EditManufacturerTypeDetails/:id' element={<EditManufacturerTypeDetails />}/>
                         </Route>
                     </Route>
 
                     {/* Admin-only routes */}
                     <Route element={<PrivateRoutes roles={['Admin']} />}>
                         <Route path="/app/" element={<MainLayout isAdmin={isAdmin} />}>
-                            <Route path="/app/Staff" element={<Staff />} />
                             <Route path="StaffDetails" element={<StaffDetails/>}/>
+                            <Route path="/app/AddStaffDetails" element={<AddStaffDetails/>}/>
                             <Route path='EditStaffDetails/:id' element={<EditStaffDetails />}/>
                             <Route path="/app/StaffReport" element={<StaffReport />} />
                             <Route path="/app/ResetPasswordDriverHelper" element={<ResetPasswordDriverHelper />} />

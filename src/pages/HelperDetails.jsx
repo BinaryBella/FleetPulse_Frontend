@@ -49,7 +49,7 @@ export default function HelperDetails() {
   const itemsPerPage = 10;
 
   const breadcrumbs = [
-    { label: "Helper", link: "/app/Helper" },
+    //{ label: "Helper", link: "/app/Helper" },
     { label: "Helper Details", link: "/app/HelperDetails" },
     { label: "Add Helper Details", link: "/app/AddHelperDetails" },
   ];

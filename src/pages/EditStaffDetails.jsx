@@ -6,7 +6,6 @@ import {
     Button,
     Checkbox,
     Input,
-    Select,
     AlertDialog,
     AlertDialogOverlay,
     AlertDialogContent,
@@ -15,7 +14,6 @@ import {
     AlertDialogFooter,
     useDisclosure
 } from "@chakra-ui/react";
-import { MdArrowDropDown } from "react-icons/md";
 import theme from "../config/ThemeConfig.jsx";
 
 export default function EditStaffDetails() {
@@ -28,7 +26,7 @@ export default function EditStaffDetails() {
     const [initialValues, setInitialValues] = useState({
         firstName: "",
         lastName: "",
-        dateOfBirth: "null",
+        dateOfBirth: null,
         nationalId: "",
         email: "",
         contactNumber: "",
@@ -47,17 +45,17 @@ export default function EditStaffDetails() {
     ];
 
     useEffect(() => {
-        fetchStafData(id);
+        fetchStaffData(id);
     }, [id]);
 
-    const  fetchStafData = async (id) => {
+    const fetchStaffData = async (id) => {
         try {
             const response = await fetch(`https://localhost:7265/api/Staff/${id}`);
             const data = await response.json();
 
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to fetch staff data.');
-            }iver
+            }
 
             setInitialValues({
                 firstName: data.firstName || "",
@@ -95,7 +93,7 @@ export default function EditStaffDetails() {
                     EmailAddress: values.email,
                     PhoneNo: values.contactNumber,
                     EmergencyContact: values.emergencyContact,
-                    JobTitle: values.bloodGroup,
+                    JobTitle: values.jobTitle,
                     UserName: values.userName,
                     Password: values.password,
                     Status: values.isActive,
@@ -198,24 +196,7 @@ export default function EditStaffDetails() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>Date of Birth</p>
-                           {  /* Field name="dateOfBirth">
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        type="date"
-                                        variant="filled"
-                                        borderRadius="md"
-                                        px={3}
-                                        py={2}
-                                        mt={1}
-                                        width="500px"
-                                        id="dateOfBirth"
-                                        value={values.dateOfBirth}
-                                    />
-                                )}
-                            </Field> */}
-
-                   <Field name="dateOfBirth">
+                            <Field name="dateOfBirth">
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -234,7 +215,7 @@ export default function EditStaffDetails() {
                                         }}
                                     />
                                 )}
-                                 </Field>
+                            </Field>
                         </div>
                         <div className="flex flex-col gap-3">
                             <p>National Identity Card No</p>
@@ -276,7 +257,6 @@ export default function EditStaffDetails() {
                                 )}
                             </Field>
                         </div>
-                        
                         <div className="flex flex-col gap-3">
                             <p>Contact Number</p>
                             <Field name="contactNumber">
@@ -317,14 +297,13 @@ export default function EditStaffDetails() {
                                 )}
                             </Field>
                         </div>
-
                         <div className="flex flex-col gap-3">
                             <p>Job Title</p>
-                            <Field name="emergencyContact">
+                            <Field name="jobTitle">
                                 {({ field }) => (
                                     <Input
                                         {...field}
-                                        type="tel"
+                                        type="text"
                                         variant="filled"
                                         borderRadius="md"
                                         px={3}
@@ -332,13 +311,12 @@ export default function EditStaffDetails() {
                                         mt={1}
                                         width="500px"
                                         id="jobTitle"
-                                        value={values.jobTitle}
                                         placeholder="Job Title"
+                                        value={values.jobTitle}
                                     />
                                 )}
                             </Field>
                         </div>
-                       
                         <div className="flex flex-col gap-3">
                             <p>User Name</p>
                             <Field name="userName" validate={(value) => {

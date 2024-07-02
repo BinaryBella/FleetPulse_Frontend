@@ -22,7 +22,7 @@ export default function AddTripDetails() {
 
     const handleSubmit = async (values) => {
         try {
-            const response = await fetch('https://localhost:7265/api/TripDetails', {
+            const response = await fetch('https://localhost:7265/api/Trip', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -40,6 +40,7 @@ export default function AddTripDetails() {
                     EndMeterValue: values.EndMeterValue,
                     IsActive: values.IsActive
                 })
+                
             });
 
             const data = await response.json();
