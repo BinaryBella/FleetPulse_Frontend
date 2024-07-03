@@ -38,6 +38,7 @@ const EditVehicleMaintenanceConfiguration = () => {
         try {
             const response = await axios.get('https://localhost:7265/api/Vehicle');
             setVehicleRegNoDetails(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error('Error fetching vehicle registration numbers:', error);
             setVehicleRegNoDetails([]); // Set to empty array in case of an error
@@ -157,15 +158,17 @@ const EditVehicleMaintenanceConfiguration = () => {
                                     <div>
                                         <Select
                                             {...field}
-                                            placeholder="Vehicle Registration No"
+                                            placeholder="Select Vehicle Registration No"
                                             variant="filled"
                                             borderRadius="md"
                                             size="sm"
                                             width="100%"
+                                            value={field.value}  // Set value here
+                                            onChange={field.onChange}  // Ensure onChange is handled correctly
                                         >
-                                            {vehicleRegNoDetails.map((option, index) => (
-                                                <option key={index} value={option.VehicleId}>
-                                                    {option.VehicleRegistrationNo}
+                                            {vehicleRegNoDetails.map((option) => (
+                                                <option key={option.id} value={option.id}>
+                                                    {option.vehicleRegistrationNo}
                                                 </option>
                                             ))}
                                         </Select>
