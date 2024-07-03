@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {Formik, Form, Field} from "formik";
+import { useEffect, useState } from "react";
+import { Formik, Form, Field } from "formik";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -12,24 +12,25 @@ import {
     Input,
     Textarea,
     useDisclosure,
-    Select
+    Select,
 } from "@chakra-ui/react";
 import theme from "../config/ThemeConfig.jsx";
 import axios from "axios";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader.jsx";
 
 export default function EditMaintenance() {
-    const {id} = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
-    const {isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose} = useDisclosure();
-    const {isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose} = useDisclosure();
+    const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();
+    const { isOpen: isSuccessDialogOpen, onOpen: onSuccessDialogOpen, onClose: onSuccessDialogClose } = useDisclosure();
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
     const [VehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
     const [initialValues, setInitialValues] = useState({
-        VehicleRegistrationNo: "",
+        vehicleId: "",
+        vehicleRegistrationNo: "",
         maintenanceDate: "",
         VehicleMaintenanceTypeId: 0,
         cost: "",
@@ -40,23 +41,29 @@ export default function EditMaintenance() {
     });
 
     useEffect(() => {
-        const fetchVehicleRegNos = async () => {
+        const fetchData = async () => {
             try {
-                const response = await axios.get("https://localhost:7265/api/Vehicle");
-                setVehicleRegNoDetails(response.data);
-            } catch (error) {
-                console.error("Error fetching vehicle registration numbers:", error);
-            }
-        };
+                // Fetch vehicle registration numbers first
+                const vehicleResponse = await axios.get("https://localhost:7265/api/Vehicle");
+                setVehicleRegNoDetails(vehicleResponse.data);
 
-        const fetchVehicleMaintenanceDetails = async () => {
-            if (id) {
-                try {
-                    const response = await axios.get(`https://localhost:7265/api/VehicleMaintenance/${id}`);
-                    const maintenance = response.data;
+                // Fetch maintenance types
+                const maintenanceTypeResponse = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
+                setMaintenanceTypeDetails(maintenanceTypeResponse.data);
+
+                // If we're editing, fetch the maintenance details
+                if (id) {
+                    const maintenanceResponse = await axios.get(`https://localhost:7265/api/VehicleMaintenance/${id}`);
+                    const maintenance = maintenanceResponse.data;
+
+                    // Find the matching vehicle registration number
+                    const vehicle = vehicleResponse.data.find(v => v.id === maintenance.vehicleId);
+                    const vehicleRegistrationNo = vehicle ? vehicle.vehicleRegistrationNo : "";
+
                     setInitialValues({
-                        VehicleRegistrationNo: maintenance.vehicleId,
-                        maintenanceDate: maintenance.maintenanceDate.split("T")[0], // Only set the date part
+                        vehicleId: maintenance.vehicleId,
+                        vehicleRegistrationNo: vehicleRegistrationNo,
+                        maintenanceDate: maintenance.maintenanceDate.split("T")[0],
                         VehicleMaintenanceTypeId: maintenance.vehicleMaintenanceTypeId,
                         cost: maintenance.cost,
                         serviceProvider: maintenance.serviceProvider,
@@ -64,47 +71,37 @@ export default function EditMaintenance() {
                         specialNotes: maintenance.specialNotes,
                         isActive: maintenance.status,
                     });
-                } catch (error) {
-                    console.error("Error fetching vehicle maintenance details:", error);
                 }
-            }
-        };
-
-        const fetchVehicleMaintenanceTypes = async () => {
-            try {
-                const response = await axios.get("https://localhost:7265/api/VehicleMaintenanceType");
-                setMaintenanceTypeDetails(response.data);
             } catch (error) {
-                console.error("Error fetching vehicle maintenance types:", error);
+                console.error("Error fetching data:", error);
             }
         };
 
-        fetchVehicleMaintenanceTypes();
-        fetchVehicleRegNos();
-        fetchVehicleMaintenanceDetails();
+        fetchData();
     }, [id]);
 
     const breadcrumbs = [
-        {label: "Vehicle", link: "/app/Vehicle"},
-        {label: "Vehicle Maintenance", link: "/app/MaintenanceTable"},
+        { label: "Vehicle", link: "/app/Vehicle" },
+        { label: "Vehicle Maintenance", link: "/app/MaintenanceTable" },
         {
             label: id ? "Edit Vehicle Maintenance Details" : "Add Vehicle Maintenance Details",
-            link: id ? `/app/EditMaintenance/${id}` : "/app/AddVehicleMaintenanceDetails"
+            link: id ? `/app/EditMaintenance/${id}` : "/app/AddVehicleMaintenanceDetails",
         },
     ];
 
     const handleSubmit = async (values) => {
         try {
             const payload = {
-                vehicleId: values.VehicleRegistrationNo,
+                vehicleId: values.vehicleId, // Correctly map vehicleId
                 maintenanceDate: values.maintenanceDate,
                 vehicleMaintenanceTypeId: parseInt(values.VehicleMaintenanceTypeId),
                 cost: parseFloat(values.cost),
                 partsReplaced: values.replacedParts,
                 serviceProvider: values.serviceProvider,
                 specialNotes: values.specialNotes,
-                status: values.isActive
+                status: values.isActive,
             };
+            console.log(payload);
 
             let response;
             if (id) {
@@ -143,25 +140,20 @@ export default function EditMaintenance() {
 
     return (
         <>
-            <PageHeader title={id ? "Edit Vehicle Maintenance Details" : "Add Vehicle Maintenance Details"}
-                        breadcrumbs={breadcrumbs}/>
-            <Formik
-                initialValues={initialValues}
-                enableReinitialize
-                onSubmit={handleSubmit}
-            >
-                {({errors, touched}) => (
+            <PageHeader title={id ? "Edit Vehicle Maintenance Details" : "Add Vehicle Maintenance Details"} breadcrumbs={breadcrumbs} />
+            <Formik initialValues={initialValues} enableReinitialize onSubmit={handleSubmit}>
+                {({ errors, touched }) => (
                     <Form className="grid grid-cols-2 gap-10 mt-8">
                         <div className="flex flex-col gap-3">
                             <p>Vehicle Registration No</p>
-                            <Field name="VehicleRegistrationNo" validate={(value) => {
+                            <Field name="vehicleRegistrationNo" validate={(value) => {
                                 let error;
                                 if (!value) {
                                     error = "Vehicle Registration No is required.";
                                 }
                                 return error;
                             }}>
-                                {({field}) => (
+                                {({field, form}) => (
                                     <div>
                                         <Select
                                             {...field}
@@ -173,6 +165,11 @@ export default function EditMaintenance() {
                                             py={2}
                                             mt={1}
                                             width="500px"
+                                            onChange={(e) => {
+                                                const selectedVehicle = VehicleRegNoDetails.find(v => v.id === parseInt(e.target.value));
+                                                form.setFieldValue('vehicleRegistrationNo', e.target.value);
+                                                form.setFieldValue('vehicleId', selectedVehicle.id); // Set vehicleId correctly
+                                            }}
                                         >
                                             {VehicleRegNoDetails.map((option, index) => (
                                                 <option key={index} value={option.vehicleId}>
@@ -180,8 +177,8 @@ export default function EditMaintenance() {
                                                 </option>
                                             ))}
                                         </Select>
-                                        {errors.VehicleRegistrationNo && touched.VehicleRegistrationNo && (
-                                            <div className="text-red-500">{errors.VehicleRegistrationNo}</div>
+                                        {errors.vehicleRegistrationNo && touched.vehicleRegistrationNo && (
+                                            <div className="text-red-500">{errors.vehicleRegistrationNo}</div>
                                         )}
                                     </div>
                                 )}
@@ -232,7 +229,7 @@ export default function EditMaintenance() {
                                 }
                                 return error;
                             }}>
-                                {({field}) => (
+                                {({ field }) => (
                                     <div>
                                         <Input
                                             {...field}
@@ -258,10 +255,12 @@ export default function EditMaintenance() {
                                 let error;
                                 if (!value) {
                                     error = "Cost is required.";
+                                } else if (isNaN(value)) {
+                                    error = "Cost must be a number.";
                                 }
                                 return error;
                             }}>
-                                {({field}) => (
+                                {({ field }) => (
                                     <div>
                                         <Input
                                             {...field}
@@ -284,7 +283,7 @@ export default function EditMaintenance() {
                         <div className="flex flex-col gap-3">
                             <p>Service Provider</p>
                             <Field name="serviceProvider">
-                                {({field}) => (
+                                {({ field }) => (
                                     <Input
                                         {...field}
                                         placeholder='Service Provider'
@@ -302,7 +301,7 @@ export default function EditMaintenance() {
                         <div className="flex flex-col gap-3">
                             <p>Replaced Parts</p>
                             <Field name="replacedParts">
-                                {({field}) => (
+                                {({ field }) => (
                                     <Input
                                         {...field}
                                         placeholder='Replaced Parts'
@@ -320,7 +319,7 @@ export default function EditMaintenance() {
                         <div className="flex flex-col gap-3">
                             <p>Special Notes</p>
                             <Field name="specialNotes">
-                                {({field}) => (
+                                {({ field }) => (
                                     <Textarea
                                         {...field}
                                         placeholder='Special Notes'
@@ -337,7 +336,7 @@ export default function EditMaintenance() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <Field name="isActive" type="checkbox">
-                                {({field}) => (
+                                {({ field }) => (
                                     <Checkbox
                                         {...field}
                                         colorScheme="blue"
@@ -350,13 +349,11 @@ export default function EditMaintenance() {
                                 )}
                             </Field>
                         </div>
-                        <div>
-
-                        </div>
+                        <div></div>
                         <div className="flex gap-10">
                             <Button
                                 bg="gray.400"
-                                _hover={{bg: "gray.500"}}
+                                _hover={{ bg: "gray.500" }}
                                 color="#ffffff"
                                 variant="solid"
                                 w="230px"
@@ -367,7 +364,7 @@ export default function EditMaintenance() {
                             </Button>
                             <Button
                                 bg={theme.purple}
-                                _hover={{bg: theme.onHoverPurple}}
+                                _hover={{ bg: theme.onHoverPurple }}
                                 color="#ffffff"
                                 variant="solid"
                                 w="230px"
@@ -381,19 +378,13 @@ export default function EditMaintenance() {
                 )}
             </Formik>
 
-            <AlertDialog
-                isOpen={isDialogOpen}
-                leastDestructiveRef={undefined}
-                onClose={onDialogClose}
-            >
+            <AlertDialog isOpen={isDialogOpen} leastDestructiveRef={undefined} onClose={onDialogClose}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             Alert
                         </AlertDialogHeader>
-                        <AlertDialogBody>
-                            {dialogMessage}
-                        </AlertDialogBody>
+                        <AlertDialogBody>{dialogMessage}</AlertDialogBody>
                         <AlertDialogFooter>
                             <Button onClick={onDialogClose} ml={3}>
                                 OK
@@ -403,19 +394,13 @@ export default function EditMaintenance() {
                 </AlertDialogOverlay>
             </AlertDialog>
 
-            <AlertDialog
-                isOpen={isSuccessDialogOpen}
-                leastDestructiveRef={undefined}
-                onClose={handleSuccessDialogClose}
-            >
+            <AlertDialog isOpen={isSuccessDialogOpen} leastDestructiveRef={undefined} onClose={handleSuccessDialogClose}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             Success
                         </AlertDialogHeader>
-                        <AlertDialogBody>
-                            {successDialogMessage}
-                        </AlertDialogBody>
+                        <AlertDialogBody>{successDialogMessage}</AlertDialogBody>
                         <AlertDialogFooter>
                             <Button onClick={handleSuccessDialogClose} ml={3}>
                                 OK

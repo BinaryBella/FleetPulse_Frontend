@@ -60,18 +60,28 @@ const VehicleMaintenanceConfiguration = () => {
 
     const handleSubmit = async (values) => {
         try {
+            // Find the selected vehicle and maintenance type details
             const selectedVehicle = vehicleRegNoDetails.find(vehicle => vehicle.id === parseInt(values.vehicleRegistrationNo));
             const selectedMaintenanceType = maintenanceTypeDetails.find(type => type.id === parseInt(values.maintenanceType));
 
+            // Check and log the selected values for debugging
+            console.log('Selected Vehicle:', selectedVehicle);
+            console.log('Selected Maintenance Type:', selectedMaintenanceType);
+
+            // Create the payload with the necessary fields
             const payload = {
                 id: parseInt(values.vehicleRegistrationNo),
-                vehicleRegistrationNo: selectedVehicle ? selectedVehicle.VehicleRegistrationNo : '',
+                vehicleRegistrationNo: selectedVehicle ? selectedVehicle.vehicleRegistrationNo : '',
                 vehicleMaintenanceTypeId: parseInt(values.maintenanceType),
                 typeName: selectedMaintenanceType ? selectedMaintenanceType.typeName : '',
                 duration: values.duration,
                 status: values.isActive
             };
 
+            // Log the payload for debugging
+            console.log('Payload:', payload);
+
+            // Make the API request
             const response = await fetch('https://localhost:7265/api/VehicleMaintenanceConfiguration', {
                 method: 'POST',
                 headers: {
@@ -82,10 +92,12 @@ const VehicleMaintenanceConfiguration = () => {
 
             const data = await response.json();
 
+            // Handle the response
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to add maintenance configuration');
             }
 
+            // Check for existing configuration message
             if (data.message && data.message.toLowerCase().includes('exist')) {
                 setDialogMessage('Vehicle Maintenance configuration already exists');
                 onDialogOpen();
@@ -126,7 +138,7 @@ const VehicleMaintenanceConfiguration = () => {
                 onSubmit={handleSubmit}
                 validate={(values) => {
                     const errors = {};
-                    if (!values.registrationNo) {
+                    if (!values.vehicleRegistrationNo) {
                         errors.vehicleRegistrationNo = 'Vehicle registration number is required';
                     }
                     if (!values.maintenanceType) {
@@ -138,7 +150,8 @@ const VehicleMaintenanceConfiguration = () => {
                     return errors;
                 }}
             >
-                {({ errors, touched }) => (
+
+            {({ errors, touched }) => (
                     <Form className="flex justify-between vertical-container">
                         <div className="flex flex-col gap-6 mt-5 w-1/4">
                             <p>Vehicle Registration No</p>

@@ -27,9 +27,9 @@ export default function AddVehicleMaintenanceDetails() {
     const [dialogMessage, setDialogMessage] = useState("");
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
-    const [VehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
+    const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
     const [initialValues, setInitialValues] = useState({
-        VehicleRegistrationNo: "",
+        vehicleRegistrationNo: "",
         maintenanceDate: "",
         VehicleMaintenanceTypeId: 0,
         cost: "",
@@ -39,20 +39,27 @@ export default function AddVehicleMaintenanceDetails() {
         isActive: false,
     });
 
-    const exampleVehicleData = [
-        { VehicleId: 1, VehicleRegistrationNo: "ABC123" },
-        { VehicleId: 2, VehicleRegistrationNo: "DEF456" },
-        { VehicleId: 3, VehicleRegistrationNo: "GHI789" }
-    ];
-
     const fetchVehicleRegNos = async () => {
         try {
             const response = await axios.get("https://localhost:7265/api/Vehicle");
             setVehicleRegNoDetails(response.data);
+            console.log("Vehicle registration numbers fetched:", response.data); // Detailed logging
         } catch (error) {
-            console.error("Error fetching vehicle registration numbers:", error);
+            if (error.response) {
+                // The request was made and the server responded with a status code that falls out of the range of 2xx
+                console.error("Server responded with an error:", error.response.data);
+                console.error("Status code:", error.response.status);
+                console.error("Headers:", error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error("No response received:", error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.error("Error setting up request:", error.message);
+            }
         }
     };
+
 
     const fetchVehicleMaintenanceDetails = async () => {
         if (id) {
@@ -60,10 +67,10 @@ export default function AddVehicleMaintenanceDetails() {
                 const response = await axios.get(`https://localhost:7265/api/VehicleMaintenance/${id}`);
                 const maintenance = response.data;
                 setInitialValues({
-                    VehicleRegistrationNo: maintenance.VehicleId,
+                    vehicleRegistrationNo: maintenance.id?.toString() || "", // Convert to string if not null
                     maintenanceDate: maintenance.MaintenanceDate,
                     VehicleMaintenanceTypeId: maintenance.VehicleMaintenanceTypeId,
-                    cost: maintenance.Cost,
+                    cost: maintenance.Cost.toString(), // Convert to string if needed
                     serviceProvider: maintenance.ServiceProvider,
                     replacedParts: maintenance.PartsReplaced,
                     specialNotes: maintenance.SpecialNotes,
@@ -75,11 +82,6 @@ export default function AddVehicleMaintenanceDetails() {
         }
     };
 
-    useEffect(() => {
-        fetchVehicleMaintenanceTypes();
-        setVehicleRegNoDetails(exampleVehicleData);
-        fetchVehicleMaintenanceDetails();
-    }, []);
 
     const fetchVehicleMaintenanceTypes = async () => {
         try {
@@ -90,6 +92,12 @@ export default function AddVehicleMaintenanceDetails() {
         }
     };
 
+    useEffect(() => {
+        fetchVehicleMaintenanceTypes();
+        fetchVehicleRegNos();
+        fetchVehicleMaintenanceDetails();
+    }, []);
+
     const breadcrumbs = [
         { label: "Vehicle", link: "/app/Vehicle" },
         { label: "Vehicle Maintenance", link: "/app/MaintenanceTable" },
@@ -99,7 +107,7 @@ export default function AddVehicleMaintenanceDetails() {
     const handleSubmit = async (values) => {
         try {
             const payload = {
-                VehicleId: values.VehicleRegistrationNo,
+                id: parseInt(values.vehicleRegistrationNo),  // Convert to integer
                 MaintenanceDate: values.maintenanceDate,
                 VehicleMaintenanceTypeId: parseInt(values.VehicleMaintenanceTypeId),
                 Cost: parseFloat(values.cost),
@@ -156,7 +164,7 @@ export default function AddVehicleMaintenanceDetails() {
                     <Form className="grid grid-cols-2 gap-10 mt-8">
                         <div className="flex flex-col gap-3">
                             <p>Vehicle Registration No</p>
-                            <Field name="VehicleRegistrationNo" validate={(value) => {
+                            <Field name="vehicleRegistrationNo" validate={(value) => {
                                 let error;
                                 if (!value) {
                                     error = "Vehicle Registration No is required.";
@@ -176,14 +184,14 @@ export default function AddVehicleMaintenanceDetails() {
                                             mt={1}
                                             width="500px"
                                         >
-                                            {VehicleRegNoDetails.map((option, index) => (
-                                                <option key={index} value={option.VehicleId}>
-                                                    {option.VehicleRegistrationNo}
+                                            {vehicleRegNoDetails.map((option, index) => (
+                                                <option key={index} value={option.id}>
+                                                    {option.vehicleRegistrationNo}
                                                 </option>
                                             ))}
                                         </Select>
-                                        {errors.VehicleRegistrationNo && touched.VehicleRegistrationNo && (
-                                            <div className="text-red-500">{errors.VehicleRegistrationNo}</div>
+                                        {errors.vehicleRegistrationNo && touched.vehicleRegistrationNo && (
+                                            <div className="text-red-500">{errors.vehicleRegistrationNo}</div>
                                         )}
                                     </div>
                                 )}

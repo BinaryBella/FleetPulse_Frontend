@@ -28,16 +28,11 @@ const EditVehicleMaintenanceConfiguration = () => {
     const [maintenanceTypeDetails, setMaintenanceTypeDetails] = useState([]);
     const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
     const [initialValues, setInitialValues] = useState({
-        registrationNo: '',
+        vehicleRegistrationNo: '',
         maintenanceType: '',
         duration: '',
         isActive: false,
     });
-
-    const exampleVehicleData = [
-        { VehicleId: 1, VehicleRegistrationNo: 'ABC123' },
-        { VehicleId: 2, VehicleRegistrationNo: 'DEF456' },
-    ];
 
     const fetchVehicleRegNos = async () => {
         try {
@@ -45,7 +40,7 @@ const EditVehicleMaintenanceConfiguration = () => {
             setVehicleRegNoDetails(response.data);
         } catch (error) {
             console.error('Error fetching vehicle registration numbers:', error);
-            setVehicleRegNoDetails(exampleVehicleData);
+            setVehicleRegNoDetails([]); // Set to empty array in case of an error
         }
     };
 
@@ -62,10 +57,9 @@ const EditVehicleMaintenanceConfiguration = () => {
         try {
             const response = await axios.get(`https://localhost:7265/api/VehicleMaintenanceConfiguration/${id}`);
             const data = response.data;
-            console.log(response.data);
             setInitialValues({
-                registrationNo: data.vehicleId,
-                maintenanceType: data.vehicleMaintenanceTypeId,
+                vehicleRegistrationNo: data.vehicleId.toString(),
+                maintenanceType: data.vehicleMaintenanceTypeId.toString(),
                 duration: data.duration,
                 isActive: data.status,
             });
@@ -88,20 +82,18 @@ const EditVehicleMaintenanceConfiguration = () => {
 
     const handleSubmit = async (values) => {
         try {
-            const selectedVehicle = vehicleRegNoDetails.find(vehicle => vehicle.VehicleId === parseInt(values.registrationNo));
+            const selectedVehicle = vehicleRegNoDetails.find(vehicle => vehicle.VehicleId === parseInt(values.vehicleRegistrationNo));
             const selectedMaintenanceType = maintenanceTypeDetails.find(type => type.id === parseInt(values.maintenanceType));
 
             const payload = {
                 id: id,
-                vehicleId: parseInt(values.registrationNo),
+                vehicleId: parseInt(values.vehicleRegistrationNo),
                 vehicleRegistrationNo: selectedVehicle ? selectedVehicle.VehicleRegistrationNo : '',
                 vehicleMaintenanceTypeId: parseInt(values.maintenanceType),
                 typeName: selectedMaintenanceType ? selectedMaintenanceType.typeName : '',
                 duration: values.duration,
                 status: values.isActive
             };
-
-            console.log("Submitting payload:", payload);
 
             const response = await fetch(`https://localhost:7265/api/VehicleMaintenanceConfiguration/${id}`, {
                 method: 'PUT',
@@ -144,8 +136,8 @@ const EditVehicleMaintenanceConfiguration = () => {
                 onSubmit={handleSubmit}
                 validate={(values) => {
                     const errors = {};
-                    if (!values.registrationNo) {
-                        errors.registrationNo = 'Vehicle registration number is required';
+                    if (!values.vehicleRegistrationNo) {
+                        errors.vehicleRegistrationNo = 'Vehicle registration number is required';
                     }
                     if (!values.maintenanceType) {
                         errors.maintenanceType = 'Maintenance type is required';
@@ -160,7 +152,7 @@ const EditVehicleMaintenanceConfiguration = () => {
                     <Form className="flex justify-between vertical-container">
                         <div className="flex flex-col gap-6 mt-5 w-1/4">
                             <p>Vehicle Registration No</p>
-                            <Field name="registrationNo">
+                            <Field name="vehicleRegistrationNo">
                                 {({ field }) => (
                                     <div>
                                         <Select
@@ -177,8 +169,8 @@ const EditVehicleMaintenanceConfiguration = () => {
                                                 </option>
                                             ))}
                                         </Select>
-                                        {errors.registrationNo && touched.registrationNo && (
-                                            <div className="text-red-500">{errors.registrationNo}</div>
+                                        {errors.vehicleRegistrationNo && touched.vehicleRegistrationNo && (
+                                            <div className="text-red-500">{errors.vehicleRegistrationNo}</div>
                                         )}
                                     </div>
                                 )}

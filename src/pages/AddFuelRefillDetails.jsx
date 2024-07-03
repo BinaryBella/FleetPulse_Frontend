@@ -26,20 +26,14 @@ export default function AddFuelRefillDetails() {
     const [successDialogMessage, setSuccessDialogMessage] = useState("");
     const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
 
-    const exampleVehicleData = [
-        { VehicleId: 2, VehicleRegistrationNo: "DEF456" },
-        { VehicleId: 1, VehicleRegistrationNo: "ABC123" },
-    ];
-
     const fetchVehicleRegNos = async () => {
-        setVehicleRegNoDetails(exampleVehicleData);
-        // Uncomment and update the following lines with the actual API endpoint
-        // try {
-        //     const response = await axios.get("https://localhost:7265/api/Vehicle");
-        //     setVehicleRegNoDetails(response.data);
-        // } catch (error) {
-        //     console.error("Error fetching vehicle registration numbers:", error);
-        // }
+        try {
+            const response = await axios.get("https://localhost:7265/api/Vehicle");
+            setVehicleRegNoDetails(response.data);
+            console.log(response.data); // Log fetched data for debugging
+        } catch (error) {
+            console.error("Error fetching vehicle registration numbers:", error);
+        }
     };
 
     const fetchUser = async (setFieldValue) => {
@@ -94,7 +88,7 @@ export default function AddFuelRefillDetails() {
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
                     const selectedVehicle = vehicleRegNoDetails.find(
-                        (vehicle) => vehicle.VehicleId === parseInt(values.vehicleRegistrationNo)
+                        (vehicle) => vehicle.id === parseInt(values.vehicleRegistrationNo)
                     );
 
                     if (!selectedVehicle) {
@@ -111,15 +105,15 @@ export default function AddFuelRefillDetails() {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
-                                VehicleId: selectedVehicle.VehicleId,
-                                VehicleRegistrationNo: selectedVehicle.VehicleRegistrationNo,
+                                id: selectedVehicle.id,
+                                vehicleRegistrationNo: selectedVehicle.vehicleRegistrationNo,
                                 UserId: values.userId,
                                 NIC: values.nic,
                                 Cost: values.cost,
                                 LiterCount: values.literCount,
                                 Date: values.date,
                                 Time: values.time,
-                                RefillType: values.fType,
+                                FType: values.fType,
                                 Status: values.IsActive
                             })
                         });
@@ -210,8 +204,8 @@ export default function AddFuelRefillDetails() {
                                                 width="500px"
                                             >
                                                 {vehicleRegNoDetails.map((option, index) => (
-                                                    <option key={index} value={option.VehicleId}>
-                                                        {option.VehicleRegistrationNo}
+                                                    <option key={index} value={option.id}>
+                                                        {option.vehicleRegistrationNo}
                                                     </option>
                                                 ))}
                                             </Select>
