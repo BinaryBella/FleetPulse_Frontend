@@ -83,7 +83,7 @@ export default function ResetPasswordConfirmation() {
                                 <p className="mb-4">Verification Code</p>
                                 <VerificationInput
                                     validChars="0-9"
-                                    inputProps={{ inputMode: "numeric" }}
+                                    inputProps={{inputMode: "numeric"}}
                                     value={verificationCode}
                                     onChange={handleChange}
                                     size="sm"
@@ -96,7 +96,9 @@ export default function ResetPasswordConfirmation() {
                                 {errors.pinValue && (
                                     <p className="text-red-500">{errors.pinValue}</p>
                                 )}
+                                <p></p>
                             </FormControl>
+
                             {/* Conditional rendering of loading spinner */}
                             <Button
                                 bg={theme.purple}

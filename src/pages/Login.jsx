@@ -33,7 +33,7 @@ export default function Login() {
                 }}
                 onSubmit={(values) => {
                     setLoading(true); // Set loading to true when submitting form
-                    fetch('https://localhost:7265/api/Auth/Login', {
+                    fetch('https://localhost:7265/api/Auth/login', {
                         method: 'POST',
                         body: JSON.stringify({
                             username: values.username,

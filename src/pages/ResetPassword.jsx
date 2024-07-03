@@ -42,7 +42,7 @@ export default function ResetPassword() {
         try {
             setLoading(true); // Set loading to true when submitting form
             console.log(email);
-            const response = await fetch('https://localhost:7265/api/Auth/reset-password-staff', {
+            const response = await fetch('https://localhost:7265/api/Auth/reset-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

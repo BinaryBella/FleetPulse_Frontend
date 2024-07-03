@@ -48,14 +48,8 @@ export default function AddFuelRefillDetails() {
             if (username) {
                 const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
                 const responseData = response.data;
-                console.log(responseData.userId);
                 setFieldValue("nic", responseData.nic);
-                setFieldValue("userId", responseData.userId);
-                if (!responseData.userId) {
-                    const userIdResponse = await axios.get(`https://localhost:7265/api/Auth/GetUserIdByNIC?nic=${responseData.nic}`);
-                    const userIdData = userIdResponse.data;
-                    setFieldValue("userId", userIdData.userId);
-                }
+                setFieldValue("userId", responseData.userId); // Assuming the user profile response contains userId
             } else {
                 console.error("Username not found in session storage.");
             }
@@ -125,7 +119,7 @@ export default function AddFuelRefillDetails() {
                                 LiterCount: values.literCount,
                                 Date: values.date,
                                 Time: values.time,
-                                FType: values.fType,
+                                RefillType: values.fType,
                                 Status: values.IsActive
                             })
                         });
@@ -340,7 +334,6 @@ export default function AddFuelRefillDetails() {
                                                 mt={1}
                                                 width="500px"
                                             >
-                                                <option value="">Select Refill Type</option>
                                                 <option value="In station">In station</option>
                                                 <option value="Out station">Out station</option>
                                             </Select>
