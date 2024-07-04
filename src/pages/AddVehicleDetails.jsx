@@ -6,7 +6,6 @@ import { Button, Checkbox, Input, AlertDialog, AlertDialogOverlay, AlertDialogCo
 import theme from "../config/ThemeConfig.jsx";
 import axios from 'axios';
 
-
 export default function AddVehicleDetails() {
     const navigate = useNavigate();
     const { isOpen: isDialogOpen, onOpen: onDialogOpen, onClose: onDialogClose } = useDisclosure();

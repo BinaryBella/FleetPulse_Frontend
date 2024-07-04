@@ -10,8 +10,8 @@ export const NotificationProvider = ({ children }) => {
 
     const addNotification = (notification) => {
         setNotifications((prevNotifications) => [
-            ...prevNotifications,
-            { ...notification, timestamp: new Date().toISOString(), read: false }
+            { ...notification, timestamp: new Date().toISOString(), read: false },
+            ...prevNotifications
         ]);
     };
 
