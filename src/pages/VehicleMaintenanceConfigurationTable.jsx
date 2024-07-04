@@ -287,12 +287,12 @@ export default function VehicleMaintenanceConfigurationTable() {
                 onClose={onDialogClose}
             >
                 <AlertDialogOverlay>
-                    <AlertDialogContent>
+                    <AlertDialogContent position="absolute" top="30%" left="35%" transform="translate(-50%, -50%)">
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Delete Maintenance Type
+                            Delete Maintenance Configuration
                         </AlertDialogHeader>
                         <AlertDialogBody>
-                            Are you sure? You cannot undo this action afterwards.
+                            Are you sure you want to delete Vehicle Maintenance Configuration?
                         </AlertDialogBody>
                         <AlertDialogFooter>
                             <Button ref={cancelRef} onClick={onDialogClose}>

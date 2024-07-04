@@ -276,7 +276,7 @@ export default function MaintenanceTypeTable() {
 
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
                 <AlertDialogOverlay />
-                <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
+                <AlertDialogContent position="absolute" top="30%" left="35%" transform="translate(-50%, -50%)">
                     <AlertDialogHeader>{selectedType?.status ? "Deactivate" : "Activate"} Maintenance Type</AlertDialogHeader>
                     <AlertDialogBody>
                         Are you sure you want to {selectedType?.status ? "deactivate" : "activate"} {selectedType?.typeName} Maintenance Type?

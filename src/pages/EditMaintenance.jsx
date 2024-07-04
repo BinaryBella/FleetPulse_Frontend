@@ -380,7 +380,12 @@ export default function EditMaintenance() {
 
             <AlertDialog isOpen={isDialogOpen} leastDestructiveRef={undefined} onClose={onDialogClose}>
                 <AlertDialogOverlay>
-                    <AlertDialogContent>
+                    <AlertDialogContent
+                        position="absolute"
+                        top="30%"
+                        left="35%"
+                        transform="translate(-50%, -50%)"
+                    >
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             Alert
                         </AlertDialogHeader>
@@ -396,7 +401,12 @@ export default function EditMaintenance() {
 
             <AlertDialog isOpen={isSuccessDialogOpen} leastDestructiveRef={undefined} onClose={handleSuccessDialogClose}>
                 <AlertDialogOverlay>
-                    <AlertDialogContent>
+                    <AlertDialogContent
+                        position="absolute"
+                        top="30%"
+                        left="35%"
+                        transform="translate(-50%, -50%)"
+                    >
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             Success
                         </AlertDialogHeader>

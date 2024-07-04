@@ -410,7 +410,7 @@ export default function AddVehicleMaintenanceDetails() {
                 <AlertDialogContent
                     position="absolute"
                     top="30%"
-                    left="50%"
+                    left="35%"
                     transform="translate(-50%, -50%)">
                     <AlertDialogHeader>Error</AlertDialogHeader>
                     <AlertDialogBody>
@@ -427,7 +427,7 @@ export default function AddVehicleMaintenanceDetails() {
                 <AlertDialogContent
                     position="absolute"
                     top="30%"
-                    left="50%"
+                    left="35%"
                     transform="translate(-50%, -50%)"
                 >
                     <AlertDialogHeader>Success</AlertDialogHeader>

@@ -121,7 +121,7 @@ export default function ResetPasswordConfirmation() {
                 isCentered
             >
                 <AlertDialogOverlay>
-                    <AlertDialogContent>
+                    <AlertDialogContent position="absolute" top="30%" left="35%" transform="translate(-50%, -50%)">
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             Invalid Verification Code
                         </AlertDialogHeader>

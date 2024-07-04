@@ -314,7 +314,7 @@ export default function FuelRefillTable() {
             )}
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
                 <AlertDialogOverlay />
-                <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
+                <AlertDialogContent position="absolute" top="30%" left="35%" transform="translate(-50%, -50%)">
                     <AlertDialogHeader>{selectedFuelRefill?.status ? "Deactivate" : "Activate"} Fuel Refill Details</AlertDialogHeader>
                     <AlertDialogBody>
                         Are you sure you want to {selectedFuelRefill?.status ? "deactivate" : "activate"} {selectedFuelRefill?.typeName} Fuel Refill?

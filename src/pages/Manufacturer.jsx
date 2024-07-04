@@ -266,7 +266,7 @@ export default function Manufacturer() {
 
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
                 <AlertDialogOverlay />
-                <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
+                <AlertDialogContent position="absolute" top="30%" left="35%" transform="translate(-50%, -50%)">
                     <AlertDialogHeader>{selectedManufacturer?.status ? "Deactivate" : "Activate"} Manufacturer</AlertDialogHeader>
                     <AlertDialogBody>
                         Are you sure you want to {selectedManufacturer?.status ? "deactivate" : "activate"} this manufacturer?

@@ -329,7 +329,7 @@ export default function VehicleDetailsTable() {
 
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} leastDestructiveRef={cancelRef}>
                 <AlertDialogOverlay>
-                    <AlertDialogContent>
+                    <AlertDialogContent position="absolute" top="30%" left="35%" transform="translate(-50%, -50%)">
                         <AlertDialogHeader>{selectedVehicle?.isActive ? "Deactivate" : "Activate"} Vehicle</AlertDialogHeader>
                         <AlertDialogBody>
                             Are you sure you want to {selectedVehicle?.isActive ? "deactivate" : "activate"} this vehicle?
