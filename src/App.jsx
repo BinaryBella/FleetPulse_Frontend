@@ -33,7 +33,7 @@ import Trip from "./pages/Trip.jsx";
 import Reports from "./pages/Reports.jsx";
 import AddAccidentDetails from "./pages/AddAccidentDetails.jsx";
 import AddVehicleModel from "./pages/AddVehicleModel.jsx";
-import AddManufactureDetails from "./pages/AddManufactureDetails.jsx";
+import AddManufactureDetails from "./pages/AddManufactureTypeDetails.jsx";
 import AddVehicleType from "./pages/AddVehicleType.jsx";
 import VehicleDetailsTable from "./pages/VehicleDetailsTable.jsx";
 import VehicleReports from "./pages/VehicleReports.jsx";
@@ -55,7 +55,10 @@ import VehicleMaintenanceConfigurationTable from "./pages/VehicleMaintenanceConf
 import EditMaintenance from "./pages/EditMaintenance.jsx";
 import EditFuelRefillDetails from "./pages/EditFuelRefillDetails.jsx";
 import EditVehicleMaintenanceConfiguration from "./pages/EditVehicleMaintenanceConfiguration.jsx";
-
+import VehicleType from "./pages/VehicleType.jsx";
+import Manufacturer from "./pages/Manufacturer.jsx";
+import AddManufactureTypeDetails from "./pages/AddManufactureTypeDetails.jsx";
+import DriverDetails from "./pages/DriverDetails.jsx";
 export default function App() {
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -130,7 +133,11 @@ export default function App() {
                             <Route path="/app/AccidentReport" element={<AccidentReport />} />
                             <Route path="/app/Notification" element={<Notifications />} />
                             <Route path="/app/VehicleMaintenanceConfiguration" element={<VehicleMaintenanceConfiguration />} />
-                            <Route path="VehicleMaintenanceConfigurationTable" element={<VehicleMaintenanceConfigurationTable/>} />
+                            <Route path="/app/VehicleMaintenanceConfigurationTable" element={<VehicleMaintenanceConfigurationTable/>} />
+                            <Route path='/app/VehicleType' element={<VehicleType/>}/>
+                            <Route path='/app/Manufacturer' element={<Manufacturer/>}/>
+                            <Route path='/app/AddManufacturerTypeDetails' element={<AddManufactureTypeDetails/>}/>
+                            <Route  path="/app/DriverDetails" element={<DriverDetails/>}/>
                         </Route>
                     </Route>
 
