@@ -1,11 +1,10 @@
 import { Box, List, ListItem, Heading, Text, Icon, Button, IconButton } from '@chakra-ui/react';
 import { MdNotifications, MdDelete, MdNotificationsNone } from 'react-icons/md';
-import PageHeader from "../components/PageHeader.jsx";
+import PageHeader from "../components/PageHeader";
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
-import axios from 'axios';
-import './Notification.css';
 import { useNotifications } from '../context/NotificationContext';
+import axios from "axios";
+import './Notification.css';
 
 const Notifications = () => {
     const { notifications, markAsRead, deleteNotification, markAllAsRead, deleteAllNotifications } = useNotifications();
@@ -32,7 +31,7 @@ const Notifications = () => {
     const handleMarkAllAsRead = async () => {
         try {
             await axios.post(`https://localhost:7265/api/Notification/markAllAsRead`);
-            notifications.forEach((_, index) => markAsRead(index));
+            markAllAsRead();
         } catch (error) {
             console.error("Error marking all notifications as read:", error);
         }
@@ -41,20 +40,19 @@ const Notifications = () => {
     const handleDeleteAllNotifications = async () => {
         try {
             await axios.delete(`https://localhost:7265/api/Notification/deleteAll`);
-            notifications.forEach((_, index) => deleteNotification(index));
+            deleteAllNotifications();
         } catch (error) {
             console.error("Error deleting all notifications:", error);
         }
     };
 
-    const handleNavigate = (username, emailAddress, notification) => {
-        console.log(notification);
+    const handleNavigate = (username, emailAddress) => {
         navigate(`/app/ResetPasswordDriverHelper?username=${username}&emailAddress=${emailAddress}`);
     };
 
     return (
         <Box className="notification-container">
-            <PageHeader title="Notifications"/>
+            <PageHeader title="Notifications" />
             {notifications.length > 0 && (
                 <Box className="notification-controls">
                     <Button
@@ -91,11 +89,11 @@ const Notifications = () => {
                                 <Heading as="h2" size="sm">{notification.title}</Heading>
                             </Box>
                             <Box className="notification-actions">
-                                {notification.title === "Password Reset Request" && (
+                                {notification.isPasswordReset && (
                                     <Button
                                         className="reset-password-btn"
                                         style={{ color: 'white', backgroundColor: '#247ab7' }}
-                                        onClick={() => handleNavigate(notification.username, notification.emailAddress, notification)}
+                                        onClick={() => handleNavigate(notification.username, notification.emailAddress)}
                                     >
                                         Reset Password
                                     </Button>
@@ -113,8 +111,8 @@ const Notifications = () => {
                                 />
                             </Box>
                         </Box>
-                        <Text className="notification-body">{notification.body}</Text>
-                        <Text className="notification-timestamp">{format(new Date(notification.timestamp), 'PPpp')}</Text>
+                        <Text className="notification-body">{notification.message}</Text>
+                        <Text className="notification-timestamp">{notification.timestamp}</Text>
                     </ListItem>
                 ))}
             </List>

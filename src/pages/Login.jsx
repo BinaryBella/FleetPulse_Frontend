@@ -10,7 +10,7 @@ import first from "../assets/images/login.png";
 export default function Login() {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false); // Add loading state
+    const [loading, setLoading] = useState(false);
     const [resetClicked, setResetClicked] = useState(false);
     const [backendError, setBackendError] = useState("");
 
@@ -20,6 +20,53 @@ export default function Login() {
 
     const handleResetClick = () => {
         setResetClicked(true);
+    };
+
+    const saveNotification = (notification) => {
+        if (localStorage.getItem('Token')) {
+            const userId = sessionStorage.getItem('UserId');
+            const username = sessionStorage.getItem('Username');
+
+            if (!userId || !username) {
+                console.error('User ID or Username not found in session storage');
+                return;
+            }
+
+            const fcmNotification = {
+                UserId: parseInt(userId),
+                UserName: username,
+                Title: "User Login",  // You can adjust this as needed
+                Message: notification.message,
+                Date: new Date(notification.timestamp).toISOString().split('T')[0],
+                Time: new Date(notification.timestamp).toTimeString().split(' ')[0],
+                Status: false  // Assuming new notifications are unread
+            };
+
+            console.log('Sending notification:', fcmNotification);
+
+            fetch('https://localhost:7265/api/Notification/save-notification', {
+                method: 'POST',
+                body: JSON.stringify(fcmNotification),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    'Authorization': `Bearer ${localStorage.getItem('Token')}`
+                }
+            }).then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            }).then(data => {
+                console.log('Notification saved:', data);
+            }).catch(error => {
+                console.error('Error saving notification:', error);
+            });
+        } else {
+            // If user is not logged in, save to local storage as before
+            let notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+            notifications.push(notification);
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+        }
     };
 
     return (
@@ -32,7 +79,7 @@ export default function Login() {
                     password: ""
                 }}
                 onSubmit={(values) => {
-                    setLoading(true); // Set loading to true when submitting form
+                    setLoading(true);
                     fetch('https://localhost:7265/api/Auth/login', {
                         method: 'POST',
                         body: JSON.stringify({
@@ -51,19 +98,53 @@ export default function Login() {
                                     setBackendError(data.message);
                                 }
                             } else {
-                                const { accessToken, jobTitle } = data.data;
+                                console.log('Login response:', data);
+
+                                const accessToken = data.data?.accessToken;
+                                const jobTitle = data.data?.jobTitle;
+                                const userId = data.data?.userId;
+
+                                console.log('AccessToken:', accessToken);
+                                console.log('JobTitle:', jobTitle);
+                                console.log('UserId:', userId);
+
                                 if (jobTitle === "Admin" || jobTitle === "Staff") {
                                     sessionStorage.setItem('Username', values.username);
+
+                                    if (userId !== undefined && userId !== null) {
+                                        sessionStorage.setItem('UserId', userId.toString());
+                                        console.log('UserId set in session storage:', userId);
+                                    } else {
+                                        console.error('UserId is undefined or null in the response');
+                                    }
+
+                                    sessionStorage.setItem('UserRole', jobTitle);
                                     localStorage.setItem('Token', accessToken);
-                                    sessionStorage.setItem('UserRole', jobTitle);                                    navigate('/app/Dashboard');
+
+                                    console.log('Session storage after login:', sessionStorage);
+
+
+                                    saveNotification({
+                                        message: `User ${values.username} logged in`,
+                                        timestamp: new Date().toISOString()
+                                    });
+
+                                    let storedNotifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                                    storedNotifications.forEach(notification => {
+                                        saveNotification(notification);
+                                    });
+                                    localStorage.removeItem('notifications');
+
+                                    navigate('/app/Dashboard');
                                 } else {
                                     navigate("/unauthorized");
                                 }
                             }
-                        }).catch(() => {
+                        }).catch((error) => {
+                        console.error('Login error:', error);
                         setBackendError('Login failed. Please try again.');
                     }).finally(() => {
-                        setLoading(false); // Set loading to false when request is completed
+                        setLoading(false);
                     });
                 }}
             >
@@ -139,7 +220,6 @@ export default function Login() {
                                     {backendError}
                                 </Text>
                             )}
-                            {/* Conditional rendering of loading spinner */}
                             <Button
                                 bg={theme.purple}
                                 _hover={{ bg: theme.onHoverPurple }}
@@ -147,7 +227,7 @@ export default function Login() {
                                 variant="solid"
                                 type="submit"
                                 size="sm"
-                                isLoading={loading} // Add isLoading prop
+                                isLoading={loading}
                             >
                                 Login
                             </Button>

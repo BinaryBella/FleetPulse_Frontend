@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import PageHeader from "../components/PageHeader.jsx";
 import DashboardCard from "../components/DashboardCard.jsx";
 import testc from "../assets/images/testc.png";
@@ -14,13 +14,13 @@ export default function Dashboard() {
         { label: 'Dashboard', link: '/app/Dashboard' },
     ];
 
-    useEffect(() => {
-        const hasRefreshed = sessionStorage.getItem('hasRefreshed');
-        if (!hasRefreshed) {
-            sessionStorage.setItem('hasRefreshed', 'true');
-            window.location.reload();
-        }
-    }, []);
+    // useEffect(() => {
+    //     const hasRefreshed = sessionStorage.getItem('hasRefreshed');
+    //     if (!hasRefreshed) {
+    //         sessionStorage.setItem('hasRefreshed', 'true');
+    //         window.location.reload();
+    //     }
+    // }, []);
 
     return (
         <>
