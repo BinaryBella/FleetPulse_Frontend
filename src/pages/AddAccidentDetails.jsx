@@ -109,7 +109,7 @@ export default function AddAccidentDetails() {
                             px={3}
                             py={2}
                             mt={1}
-                            width="500px"
+                            width="400px"
                             placeholder="DateTime"
                           />
                         </div>
@@ -127,7 +127,7 @@ export default function AddAccidentDetails() {
                             px={3}
                             py={2}
                             mt={1}
-                            width="500px"
+                            width="400px"
                             placeholder="Venue"
                           />
                         </div>
@@ -145,7 +145,7 @@ export default function AddAccidentDetails() {
                             px={3}
                             py={2}
                             mt={1}
-                            width="500px"
+                            width="400px"
                             placeholder="Vehicle Registration No"
                           />
                         </div>
@@ -163,7 +163,7 @@ export default function AddAccidentDetails() {
                             px={3}
                             py={2}
                             mt={1}
-                            width="500px"
+                            width="400px"
                             placeholder="Driver's NIC"
                           />
                         </div>
@@ -181,7 +181,7 @@ export default function AddAccidentDetails() {
                             px={3}
                             py={2}
                             mt={1}
-                            width="500px"
+                            width="400px"
                             placeholder="Helper's NIC"
                           />
                         </div>
@@ -197,7 +197,7 @@ export default function AddAccidentDetails() {
                             step="0.01"
                             variant="filled"
                             borderRadius="md"
-                            width="500px"
+                            width="400px"
                             px={3}
                             py={2}
                             mt={1}
@@ -217,7 +217,7 @@ export default function AddAccidentDetails() {
                             px={3}
                             py={2}
                             mt={1}
-                            width="500px"
+                            width="400px"
                             placeholder="Special Notes"
                           />
                         </div>

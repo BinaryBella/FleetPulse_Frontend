@@ -151,7 +151,7 @@ axios.post('https://localhost:7265/api/Vehicle', values)
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="vehicleRegistrationNo"
                       placeholder="Enter Vehicle Registration No"
                     />
@@ -175,7 +175,7 @@ axios.post('https://localhost:7265/api/Vehicle', values)
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="licenseNo"
                       placeholder="Enter License No"
                     />
@@ -197,7 +197,7 @@ axios.post('https://localhost:7265/api/Vehicle', values)
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="licenseExpireDate"
                     />
                   </div>
@@ -218,7 +218,7 @@ axios.post('https://localhost:7265/api/Vehicle', values)
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="vehicleColor"
                       placeholder="Enter Vehicle Color"
                     />
@@ -239,7 +239,7 @@ axios.post('https://localhost:7265/api/Vehicle', values)
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="vehicleTypeId"
                       placeholder="Enter Vehicle Type"
                     />
@@ -261,7 +261,7 @@ axios.post('https://localhost:7265/api/Vehicle', values)
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="manufactureId"
                       placeholder="Enter Manufacture"
                     />

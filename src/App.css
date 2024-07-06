@@ -77,3 +77,14 @@
     text-align: center;      /* Horizontal centering */
     vertical-align: middle;  /* Vertical centering */
 }
+
+.side-menu {
+    position: fixed; /* Keeps the side menu in place even when scrolling */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Ensures the side menu takes up the full viewport height */
+    width: 20%; /* Set the width of the side menu */
+    background-color: #2c2c59; /* Background color of the side menu */
+    overflow-y: auto; /* Adds a scrollbar if the content overflows */
+    color: #ffffff; /* Ensures text color contrast for accessibility */
+}

@@ -241,7 +241,7 @@ export default function DriverDetails() {
                         color="white"
                         variant="solid"
                         w="260px"
-                        mr="60px"
+                        mr="10px"
                     >
                         Add New Driver
                     </Button>

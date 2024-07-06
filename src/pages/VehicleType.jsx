@@ -36,12 +36,12 @@ import theme from "../config/ThemeConfig.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import Pagination from "../components/Pagination";
 import {
-    useReactTable,
-    getCoreRowModel,
-    getSortedRowModel,
-    getFilteredRowModel
-} from '@tanstack/react-table';
-import { flexRender } from '@tanstack/react-table';
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getFilteredRowModel
+} from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 
 export default function VehicleType() {
   const [vehicleDetails, setVehicleDetails] = useState([]);
@@ -65,75 +65,71 @@ export default function VehicleType() {
 
   const onConfirmDelete = async () => {
     try {
-      const endpoint = `https://localhost:7265/api/VehicleType/${selectedType.id}/${selectedType.status ? 'deactivate' : 'activate'}`;
+      const endpoint = `https://localhost:7265/api/VehicleType/${selectedType.vehicleTypeId}/${selectedType.status ? "deactivate" : "activate"}`;
       await axios.put(endpoint);
-        fetchVehicleTypes();
-        onDialogClose();
+      fetchVehicleTypes();
+      onDialogClose();
     } catch (error) {
-        if (error.response && error.response.status === 400 && error.response.data === "Vehicle Type is active and associated with type records. Cannot deactivate.") {
-            toast({
-                title: "Error",
-                description: "Vehicle Type is active and associated with type records. Cannot deactivate.",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-            });
-        } else {
-            console.error("Error updating vehicle type status:", error);
-        }
+      if (error.response && error.response.status === 400 && error.response.data === "Vehicle Type is active and associated with type records. Cannot deactivate.") {
+        toast({
+          title: "Error",
+          description: "Vehicle Type is active and associated with type records. Cannot deactivate.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        console.error("Error updating vehicle type status:", error);
+      }
     }
   };
 
   const fetchVehicleTypes = async () => {
     try {
-        const response = await axios.get("https://localhost:7265/api/VehicleType");
-        console.log(response.data);
-        setVehicleDetails(response.data);
-
+      const response = await axios.get("https://localhost:7265/api/VehicleType");
+      setVehicleDetails(response.data);
     } catch (error) {
-        console.error("Error fetching vehicle types:", error);
+      console.error("Error fetching vehicle types:", error);
     }
   };
 
   const columns = [
     {
-        accessorKey: 'typeName',
-        header: 'Vehicle Type',
-        meta: { isNumeric: false, filter: 'text' }
+      accessorKey: "type",
+      header: "Vehicle Type",
+      meta: { isNumeric: false, filter: "text" }
     },
     {
-        accessorKey: 'status',
-        header: 'Status',
-        cell: info => (info.getValue() ? "Active" : "Inactive"),
-        meta: { isNumeric: false, filter: 'boolean' }
+      accessorKey: "status",
+      header: "Status",
+      cell: (info) => (info.getValue() ? "Active" : "Inactive"),
+      meta: { isNumeric: false, filter: "boolean" }
     },
     {
-        id: 'actions',
-        header: 'Actions',
-        cell: ({ row }) => (
-            <Menu>
-                <MenuButton
-                    color={theme.purple}
-                    as={IconButton}
-                    aria-label="profile-options"
-                    fontSize="20px"
-                    icon={<IoSettingsSharp />}
-                />
-                <MenuList>
-                    <MenuItem>
-                        <Link to={`/app/EditVehicleType/${row.original.id}`}>
-                            Edit
-                        </Link>
-                    </MenuItem>
-                    <MenuItem onClick={() => onClickDelete(row.original)}>
-                        {row.original.status ? "Deactivate" : "Activate"}
-                    </MenuItem>
-                </MenuList>
-            </Menu>
-        ),
-        meta: { isNumeric: false, filter: null },
-        enableSorting: false,
-    },
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <Menu>
+          <MenuButton
+            color={theme.purple}
+            as={IconButton}
+            aria-label="profile-options"
+            fontSize="20px"
+            icon={<IoSettingsSharp />}
+          />
+          <MenuList>
+            <MenuItem>
+              <Link to={`/app/EditVehicleType/${row.original.vehicleTypeId}`}>Edit</Link>
+            </MenuItem>
+            <MenuItem onClick={() => onClickDelete(row.original)}>
+              {row.original.status ? "Deactivate" : "Activate"}
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      ),
+      meta: { isNumeric: false, filter: null },
+      enableSorting: false
+    }
   ];
 
   const table = useReactTable({
@@ -143,7 +139,7 @@ export default function VehicleType() {
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    getFilteredRowModel: getFilteredRowModel()
   });
 
   const handleSearchInputChange = (event) => {
@@ -151,20 +147,20 @@ export default function VehicleType() {
     setSearchInput(inputValue);
     table.setGlobalFilter(inputValue);
     setCurrentPage(0);
-};
+  };
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
 
   const breadcrumbs = [
-    { label: 'Vehicle', link: '/' },
-    { label: 'Vehicle Type', link: '/app/VehicleType' },
+    { label: "Vehicle", link: "/" },
+    { label: "Vehicle Type", link: "/app/VehicleType" }
   ];
 
   const startOffset = currentPage * itemsPerPage;
   const endOffset = startOffset + itemsPerPage;
-  const sortedData = table.getRowModel().rows.map(row => row.original);
+  const sortedData = table.getRowModel().rows.map((row) => row.original);
   const currentData = sortedData.slice(startOffset, endOffset);
   const pageCount = Math.ceil(table.getFilteredRowModel().rows.length / itemsPerPage);
   const isEmpty = currentData.length === 0;
@@ -203,9 +199,9 @@ export default function VehicleType() {
 
       <Table className="custom-table">
         <Thead>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
+              {headerGroup.headers.map((header) => {
                 const meta = header.column.columnDef.meta;
                 return (
                   <Th
@@ -255,9 +251,7 @@ export default function VehicleType() {
                     />
                     <MenuList>
                       <MenuItem>
-                        <Link to={`/app/EditVehicleType/${vehicleType.vehicleTypeId}`}>
-                          Edit
-                        </Link>
+                        <Link to={`/app/EditVehicleType/${vehicleType.vehicleTypeId}`}>Edit</Link>
                       </MenuItem>
                       <MenuItem onClick={() => onClickDelete(vehicleType)}>
                         {vehicleType.status ? "Deactivate" : "Activate"}
@@ -271,25 +265,24 @@ export default function VehicleType() {
         </Tbody>
       </Table>
       {!isEmpty && (
-        <Pagination
-          pageCount={pageCount}
-          onPageChange={handlePageClick}
-        />
+        <Pagination pageCount={pageCount} onPageChange={handlePageClick} />
       )}
 
       <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
         <AlertDialogOverlay />
         <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
-          <AlertDialogHeader>{selectedType?.status ? "Deactivate" : "Activate"} Vehicle Type</AlertDialogHeader>
+          <AlertDialogHeader>
+            {selectedType?.status ? "Deactivate" : "Activate"} Vehicle Type
+          </AlertDialogHeader>
           <AlertDialogBody>
-            Are you sure you want to {selectedType?.status ? "deactivate" : "activate"} {selectedType?.typeName} Vehicle Type?
+            Are you sure you want to {selectedType?.status ? "deactivate" : "activate"} {selectedType?.type} Vehicle Type?
           </AlertDialogBody>
           <AlertDialogFooter>
             <div className="flex flex-row gap-8">
               <Button bg="gray.400" _hover={{ bg: "gray.500" }} color="#ffffff" variant="solid" onClick={onDialogClose} ref={cancelRef}>
                 Cancel
               </Button>
-              <Button colorScheme='red' color="#FFFFFF" onClick={onConfirmDelete}>
+              <Button colorScheme="red" color="#FFFFFF" onClick={onConfirmDelete}>
                 {selectedType?.status ? "Deactivate" : "Activate"}
               </Button>
             </div>

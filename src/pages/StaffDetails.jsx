@@ -65,7 +65,9 @@ export default function StaffDetails() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/Staff/UpdateStaff/${selectedStaff.userId}/${selectedStaff.status ? 'deactivate' : 'activate'}`;
+            const endpoint = selectedStaff.status
+                ? `https://localhost:7265/api/Staff/${selectedStaff.userId}/deactivate`
+                : `https://localhost:7265/api/Staff/${selectedStaff.userId}/activate`;
             await axios.put(endpoint);
             fetchStaffDetails();
             onDialogClose();
@@ -226,7 +228,7 @@ export default function StaffDetails() {
                         color="white"
                         variant="solid"
                         w="260px"
-                        mr="60px"
+                        mr="10px"
                     >
                         Add New Staff
                     </Button>

@@ -49,7 +49,6 @@ export default function HelperDetails() {
   const itemsPerPage = 10;
 
   const breadcrumbs = [
-    //{ label: "Helper", link: "/app/Helper" },
     { label: "Helper Details", link: "/app/HelperDetails" },
     { label: "Add Helper Details", link: "/app/AddHelperDetails" },
   ];
@@ -80,10 +79,20 @@ export default function HelperDetails() {
 
   const onConfirmInactive = async () => {
     try {
-      const endpoint = `https://localhost:7265/api/Helper/UpdateHelper/${selectedHelper.id}/${selectedHelper.isActive ? 'deactivate' : 'activate'}`;
+      const endpoint = selectedHelper.status
+        ? `https://localhost:7265/api/Helper/${selectedHelper.userId}/deactivate`
+        : `https://localhost:7265/api/Helper/${selectedHelper.userId}/activate`;
+
       await axios.put(endpoint);
       fetchHelperDetails();
       onDialogClose();
+      toast({
+        title: 'Success',
+        description: `Helper ${selectedHelper.status ? 'deactivated' : 'activated'} successfully.`,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error('Error updating helper status:', error);
       toast({
@@ -113,8 +122,8 @@ export default function HelperDetails() {
         <Menu>
           <MenuButton color={theme.purple} as={IconButton} aria-label='profile-options' fontSize='20px' icon={<IoSettingsSharp />} />
           <MenuList>
-            <MenuItem onClick={() => navigate(`/editHelper/${row.original.id}`)}>Edit</MenuItem>
-            <MenuItem onClick={() => onClickInactive(row.original)}>{row.original.isActive ? 'Deactivate' : 'Activate'}</MenuItem>
+            <MenuItem onClick={() => navigate(`/editHelper/${row.original.userId}`)}>Edit</MenuItem>
+            <MenuItem onClick={() => onClickInactive(row.original)}>{row.original.status ? 'Deactivate' : 'Activate'}</MenuItem>
           </MenuList>
         </Menu>
       ),
@@ -220,7 +229,7 @@ export default function HelperDetails() {
                     <MenuButton as={IconButton} aria-label='options' icon={<IoSettingsSharp />} />
                     <MenuList>
                       <MenuItem onClick={() => navigate(`/app/EditHelperDetails/${helper.userId}`)}>Edit</MenuItem>
-                      <MenuItem onClick={() => onClickInactive(helper)}>{helper.isActive ? 'Deactivate' : 'Activate'}</MenuItem>
+                      <MenuItem onClick={() => onClickInactive(helper)}>{helper.status ? 'Deactivate' : 'Activate'}</MenuItem>
                     </MenuList>
                   </Menu>
                 </Td>
@@ -235,7 +244,7 @@ export default function HelperDetails() {
           <AlertDialogContent>
             <AlertDialogHeader>Change Helper Status</AlertDialogHeader>
             <AlertDialogBody>
-              Are you sure you want to {selectedHelper?.isActive ? 'deactivate' : 'activate'} this helper?
+              Are you sure you want to {selectedHelper?.status ? 'deactivate' : 'activate'} this helper?
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onDialogClose}>

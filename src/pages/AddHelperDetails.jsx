@@ -160,7 +160,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="firstName"
                       placeholder="First Name"
                     />
@@ -184,7 +184,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="lastName"
                       placeholder="Last Name"
                     />
@@ -208,7 +208,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="dob"
                       placeholder="Date of Birth"
                     />
@@ -232,7 +232,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="nic"
                       placeholder="NIC No"
                     />
@@ -256,7 +256,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="emailAddress"
                       placeholder="Email Address"
                     />
@@ -280,7 +280,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="phoneNo"
                       placeholder="Contact No"
                     />
@@ -304,7 +304,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="emergencyContact"
                       placeholder="Emergency Contact No"
                     />
@@ -325,7 +325,7 @@ export default function AddHelperDetails() {
                       placeholder="Select Blood Group"
                       variant="filled"
                       borderRadius="md"
-                      width="500px"
+                      width="400px"
                       px={3}
                       py={2}
                       mt={1}
@@ -360,7 +360,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="userName"
                       placeholder="User Name"
                     />
@@ -384,7 +384,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="password"
                       placeholder="Password"
                     />
@@ -408,7 +408,7 @@ export default function AddHelperDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="300px"
                       id="confirmPassword"
                       placeholder="Confirm Password"
                     />

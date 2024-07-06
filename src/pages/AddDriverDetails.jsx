@@ -179,7 +179,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="FirstName"
                       placeholder="First Name"
                     />
@@ -201,7 +201,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="LastName"
                       placeholder="Last Name"
                     />
@@ -223,7 +223,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="DateOfBirth"
                       placeholder="Date of Birth"
                     />
@@ -245,7 +245,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="NIC"
                       placeholder="NIC No"
                     />
@@ -267,7 +267,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="DriverLicenseNo"
                       placeholder="Driver License No"
                     />
@@ -289,7 +289,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="LicenseExpiryDate"
                       placeholder="License Expiry Date"
                     />
@@ -311,7 +311,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="EmailAddress"
                       placeholder="Email Address"
                     />
@@ -334,7 +334,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="PhoneNo"
                       placeholder="Contact Number"
                     />
@@ -356,7 +356,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="EmergencyContact"
                       placeholder="Emergency Contact No"
                     />
@@ -374,7 +374,7 @@ export default function AddDriverDetails() {
                       {...field}
                       variant="filled"
                       borderRadius="md"
-                      width="500px"
+                      width="400px"
                       px={3}
                       py={2}
                       mt={1}
@@ -407,7 +407,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="UserName"
                       placeholder="Username"
                     />
@@ -429,7 +429,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="400px"
                       id="Password"
                       placeholder="Password"
                     />
@@ -451,7 +451,7 @@ export default function AddDriverDetails() {
                       px={3}
                       py={2}
                       mt={1}
-                      width="500px"
+                      width="300px"
                       id="confirmPassword"
                       placeholder="Confirm Password"
                     />

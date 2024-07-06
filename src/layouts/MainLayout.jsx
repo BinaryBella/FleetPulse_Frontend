@@ -6,9 +6,9 @@ import { Outlet } from 'react-router-dom';
 // MainLayout component definition
 export default function MainLayout({ isAdmin }) {
     return (
-        <div className="flex min-w-screen min-h-screen bg-[#393970]">
+        <div className="flex min-w-screen min-h-screen bg-[#2c2c59]">
             <SideMenu isAdmin={isAdmin} />
-            <div className="bg-[#E1E4EB] w-4/5 pl-16">
+            <div className="bg-[#E1E4EB] w-4/5 pl-16 ml-[308px]">
                 <TopMenu />
                 <Outlet />
             </div>

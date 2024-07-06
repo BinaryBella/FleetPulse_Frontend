@@ -58,22 +58,6 @@ export default function Manufacturer() {
         fetchManufacturers();
     }, []);
 
-    const onClickDelete = (manufacturer) => {
-        setSelectedManufacturer(manufacturer);
-        onDialogOpen();
-    };
-
-    const onConfirmDelete = async () => {
-        try {
-            const endpoint = `https://localhost:7265/api/Manufacture${selectedManufacturer.ManufactureId}/${selectedManufacturer.status ? 'deactivate' : 'activate'}`;
-            await axios.put(endpoint);
-            fetchManufacturers();
-            onDialogClose();
-        } catch (error) {
-            console.error("Error updating manufacturer status:", error);
-        }
-    };
-
     const fetchManufacturers = async () => {
         try {
             const response = await axios.get("https://localhost:7265/api/Manufacture");
@@ -83,9 +67,37 @@ export default function Manufacturer() {
         }
     };
 
+    const onClickDelete = (manufacturer) => {
+        setSelectedManufacturer(manufacturer);
+        onDialogOpen();
+    };
+
+    const onConfirmDelete = async () => {
+        try {
+            const endpoint = `https://localhost:7265/api/Manufacture/${selectedManufacturer.manufactureId}/${selectedManufacturer.status ? 'deactivate' : 'activate'}`;
+            await axios.put(endpoint);
+            onDialogClose();
+            fetchManufacturers();
+            toast({
+                title: `Manufacturer ${selectedManufacturer.status ? 'deactivated' : 'activated'} successfully`,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            });
+        } catch (error) {
+            console.error("Error updating manufacturer status:", error);
+            toast({
+                title: `Error ${selectedManufacturer.status ? 'deactivating' : 'activating'} manufacturer`,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
+
     const columns = [
         {
-            accessorKey: 'name', 
+            accessorKey: 'manufacturer', 
             header: 'Manufacturer Name',
             meta: { isNumeric: false, filter: 'text' }
         },
@@ -109,7 +121,7 @@ export default function Manufacturer() {
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/app/EditManufacturerTypeDetails/${row.original.id}`}>
+                            <Link to={`/app/EditManufacturerTypeDetails/${row.original.manufactureId}`}>
                                 Edit
                             </Link>
                         </MenuItem>

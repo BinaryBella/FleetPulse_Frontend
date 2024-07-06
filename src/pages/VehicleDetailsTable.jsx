@@ -82,28 +82,32 @@ export default function VehicleDetailsTable() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/Vehicle/${selectedVehicle.id}/${selectedVehicle.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/Vehicle/${selectedVehicle.id}/${selectedVehicle.status === "Active" ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
             fetchVehicleDetails();
             onDialogClose();
+            toast({
+                title: "Success",
+                description: `Vehicle ${selectedVehicle.status === "Active" ? 'deactivated' : 'activated'} successfully`,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
         } catch (error) {
-            if (error.response && error.response.status === 400 && error.response.data === "Vehicle is active and associated with vehicle records. Cannot deactivate.") {
-                toast({
-                    title: "Error",
-                    description: "Vehicle is active and associated with vehicle records. Cannot deactivate.",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                });
-            } else {
-                console.error("Error updating vehicle status:", error);
-            }
+            console.error("Error updating vehicle status:", error);
+            toast({
+                title: "Error",
+                description: "An error occurred while updating vehicle status",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
         }
     };
 
     const columns = [
         {
-            accessorKey: 'registrationNo',
+            accessorKey: 'vehicleRegistrationNo',
             header: 'Reg No',
             meta: { isNumeric: false, filter: 'text' }
         },
@@ -123,7 +127,7 @@ export default function VehicleDetailsTable() {
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'type',
+            accessorKey: 'typeOf',
             header: 'Type',
             meta: { isNumeric: false, filter: 'text' }
         },
@@ -138,9 +142,9 @@ export default function VehicleDetailsTable() {
             meta: { isNumeric: false, filter: 'text' }
         },
         {
-            accessorKey: 'isActive',
+            accessorKey: 'status',
             header: 'Status',
-            cell: info => (info.getValue() ? "Active" : "Inactive"),
+            cell: info => (info.getValue() === "Active" ? "Active" : "Inactive"),
             meta: { isNumeric: false, filter: 'boolean' }
         },
         {
@@ -156,18 +160,13 @@ export default function VehicleDetailsTable() {
                         icon={<IoSettingsSharp />}
                     />
                     <MenuList>
-                            <Link to={`/app/EditVehicleDetails/${row.original.id}`} >
-                        <MenuItem>
+                        <Link to={`/app/EditVehicleDetails/${row.original.id}`}>
+                            <MenuItem>
                                 Edit
-                        </MenuItem>
-                                <MenuItem>
-                                    <Link to="/app/VehicleMaintenanceConfigurationTable" >
-                                        Vehicle Maintenance Configuration
-                                    </Link>
-                                </MenuItem>
-                            </Link>
+                            </MenuItem>
+                        </Link>
                         <MenuItem onClick={() => onClickDelete(row.original)}>
-                            {row.original.isActive ? "Deactivate" : "Activate"}
+                            {row.original.status === "Active" ? "Deactivate" : "Activate"}
                         </MenuItem>
                     </MenuList>
                 </Menu>
@@ -234,6 +233,7 @@ export default function VehicleDetailsTable() {
                         color="white"
                         variant="solid"
                         w="260px"
+                        margin right="32px"
                     >
                         Add Vehicle Details
                     </Button>
@@ -288,7 +288,7 @@ export default function VehicleDetailsTable() {
                                 <Td>{vehicle.typeOf}</Td>
                                 <Td>{vehicle.fuelType}</Td>
                                 <Td>{vehicle.color}</Td>
-                                <Td>{vehicle.status}</Td>
+                                <Td>{vehicle.status === "Active" ? "Active" : "Inactive"}</Td>
                                 <Td>
                                     <Menu>
                                         <MenuButton
@@ -299,13 +299,13 @@ export default function VehicleDetailsTable() {
                                             icon={<IoSettingsSharp />}
                                         />
                                         <MenuList>
-                                            <MenuItem>
-                                                <Link to={`/app/EditVehicleDetails/${vehicle.id}`} >
+                                            <Link to={`/app/EditVehicleDetails/${vehicle.id}`} >
+                                                <MenuItem>
                                                     Edit
-                                                </Link>
-                                            </MenuItem>
+                                                </MenuItem>
+                                            </Link>
                                             <MenuItem onClick={() => onClickDelete(vehicle)}>
-                                                {vehicle.status ? "Deactivate" : "Activate"}
+                                                {vehicle.status === "Active" ? "Deactivate" : "Activate"}
                                             </MenuItem>
                                         </MenuList>
                                     </Menu>
@@ -325,14 +325,14 @@ export default function VehicleDetailsTable() {
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} leastDestructiveRef={cancelRef}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
-                        <AlertDialogHeader>{selectedVehicle?.status ? "Deactivate" : "Activate"} Vehicle</AlertDialogHeader>
+                        <AlertDialogHeader>{selectedVehicle?.status === "Active" ? "Deactivate" : "Activate"} Vehicle</AlertDialogHeader>
                         <AlertDialogBody>
-                            Are you sure you want to {selectedVehicle?.status ? "deactivate" : "activate"} this vehicle?
+                            Are you sure you want to {selectedVehicle?.status === "Active" ? "deactivate" : "activate"} this vehicle?
                         </AlertDialogBody>
                         <AlertDialogFooter>
                             <Button ref={cancelRef} onClick={onDialogClose}>Cancel</Button>
                             <Button colorScheme="red" onClick={onConfirmDelete} ml={3}>
-                                {selectedVehicle?.status ? "Deactivate" : "Activate"}
+                                {selectedVehicle?.status === "Active" ? "Deactivate" : "Activate"}
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>

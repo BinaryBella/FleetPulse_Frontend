@@ -34,8 +34,8 @@ export default function AddTripDetails() {
                     Date: values.Date,
                     StartTime: values.StartTime,
                     EndTime: values.EndTime,
-                    StartLocation: values.StartLocation,
-                    EndLocation: values.EndLocation,
+                    // StartLocation: values.StartLocation,
+                    // EndLocation: values.EndLocation,
                     StartMeterValue: values.StartMeterValue,
                     EndMeterValue: values.EndMeterValue,
                     IsActive: values.IsActive
@@ -77,8 +77,8 @@ export default function AddTripDetails() {
                     Date: "",
                     StartTime: "",
                     EndTime: "",
-                    StartLocation: "",
-                    EndLocation: "",
+                    // StartLocation: "",
+                    // EndLocation: "",
                     StartMeterValue: 0,
                     EndMeterValue: 0,
                     IsActive: true
@@ -106,7 +106,7 @@ export default function AddTripDetails() {
                                             px={3}
                                             py={2}
                                             mt={1}
-                                            width="500px"
+                                            width="400px"
                                             placeholder="Vehicle Registration No"
                                         />
                                         {errors.VehicleRegNo && touched.VehicleRegNo && (
@@ -135,7 +135,7 @@ export default function AddTripDetails() {
                                             px={3}
                                             py={2}
                                             mt={1}
-                                            width="500px"
+                                            width="400px"
                                             placeholder="Driver's NIC"
                                         />
                                         {errors.DriverNIC && touched.DriverNIC && (
@@ -164,7 +164,7 @@ export default function AddTripDetails() {
                                             px={3}
                                             py={2}
                                             mt={1}
-                                            width="500px"
+                                            width="400px"
                                             placeholder="Helper's NIC"
                                         />
                                         {errors.HelperNIC && touched.HelperNIC && (
@@ -193,7 +193,7 @@ export default function AddTripDetails() {
                                             px={3}
                                             py={2}
                                             mt={1}
-                                            width="500px"
+                                            width="400px"
                                             placeholder="Date"
                                         />
                                         {errors.Date && touched.Date && (
@@ -222,7 +222,7 @@ export default function AddTripDetails() {
                                             px={3}
                                             py={2}
                                             mt={1}
-                                            width="500px"
+                                            width="400px"
                                             placeholder="Start Time"
                                         />
                                         {errors.StartTime && touched.StartTime && (
@@ -251,7 +251,7 @@ export default function AddTripDetails() {
                                             px={3}
                                             py={2}
                                             mt={1}
-                                            width="500px"
+                                            width="400px"
                                             placeholder="End Time"
                                         />
                                         {errors.EndTime && touched.EndTime && (
@@ -261,7 +261,7 @@ export default function AddTripDetails() {
                                 )}
                             </Field>
                         </div>
-                        <div className="flex flex-col gap-3">
+                        {/* <div className="flex flex-col gap-3">
                             <p>Start Location</p>
                             <Field name="StartLocation" validate={(value) => {
                                 let error;
@@ -289,8 +289,8 @@ export default function AddTripDetails() {
                                     </div>
                                 )}
                             </Field>
-                        </div>
-                        <div className="flex flex-col gap-3">
+                        </div> */}
+                        {/* <div className="flex flex-col gap-3">
                             <p>End Location</p>
                             <Field name="EndLocation" validate={(value) => {
                                 let error;
@@ -318,7 +318,7 @@ export default function AddTripDetails() {
                                     </div>
                                 )}
                             </Field>
-                        </div>
+                        </div> */}
                         <div className="flex flex-col gap-3">
                             <p>Start Meter Value</p>
                             <Field name="StartMeterValue" validate={(value) => {
@@ -334,7 +334,7 @@ export default function AddTripDetails() {
                                         variant="filled"
                                         defaultValue={0}
                                         min={0}
-                                        width="500px"
+                                        width="400px"
                                         mt={1}
                                     >
                                         <NumberInputField
@@ -369,7 +369,7 @@ export default function AddTripDetails() {
                                         variant="filled"
                                         defaultValue={0}
                                         min={0}
-                                        width="500px"
+                                        width="400px"
                                         mt={1}
                                     >
                                         <NumberInputField

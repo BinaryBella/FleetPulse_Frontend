@@ -22,7 +22,7 @@ const NotificationHandler = () => {
                     // Send the token to the backend
                     await saveTokenToDatabase(token);
                 } else if (permission === "denied") {
-                    alert("You denied the notification");
+                    //alert("You denied the notification");
                 }
             } catch (error) {
                 console.error("Error requesting permission or getting token: ", error);

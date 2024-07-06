@@ -60,8 +60,9 @@ export default function TripDetails() {
 
     const fetchTripDetails = async () => {
         try {
-            const response = await axios.get("https://localhost:7265/api/TripDetails");
+            const response = await axios.get("https://localhost:7265/api/Trip");
             setTripDetails(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error("Error fetching trip details:", error);
         }
@@ -74,8 +75,8 @@ export default function TripDetails() {
         { accessorKey: 'date', header: 'Date', meta: { isNumeric: false, filter: 'text' } },
         { accessorKey: 'startTime', header: 'Start Time', meta: { isNumeric: false, filter: 'text' } },
         { accessorKey: 'endTime', header: 'End Time', meta: { isNumeric: false, filter: 'text' } },
-        { accessorKey: 'startLocation', header: 'Start Location', meta: { isNumeric: false, filter: 'text' } },
-        { accessorKey: 'endLocation', header: 'End Location', meta: { isNumeric: false, filter: 'text' } },
+        // { accessorKey: 'startLocation', header: 'Start Location', meta: { isNumeric: false, filter: 'text' } },
+        // { accessorKey: 'endLocation', header: 'End Location', meta: { isNumeric: false, filter: 'text' } },
         { accessorKey: 'status', header: 'Status', meta: { isNumeric: false, filter: 'text' } },
         {
             accessorKey: 'actions',
@@ -241,8 +242,8 @@ export default function TripDetails() {
                                 <Td>{trip.date}</Td>
                                 <Td>{trip.startTime}</Td>
                                 <Td>{trip.endTime}</Td>
-                                <Td>{trip.startLocation}</Td>
-                                <Td>{trip.endLocation}</Td>
+                                {/* <Td>{trip.startLocation}</Td>
+                                <Td>{trip.endLocation}</Td> */}
                                 <Td>{trip.status ? "Active" : "Inactive"}</Td>
                                 <Td>
                                     <Menu>
