@@ -69,15 +69,13 @@ export default function TripDetails() {
     };
 
     const columns = [
-        { accessorKey: 'driversNIC', header: 'Driver\'s NIC', meta: { isNumeric: false, filter: 'text' } },
-        { accessorKey: 'helpersNIC', header: 'Helper\'s NIC', meta: { isNumeric: false, filter: 'text' } },
-        { accessorKey: 'vehicleRegNo', header: 'Vehicle Reg.No', meta: { isNumeric: false, filter: 'text' } },
-        { accessorKey: 'date', header: 'Date', meta: { isNumeric: false, filter: 'text' } },
-        { accessorKey: 'startTime', header: 'Start Time', meta: { isNumeric: false, filter: 'text' } },
-        { accessorKey: 'endTime', header: 'End Time', meta: { isNumeric: false, filter: 'text' } },
-        // { accessorKey: 'startLocation', header: 'Start Location', meta: { isNumeric: false, filter: 'text' } },
-        // { accessorKey: 'endLocation', header: 'End Location', meta: { isNumeric: false, filter: 'text' } },
-        { accessorKey: 'status', header: 'Status', meta: { isNumeric: false, filter: 'text' } },
+        { accessorKey: 'driversNIC', header: 'Driver\'s NIC' },
+        { accessorKey: 'helpersNIC', header: 'Helper\'s NIC' },
+        { accessorKey: 'vehicleRegNo', header: 'Vehicle Reg.No' },
+        { accessorKey: 'date', header: 'Date' },
+        { accessorKey: 'startTime', header: 'Start Time' },
+        { accessorKey: 'endTime', header: 'End Time' },
+        { accessorKey: 'status', header: 'Status' },
         {
             accessorKey: 'actions',
             header: 'Actions',
@@ -97,12 +95,11 @@ export default function TripDetails() {
                             </Link>
                         </MenuItem>
                         <MenuItem onClick={() => onClickDelete(row.original)}>
-                            {row.original.isActive ? "Deactivate" : "Activate"}
+                            {row.original.status ? "Deactivate" : "Activate"}
                         </MenuItem>
                     </MenuList>
                 </Menu>
             ),
-            meta: { isNumeric: false, filter: null },
             enableSorting: false,
         },
     ];
@@ -148,7 +145,7 @@ export default function TripDetails() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/TripDetails/${selectedTrip.id}/${selectedTrip.isActive ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/TripDetails/${selectedTrip.id}/${selectedTrip.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
             fetchTripDetails();
             onDialogClose();
@@ -189,6 +186,8 @@ export default function TripDetails() {
                         _hover={{ bg: theme.onHoverPurple }}
                         color="white"
                         variant="solid"
+                        w="260px"
+                        mr="50px"
                     >
                         Add New Trip
                     </Button>
@@ -242,8 +241,6 @@ export default function TripDetails() {
                                 <Td>{trip.date}</Td>
                                 <Td>{trip.startTime}</Td>
                                 <Td>{trip.endTime}</Td>
-                                {/* <Td>{trip.startLocation}</Td>
-                                <Td>{trip.endLocation}</Td> */}
                                 <Td>{trip.status ? "Active" : "Inactive"}</Td>
                                 <Td>
                                     <Menu>
@@ -261,7 +258,7 @@ export default function TripDetails() {
                                                 </Link>
                                             </MenuItem>
                                             <MenuItem onClick={() => onClickDelete(trip)}>
-                                                {trip.isActive ? "Deactivate" : "Activate"}
+                                                {trip.status ? "Deactivate" : "Activate"}
                                             </MenuItem>
                                         </MenuList>
                                     </Menu>
@@ -281,9 +278,9 @@ export default function TripDetails() {
             <AlertDialog isOpen={isDialogOpen} onClose={onDialogClose} motionPreset="slideInBottom" leastDestructiveRef={cancelRef}>
                 <AlertDialogOverlay />
                 <AlertDialogContent position="absolute" top="30%" left="50%" transform="translate(-50%, -50%)">
-                    <AlertDialogHeader>{selectedTrip?.isActive ? "Deactivate" : "Activate"} Trip</AlertDialogHeader>
+                    <AlertDialogHeader>{selectedTrip?.status ? "Deactivate" : "Activate"} Trip</AlertDialogHeader>
                     <AlertDialogBody>
-                        Are you sure you want to {selectedTrip?.isActive ? "deactivate" : "activate"} this trip?
+                        Are you sure you want to {selectedTrip?.status ? "deactivate" : "activate"} this trip?
                     </AlertDialogBody>
                     <AlertDialogFooter>
                         <div className="flex flex-row gap-8">
@@ -291,7 +288,7 @@ export default function TripDetails() {
                                 Cancel
                             </Button>
                             <Button colorScheme='red' color="#FFFFFF" onClick={onConfirmDelete}>
-                                {selectedTrip?.isActive ? "Deactivate" : "Activate"}
+                                {selectedTrip?.status ? "Deactivate" : "Activate"}
                             </Button>
                         </div>
                     </AlertDialogFooter>

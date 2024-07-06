@@ -153,23 +153,7 @@ export default function EditVehicleDetails() {
                         />
                     </div>
                    
-    
-                    <div className="flex flex-col gap-3">
-                        <p>Manufacture</p>
-                        <Input
-                            type="text"
-                            name="manufactureId"
-                            variant="filled"
-                            borderRadius="md"
-                            px={3}
-                            py={2}
-                            mt={1}
-                            width="500px"
-                            placeholder="Manufacture"
-                            value={vehicleDetails.manufactureId}
-                            onChange={handleChange}
-                        />
-                    </div>
+
                     
                     <div className="flex flex-col gap-3">
                         <p>License Expire Date</p>
