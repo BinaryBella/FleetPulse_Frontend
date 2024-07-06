@@ -107,14 +107,16 @@ export default function AddVehicleMaintenanceDetails() {
     const handleSubmit = async (values) => {
         try {
             const payload = {
-                id: parseInt(values.vehicleRegistrationNo),  // Convert to integer
+                id: parseInt(values.vehicleRegistrationNo),  // Assuming this is vehicleId
+                vehicleRegistrationNo: values.vehicleRegistrationNo,
                 MaintenanceDate: values.maintenanceDate,
                 VehicleMaintenanceTypeId: parseInt(values.VehicleMaintenanceTypeId),
                 Cost: parseFloat(values.cost),
                 PartsReplaced: values.replacedParts,
                 ServiceProvider: values.serviceProvider,
                 SpecialNotes: values.specialNotes,
-                Status: values.isActive
+                Status: values.isActive,
+                vehicleId: parseInt(values.vehicleRegistrationNo) // Assuming vehicleId is the same as vehicleRegistrationNo for now
             };
 
             let response;
@@ -132,12 +134,17 @@ export default function AddVehicleMaintenanceDetails() {
             } else {
                 setSuccessDialogMessage(id ? 'Maintenance updated successfully' : 'Maintenance added successfully');
                 onSuccessDialogOpen();
+                navigate('/app/MaintenanceTable');
             }
         } catch (error) {
-            if (error instanceof TypeError) {
-                setDialogMessage('Failed to connect to the server');
+            console.error("Error submitting vehicle maintenance details:", error);
+
+            if (error.response) {
+                setDialogMessage(`Server Error: ${error.response.data.message || error.response.statusText}`);
+            } else if (error.request) {
+                setDialogMessage("Network Error: Failed to connect to the server");
             } else {
-                setDialogMessage(error.message || 'Failed to add maintenance.');
+                setDialogMessage(`Error: ${error.message}`);
             }
             onDialogOpen();
         }

@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 import SideMenu from '../components/SideMenu.jsx';
 import TopMenu from '../components/TopMenu.jsx';
 import { Outlet } from 'react-router-dom';
 
-// MainLayout component definition
 export default function MainLayout({ isAdmin }) {
     return (
         <div className="flex min-w-screen min-h-screen bg-[#2c2c59]">

@@ -28,20 +28,16 @@ export default function EditFuelRefillDetails() {
     const [vehicleRegNoDetails, setVehicleRegNoDetails] = useState([]);
     const [initialValues, setInitialValues] = useState(null);
 
-    const exampleVehicleData = [
-        { VehicleId: 2, VehicleRegistrationNo: "DEF456" },
-        { VehicleId: 1, VehicleRegistrationNo: "ABC123" },
-    ];
-
     const fetchVehicleRegNos = async () => {
-        setVehicleRegNoDetails(exampleVehicleData);
-        // Uncomment and update the following lines with the actual API endpoint
-        // try {
-        //     const response = await axios.get("https://localhost:7265/api/Vehicle");
-        //     setVehicleRegNoDetails(response.data);
-        // } catch (error) {
-        //     console.error("Error fetching vehicle registration numbers:", error);
-        // }
+        try {
+            const response = await axios.get("https://localhost:7265/api/Vehicle");
+            setVehicleRegNoDetails(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error fetching vehicle registration numbers:", error);
+            setDialogMessage("Failed to fetch vehicle registration numbers.");
+            onDialogOpen();
+        }
     };
 
     const fetchFuelRefillDetails = async () => {
@@ -105,7 +101,7 @@ export default function EditFuelRefillDetails() {
     const breadcrumbs = [
         { label: "Vehicle", link: "/app/Vehicle" },
         { label: "Fuel Refill", link: "/app/FuelRefillTable" },
-        { label: "Edit Fuel Refill Details", link: "/app/EditFuelRefillDetails" },
+        { label: "Edit Fuel Refill Details", link: `/app/EditFuelRefillDetails/${id}` },
     ];
 
     return (
@@ -116,7 +112,7 @@ export default function EditFuelRefillDetails() {
                     initialValues={initialValues}
                     onSubmit={async (values, { setSubmitting }) => {
                         const selectedVehicle = vehicleRegNoDetails.find(
-                            (vehicle) => vehicle.VehicleId === parseInt(values.vehicleRegistrationNo)
+                            (vehicle) => vehicle.id === parseInt(values.vehicleRegistrationNo)
                         );
 
                         if (!selectedVehicle) {
@@ -133,16 +129,16 @@ export default function EditFuelRefillDetails() {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    VehicleId: selectedVehicle.VehicleId,
-                                    VehicleRegistrationNo: selectedVehicle.VehicleRegistrationNo,
-                                    UserId: values.userId,
-                                    NIC: values.nic,
-                                    Cost: values.cost,
-                                    LiterCount: values.literCount,
-                                    Date: values.date,
-                                    Time: values.time,
-                                    FType: values.fType,
-                                    Status: values.IsActive
+                                    vehicleId: selectedVehicle.id,
+                                    vehicleRegistrationNo: selectedVehicle.vehicleRegistrationNo,
+                                    userId: values.userId,
+                                    nic: values.nic,
+                                    cost: values.cost,
+                                    literCount: values.literCount,
+                                    date: values.date,
+                                    time: values.time,
+                                    fType: values.fType,
+                                    status: values.IsActive
                                 })
                             });
 
@@ -232,8 +228,8 @@ export default function EditFuelRefillDetails() {
                                                     width="500px"
                                                 >
                                                     {vehicleRegNoDetails.map((option, index) => (
-                                                        <option key={index} value={option.VehicleId}>
-                                                            {option.VehicleRegistrationNo}
+                                                        <option key={index} value={option.id}>
+                                                            {option.vehicleRegistrationNo}
                                                         </option>
                                                     ))}
                                                 </Select>
@@ -357,8 +353,8 @@ export default function EditFuelRefillDetails() {
                                                     width="500px"
                                                 >
                                                     <option value="">Select Refill Type</option>
-                                                    <option value="Petrol">Petrol</option>
-                                                    <option value="Diesel">Diesel</option>
+                                                    <option value="InStation">In Station</option>
+                                                    <option value="OutStation">Out Station</option>
                                                 </Select>
                                                 {errors.fType && touched.fType && (
                                                     <div className="text-red-500">{errors.fType}</div>
