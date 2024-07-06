@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 
 const NotificationContext = createContext();
 
@@ -10,41 +9,20 @@ export const NotificationProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                const response = await axios.get('https://localhost:7265/api/Notification');
-                setNotifications(response.data.map(notification => {
-                    let timestamp = '';
-                    try {
-                        // Logging the time value to debug
-                        console.log("Original TimeSpan value:", notification.time);
-
-                        // Use the date and time values directly as strings
-                        const formattedDate = notification.date;
-                        const formattedTime = notification.time.split('.')[0];
-                        timestamp = `${formattedDate}T${formattedTime}`;
-
-                        console.log(timestamp);
-                    } catch (error) {
-                        console.error("Error creating timestamp:", error, notification);
-                    }
-                    return {
-                        ...notification,
-                        timestamp,
-                        read: notification.status
-                    };
-                }));
-            } catch (error) {
-                console.error("Error fetching notifications:", error);
-            }
-        };
-
-        fetchNotifications();
+        // Load notifications from local storage initially
+        const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+        setNotifications(storedNotifications);
     }, []);
 
+    useEffect(() => {
+        // Save notifications to local storage on update
+        localStorage.setItem('notifications', JSON.stringify(notifications));
+    }, [notifications]);
+
     const addNotification = (notification) => {
+        console.log('Adding notification:', notification); // Add logging
         setNotifications((prevNotifications) => [
-            { ...notification, timestamp: new Date().toISOString(), read: false },
+            { ...notification, read: false },
             ...prevNotifications
         ]);
     };

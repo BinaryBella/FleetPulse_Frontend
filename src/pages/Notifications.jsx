@@ -3,47 +3,26 @@ import { MdNotifications, MdDelete, MdNotificationsNone } from 'react-icons/md';
 import PageHeader from "../components/PageHeader";
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../context/NotificationContext';
-import axios from "axios";
 import './Notification.css';
 
 const Notifications = () => {
     const { notifications, markAsRead, deleteNotification, markAllAsRead, deleteAllNotifications } = useNotifications();
     const navigate = useNavigate();
 
-    const handleMarkAsRead = async (index, id) => {
-        try {
-            await axios.post(`https://localhost:7265/api/Notification/mark-as-read/${id}`);
-            markAsRead(index);
-        } catch (error) {
-            console.error("Error marking notification as read:", error);
-        }
+    const handleMarkAsRead = (index) => {
+        markAsRead(index);
     };
 
-    const handleDeleteNotification = async (index, id) => {
-        try {
-            await axios.delete(`https://localhost:7265/api/Notification/delete/${id}`);
-            deleteNotification(index);
-        } catch (error) {
-            console.error("Error deleting notification:", error);
-        }
+    const handleDeleteNotification = (index) => {
+        deleteNotification(index);
     };
 
-    const handleMarkAllAsRead = async () => {
-        try {
-            await axios.post(`https://localhost:7265/api/Notification/markAllAsRead`);
-            markAllAsRead();
-        } catch (error) {
-            console.error("Error marking all notifications as read:", error);
-        }
+    const handleMarkAllAsRead = () => {
+        markAllAsRead();
     };
 
-    const handleDeleteAllNotifications = async () => {
-        try {
-            await axios.delete(`https://localhost:7265/api/Notification/deleteAll`);
-            deleteAllNotifications();
-        } catch (error) {
-            console.error("Error deleting all notifications:", error);
-        }
+    const handleDeleteAllNotifications = () => {
+        deleteAllNotifications();
     };
 
     const handleNavigate = (username, emailAddress) => {
@@ -99,7 +78,7 @@ const Notifications = () => {
                                     </Button>
                                 )}
                                 {!notification.read && (
-                                    <Button className="mark-read-btn" onClick={() => handleMarkAsRead(index, notification.notificationId)}>
+                                    <Button className="mark-read-btn" onClick={() => handleMarkAsRead(index)}>
                                         Mark as Read
                                     </Button>
                                 )}
@@ -107,11 +86,11 @@ const Notifications = () => {
                                     className="delete-btn"
                                     aria-label="Delete notification"
                                     icon={<MdDelete size={20} />}
-                                    onClick={() => handleDeleteNotification(index, notification.notificationId)}
+                                    onClick={() => handleDeleteNotification(index)}
                                 />
                             </Box>
                         </Box>
-                        <Text className="notification-body">{notification.message}</Text>
+                        <Text className="notification-body">{notification.body}</Text>
                         <Text className="notification-timestamp">{notification.timestamp}</Text>
                     </ListItem>
                 ))}

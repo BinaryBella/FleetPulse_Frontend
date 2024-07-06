@@ -110,6 +110,7 @@ export default function Login() {
 
                                 if (jobTitle === "Admin" || jobTitle === "Staff") {
                                     sessionStorage.setItem('Username', values.username);
+                                    sessionStorage.setItem('UserRole', jobTitle);
 
                                     if (userId !== undefined && userId !== null) {
                                         sessionStorage.setItem('UserId', userId.toString());

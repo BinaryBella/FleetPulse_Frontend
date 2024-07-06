@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { jwtDecode } from "jwt-decode";
 
 const PrivateRoutes = ({ roles }) => {
+
     const token = localStorage.getItem('Token');
     const isAuthenticated = !!token;
     let userRole = null;

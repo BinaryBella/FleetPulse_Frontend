@@ -6,15 +6,12 @@ import './index.css';
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./config/ThemeConfig.jsx";
-import { NotificationProvider } from './context/NotificationContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <BrowserRouter>
             <ChakraProvider theme={theme}>
-                <NotificationProvider>
                     <App />
-                </NotificationProvider>
             </ChakraProvider>
         </BrowserRouter>
     </React.StrictMode>

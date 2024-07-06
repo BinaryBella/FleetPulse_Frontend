@@ -74,7 +74,7 @@ export default function ChangePassword() {
         navigate('/app/ChangePassword');
     };
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         setSubmitting(true);
         try {
             const storedUsername = sessionStorage.getItem('Username');
@@ -96,6 +96,7 @@ export default function ChangePassword() {
             if (response.data.status) {
                 setIsAlertOpen(true);
                 setResetPasswordResponse(response.data.message);
+                resetForm(); // This clears the form fields
             } else {
                 if (response.data.error === "Old password is incorrect.") {
                     setError(response.data.error);
