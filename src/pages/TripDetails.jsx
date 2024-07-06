@@ -90,7 +90,7 @@ export default function TripDetails() {
                     />
                     <MenuList>
                         <MenuItem>
-                            <Link to={`/app/EditTripDetails/${row.original.id}`}>
+                            <Link to={`/app/EditTripDetails/${row.original.tripId}`}>
                                 Edit
                             </Link>
                         </MenuItem>
@@ -145,10 +145,17 @@ export default function TripDetails() {
 
     const onConfirmDelete = async () => {
         try {
-            const endpoint = `https://localhost:7265/api/TripDetails/${selectedTrip.id}/${selectedTrip.status ? 'deactivate' : 'activate'}`;
+            const endpoint = `https://localhost:7265/api/Trip/${selectedTrip.tripId}/${selectedTrip.status ? 'deactivate' : 'activate'}`;
             await axios.put(endpoint);
             fetchTripDetails();
             onDialogClose();
+            toast({
+                title: "Success",
+                description: `Trip ${selectedTrip.status ? 'deactivated' : 'activated'} successfully.`,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 toast({
@@ -253,7 +260,7 @@ export default function TripDetails() {
                                         />
                                         <MenuList>
                                             <MenuItem>
-                                                <Link to={`/app/EditTripDetails/${trip.id}`}>
+                                                <Link to={`/app/EditTripDetails/${trip.tripId}`}>
                                                     Edit
                                                 </Link>
                                             </MenuItem>
