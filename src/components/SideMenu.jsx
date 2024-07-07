@@ -29,7 +29,7 @@ export default function SideMenu({isAdmin}) {
 
     return (
         <div className="side-menu">
-            <div className="flex justify-center items-center w-full h-40 mb-10 -mt-5">
+            <div className="flex justify-center items-center w-full h-40 mb-3 -mt-5">
                 <Link to="/app/Dashboard">
                     <img src={Logo} alt="Logo" style={{height: "80%"}}/>
                 </Link>
@@ -68,35 +68,117 @@ export default function SideMenu({isAdmin}) {
                                     <AccordionIcon color={theme.orange}/>
                                 </AccordionButton>
                             </h2>
+                            {/*<AccordionPanel pb={4}>*/}
+                            {/*    <div>*/}
+                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/VehicleDetailsTable">*/}
+                            {/*            <Text color={theme.orange} fontSize="sm">*/}
+                            {/*                Vehicle Details*/}
+                            {/*            </Text>*/}
+                            {/*        </Link>*/}
+                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/VehicleType">*/}
+                            {/*            <Text color={theme.orange} fontSize="sm">*/}
+                            {/*                Type*/}
+                            {/*            </Text>*/}
+                            {/*        </Link>*/}
+                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/Manufacturer">*/}
+                            {/*            <Text color={theme.orange} fontSize="sm">*/}
+                            {/*                Manufacturer*/}
+                            {/*            </Text>*/}
+                            {/*        </Link>*/}
+                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/MaintenanceTable">*/}
+                            {/*            <Text color={theme.orange} fontSize="sm">*/}
+                            {/*                Maintenance*/}
+                            {/*            </Text>*/}
+                            {/*        </Link>*/}
+                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/MaintenanceTypeTable">*/}
+                            {/*            <Text color={theme.orange} fontSize="sm">*/}
+                            {/*                Maintenance Type*/}
+                            {/*            </Text>*/}
+                            {/*        </Link>*/}
+                            {/*        <Link className="flex items-center pl-3" to="/app/FuelRefillTable">*/}
+                            {/*            <Text color={theme.orange} fontSize="sm">*/}
+                            {/*                Fuel Refill*/}
+                            {/*            </Text>*/}
+                            {/*        </Link>*/}
+                            {/*    </div>*/}
+                            {/*</AccordionPanel>*/}
                             <AccordionPanel pb={4}>
                                 <div>
-                                    <Link className="flex items-center pl-3" to="/app/VehicleDetailsTable">
-                                        <Text color={theme.orange} fontSize="sm">
+                                    <Link className="flex items-center pl-3 mb-5" to="/app/VehicleDetailsTable">
+                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
+                                              onMouseOver={(e) => {
+                                                  e.target.style.color = '#FFA500';
+                                                  e.target.style.textDecoration = 'underline';
+                                              }}
+                                              onMouseOut={(e) => {
+                                                  e.target.style.color = theme.orange;
+                                                  e.target.style.textDecoration = 'none';
+                                              }}>
                                             Vehicle Details
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-3" to="/app/VehicleType">
-                                        <Text color={theme.orange} fontSize="sm">
+                                    <Link className="flex items-center pl-3 mb-5" to="/app/VehicleType">
+                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
+                                              onMouseOver={(e) => {
+                                                  e.target.style.color = '#FFA500';
+                                                  e.target.style.textDecoration = 'underline';
+                                              }}
+                                              onMouseOut={(e) => {
+                                                  e.target.style.color = theme.orange;
+                                                  e.target.style.textDecoration = 'none';
+                                              }}>
                                             Type
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-3" to="/app/Manufacturer">
-                                        <Text color={theme.orange} fontSize="sm">
+                                    <Link className="flex items-center pl-3 mb-5" to="/app/Manufacturer">
+                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
+                                              onMouseOver={(e) => {
+                                                  e.target.style.color = '#FFA500';
+                                                  e.target.style.textDecoration = 'underline';
+                                              }}
+                                              onMouseOut={(e) => {
+                                                  e.target.style.color = theme.orange;
+                                                  e.target.style.textDecoration = 'none';
+                                              }}>
                                             Manufacturer
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-3" to="/app/MaintenanceTable">
-                                        <Text color={theme.orange} fontSize="sm">
+                                    <Link className="flex items-center pl-3 mb-5" to="/app/MaintenanceTable">
+                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
+                                              onMouseOver={(e) => {
+                                                  e.target.style.color = '#FFA500';
+                                                  e.target.style.textDecoration = 'underline';
+                                              }}
+                                              onMouseOut={(e) => {
+                                                  e.target.style.color = theme.orange;
+                                                  e.target.style.textDecoration = 'none';
+                                              }}>
                                             Maintenance
                                         </Text>
                                     </Link>
-                                    <Link className="flex items-center pl-3" to="/app/MaintenanceTypeTable">
-                                        <Text color={theme.orange} fontSize="sm">
+                                    <Link className="flex items-center pl-3 mb-5" to="/app/MaintenanceTypeTable">
+                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
+                                              onMouseOver={(e) => {
+                                                  e.target.style.color = '#FFA500';
+                                                  e.target.style.textDecoration = 'underline';
+                                              }}
+                                              onMouseOut={(e) => {
+                                                  e.target.style.color = theme.orange;
+                                                  e.target.style.textDecoration = 'none';
+                                              }}>
                                             Maintenance Type
                                         </Text>
                                     </Link>
                                     <Link className="flex items-center pl-3" to="/app/FuelRefillTable">
-                                        <Text color={theme.orange} fontSize="sm">
+                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
+                                              onMouseOver={(e) => {
+                                                  e.target.style.color = '#FFA500';
+                                                  e.target.style.textDecoration = 'underline';
+                                              }}
+                                              onMouseOut={(e) => {
+                                                  e.target.style.color = theme.orange;
+                                                  e.target.style.textDecoration = 'none';
+                                              }}>
                                             Fuel Refill
                                         </Text>
                                     </Link>

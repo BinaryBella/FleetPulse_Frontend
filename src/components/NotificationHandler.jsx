@@ -29,17 +29,34 @@ const NotificationHandler = () => {
         requestPermission();
 
         const unsubscribe = onMessage(messaging, (payload) => {
-            console.log("Incoming message", payload);
+            console.log("Incoming message", payload);  // Log payload for debugging
+
+            const options = {
+                timeZone: 'Asia/Colombo',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true
+            };
+
+            const formattedDate = new Intl.DateTimeFormat('en-US', options).format(new Date());
 
             const notification = {
                 title: payload.notification?.title || 'No title',
                 body: payload.notification?.body || 'No body',
                 emailAddress: payload.data?.emailAddress || 'No email',
                 username: payload.data?.username || 'Unknown',
+                vehicleRegistrationNo: payload.data?.vehicleRegistrationNo || 'No vehicle registration number',
                 isPasswordReset: payload.notification?.title === "Password Reset Request",
-                timestamp: new Date().toISOString(),
+                timestamp: formattedDate,
                 read: false,
             };
+
+            console.log('Parsed notification:', notification); // Log notification for debugging
 
             addNotification(notification);
         });

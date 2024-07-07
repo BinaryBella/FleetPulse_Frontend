@@ -32,13 +32,19 @@ export default function Login() {
                 return;
             }
 
+            const timestamp = new Date(notification.timestamp);
+            if (isNaN(timestamp.getTime())) {
+                console.error('Invalid timestamp value');
+                return;
+            }
+
             const fcmNotification = {
                 UserId: parseInt(userId),
                 UserName: username,
                 Title: "User Login",  // You can adjust this as needed
                 Message: notification.message,
-                Date: new Date(notification.timestamp).toISOString().split('T')[0],
-                Time: new Date(notification.timestamp).toTimeString().split(' ')[0],
+                Date: timestamp.toISOString().split('T')[0],
+                Time: timestamp.toTimeString().split(' ')[0],
                 Status: false  // Assuming new notifications are unread
             };
 
@@ -123,7 +129,6 @@ export default function Login() {
                                     localStorage.setItem('Token', accessToken);
 
                                     console.log('Session storage after login:', sessionStorage);
-
 
                                     saveNotification({
                                         message: `User ${values.username} logged in`,

@@ -74,7 +74,6 @@ export default function ResetPasswordDriverHelper() {
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const cancelRef = useRef();
     const navigate = useNavigate();
-    const { addNotification } = useNotifications();
     const location = useLocation();
     const query = new URLSearchParams(location.search);
     const username = query.get('username');
@@ -102,14 +101,6 @@ export default function ResetPasswordDriverHelper() {
             if (response.data.status) {
                 setIsAlertOpen(true);
                 setResetPasswordResponse(response.data.message);
-
-                // Add a notification for the admin
-                addNotification({
-                    title: "Password Reset Successful",
-                    body: `Password for ${username} has been reset successfully.`,
-                    timestamp: new Date().toISOString(),
-                    read: false
-                });
             } else {
                 setIsAlertOpen(true);
                 setResetPasswordResponse(response.data.error || "Failed to reset password.");
