@@ -23,6 +23,7 @@ export default function ResetPasswordConfirmation() {
 
     const handleAlertClose = () => {
         setIsAlertOpen(false);
+        setVerificationCode("");
     };
 
     return (
