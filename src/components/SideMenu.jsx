@@ -42,8 +42,14 @@ export default function SideMenu({isAdmin}) {
                         aria-label="dashboard"
                         fontSize="15px"
                         icon={<AiOutlineDashboard/>}
+
                     />
-                    <Text color={theme.orange} fontSize="sm" paddingLeft="6">
+                    <Text color={theme.orange}
+                          fontSize="sm"
+                          paddingLeft="6"
+                          _hover={{
+                              color: '#FFA500', // Change this to your desired hover color
+                          }}>
                         Dashboard
                     </Text>
                 </Link>
@@ -68,120 +74,74 @@ export default function SideMenu({isAdmin}) {
                                     <AccordionIcon color={theme.orange}/>
                                 </AccordionButton>
                             </h2>
-                            {/*<AccordionPanel pb={4}>*/}
-                            {/*    <div>*/}
-                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/VehicleDetailsTable">*/}
-                            {/*            <Text color={theme.orange} fontSize="sm">*/}
-                            {/*                Vehicle Details*/}
-                            {/*            </Text>*/}
-                            {/*        </Link>*/}
-                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/VehicleType">*/}
-                            {/*            <Text color={theme.orange} fontSize="sm">*/}
-                            {/*                Type*/}
-                            {/*            </Text>*/}
-                            {/*        </Link>*/}
-                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/Manufacturer">*/}
-                            {/*            <Text color={theme.orange} fontSize="sm">*/}
-                            {/*                Manufacturer*/}
-                            {/*            </Text>*/}
-                            {/*        </Link>*/}
-                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/MaintenanceTable">*/}
-                            {/*            <Text color={theme.orange} fontSize="sm">*/}
-                            {/*                Maintenance*/}
-                            {/*            </Text>*/}
-                            {/*        </Link>*/}
-                            {/*        <Link className="flex items-center pl-3 mb-5" to="/app/MaintenanceTypeTable">*/}
-                            {/*            <Text color={theme.orange} fontSize="sm">*/}
-                            {/*                Maintenance Type*/}
-                            {/*            </Text>*/}
-                            {/*        </Link>*/}
-                            {/*        <Link className="flex items-center pl-3" to="/app/FuelRefillTable">*/}
-                            {/*            <Text color={theme.orange} fontSize="sm">*/}
-                            {/*                Fuel Refill*/}
-                            {/*            </Text>*/}
-                            {/*        </Link>*/}
-                            {/*    </div>*/}
-                            {/*</AccordionPanel>*/}
                             <AccordionPanel pb={4}>
                                 <div>
                                     <Link className="flex items-center pl-3 mb-5" to="/app/VehicleDetailsTable">
-                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
-                                              onMouseOver={(e) => {
-                                                  e.target.style.color = '#FFA500';
-                                                  e.target.style.textDecoration = 'underline';
-                                              }}
-                                              onMouseOut={(e) => {
-                                                  e.target.style.color = theme.orange;
-                                                  e.target.style.textDecoration = 'none';
-                                              }}>
+                                        <Text
+                                            color={theme.orange}
+                                            fontSize="sm"
+                                            _hover={{
+                                                color: '#FFA500', // Change this to your desired hover color
+                                            }}
+                                        >
                                             Vehicle Details
                                         </Text>
                                     </Link>
                                     <Link className="flex items-center pl-3 mb-5" to="/app/VehicleType">
-                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
-                                              onMouseOver={(e) => {
-                                                  e.target.style.color = '#FFA500';
-                                                  e.target.style.textDecoration = 'underline';
-                                              }}
-                                              onMouseOut={(e) => {
-                                                  e.target.style.color = theme.orange;
-                                                  e.target.style.textDecoration = 'none';
-                                              }}>
+                                        <Text
+                                            color={theme.orange}
+                                            fontSize="sm"
+                                            _hover={{
+                                                color: '#FFA500', // Change this to your desired hover color
+                                            }}
+                                        >
                                             Type
                                         </Text>
                                     </Link>
                                     <Link className="flex items-center pl-3 mb-5" to="/app/Manufacturer">
-                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
-                                              onMouseOver={(e) => {
-                                                  e.target.style.color = '#FFA500';
-                                                  e.target.style.textDecoration = 'underline';
-                                              }}
-                                              onMouseOut={(e) => {
-                                                  e.target.style.color = theme.orange;
-                                                  e.target.style.textDecoration = 'none';
-                                              }}>
+                                        <Text
+                                            color={theme.orange}
+                                            fontSize="sm"
+                                            _hover={{
+                                                color: '#FFA500', // Change this to your desired hover color
+                                            }}
+                                        >
                                             Manufacturer
                                         </Text>
                                     </Link>
                                     <Link className="flex items-center pl-3 mb-5" to="/app/MaintenanceTable">
-                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
-                                              onMouseOver={(e) => {
-                                                  e.target.style.color = '#FFA500';
-                                                  e.target.style.textDecoration = 'underline';
-                                              }}
-                                              onMouseOut={(e) => {
-                                                  e.target.style.color = theme.orange;
-                                                  e.target.style.textDecoration = 'none';
-                                              }}>
+                                        <Text
+                                            color={theme.orange}
+                                            fontSize="sm"
+                                            _hover={{
+                                                color: '#FFA500', // Change this to your desired hover color
+                                            }}
+                                        >
                                             Maintenance
                                         </Text>
                                     </Link>
                                     <Link className="flex items-center pl-3 mb-5" to="/app/MaintenanceTypeTable">
-                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
-                                              onMouseOver={(e) => {
-                                                  e.target.style.color = '#FFA500';
-                                                  e.target.style.textDecoration = 'underline';
-                                              }}
-                                              onMouseOut={(e) => {
-                                                  e.target.style.color = theme.orange;
-                                                  e.target.style.textDecoration = 'none';
-                                              }}>
+                                        <Text
+                                            color={theme.orange}
+                                            fontSize="sm"
+                                            _hover={{
+                                                color: '#FFA500', // Change this to your desired hover color
+                                            }}
+                                        >
                                             Maintenance Type
                                         </Text>
                                     </Link>
                                     <Link className="flex items-center pl-3" to="/app/FuelRefillTable">
-                                        <Text fontSize="sm" style={{ color: theme.orange, textDecoration: 'none', transition: 'color 0.3s, text-decoration 0.3s' }}
-                                              onMouseOver={(e) => {
-                                                  e.target.style.color = '#FFA500';
-                                                  e.target.style.textDecoration = 'underline';
-                                              }}
-                                              onMouseOut={(e) => {
-                                                  e.target.style.color = theme.orange;
-                                                  e.target.style.textDecoration = 'none';
-                                              }}>
-                                            Fuel Refill
-                                        </Text>
-                                    </Link>
+                                    <Text
+                                        color={theme.orange}
+                                        fontSize="sm"
+                                        _hover={{
+                                            color: '#FFA500', // Change this to your desired hover color
+                                        }}
+                                    >
+                                        Fuel Refill
+                                    </Text>
+                                </Link>
                                 </div>
                             </AccordionPanel>
                         </AccordionItem>

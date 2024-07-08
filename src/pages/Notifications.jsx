@@ -1,4 +1,16 @@
-import { Box, List, ListItem, Heading, Text, Icon, Button, IconButton } from '@chakra-ui/react';
+import {
+    Box,
+    List,
+    ListItem,
+    Heading,
+    Text,
+    Icon,
+    Button,
+    IconButton,
+    Alert,
+    AlertIcon,
+    Spinner
+} from '@chakra-ui/react';
 import { MdNotifications, MdDelete, MdNotificationsNone } from 'react-icons/md';
 import PageHeader from "../components/PageHeader";
 import { useNavigate } from 'react-router-dom';
@@ -6,8 +18,21 @@ import { useNotifications } from '../context/NotificationContext';
 import './Notification.css';
 
 const Notifications = () => {
-    const { notifications, markAsRead, deleteNotification, markAllAsRead, deleteAllNotifications } = useNotifications();
+    const { notifications, markAsRead, deleteNotification, markAllAsRead, deleteAllNotifications, loading, error } = useNotifications();
     const navigate = useNavigate();
+
+    if (loading) {
+        return <Spinner />;
+    }
+
+    if (error) {
+        return (
+            <Alert status="error">
+                <AlertIcon />
+                There was an error fetching notifications: {error.message}
+            </Alert>
+        );
+    }
 
     const handleMarkAsRead = (index) => {
         markAsRead(index);

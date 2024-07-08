@@ -142,7 +142,7 @@ export default function ResetPasswordDriverHelper() {
                                 errors.newPassword = "Please enter your new password.";
                             }
                             if (!values.confirmPassword) {
-                                errors.confirmPassword = "Please confirm your new password.";
+                                errors.confirmPassword = "Please confirm your confirm password.";
                             }
                             if (values.newPassword !== values.confirmPassword) {
                                 errors.confirmPassword = "Passwords do not match.";

@@ -145,7 +145,7 @@ export default function ChangePassword() {
                                 errors.newPassword = "Please enter your new password.";
                             }
                             if (!values.confirmPassword) {
-                                errors.confirmPassword = "Please confirm your new password.";
+                                errors.confirmPassword = "Please confirm your confirm password.";
                             }
                             if (values.oldPassword === values.newPassword) {
                                 errors.newPassword = "New password must be different from old password.";

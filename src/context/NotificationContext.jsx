@@ -7,12 +7,35 @@ export const useNotifications = () => useContext(NotificationContext);
 
 export const NotificationProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // useEffect(() => {
+    //     // Load notifications from local storage initially
+    //     const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    //     setNotifications(storedNotifications);
+    // }, []);
 
     useEffect(() => {
-        // Load notifications from local storage initially
-        const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-        setNotifications(storedNotifications);
+        const fetchNotifications = async () => {
+            try {
+                const response = await fetch('https://localhost:7265/api/Notification/unread'); // Replace with your backend API URL
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setNotifications(data);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNotifications();
     }, []);
+
 
     useEffect(() => {
         // Save notifications to local storage on update
@@ -61,7 +84,7 @@ export const NotificationProvider = ({ children }) => {
     return (
         <NotificationContext.Provider value={{
             notifications, addNotification, getUnreadCount, deleteAllNotifications,
-            markAsRead, markAllAsRead, deleteNotification
+            markAsRead, markAllAsRead, deleteNotification, loading, error
         }}>
             {children}
         </NotificationContext.Provider>

@@ -43,10 +43,12 @@ export default function UserProfile() {
             if (username) {
                 const response = await axios.get(`https://localhost:7265/api/Auth/userProfile?username=${username}`);
                 const responseData = response.data;
+
+                console.log(responseData);
                 setUserData({
                     FirstName: responseData.firstName,
                     LastName: responseData.lastName,
-                    DateOfBirth: responseData.dateOfBirth,
+                    DateOfBirth: responseData.dateOfBirth.split('T')[0], // Only take the date part
                     EmailAddress: responseData.emailAddress,
                     PhoneNo: responseData.phoneNo,
                     NIC: responseData.nic,
@@ -62,7 +64,7 @@ export default function UserProfile() {
     };
 
     useEffect(() => {
-        fetchUser().then();
+        fetchUser();
     }, []);
 
     const fileInputRef = useRef(null);
@@ -267,7 +269,7 @@ export default function UserProfile() {
                                                     <div>
                                                         <Input
                                                             {...field}
-                                                            type="datetime-local"
+                                                            type="date"
                                                             variant="filled"
                                                             borderRadius="md"
                                                             px={3}
