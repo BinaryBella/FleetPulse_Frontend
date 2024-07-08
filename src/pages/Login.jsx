@@ -216,7 +216,7 @@ export default function Login() {
                                 {!resetClicked && (
                                     <Link to="/auth/ResetEmail" onClick={handleResetClick}>
                                         <Button variant="link" className="mb-4" fontSize="sm">
-                                            Reset Password
+                                            Forgot Password
                                         </Button>
                                     </Link>
                                 )}
