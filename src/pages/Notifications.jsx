@@ -34,6 +34,21 @@ const Notifications = () => {
         );
     }
 
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+
+        return date.toLocaleString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+    }
+
     const handleMarkAsRead = (index) => {
         markAsRead(index);
     };
@@ -82,8 +97,9 @@ const Notifications = () => {
                 </Box>
             )}
             <List spacing={4}>
-                {notifications.map((notification, index) => (
-                    <ListItem
+                {notifications.map((notification, index) => {
+                    if (notification.message.split(" ")[1] !== "0") {
+                    return (<ListItem
                         key={index}
                         className={`notification-item ${notification.read ? "read" : "unread"}`}
                     >
@@ -115,10 +131,10 @@ const Notifications = () => {
                                 />
                             </Box>
                         </Box>
-                        <Text className="notification-body">{notification.body}</Text>
-                        <Text className="notification-timestamp">{notification.timestamp}</Text>
-                    </ListItem>
-                ))}
+                        <Text className="notification-body">{notification.message}</Text>
+                        <Text className="notification-timestamp">{notification.time}</Text>
+                    </ListItem>)}
+                })}
             </List>
         </Box>
     );

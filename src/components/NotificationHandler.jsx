@@ -47,12 +47,12 @@ const NotificationHandler = () => {
 
             const notification = {
                 title: payload.notification?.title || 'No title',
-                body: payload.notification?.body || 'No body',
+                message: payload.notification?.body || 'No body',
                 emailAddress: payload.data?.emailAddress || 'No email',
                 username: payload.data?.username || 'Unknown',
                 vehicleRegistrationNo: payload.data?.vehicleRegistrationNo || 'No vehicle registration number',
                 isPasswordReset: payload.notification?.title === "Password Reset Request",
-                timestamp: formattedDate,
+                time: formattedDate,
                 read: false,
             };
 
